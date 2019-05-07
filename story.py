@@ -1,4 +1,5 @@
 from worldstate import WorldState
+import location
 
 import random
 import copy
@@ -10,6 +11,7 @@ class Story:
         for char in self.worldState.characters:
             char.setPerception(WorldState(self.worldState))
             char.setGoal(self.createGoal())
+        self.createPlotPoints()
 
     def initializePossibleTransitions(self):
         """
@@ -36,7 +38,22 @@ class Story:
         goal = copy.deepcopy(WorldState(self.worldState))
         pool = copy.copy(self.worldState.locations)
         pool.remove(self.worldState.characters[0].attributes["location"])
-        goalLoc = random.sample(pool, 1)[0]
+        goalLoc = random.choices(pool)[0]
         goal.characters[0].attributes.update({"location": goalLoc})
 
         return goal
+
+    def createPlotPoints(self):
+        """
+        Create a chain of fabula elements with a grammar
+        Before executing each plot point, ensure we can make a chain that doesn't go back and forth between the same states
+        Ie. this genotype can be evaluated before moving on
+        """
+        char = random.choices(self.worldState.characters)[0]
+        #self.plotpoints = [(char, "acquire goal"), (char, "execute action"), (char, "percieve"), (char, "react")]
+        self.plotpoints = [(char, {"location": location.Location(0)}), (char, (char, {"location": location.Location(0)})), (char, WorldState(self.worldState)), (char, "sadness")]
+        self.plotpoints.append({"element": "G", "subject": char, "data": {"location": location.Location(0)}})
+        self.plotpoints.append({"element": "A", "subject": char, "data": (char, {"location": location.Location(0)})})
+        self.plotpoints.append({"element": "P", "subject": char, "data": WorldState(self.worldState)})
+        self.plotpoints.append({"element": "IE", "subject": char, "data": "sadness"})
+

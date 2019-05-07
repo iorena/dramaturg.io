@@ -31,3 +31,23 @@ class WorldState:
             if other.characters[i].attributes != self.characters[i].attributes:
                 return False
         return True
+
+    """
+    Functions for executing plot points that change the world state
+    """
+    def goal(self, subject, goal):
+        state = copy.deepcopy(self)
+        state.characters[goal[0]].attributes.update(goal[1])
+        self.characters[subject.id].goals.append(state)
+
+    def action(self, subject, action):
+        state = copy.deepcopy(self)
+        state.characters[action[0]].attributes.update(action[1])
+        self.characters[subject.id].attributes.update(state)
+
+    def perception(self, subject, perception):
+        self.characters[subject.id].perception = perception
+
+    def internal(self, subject, emotion):
+        self.characters[subject.id].attributes.update({"affect": emotion})
+
