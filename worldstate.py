@@ -4,10 +4,16 @@ from location import Location
 import random
 
 class WorldState:
-    def __init__(self):
+    def __init__(self, old=None):
+        if old == None:
+            self.initializeStoryWorld()
+        else:
+            self.locations = old.locations
+            self.characters = old.characters
+
+    def initializeStoryWorld(self):
         self.locations = [Location(), Location()]
         self.characters = [Character(self.getRandomLoc()), Character(self.getRandomLoc())]
-        self.initializePossibleTransitions()
 
     def getRandomLoc(self):
         return random.choices(self.locations)[0]
@@ -15,19 +21,13 @@ class WorldState:
     def __str__(self):
         return "Locations: " + ", ".join(map(str, self.locations)) + "\nCharacters: " + ", ".join(map(str, self.characters))
 
-    def initializePossibleTransitions(self):
-        """
-        Creates a list of tuples representing all possible transitions, keeping the transition at random
-        """
-        transitionSpace = []
-        for loc in self.locations:
-            for loc2 in self.locations:
-                if loc != loc2:
-                    if random.random() > 0.5:
-                        transitionSpace.append((loc, loc2))
-        self.possibleTransitions = transitionSpace
-
-    def getPossibleTransitions(self):
-        print("Possible transitions:")
-        for transition in self.possibleTransitions:
-            print(str(transition[0]), "->", str(transition[1]))
+    def __eq__(self, other):
+        if other is None:
+            return False
+        for i in range(len(self.locations)):
+            if other.locations[i] != self.locations[i]:
+                return False
+        for i in range(len(self.characters)):
+            if other.characters[i].attributes != self.characters[i].attributes:
+                return False
+        return True

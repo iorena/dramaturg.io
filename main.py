@@ -1,5 +1,5 @@
-from worldstate import WorldState
+from story import Story
 
-state = WorldState()
-print(state)
-state.getPossibleTransitions()
+story = Story()
+print(story.worldState)
+story.printPossibleTransitions()
