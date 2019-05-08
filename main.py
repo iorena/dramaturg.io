@@ -1,5 +1,5 @@
 from story import Story
 
 story = Story()
-print(story.worldState)
-story.printPossibleTransitions()
+print(story.world_state)
+story.print_possible_transitions()

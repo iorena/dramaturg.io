@@ -1,59 +1,63 @@
 from worldstate import WorldState
-import location
+from concepts import location
 
 import random
 import copy
 
+
 class Story:
     def __init__(self):
-        self.worldState = WorldState()
-        self.initializePossibleTransitions()
-        for char in self.worldState.characters:
-            char.setPerception(WorldState(self.worldState))
-            char.setGoal(self.createGoal())
-        self.createPlotPoints()
+        self.world_state = WorldState()
+        self.possible_transitions = self.init_possible_transitions()
+        self.plotpoints = self.create_plot_points()
+        for char in self.world_state.characters:
+            char.set_perception(WorldState(self.world_state))
+            char.set_goal(self.create_goal())
+        self.create_plot_points()
 
-    def initializePossibleTransitions(self):
+    def init_possible_transitions(self):
         """
         Creates a list of tuples representing all possible transitions, keeping each transition at random
         """
-        transitionSpace = []
-        for loc in self.worldState.locations:
-            for loc2 in self.worldState.locations:
+        transition_space = []
+        for loc in self.world_state.locations:
+            for loc2 in self.world_state.locations:
                 if loc != loc2:
                     if random.random() > 0.5:
-                        transitionSpace.append((loc, loc2))
-        self.possibleTransitions = transitionSpace
+                        transition_space.append((loc, loc2))
+        return transition_space
 
-    def printPossibleTransitions(self):
+    def print_possible_transitions(self):
         print("Possible transitions:")
-        for transition in self.possibleTransitions:
+        for transition in self.possible_transitions:
             print(str(transition[0]), "->", str(transition[1]))
 
-    def createGoal(self):
+    def create_goal(self):
         """
         Tweaks the real world state to create a goal world state for a character
         Yes, right now all characters have goals relating to the first character
         """
-        goal = copy.deepcopy(WorldState(self.worldState))
-        pool = copy.copy(self.worldState.locations)
-        pool.remove(self.worldState.characters[0].attributes["location"])
-        goalLoc = random.choices(pool)[0]
-        goal.characters[0].attributes.update({"location": goalLoc})
+        goal = copy.deepcopy(WorldState(self.world_state))
+        pool = copy.copy(self.world_state.locations)
+        pool.remove(self.world_state.characters[0].attributes["location"])
+        goal_loc = random.choices(pool)[0]
+        goal.characters[0].attributes.update({"location": goal_loc})
 
         return goal
 
-    def createPlotPoints(self):
+    def create_plot_points(self):
         """
         Create a chain of fabula elements with a grammar
-        Before executing each plot point, ensure we can make a chain that doesn't go back and forth between the same states
+        Before executing each plot point, ensure we can make
+        a chain that doesn't go back and forth between the same states
         Ie. this genotype can be evaluated before moving on
         """
-        char = random.choices(self.worldState.characters)[0]
-        #self.plotpoints = [(char, "acquire goal"), (char, "execute action"), (char, "percieve"), (char, "react")]
-        self.plotpoints = [(char, {"location": location.Location(0)}), (char, (char, {"location": location.Location(0)})), (char, WorldState(self.worldState)), (char, "sadness")]
-        self.plotpoints.append({"element": "G", "subject": char, "data": {"location": location.Location(0)}})
-        self.plotpoints.append({"element": "A", "subject": char, "data": (char, {"location": location.Location(0)})})
-        self.plotpoints.append({"element": "P", "subject": char, "data": WorldState(self.worldState)})
-        self.plotpoints.append({"element": "IE", "subject": char, "data": "sadness"})
-
+        char = random.choices(self.world_state.characters)[0]
+        # self.plotpoints = [(char, "acquire goal"), (char, "execute action"), (char, "percieve"), (char, "react")]
+        plotpoints = [(char, {"location": location.Location(0)}), (char, (char, {"location": location.Location(0)})),
+                      (char, WorldState(self.world_state)), (char, "sadness"),
+                      {"element": "G", "subject": char, "data": {"location": location.Location(0)}},
+                      {"element": "A", "subject": char, "data": (char, {"location": location.Location(0)})},
+                      {"element": "P", "subject": char, "data": WorldState(self.world_state)},
+                      {"element": "IE", "subject": char, "data": "sadness"}]
+        return plotpoints

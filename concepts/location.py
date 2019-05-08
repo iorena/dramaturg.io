@@ -1,7 +1,6 @@
-
-
 class Location:
     id_counter = 0
+
     def __init__(self, id=None):
         if id is None:
             self.id = Location.id_counter

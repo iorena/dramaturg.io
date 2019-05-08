@@ -1,25 +1,28 @@
-from character import Character
-from location import Location
+import copy
+
+from concepts.character import Character
+from concepts.location import Location
 
 import random
 
+
 class WorldState:
     def __init__(self, old=None):
-        if old == None:
-            self.initializeStoryWorld()
+        if old is None:
+            self.initialize_story_world()
         else:
             self.locations = old.locations
             self.characters = old.characters
 
-    def initializeStoryWorld(self):
+    def initialize_story_world(self):
         self.locations = [Location(), Location()]
-        self.characters = [Character(self.getRandomLoc()), Character(self.getRandomLoc())]
+        self.characters = [Character(self.get_random_loc()), Character(self.get_random_loc())]
 
-    def getRandomLoc(self):
+    def get_random_loc(self):
         return random.choices(self.locations)[0]
 
     def __str__(self):
-        return "Locations: " + ", ".join(map(str, self.locations)) + "\nCharacters: " + ", ".join(map(str, self.characters))
+        return f"Locations: {', '.join(map(str, self.locations))}\nCharacters: {', '.join(map(str, self.characters))}"
 
     def __eq__(self, other):
         if other is None:
@@ -35,6 +38,7 @@ class WorldState:
     """
     Functions for executing plot points that change the world state
     """
+
     def goal(self, subject, goal):
         state = copy.deepcopy(self)
         state.characters[goal[0]].attributes.update(goal[1])
@@ -50,4 +54,3 @@ class WorldState:
 
     def internal(self, subject, emotion):
         self.characters[subject.id].attributes.update({"affect": emotion})
-
