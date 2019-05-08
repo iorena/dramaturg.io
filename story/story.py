@@ -1,4 +1,4 @@
-from worldstate import WorldState
+from concepts.worldstate import WorldState
 from concepts import location
 
 import random
@@ -14,6 +14,10 @@ class Story:
             char.set_perception(WorldState(self.world_state))
             char.set_goal(self.create_goal())
         self.create_plot_points()
+
+    def __str__(self):
+        transitions = "\n".join(map(lambda x: f'{x[0]} -> {x[1]}', self.possible_transitions))
+        return f"{self.world_state}\nPossible transitions:\n{transitions}"
 
     def init_possible_transitions(self):
         """
@@ -48,7 +52,7 @@ class Story:
     def create_plot_points(self):
         """
         Create a chain of fabula elements with a grammar
-        Before executing each plot point, ensure we can make
+        Before executing each story point, ensure we can make
         a chain that doesn't go back and forth between the same states
         Ie. this genotype can be evaluated before moving on
         """
@@ -61,3 +65,12 @@ class Story:
                       {"element": "P", "subject": char, "data": WorldState(self.world_state)},
                       {"element": "IE", "subject": char, "data": "sadness"}]
         return plotpoints
+
+
+def main():
+    s = Story()
+    print(s)
+
+
+if __name__ == "__main__":
+    main()

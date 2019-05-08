@@ -1,6 +1,6 @@
 
 def main():
-    print("Generated plot")
+    print("Generated scene")
 
 
 if __name__ == "__main__":

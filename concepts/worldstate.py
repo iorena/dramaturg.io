@@ -36,7 +36,7 @@ class WorldState:
         return True
 
     """
-    Functions for executing plot points that change the world state
+    Functions for executing story points that change the world state
     """
 
     def goal(self, subject, goal):
