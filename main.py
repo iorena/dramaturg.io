@@ -7,6 +7,8 @@ def main(do_story):
     if do_story:
         story = Story()
         print(story)
+        for i, sequence in enumerate(story.get_sequences()):
+            print(f"Sequence {i}\n{sequence}\n\n")
     else:
         print("Did nothing!")
 
