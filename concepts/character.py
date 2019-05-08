@@ -1,3 +1,7 @@
+import random
+
+NAMES = ["Pekka", "Ville", "Kalle", "Maija"]
+
 
 class Character:
     id_counter = 0
@@ -7,11 +11,15 @@ class Character:
         Character.id_counter += 1
         self.attributes = {"location": location}
         self.goals = []
+        self.name = self.random_name()
         self.perception = None
 
     def __str__(self):
         return (f"{{Character{str(self.id)} location: {self.attributes['location']} goal: "
                 f"{self.goals[0].characters[0].attributes['location']}}}")
+
+    def random_name(self):
+        return random.choices(NAMES)[0]
 
     def set_perception(self, world_state):
         self.perception = world_state

@@ -1,5 +1,7 @@
 from concepts.worldstate import WorldState
 from concepts import location
+from sequence.sequence import Sequence
+
 
 import random
 import copy
@@ -10,10 +12,10 @@ class Story:
         self.world_state = WorldState()
         self.possible_transitions = self.init_possible_transitions()
         self.plotpoints = self.create_plot_points()
+        self.sequences = self.create_sequences()
         for char in self.world_state.characters:
             char.set_perception(WorldState(self.world_state))
             char.set_goal(self.create_goal())
-        self.create_plot_points()
 
     def __str__(self):
         transitions = "\n".join(map(lambda x: f'{x[0]} -> {x[1]}', self.possible_transitions))
@@ -58,13 +60,24 @@ class Story:
         """
         char = random.choices(self.world_state.characters)[0]
         # self.plotpoints = [(char, "acquire goal"), (char, "execute action"), (char, "percieve"), (char, "react")]
-        plotpoints = [(char, {"location": location.Location(0)}), (char, (char, {"location": location.Location(0)})),
-                      (char, WorldState(self.world_state)), (char, "sadness"),
-                      {"element": "G", "subject": char, "data": {"location": location.Location(0)}},
+        plotpoints = [{"element": "G", "subject": char, "data": {"location": location.Location(0)}},
                       {"element": "A", "subject": char, "data": (char, {"location": location.Location(0)})},
                       {"element": "P", "subject": char, "data": WorldState(self.world_state)},
                       {"element": "IE", "subject": char, "data": "sadness"}]
         return plotpoints
+
+    def create_sequences(self):
+        """
+        Generates sequences for each plot point
+        """
+        init_sequences = []
+        for plotpoint in self.plotpoints:
+            init_sequences.append(Sequence(self.world_state.characters, plotpoint["element"]))
+        print(init_sequences)
+        return init_sequences
+
+    def get_sequences(self):
+        return self.sequences
 
 
 def main():
