@@ -21,7 +21,8 @@ class Sequence:
         adjpairs = random.choices(generated)[0]
         for pair in adjpairs:
             l = "".join(pair)
-            self.adjacency_pairs.append(AdjacencyPair(self.speakers, pair))
+            adj_pair = AdjacencyPair(self.speakers, pair)
+            self.adjacency_pairs.append(adj_pair.inflect())
 
     def print_sequence(self):
         print(self)

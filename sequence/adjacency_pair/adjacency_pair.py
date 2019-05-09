@@ -1,4 +1,4 @@
-from sequence.word_token import WordToken
+from language.word_token import WordToken
 
 
 class AdjacencyPair:
@@ -29,6 +29,10 @@ class AdjacencyPair:
 
     def get_second_part(self, name):
         return self.speakers[1], self.word_tokens[self.sentences[name][1]]
+
+    def inflect(self):
+        #todo: call syntaxmaker
+        return self
 
 
 def main():
