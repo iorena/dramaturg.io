@@ -14,7 +14,7 @@ class AdjacencyPair:
             "ter": [WordToken("tpart")],
             "kys": [WordToken("interr")],
             "vas": [WordToken("vpart")],
-            "ilm": [WordToken("pronom"), WordToken("verb")],
+            "ilm": [WordToken("pronom", "subj"), WordToken("verb")],
             "kui": [WordToken("kpart")]
         }
         self.first_pair_part = self.get_first_part(name)

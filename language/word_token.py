@@ -4,8 +4,9 @@ import random
 
 
 class WordToken:
-    def __init__(self, wc, data=None):
+    def __init__(self, wc, pos=None, data=None):
         self.data = data
+        self.pos = pos
         options = dictionary[wc]
         self.word = random.choices(options)[0]
 
