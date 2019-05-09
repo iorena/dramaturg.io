@@ -1,6 +1,7 @@
 from concepts.worldstate import WorldState
 from concepts import location
 from sequence.sequence import Sequence
+from story.fabula_element import FabulaElement
 
 
 import random
@@ -60,10 +61,10 @@ class Story:
         """
         char = random.choices(self.world_state.characters)[0]
         # self.plotpoints = [(char, "acquire goal"), (char, "execute action"), (char, "percieve"), (char, "react")]
-        plotpoints = [{"element": "G", "subject": char, "data": {"location": location.Location(0)}},
-                      {"element": "A", "subject": char, "data": (char, {"location": location.Location(0)})},
-                      {"element": "P", "subject": char, "data": WorldState(self.world_state)},
-                      {"element": "IE", "subject": char, "data": "sadness"}]
+        plotpoints = [FabulaElement("G", char, char, {"location": location.Location(0)}),
+                      FabulaElement("A", char, char, {"location": location.Location(0)}),
+                      FabulaElement("P", char, None, WorldState(self.world_state)),
+                      FabulaElement("IE", char, None, {"affect": "sadness"})]
         return plotpoints
 
     def create_sequences(self):
@@ -72,7 +73,7 @@ class Story:
         """
         init_sequences = []
         for plotpoint in self.plotpoints:
-            init_sequences.append(Sequence(self.world_state.characters, plotpoint["element"]))
+            init_sequences.append(Sequence(self.world_state.characters, plotpoint.elem))
         print(init_sequences)
         return init_sequences
 
