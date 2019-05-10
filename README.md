@@ -7,11 +7,11 @@ $ python main.py -h
 usage: main.py [-h] [-s] [someargument]
 
 positional arguments:
-  someargument
+someargument
 
 optional arguments:
-  -h, --help    show this help message and exit
-  -s, --story   Create a story! (default: False)
+-h, --help    show this help message and exit
+-s, --story   Create a story! (default: False)
 ```
 
 #### Running a module on its own:
@@ -26,3 +26,11 @@ $ python -m adjacency_pair.adjacency_pair
 
 $ python -m language.language
 ```
+
+#### Installing hfst and omorphi
+Install hfst and omorphi and syntaxmaker as per the instructions here https://github.com/mikahama/syntaxmaker
+Add the location of the syntaxmaker to PYTHONPATH, for example using Conda
+```bash
+$ export PYTHONPATH=/home/<user_name>/.conda/envs/<env_name>/lib/python3.7/site-packages/syntaxmaker
+```
+

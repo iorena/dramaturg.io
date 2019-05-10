@@ -22,7 +22,7 @@ class Sequence:
         for pair in adjpairs:
             l = "".join(pair)
             adj_pair = AdjacencyPair(self.speakers, pair)
-            self.adjacency_pairs.append(adj_pair.inflect())
+            self.adjacency_pairs.append(adj_pair)
 
     def print_sequence(self):
         print(self)
@@ -30,7 +30,7 @@ class Sequence:
     def __str__(self):
         ret = ""
         for pair in self.adjacency_pairs:
-            for pair_part in pair.skeleton:
+            for pair_part in pair.inflected:
                 line = f"{pair_part[0].name}: "
                 for word in pair_part[1]:
                     line += str(word) + " "
