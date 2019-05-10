@@ -31,9 +31,10 @@ class Sequence:
         ret = ""
         for pair in self.adjacency_pairs:
             for pair_part in pair.inflected:
-                line = f"{pair_part[0].name}: "
+                speaker = pair_part[0]
+                line = f"{speaker.name}: "
                 for word in pair_part[1]:
-                    line += pair_part[0].style.getStyledExpression(word) + " "
+                    line += speaker.style.getStyledExpression(word) + " "
                 line += "\n"
                 ret += line
         return ret

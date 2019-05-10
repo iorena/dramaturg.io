@@ -34,6 +34,9 @@ class AdjacencyPair:
         return self.speakers[1], self.word_tokens[self.sentences[name][1]]
 
     def inflect(self, line):
+        """
+        TODO: this should be heavily rethought and refactored so it doesn't become a gigantic jungle of if else
+        """
         if self.name == "ilm" and len(line[1]) > 1:
             words = line[1]
             verb = words[1]
