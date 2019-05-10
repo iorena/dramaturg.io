@@ -14,9 +14,9 @@ class AdjacencyPair:
         }
         self.word_tokens = {
             "ter": [WordToken("tpart")],
-            "kys": [WordToken("verb")],
+            "kys": [WordToken("verb"), WordToken("ppron")],
             "vas": [WordToken("vpart")],
-            "ilm": [WordToken("pronom", "subj"), WordToken("verb")],
+            "ilm": [WordToken("ppron", "subj"), WordToken("verb")],
             "kui": [WordToken("kpart")]
         }
         self.first_pair_part = self.get_first_part(name)
@@ -49,6 +49,7 @@ class AdjacencyPair:
             turn_vp_into_question(vp)
             as_string = vp.to_string().split()
             words[0].setInflectedForm(as_string[0])
+            words[1].setInflectedForm(as_string[1])
         return line
 
 

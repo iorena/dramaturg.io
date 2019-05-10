@@ -2,6 +2,6 @@ dictionary = {
     "tpart": ["moi", "hei", "päivää"],
     "vpart": ["kyllä", "joo"],
     "kpart": ["jaa", "selvä"],
-    "pronom": ["minä"],
+    "ppron": ["minä"],
     "verb": ["lähteä", "mennä", "kuulla", "tietää"]
 }

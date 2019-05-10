@@ -1,3 +1,4 @@
+from language.style import Style
 import random
 
 NAMES = ["Pekka", "Ville", "Kalle", "Maija"]
@@ -13,6 +14,7 @@ class Character:
         self.goals = []
         self.name = self.random_name()
         self.perception = None
+        self.style = Style(random.random(), random.random())
 
     def __str__(self):
         return (f"{{Character{str(self.id)} location: {self.attributes['location']} goal: "
