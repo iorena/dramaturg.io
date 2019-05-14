@@ -58,7 +58,6 @@ class Story:
         a chain that doesn't go back and forth between the same states
         Ie. this genotype can be evaluated before moving on
         """
-        # self.plotpoints = [(char, "acquire goal"), (char, "execute action"), (char, "percieve"), (char, "react")]
         plot = PlotGraph(self.world_state)
         plot.printPlot()
         return plot.graph.nodes
@@ -66,10 +65,13 @@ class Story:
     def create_sequences(self):
         """
         Generates sequences for each plot point
+        Swartjes & Theune's fabula elements are reduced to action and perception (todo: add events)
+        IE should also be added or somehow integrated into P
         """
         init_sequences = []
         for plotpoint in self.plotpoints:
-            init_sequences.append(Sequence(self.world_state.characters, plotpoint.elem))
+            if plotpoint.elem is "A" or plotpoint.elem is "P":
+                init_sequences.append(Sequence(self.world_state.characters, plotpoint))
         return init_sequences
 
     def get_sequences(self):

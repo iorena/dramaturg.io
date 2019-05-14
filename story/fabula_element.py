@@ -14,6 +14,9 @@ class FabulaElement:
         return self.elem
 
     def getObject(self):
+        """
+        Todo: replace hard-coding with actual functionality
+        """
         if self.elem is "G":
             return self.subj
         if self.elem is "A":
@@ -24,11 +27,14 @@ class FabulaElement:
             return None
 
     def getTransition(self):
+        """
+        Todo: Ditto
+        """
         if self.elem is "G":
             return {"location": location.Location(0)}
         if self.elem is "A":
             return {"location": location.Location(0)}
         if self.elem is "P":
-            return WorldState(self.world_state)
+            return {"location": location.Location(0)}
         if self.elem is "IE":
             return {"affect": "sadness"}

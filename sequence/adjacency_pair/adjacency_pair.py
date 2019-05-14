@@ -4,20 +4,23 @@ from syntaxmaker.syntax_maker import *
 
 
 class AdjacencyPair:
-    def __init__(self, speakers, name):
+    def __init__(self, speakers, name, topic):
         self.speakers = speakers
         self.name = name
+        self.verb, self.noun = topic
         self.sentences = {
             "ter": ("ter", "ter"),
             "kys": ("kys", "vas"),
-            "ilm": ("ilm", "kui")
+            "ilm": ("ilm", "kui"),
+            "hav": ("hav", "kui")
         }
         self.word_tokens = {
             "ter": [WordToken("tpart")],
             "kys": [WordToken("verb"), WordToken("ppron")],
             "vas": [WordToken("vpart")],
-            "ilm": [WordToken("ppron", "subj"), WordToken("verb")],
-            "kui": [WordToken("kpart")]
+            "ilm": [WordToken("ppron", "subj"), WordToken("verb", None, self.verb)],
+            "kui": [WordToken("kpart")],
+            "hav": [WordToken("pron", "subj"), WordToken("verb"), WordToken("noun", None, self.noun)]
         }
         self.first_pair_part = self.get_first_part(name)
         self.second_pair_part = self.get_second_part(name)
@@ -52,6 +55,13 @@ class AdjacencyPair:
             turn_vp_into_question(vp)
             as_string = vp.to_string().split()
             words[0].setInflectedForm(as_string[0])
+            words[1].setInflectedForm(as_string[1])
+        if self.name == "hav" and len(line[1]) > 2:
+            words = line[1]
+            p = create_copula_phrase()
+            p.components["subject"] = create_phrase("NP", words[0].word)
+            p.components["predicative"] = create_phrase("NP", words[2].word)
+            as_string = p.to_string().split()
             words[1].setInflectedForm(as_string[1])
         return line
 

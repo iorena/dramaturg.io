@@ -10,6 +10,9 @@ import random
 
 
 class PlotGraph:
+    """
+    Todo: more complex graph where more than one character can have goals and actions. Selection of nodes that are written out as story, rest are implicated?
+    """
     def __init__(self, world_state):
         self.grammar = CFG.fromstring(grammar)
         self.world_state = world_state
@@ -30,6 +33,8 @@ class PlotGraph:
         for i in range(len(nodes)):
             if i < len(nodes) - 1 and nodes[i+1].elem != "E":
                 self.graph.add_edge(nodes[i], nodes[i+1])
+            elif i < len(nodes) - 1 and nodes[i+1].elem is "E":
+                self.graph.add_edge(nodes[i], nodes[i+2])
 
     def printPlot(self):
         layout = nx.spring_layout(self.graph)

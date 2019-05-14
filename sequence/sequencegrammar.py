@@ -1,4 +1,8 @@
-grammar = """
+action_grammar = """
 S -> "ter" SEQ | SEQ
-SEQ -> SEQ "ilm"| "ilm" SEQ | "ilm" | "kys" | "kys" SEQ | SEQ "kys"
+SEQ -> SEQ "ilm" | "ilm" | "kys" | SEQ "kys"
+"""
+perception_grammar = """
+S -> "hav" | "hav" LAA
+LAA -> "kys" | "kys" LAA
 """
