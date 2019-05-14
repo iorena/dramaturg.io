@@ -3,6 +3,7 @@ autopep8==1.4.4
 isort==4.3.18
 lazy-object-proxy==1.4.0
 mccabe==0.6.1
+networkx==2.3
 nltk==3.4.1
 pkg-resources==0.0.0
 pycodestyle==2.5.0
