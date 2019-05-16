@@ -34,3 +34,9 @@ Add the location of the syntaxmaker to PYTHONPATH, for example using Conda
 $ export PYTHONPATH=/home/<user_name>/.conda/envs/<env_name>/lib/python3.7/site-packages/syntaxmaker
 ```
 
+As of now omorphi applies wrong ownership for its files in `/usr/local/share/hfst`.
+Fix ownership and permissions so that python can access them. ie.
+```bash
+$ chown <username>:<usergroup> -R /usr/local/share/hfst
+$ chmod a+rX /usr/local/share/hfst
+```
