@@ -1,5 +1,4 @@
 from concepts import location
-from concepts.worldstate import WorldState
 
 
 class FabulaElement:
@@ -7,13 +6,13 @@ class FabulaElement:
         self.elem = elem
         self.subj = subj
         self.world_state = world_state
-        self.obj = self.getObject()
-        self.transition = self.getTransition()
+        self.obj = self.get_object()
+        self.transition = self.get_transition()
 
     def __str(self):
         return self.elem
 
-    def getObject(self):
+    def get_object(self):
         """
         Todo: replace hard-coding with actual functionality
         """
@@ -26,7 +25,7 @@ class FabulaElement:
         if self.elem is "IE":
             return None
 
-    def getTransition(self):
+    def get_transition(self):
         """
         Todo: Ditto
         """

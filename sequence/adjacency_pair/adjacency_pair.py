@@ -1,6 +1,7 @@
 from language.word_token import WordToken
 
-from syntaxmaker.syntax_maker import *
+from syntaxmaker.syntax_maker import (create_verb_pharse, create_personal_pronoun_phrase, turn_vp_into_question,
+                                      create_copula_phrase, create_phrase)
 
 
 class AdjacencyPair:

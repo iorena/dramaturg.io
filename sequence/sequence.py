@@ -37,19 +37,17 @@ class Sequence:
         Topic is a tuple of verb and world element
         Todo: make dictionaries of verbs related to different transitions
         """
-        return ("siirtyä", list(self.fabula_element.transition.values())[0].keywords["type"])
+        return "siirtyä", list(self.fabula_element.transition.values())[0].keywords["type"]
 
     def __str__(self):
-        ret = ""
+        ret = []
         for pair in self.adjacency_pairs:
             for pair_part in pair.inflected:
                 speaker = pair_part[0]
-                line = f"{speaker.name}: "
-                for word in pair_part[1]:
-                    line += speaker.style.getStyledExpression(word) + " "
-                line += "\n"
-                ret += line
-        return ret
+                words = ' '.join(map(lambda x: speaker.style.getStyledExpression(x), pair_part[1]))
+                line = f"{speaker.name}: {words}"
+                ret.append(line)
+        return "\n".join(ret)
 
 
 def main(sequence):
