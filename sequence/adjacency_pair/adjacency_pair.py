@@ -3,7 +3,6 @@ from language.sentence import Sentence
 
 import random
 
-
 class AdjacencyPair:
     def __init__(self, speakers, name, topic):
         self.speakers = speakers

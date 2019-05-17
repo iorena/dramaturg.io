@@ -59,7 +59,7 @@ class Story:
         Ie. this genotype can be evaluated before moving on
         """
         plot = PlotGraph(self.world_state)
-        plot.printPlot()
+        plot.print_plot()
         return plot.graph.nodes
 
     def create_sequences(self):

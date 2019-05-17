@@ -17,9 +17,9 @@ class PlotGraph:
         self.grammar = CFG.fromstring(grammar)
         self.world_state = world_state
         self.graph = nx.DiGraph()
-        self.createNodes()
+        self.create_nodes()
 
-    def createNodes(self):
+    def create_nodes(self):
         char = random.choices(self.world_state.characters)[0]
 
         generated = []
@@ -36,7 +36,7 @@ class PlotGraph:
             elif i < len(nodes) - 1 and nodes[i+1].elem is "E":
                 self.graph.add_edge(nodes[i], nodes[i+2])
 
-    def printPlot(self):
+    def print_plot(self):
         layout = nx.spring_layout(self.graph)
         nx.draw(self.graph, layout)
         labels = {x: x.elem for x in self.graph.nodes}

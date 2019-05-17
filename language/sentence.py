@@ -1,4 +1,6 @@
-from syntaxmaker.syntax_maker import *
+from syntaxmaker.syntax_maker import (create_verb_pharse, create_personal_pronoun_phrase, turn_vp_into_question,
+                                      create_copula_phrase, create_phrase, auxiliary_verbs, add_auxiliary_verb_to_vp)
+import random
 
 
 class Sentence:

@@ -55,7 +55,7 @@ class Sequence:
         return topics
 
     def __str__(self):
-        ret = ""
+        ret = []
         for pair in self.adjacency_pairs:
             for pair_part in pair.inflected:
                 speaker = pair_part[0]
@@ -63,8 +63,7 @@ class Sequence:
                 line += pair_part[1]
                 line += "\n"
                 ret += line
-        return ret
-
+        return "".join(ret)
 
 def main(sequence):
     sequence.print_sequence()
