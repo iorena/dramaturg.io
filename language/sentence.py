@@ -10,10 +10,10 @@ class Sentence:
         self.subj = pos["subj"]
         self.verb = pos["verb"]
         self.obj = pos["obj"]
-        self.inflected = self.getInflectedSentence(question, aux)
-        self.styled = self.getStyledSentence()
+        self.inflected = self.get_inflected_sentence(question, aux)
+        self.styled = self.get_styled_sentence()
 
-    def getInflectedSentence(self, question, aux):
+    def get_inflected_sentence(self, question, aux):
         if self.verb is None:
             return None
         if self.verb.word is "olla":
@@ -41,9 +41,9 @@ class Sentence:
         as_string = vp.to_string().split()
         return as_string
 
-    def getStyledSentence(self):
+    def get_styled_sentence(self):
         if self.inflected is None:
             return None
-        return self.speaker.style.getStyledExpression(self.inflected)
+        return self.speaker.style.get_styled_expression(self.inflected)
 
 

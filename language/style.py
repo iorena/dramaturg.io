@@ -11,14 +11,14 @@ class Style:
         self.coll = colloquiality
         self.brev = brevity
 
-    def getStyledExpression(self, sentence):
-        styledSentence = []
+    def get_styled_expression(self, sentence):
+        styled_sentence = []
         for word in sentence:
-            styledSentence.append(self.getStyledWord(word))
-        return " ".join(styledSentence)
+            styled_sentence.append(self.get_styled_word(word))
+        return " ".join(styled_sentence)
 
 
-    def getStyledWord(self, word):
+    def get_styled_word(self, word):
         if word == "minä" or word == "sinä":
             if random.random() < self.coll:
                 return word[0] + word[3]
