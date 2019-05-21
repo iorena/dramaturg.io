@@ -24,6 +24,8 @@ class FabulaElement:
             return None
         if self.elem is "IE":
             return None
+        if self.elem is "E":
+            return None
 
     def get_transition(self):
         """
@@ -37,3 +39,5 @@ class FabulaElement:
             return {"location": location.Location(0)}
         if self.elem is "IE":
             return {"affect": "sadness"}
+        if self.elem is "E":
+            return {"location": location.Location(0)}

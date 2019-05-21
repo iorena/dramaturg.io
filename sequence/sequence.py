@@ -1,37 +1,33 @@
-from nltk.parse.generate import generate
-from nltk import CFG
-
 import random
 
-from sequence.sequencegrammar import action_grammar, perception_grammar
+from sequence.sequencegrammar import sequence_dict
 from sequence.adjacency_pair.adjacency_pair import AdjacencyPair
 
 
 class Sequence:
     def __init__(self, speakers, fabula_element):
         self.fabula_element = fabula_element
-        if self.fabula_element.elem is "A":
-            self.grammar = CFG.fromstring(action_grammar)
-        else:
-            self.grammar = CFG.fromstring(perception_grammar)
         self.speakers = speakers
         self.adjacency_pairs = []
         self.topic = self.get_main_topic()
-        self.generated = self.generate_empty_pairs()
-        self.adjacency_pair_topics = self.generate_adjacency_pair_topics()
-        self.generate_adjacency_pairs()
+        pair_type = random.choices(sequence_dict[self.fabula_element.elem])[0]
+        self.adjacency_pairs = self.generate_adjacency_pairs(self.topic, pair_type)
 
-    def generate_empty_pairs(self):
+    def generate_adjacency_pairs(self, topic, pair_type):
+        """
+        Generate main adjacency pair and recursively add auxiliary pairs
+        """
         generated = []
-        for pair in generate(self.grammar, depth=5):
-            generated.append(pair)
+        generated.append(AdjacencyPair(self.speakers, pair_type, topic))
+        if random.random() > 0.5:
+            new_topic = topic
+            new_pair_type = random.choices(["kys", "ilm", "hav"])[0]
+            if random.random() > 0.7:
+                new_topic = self.generate_new_topic()
+            new_pairs = self.generate_adjacency_pairs(new_topic, new_pair_type)
+            for pair in new_pairs:
+                generated.append(pair)
         return generated
-
-    def generate_adjacency_pairs(self):
-        adjpairs = random.choices(self.generated)[0]
-        for i in range(len(adjpairs)):
-            adj_pair = AdjacencyPair(self.speakers, adjpairs[i], self.adjacency_pair_topics[i])
-            self.adjacency_pairs.append(adj_pair)
 
     def print_sequence(self):
         print(self)
@@ -43,16 +39,8 @@ class Sequence:
         """
         return {"verb": "siirtyä", "obj": list(self.fabula_element.transition.values())[0].keywords["type"], "subj": self.fabula_element.subj.name}
 
-    def generate_adjacency_pair_topics(self):
-        topics = []
-        for adj_pair in self.generated:
-            topics.append(None)
-        i = random.randint(0, len(topics) - 1)
-        topics[i] = self.topic
-        for i in range(len(topics)):
-            if topics[i] is None:
-                topics[i] = {"verb": None, "subj": random.choices(self.speakers)[0].name, "obj": None}
-        return topics
+    def generate_new_topic(self):
+        return {"verb": None, "subj": random.choices(self.speakers)[0].name, "obj": None}
 
     def __str__(self):
         ret = []

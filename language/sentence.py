@@ -1,5 +1,8 @@
 from syntaxmaker.syntax_maker import (create_verb_pharse, create_personal_pronoun_phrase, turn_vp_into_question,
-                                      create_copula_phrase, create_phrase, auxiliary_verbs, add_auxiliary_verb_to_vp)
+                                      create_copula_phrase, create_phrase, auxiliary_verbs, add_auxiliary_verb_to_vp,
+                                      add_advlp_to_vp)
+from language.dictionary import word_dictionary
+
 import random
 
 
@@ -30,8 +33,9 @@ class Sentence:
         if self.obj is not None:
             if self.verb.word is "olla":
                 vp.components["predicative"] = create_phrase("NP", self.obj.word)
-            else:
-                vp.components["dir_object"] = create_phrase("NP", self.obj.word)
+            elif self.verb.word in word_dictionary["siirtyä"]:
+                advlp = create_phrase("NP", self.obj.word, {"CASE": "ILL"})
+                add_advlp_to_vp(vp, advlp)
 
         if aux:
             aux = random.choices(list(auxiliary_verbs.keys()))[0]
@@ -45,5 +49,3 @@ class Sentence:
         if self.inflected is None:
             return None
         return self.speaker.style.get_styled_expression(self.inflected)
-
-

@@ -65,8 +65,7 @@ class Story:
     def create_sequences(self):
         """
         Generates sequences for each plot point
-        Swartjes & Theune's fabula elements are reduced to action and perception (todo: add events)
-        IE should also be added or somehow integrated into P
+        IE should be added or somehow integrated into P?
         """
         init_sequences = []
         for plotpoint in self.plotpoints:
