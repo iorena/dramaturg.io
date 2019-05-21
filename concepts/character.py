@@ -17,8 +17,14 @@ class Character:
         self.style = Style(random.random(), random.random())
 
     def __str__(self):
+        return self.name
+        """
         return (f"{{Character{str(self.id)} location: {self.attributes['location']} goal: "
                 f"{self.goals[0].characters[0].attributes['location']}}}")
+        """
+
+    def __hash__(self):
+        return hash(self.name)
 
     def random_name(self):
         return random.choices(NAMES)[0]

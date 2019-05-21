@@ -1,7 +1,7 @@
 from concepts.worldstate import WorldState
+from concepts.topic import Topic
 from sequence.sequence import Sequence
 from story.plot import PlotGraph
-
 
 import random
 import copy
@@ -12,6 +12,7 @@ class Story:
         self.world_state = WorldState()
         self.possible_transitions = self.init_possible_transitions()
         self.plotpoints = self.create_plot_points()
+        self.topics = self.create_topics()
         self.sequences = self.create_sequences()
         for char in self.world_state.characters:
             char.set_perception(WorldState(self.world_state))
@@ -62,15 +63,30 @@ class Story:
         plot.print_plot()
         return plot.graph.nodes
 
+    def create_topics(self):
+        """
+        A list of things that have to be handled within the story. World state (including characters) must be introduced,
+        and plot must be furthered
+        Todo: not all introductions must be done before any plot points are handled
+        """
+        topics = []
+        for char in self.world_state.characters:
+            for attribute in char.attributes.items():
+                topics.append(Topic(char, attribute, "statement"))
+        for plotpoint in self.plotpoints:
+            if plotpoint.elem is "A":
+                topics.append(Topic(plotpoint.subj, list(plotpoint.transition.items())[0], "action"))
+            if plotpoint.elem is "P":
+                topics.append(Topic(plotpoint.subj, list(plotpoint.transition.items())[0], "statement"))
+        return topics
+
     def create_sequences(self):
         """
-        Generates sequences for each plot point
-        IE should be added or somehow integrated into P?
+        Generates sequences for each topic
         """
         init_sequences = []
-        for plotpoint in self.plotpoints:
-            if plotpoint.elem is "A" or plotpoint.elem is "P":
-                init_sequences.append(Sequence(self.world_state.characters, plotpoint))
+        for topic in self.topics:
+            init_sequences.append(Sequence(self.world_state.characters, topic))
         return init_sequences
 
     def get_sequences(self):

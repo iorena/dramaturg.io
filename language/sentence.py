@@ -7,12 +7,13 @@ import random
 
 
 class Sentence:
-    def __init__(self, speaker, listeners, pos, question, aux):
+    def __init__(self, speaker, listeners, pos, question, aux, obj_type):
         self.speaker = speaker
         self.listeners = listeners
         self.subj = pos["subj"]
         self.verb = pos["verb"]
         self.obj = pos["obj"]
+        self.obj_type = obj_type
         self.inflected = self.get_inflected_sentence(question, aux)
         self.styled = self.get_styled_sentence()
 
@@ -24,15 +25,21 @@ class Sentence:
         else:
             vp = create_verb_pharse(self.verb.word)
 
+        #check person
         if self.speaker.name is self.subj.word:
             vp.components["subject"] = create_personal_pronoun_phrase()
         elif self.subj.word in [listener.name for listener in self.listeners]:
             vp.components["subject"] = create_personal_pronoun_phrase("2")
         else:
             vp.components["subject"] = create_phrase("NP", self.subj.word)
+
+        #check "object"
         if self.obj is not None:
-            if self.verb.word is "olla":
-                vp.components["predicative"] = create_phrase("NP", self.obj.word)
+            if self.verb.word is "olla" and self.obj_type is "location":
+                advlp = create_phrase("NP", self.obj.word, {"CASE": "INE"})
+                add_advlp_to_vp(vp, advlp)
+            elif self.verb.word is "olla":
+                print(self.obj_type)
             elif self.verb.word in word_dictionary["siirtyä"]:
                 advlp = create_phrase("NP", self.obj.word, {"CASE": "ILL"})
                 add_advlp_to_vp(vp, advlp)
