@@ -1,11 +1,11 @@
 from language.style import Style
 import random
 
-NAMES = ["Pekka", "Ville", "Kalle", "Maija"]
 
 
 class Character:
     id_counter = 0
+    names = ["Pekka", "Ville", "Kalle", "Maija"]
 
     def __init__(self, location):
         self.id = Character.id_counter
@@ -27,7 +27,9 @@ class Character:
         return hash(self.name)
 
     def random_name(self):
-        return random.choices(NAMES)[0]
+        name = random.choices(Character.names)[0]
+        Character.names.remove(name)
+        return name
 
     def set_perception(self, world_state):
         self.perception = world_state

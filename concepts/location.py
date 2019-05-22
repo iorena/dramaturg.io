@@ -3,6 +3,7 @@ import random
 
 class Location:
     id_counter = 0
+    names = ["talo", "mökki", "katu", "luola"]
 
     def __init__(self, id=None):
         if id is None:
@@ -22,6 +23,7 @@ class Location:
         return hash(self.keywords["type"])
 
     def get_keywords(self):
-        location_type = random.choices(["talo", "mökki", "katu", "luola"])[0]
+        location_type = random.choices(Location.names)[0]
+        Location.names.remove(location_type)
         return {"type": location_type}
 
