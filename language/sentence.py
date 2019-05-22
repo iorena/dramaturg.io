@@ -40,6 +40,7 @@ class Sentence:
                 add_advlp_to_vp(vp, advlp)
             elif self.verb.word is "olla":
                 print(self.obj_type)
+            #correct case for locations can be gotten with word2vec
             elif self.verb.word in word_dictionary["siirtyä"]:
                 advlp = create_phrase("NP", self.obj.word, {"CASE": "ILL"})
                 add_advlp_to_vp(vp, advlp)

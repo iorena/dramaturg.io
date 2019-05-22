@@ -2,10 +2,10 @@ from concepts import location
 
 
 class FabulaElement:
-    def __init__(self, elem, subj, world_state):
+    def __init__(self, elem, subj, goal):
         self.elem = elem
         self.subj = subj
-        self.world_state = world_state
+        self.goal = goal
         self.obj = self.get_object()
         self.transition = self.get_transition()
 
@@ -32,12 +32,12 @@ class FabulaElement:
         Todo: Ditto
         """
         if self.elem is "G":
-            return {"location": location.Location(0)}
+            return self.goal[self.subj]
         if self.elem is "A":
-            return {"location": location.Location(0)}
+            return self.goal[self.subj]
         if self.elem is "P":
-            return {"location": location.Location(0)}
+            return self.goal[self.subj]
         if self.elem is "IE":
             return {"affect": "sadness"}
         if self.elem is "E":
-            return {"location": location.Location(0)}
+            return self.goal[self.subj]

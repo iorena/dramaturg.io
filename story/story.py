@@ -11,12 +11,12 @@ class Story:
     def __init__(self):
         self.world_state = WorldState()
         self.possible_transitions = self.init_possible_transitions()
+        for char in self.world_state.characters:
+            char.set_perception(WorldState(self.world_state))
+            char.set_goal(self.create_goal(char))
         self.plotpoints = self.create_plot_points()
         self.topics = self.create_topics()
         self.sequences = self.create_sequences()
-        for char in self.world_state.characters:
-            char.set_perception(WorldState(self.world_state))
-            char.set_goal(self.create_goal())
 
     def __str__(self):
         transitions = "\n".join(map(lambda x: f'{x[0]} -> {x[1]}', self.possible_transitions))
@@ -32,6 +32,8 @@ class Story:
                 if loc != loc2:
                     if random.random() > 0.5:
                         transition_space.append((loc, loc2))
+        if len(transition_space) is 0:
+            return self.init_possible_transitions()
         return transition_space
 
     def print_possible_transitions(self):
@@ -39,16 +41,15 @@ class Story:
         for transition in self.possible_transitions:
             print(str(transition[0]), "->", str(transition[1]))
 
-    def create_goal(self):
+    def create_goal(self, character):
         """
-        Tweaks the real world state to create a goal world state for a character
-        Yes, right now all characters have goals relating to the first character
+        Create an object that represents the change the character wants to see in the world state
+        Yes, right now characters can only have goals related to themselves
         """
-        goal = copy.deepcopy(WorldState(self.world_state))
         pool = copy.copy(self.world_state.locations)
-        pool.remove(self.world_state.characters[0].attributes["location"])
+        pool.remove(character.attributes["location"])
         goal_loc = random.choices(pool)[0]
-        goal.characters[0].attributes.update({"location": goal_loc})
+        goal = { character: { "location": goal_loc } }
 
         return goal
 
@@ -59,7 +60,7 @@ class Story:
         a chain that doesn't go back and forth between the same states
         Ie. this genotype can be evaluated before moving on
         """
-        plot = PlotGraph(self.world_state)
+        plot = PlotGraph(self.world_state, self.possible_transitions)
         plot.print_plot()
         return plot.graph.nodes
 
