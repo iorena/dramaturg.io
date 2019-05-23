@@ -17,6 +17,13 @@ class WorldState:
     def initialize_story_world(self):
         self.locations = [Location(), Location()]
         self.characters = [Character(self.get_random_loc()), Character(self.get_random_loc())]
+        for char in self.characters:
+            for other in self.characters:
+                if char is other:
+                    relationship = 1
+                else:
+                    relationship = random.random()
+                char.set_relation(other, relationship)
 
     def get_random_loc(self):
         return random.choices(self.locations)[0]
