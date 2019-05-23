@@ -1,19 +1,20 @@
 from syntaxmaker.syntax_maker import (create_verb_pharse, create_personal_pronoun_phrase, turn_vp_into_question,
                                       create_copula_phrase, create_phrase, auxiliary_verbs, add_auxiliary_verb_to_vp,
-                                      add_advlp_to_vp)
+                                      add_advlp_to_vp, set_vp_mood_and_tense, turn_vp_into_prefect)
 from language.dictionary import word_dictionary
 
 import random
 
 
 class Sentence:
-    def __init__(self, speaker, listeners, pos, question, aux, obj_type):
+    def __init__(self, speaker, listeners, pos, question, aux, obj_type, tense):
         self.speaker = speaker
         self.listeners = listeners
         self.subj = pos["subj"]
         self.verb = pos["verb"]
         self.obj = pos["obj"]
         self.obj_type = obj_type
+        self.tense = tense
         self.inflected = self.get_inflected_sentence(question, aux)
         self.styled = self.get_styled_sentence()
 
@@ -44,6 +45,13 @@ class Sentence:
             elif self.verb.word in word_dictionary["siirtyä"]:
                 advlp = create_phrase("NP", self.obj.word, {"CASE": "ILL"})
                 add_advlp_to_vp(vp, advlp)
+
+        #check tempus
+        if self.tense is "past":
+            set_vp_mood_and_tense(vp, "INDV", "PAST")
+        elif self.tense is "postpast":
+            turn_vp_into_prefect(vp)
+            set_vp_mood_and_tense(vp, "INDV", "PAST")
 
         if aux:
             aux = random.choices(list(auxiliary_verbs.keys()))[0]

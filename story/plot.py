@@ -21,7 +21,7 @@ class PlotGraph:
         """
         Excluding Events for now
         """
-        for char in self.world_state.characters[0:1]:
+        for char in self.world_state.characters:
             for i in range(len(char.goals)):
                 goal = char.goals.pop(-1)
                 self.graph.add_node(FabulaElement("G", char, goal))
@@ -32,14 +32,16 @@ class PlotGraph:
 
         nodes = list(self.graph.nodes())
         for i in range(len(nodes)):
-            if i < len(nodes) - 1 and nodes[i+1].elem != "E":
+            if i < len(nodes) - 1 and nodes[i+1].subj is nodes[i].subj:
                 self.graph.add_edge(nodes[i], nodes[i+1])
-            elif i < len(nodes) - 1 and nodes[i+1].elem is "E":
-                self.graph.add_edge(nodes[i], nodes[i+2])
+            #add cross-character edge
+            if nodes[i].elem is "A" and i > 2:
+                self.graph.add_edge(nodes[i], nodes[i-3])
 
     def print_plot(self):
+        color_map = ["green","green","green","green","blue","blue","blue","blue"]
         layout = nx.spring_layout(self.graph)
-        nx.draw(self.graph, layout)
+        nx.draw(self.graph, layout, node_color=color_map)
         labels = {x: x.elem for x in self.graph.nodes}
         nx.draw_networkx_labels(self.graph, layout, labels)
         plt.show()

@@ -4,13 +4,15 @@ from sequence.sequencegrammar import sequence_dict
 from sequence.adjacency_pair.adjacency_pair import AdjacencyPair
 from concepts.topic import Topic
 
+PAIR_TYPES = ["kys", "ilm"]
+
 
 class Sequence:
     def __init__(self, speakers, topic):
         self.speakers = speakers
         self.adjacency_pairs = []
         self.topic = topic
-        pair_type = random.choices(["kys", "ilm", "hav"])[0]
+        pair_type = random.choices(PAIR_TYPES)[0]
         self.adjacency_pairs = self.generate_adjacency_pairs(self.topic, pair_type)
 
     def generate_adjacency_pairs(self, topic, pair_type):
@@ -22,7 +24,7 @@ class Sequence:
         #generate postfix pairs
         if random.random() > 0.5:
             new_topic = topic
-            new_pair_type = random.choices(["kys", "ilm", "hav"])[0]
+            new_pair_type = random.choices(PAIR_TYPES)[0]
             #if random.random() > 0.7:
             #    new_topic = self.generate_new_topic()
             new_pairs = self.generate_adjacency_pairs(new_topic, new_pair_type)
@@ -39,7 +41,7 @@ class Sequence:
 
     def generate_new_topic(self):
         """
-        Todo: how to generate new topics?
+        Todo: how to generate new topics? Are new attributes invented for characters etc. and added to the world state?
         """
         return Topic(random.choices(self.speakers)[0].name)
 

@@ -14,7 +14,7 @@ class Story:
         for char in self.world_state.characters:
             char.set_perception(WorldState(self.world_state))
             char.set_goal(self.create_goal(char))
-        self.plotpoints = self.create_plot_points()
+        self.graph = self.create_plot_points()
         self.topics = self.create_topics()
         self.sequences = self.create_sequences()
 
@@ -55,14 +55,14 @@ class Story:
 
     def create_plot_points(self):
         """
-        Create a chain of fabula elements with a grammar
-        Before executing each story point, ensure we can make
-        a chain that doesn't go back and forth between the same states
+        Create a graph of fabula elements
+        Todo: Before executing each story point, ensure we can make
+        a chain that doesn't go back and forth between the same states?
         Ie. this genotype can be evaluated before moving on
         """
         plot = PlotGraph(self.world_state, self.possible_transitions)
         plot.print_plot()
-        return plot.graph.nodes
+        return plot.graph
 
     def create_topics(self):
         """
@@ -71,14 +71,31 @@ class Story:
         Todo: not all introductions must be done before any plot points are handled
         """
         topics = []
-        for char in self.world_state.characters:
-            for attribute in char.attributes.items():
-                topics.append(Topic(char, attribute, "statement"))
-        for plotpoint in self.plotpoints:
+        added = []
+        main_char = self.world_state.characters[0]
+        for attribute in main_char.attributes.items():
+            topics.append(Topic(main_char, attribute, "statement", "present"))
+        for plotpoint in self.graph.nodes:
+            predecessors = list(self.graph.predecessors(plotpoint))
             if plotpoint.elem is "A":
-                topics.append(Topic(plotpoint.subj, list(plotpoint.transition.items())[0], "action"))
+                topics.append(Topic(plotpoint.subj, list(plotpoint.transition.items())[0], "action", "present"))
+                added.append(plotpoint)
             if plotpoint.elem is "P":
-                topics.append(Topic(plotpoint.subj, list(plotpoint.transition.items())[0], "statement"))
+                topics.append(Topic(plotpoint.subj, list(plotpoint.transition.items())[0], "statement", "present"))
+                added.append(plotpoint)
+            if len(predecessors) > 1:
+                for predecessor in predecessors:
+                    if predecessor not in added:
+                        if predecessor.elem is "A":
+                            topics.append(Topic(predecessor.subj, list(predecessor.transition.items())[0], "statement", "present"))
+                            topics.append(Topic(predecessor.subj, list(predecessor.transition.items())[0], "action", "past"))
+                            added.append(plotpoint)
+                        if predecessor.elem is "P":
+                            topics.append(Topic(predecessor.subj, list(predecessor.transition.items())[0], "statement", "past"))
+                            added.append(plotpoint)
+            if len(list(self.graph.successors(plotpoint))) is 0:
+                break
+
         return topics
 
     def create_sequences(self):

@@ -11,19 +11,18 @@ class AdjacencyPair:
         self.subj = topic.subj
         self.obj = topic.obj
         self.obj_type = topic.obj_type
+        self.time = topic.time
         self.sentences = {
             "ter": ("ter", "ter"),
             "kys": ("kys", "vas"),
-            "ilm": ("ilm", "kui"),
-            "hav": ("hav", "kui")
+            "ilm": ("ilm", "kui")
         }
         self.word_tokens = {
             "ter": [WordToken("tpart")],
             "kys": [WordToken("ppron", "subj", self.subj), WordToken("verb", None, self.verb), WordToken("noun", None, self.obj)],
             "vas": [WordToken("vpart")],
             "ilm": [WordToken("ppron", "subj", self.subj), WordToken("verb", None, self.verb), WordToken("noun", None, self.obj)],
-            "kui": [WordToken("kpart")],
-            "hav": [WordToken("pron", "subj", self.subj), WordToken("verb", None, self.verb), WordToken("noun", None, self.obj)]
+            "kui": [WordToken("kpart")]
         }
         self.first_pair_part = self.get_first_part(name)
         self.second_pair_part = self.get_second_part(name)
@@ -53,7 +52,7 @@ class AdjacencyPair:
         if sentence_type in ["ter", "vas", "kui"]:
             #todo: change to accept cases with more than one token
             return (self.speakers[part], tokens[0].word)
-        sentence = Sentence(self.speakers[part], [self.speakers[part+1]], {"subj": tokens[0], "verb": tokens[1], "obj": tokens[2]}, ques, aux, self.obj_type)
+        sentence = Sentence(self.speakers[part], [self.speakers[part+1]], {"subj": tokens[0], "verb": tokens[1], "obj": tokens[2]}, ques, aux, self.obj_type, self.time)
         return (self.speakers[part], sentence.styled)
 
 
