@@ -58,9 +58,10 @@ class Sentence:
             elif self.verb.word in word_dictionary["siirtyä"]:
                 advlp = create_phrase("NP", self.obj.word, {"CASE": "ILL"})
                 add_advlp_to_vp(vp, advlp)
+            #for some reason syntaxmaker doesn't accept objects for the words "hommata" and "saada", so must workaround
             elif self.verb.word in word_dictionary["hankkia"]:
-                obj = create_phrase("NP", self.obj.word)
-                vp.components["dir_object"] = obj
+                obj = create_phrase("NP", self.obj.word, {"CASE": "GEN"})
+                add_advlp_to_vp(vp, obj)
 
         #check tempus
         if self.tense is "past":
