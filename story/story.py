@@ -2,10 +2,10 @@ from concepts.worldstate import WorldState
 from concepts.topic import Topic
 from sequence.sequence import Sequence
 from story.plot import PlotGraph
+from story.transition import Transition
 
 import random
 import copy
-
 
 class Story:
     def __init__(self):
@@ -19,7 +19,7 @@ class Story:
         self.sequences = self.create_sequences()
 
     def __str__(self):
-        transitions = "\n".join(map(lambda x: f'{x[0]} -> {x[1]}', self.possible_transitions))
+        transitions = "\n".join(map(lambda x: f'{x.start_value} -> {x.end_value}', self.possible_transitions))
         return f"{self.world_state}\nPossible transitions:\n{transitions}"
 
     def init_possible_transitions(self):
@@ -31,7 +31,13 @@ class Story:
             for loc2 in self.world_state.locations:
                 if loc != loc2:
                     if random.random() > 0.5:
-                        transition_space.append((loc, loc2))
+                        for char in self.world_state.characters:
+                            transition_space.append(Transition(char, "location", loc, loc2))
+        for obj in self.world_state.objects:
+            for char in self.world_state.characters:
+                for char2 in self.world_state.characters:
+                    if char != char2:
+                        transition_space.append(Transition(obj, "owner", char, char2))
         if len(transition_space) is 0:
             return self.init_possible_transitions()
         return transition_space
@@ -39,17 +45,14 @@ class Story:
     def print_possible_transitions(self):
         print("Possible transitions:")
         for transition in self.possible_transitions:
-            print(str(transition[0]), "->", str(transition[1]))
+            print(str(transition.start_value), "->", str(transition.end_value))
 
     def create_goal(self, character):
         """
-        Create an object that represents the change the character wants to see in the world state
-        Yes, right now characters can only have goals related to themselves
+        Find a transition object whose end state represents the change the character wants to see in the world state
         """
-        pool = copy.copy(self.world_state.locations)
-        pool.remove(character.attributes["location"])
-        goal_loc = random.choices(pool)[0]
-        goal = { character: { "location": goal_loc } }
+        pool = list(filter(lambda x: x.get_person() is character, self.possible_transitions))
+        goal = random.choices(pool)[0]
 
         return goal
 
@@ -73,32 +76,34 @@ class Story:
         topics = []
         added = []
         main_char = self.world_state.characters[0]
+        #add topics that introduce the starting state of the story
         for attribute in main_char.attributes.items():
             topics.append(Topic(main_char, attribute, "statement", "present"))
+        #add actual plot topics
         for plotpoint in self.graph.nodes:
             predecessors = list(self.graph.predecessors(plotpoint))
             if plotpoint.elem is "G":
-                topics.append(Topic(plotpoint.subj, list(plotpoint.transition.items())[0], "action", "future"))
+                topics.append(Topic(plotpoint.subj, plotpoint.transition, "action", "future"))
                 added.append(plotpoint)
             if plotpoint.elem is "A":
-                topics.append(Topic(plotpoint.subj, list(plotpoint.transition.items())[0], "action", "present"))
+                topics.append(Topic(plotpoint.subj, plotpoint.transition, "action", "present"))
                 added.append(plotpoint)
             if plotpoint.elem is "P":
-                topics.append(Topic(plotpoint.subj, list(plotpoint.transition.items())[0], "statement", "present"))
+                topics.append(Topic(plotpoint.subj, plotpoint.transition, "statement", "present"))
                 added.append(plotpoint)
             if plotpoint.elem is "IE":
-                topics.append(Topic(plotpoint.subj, list(plotpoint.transition.items())[0], "statement", "present"))
+                topics.append(Topic(plotpoint.subj, plotpoint.transition, "statement", "present"))
                 added.append(plotpoint)
             if len(predecessors) > 1:
                 for predecessor in predecessors:
                     if predecessor not in added:
                         if predecessor.elem is "A":
-                            topics.append(Topic(predecessor.subj, list(predecessor.transition.items())[0], "statement", "present"))
-                            topics.append(Topic(predecessor.subj, list(predecessor.transition.items())[0], "action", "past"))
+                            topics.append(Topic(predecessor.subj, predecessor.transition, "statement", "present"))
+                            topics.append(Topic(predecessor.subj, predecessor.transition, "action", "past"))
                             added.append(plotpoint)
                         if predecessor.elem is "P":
                             #relative clauses? "minä näin että..."
-                            topics.append(Topic(predecessor.subj, list(predecessor.transition.items())[0], "statement", "past"))
+                            topics.append(Topic(predecessor.subj, predecessor.transition, "statement", "past"))
                             added.append(plotpoint)
             if len(list(self.graph.successors(plotpoint))) is 0:
                 break

@@ -31,10 +31,13 @@ class Sentence:
 
         #check person
         if self.speaker.name is self.subj.word:
+            person = "1"
             vp.components["subject"] = create_personal_pronoun_phrase()
         elif self.subj.word in [listener.name for listener in self.listeners]:
+            person = "2"
             vp.components["subject"] = create_personal_pronoun_phrase("2")
         else:
+            person = "3"
             vp.components["subject"] = create_phrase("NP", self.subj.word)
 
         #check "object"
@@ -45,10 +48,19 @@ class Sentence:
             elif self.verb.word is "olla" and self.obj_type is "affect":
                 predv = create_phrase("NP", self.obj.word)
                 add_advlp_to_vp(vp, predv)
+            #todo: fork syntaxmaker to allow copula sentence of type "x has y"
+            elif self.verb.word is "olla" and self.obj_type is "owner":
+                pred = create_phrase("NP", "omistaja")
+                predv = create_phrase("NP", self.obj.word, {"CASE": "GEN"})
+                add_advlp_to_vp(vp, predv)
+                add_advlp_to_vp(vp, pred)
             #correct case for locations can be gotten with word2vec
             elif self.verb.word in word_dictionary["siirtyä"]:
                 advlp = create_phrase("NP", self.obj.word, {"CASE": "ILL"})
                 add_advlp_to_vp(vp, advlp)
+            elif self.verb.word in word_dictionary["hankkia"]:
+                obj = create_phrase("NP", self.obj.word)
+                vp.components["dir_object"] = obj
 
         #check tempus
         if self.tense is "past":
