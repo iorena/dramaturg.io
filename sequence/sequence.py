@@ -16,39 +16,54 @@ class Sequence:
             self.grammar = CFG.fromstring(perception_grammar)
         self.speakers = speakers
         self.adjacency_pairs = []
-        self.topic = self.getTopic()
-        self.generate()
+        self.topic = self.get_main_topic()
+        self.generated = self.generate_empty_pairs()
+        self.adjacency_pair_topics = self.generate_adjacency_pair_topics()
+        self.generate_adjacency_pairs()
 
-    def generate(self):
+    def generate_empty_pairs(self):
         generated = []
         for pair in generate(self.grammar, depth=5):
             generated.append(pair)
-        adjpairs = random.choices(generated)[0]
-        for pair in adjpairs:
-            l = "".join(pair)
-            adj_pair = AdjacencyPair(self.speakers, pair, self.topic)
+        return generated
+
+    def generate_adjacency_pairs(self):
+        adjpairs = random.choices(self.generated)[0]
+        for i in range(len(adjpairs)):
+            adj_pair = AdjacencyPair(self.speakers, adjpairs[i], self.adjacency_pair_topics[i])
             self.adjacency_pairs.append(adj_pair)
 
     def print_sequence(self):
         print(self)
 
-    def getTopic(self):
+    def get_main_topic(self):
         """
         Topic is a tuple of verb and world element
         Todo: make dictionaries of verbs related to different transitions
         """
-        return "siirtyä", list(self.fabula_element.transition.values())[0].keywords["type"]
+        return {"verb": "siirtyä", "obj": list(self.fabula_element.transition.values())[0].keywords["type"], "subj": self.fabula_element.subj.name}
+
+    def generate_adjacency_pair_topics(self):
+        topics = []
+        for adj_pair in self.generated:
+            topics.append(None)
+        i = random.randint(0, len(topics) - 1)
+        topics[i] = self.topic
+        for i in range(len(topics)):
+            if topics[i] is None:
+                topics[i] = {"verb": None, "subj": random.choices(self.speakers)[0].name, "obj": None}
+        return topics
 
     def __str__(self):
         ret = []
         for pair in self.adjacency_pairs:
             for pair_part in pair.inflected:
                 speaker = pair_part[0]
-                words = ' '.join(map(lambda x: speaker.style.getStyledExpression(x), pair_part[1]))
-                line = f"{speaker.name}: {words}"
-                ret.append(line)
-        return "\n".join(ret)
-
+                line = f"{speaker.name}: "
+                line += pair_part[1]
+                line += "\n"
+                ret += line
+        return "".join(ret)
 
 def main(sequence):
     sequence.print_sequence()
