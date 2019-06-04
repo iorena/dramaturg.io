@@ -19,6 +19,3 @@ class WordToken:
 
     def __str__(self):
         return f"{self.word}"
-
-    def setInflectedForm(self, new_form):
-        self.word = new_form

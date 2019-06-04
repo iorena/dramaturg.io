@@ -2,7 +2,7 @@ pos_dictionary = {
     "tpart": ["moi", "hei", "päivää"],
     "vpart": ["kyllä", "joo"],
     "kpart": ["jaa", "selvä"],
-    "ppron": ["minä"],
+    "ppron": ["PERSOONAPRONOMINI"],
     "verb": ["lähteä", "mennä", "kuulla", "tietää"],
     "pron": ["tämä", "tuo"],
     "noun": ["talo"]

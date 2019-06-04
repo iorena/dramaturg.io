@@ -11,10 +11,17 @@ class Style:
         self.coll = colloquiality
         self.brev = brevity
 
-    def getStyledExpression(self, word):
-        if word.wc == "ppron":
+    def get_styled_expression(self, sentence):
+        styled_sentence = []
+        for word in sentence:
+            styled_sentence.append(self.get_styled_word(word))
+        return " ".join(styled_sentence)
+
+
+    def get_styled_word(self, word):
+        if word == "minä" or word == "sinä":
             if random.random() < self.coll:
-                return word.word[0] + word.word[3]
+                return word[0] + word[3]
             if random.random() < self.brev:
                 return ""
-        return word.word
+        return word
