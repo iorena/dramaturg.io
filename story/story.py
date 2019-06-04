@@ -91,6 +91,7 @@ class Story:
                             topics.append(Topic(predecessor.subj, list(predecessor.transition.items())[0], "action", "past"))
                             added.append(plotpoint)
                         if predecessor.elem is "P":
+                            #relative clauses? "minä näin että..."
                             topics.append(Topic(predecessor.subj, list(predecessor.transition.items())[0], "statement", "past"))
                             added.append(plotpoint)
             if len(list(self.graph.successors(plotpoint))) is 0:

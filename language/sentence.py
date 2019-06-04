@@ -26,6 +26,9 @@ class Sentence:
         else:
             vp = create_verb_pharse(self.verb.word)
 
+        mood = "INDV"
+        tense = "PRESENT"
+
         #check person
         if self.speaker.name is self.subj.word:
             vp.components["subject"] = create_personal_pronoun_phrase()
@@ -48,10 +51,17 @@ class Sentence:
 
         #check tempus
         if self.tense is "past":
-            set_vp_mood_and_tense(vp, "INDV", "PAST")
+            tense = "PAST"
         elif self.tense is "postpast":
+            tense = "PAST"
             turn_vp_into_prefect(vp)
-            set_vp_mood_and_tense(vp, "INDV", "PAST")
+
+        #check character relations
+        #todo: how does character relation _actually_ affect speech?
+        if self.speaker.relations[self.listeners[0].name] > 0.7:
+            mood = "COND"
+
+        set_vp_mood_and_tense(vp, mood, tense)
 
         if aux:
             aux = random.choices(list(auxiliary_verbs.keys()))[0]

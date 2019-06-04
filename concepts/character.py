@@ -14,6 +14,7 @@ class Character:
         self.goals = []
         self.name = self.random_name()
         self.perception = None
+        self.relations = {}
         self.style = Style(random.random(), random.random())
 
     def __str__(self):
@@ -36,3 +37,10 @@ class Character:
 
     def set_goal(self, goal):
         self.goals.append(goal)
+
+    def set_relation(self, other, relation):
+        """
+        After creating characters, set relations towards each character. For now, one-dimensional value between 0 and 1.
+        Todo: factorize relationship into different aspects; closeness, appreciation...?
+        """
+        self.relations[other.name] = relation
