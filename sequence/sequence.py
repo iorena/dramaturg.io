@@ -1,69 +1,73 @@
-from nltk.parse.generate import generate
-from nltk import CFG
-
 import random
 
-from sequence.sequencegrammar import action_grammar, perception_grammar
+from sequence.sequencegrammar import sequence_dict
 from sequence.adjacency_pair.adjacency_pair import AdjacencyPair
+from concepts.topic import Topic
+
+PAIR_TYPES = ["kys", "ilm"]
 
 
 class Sequence:
-    def __init__(self, speakers, fabula_element):
-        self.fabula_element = fabula_element
-        if self.fabula_element.elem is "A":
-            self.grammar = CFG.fromstring(action_grammar)
-        else:
-            self.grammar = CFG.fromstring(perception_grammar)
+    def __init__(self, speakers, topic):
         self.speakers = speakers
         self.adjacency_pairs = []
-        self.topic = self.get_main_topic()
-        self.generated = self.generate_empty_pairs()
-        self.adjacency_pair_topics = self.generate_adjacency_pair_topics()
-        self.generate_adjacency_pairs()
+        self.topic = topic
+        pair_type = random.choices(PAIR_TYPES)[0]
+        self.adjacency_pairs = self.generate_adjacency_pairs(self.topic, pair_type)
 
-    def generate_empty_pairs(self):
+    def generate_adjacency_pairs(self, topic, pair_type):
+        """
+        Generate main adjacency pair and recursively add auxiliary pairs
+        """
         generated = []
-        for pair in generate(self.grammar, depth=5):
-            generated.append(pair)
+        generated.append(AdjacencyPair(self.speakers, pair_type, topic))
+        #generate postfix pairs
+        if random.random() > 0.5:
+            new_topic = topic
+            new_pair_type = random.choices(PAIR_TYPES)[0]
+            #if random.random() > 0.7:
+            #    new_topic = self.generate_new_topic()
+            new_pairs = self.generate_adjacency_pairs(new_topic, new_pair_type)
+            for pair in new_pairs:
+                generated.append(pair)
+        #generate infix pair(s)
+        if random.random() > 0.5:
+            generated_infix = [AdjacencyPair((self.speakers[1], self.speakers[0]), pair_type, topic)]
+            generated[0].add_infix_pairs(generated_infix)
         return generated
-
-    def generate_adjacency_pairs(self):
-        adjpairs = random.choices(self.generated)[0]
-        for i in range(len(adjpairs)):
-            adj_pair = AdjacencyPair(self.speakers, adjpairs[i], self.adjacency_pair_topics[i])
-            self.adjacency_pairs.append(adj_pair)
 
     def print_sequence(self):
         print(self)
 
-    def get_main_topic(self):
+    def generate_new_topic(self):
         """
-        Topic is a tuple of verb and world element
-        Todo: make dictionaries of verbs related to different transitions
+        Todo: how to generate new topics? Are new attributes invented for characters etc. and added to the world state?
         """
-        return {"verb": "siirtyä", "obj": list(self.fabula_element.transition.values())[0].keywords["type"], "subj": self.fabula_element.subj.name}
-
-    def generate_adjacency_pair_topics(self):
-        topics = []
-        for adj_pair in self.generated:
-            topics.append(None)
-        i = random.randint(0, len(topics) - 1)
-        topics[i] = self.topic
-        for i in range(len(topics)):
-            if topics[i] is None:
-                topics[i] = {"verb": None, "subj": random.choices(self.speakers)[0].name, "obj": None}
-        return topics
+        return Topic(random.choices(self.speakers)[0].name)
 
     def __str__(self):
         ret = []
         for pair in self.adjacency_pairs:
-            for pair_part in pair.inflected:
-                speaker = pair_part[0]
-                line = f"{speaker.name}: "
-                line += pair_part[1]
-                line += "\n"
-                ret += line
+            ret += self.get_pair_str(pair)
         return "".join(ret)
+
+    def get_pair_str(self, pair):
+        ret = []
+        first_pair_part = pair.inflected[0]
+
+        line = f"{first_pair_part[0].name}: "
+        line += first_pair_part[1]
+        line += "\n"
+        ret += line
+        for infix_pair in pair.infix_pairs:
+            ret += self.get_pair_str(infix_pair)
+        second_pair_part = pair.inflected[1]
+        line = f"{second_pair_part[0].name}: "
+        line += second_pair_part[1]
+        line += "\n"
+        ret += line
+        return "".join(ret)
+
 
 def main(sequence):
     sequence.print_sequence()

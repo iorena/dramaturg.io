@@ -1,11 +1,11 @@
 from language.style import Style
 import random
 
-NAMES = ["Pekka", "Ville", "Kalle", "Maija"]
 
 
 class Character:
     id_counter = 0
+    names = ["Pekka", "Ville", "Kalle", "Maija"]
 
     def __init__(self, location):
         self.id = Character.id_counter
@@ -17,11 +17,19 @@ class Character:
         self.style = Style(random.random(), random.random())
 
     def __str__(self):
+        return self.name
+        """
         return (f"{{Character{str(self.id)} location: {self.attributes['location']} goal: "
                 f"{self.goals[0].characters[0].attributes['location']}}}")
+        """
+
+    def __hash__(self):
+        return hash(self.name)
 
     def random_name(self):
-        return random.choices(NAMES)[0]
+        name = random.choices(Character.names)[0]
+        Character.names.remove(name)
+        return name
 
     def set_perception(self, world_state):
         self.perception = world_state

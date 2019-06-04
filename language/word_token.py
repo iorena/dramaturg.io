@@ -15,7 +15,7 @@ class WordToken:
                 options = word_dictionary[data]
                 self.word = random.choices(options)[0]
             else:
-                self.word = data
+                self.word = str(data)
 
     def __str__(self):
         return f"{self.word}"
