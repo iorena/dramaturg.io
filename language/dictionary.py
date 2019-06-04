@@ -8,5 +8,7 @@ pos_dictionary = {
     "noun": ["talo"]
 }
 word_dictionary = {
-    "siirtyä": ["mennä", "matkustaa", "liikkua", "juosta"]
+    "siirtyä": ["mennä", "matkustaa", "liikkua", "juosta"],
+    "sadness": ["surullinen", "pettynyt"],
+    "happiness": ["onnellinen", "iloinen", "tyytyväinen"]
 }

@@ -77,10 +77,16 @@ class Story:
             topics.append(Topic(main_char, attribute, "statement", "present"))
         for plotpoint in self.graph.nodes:
             predecessors = list(self.graph.predecessors(plotpoint))
+            if plotpoint.elem is "G":
+                topics.append(Topic(plotpoint.subj, list(plotpoint.transition.items())[0], "action", "future"))
+                added.append(plotpoint)
             if plotpoint.elem is "A":
                 topics.append(Topic(plotpoint.subj, list(plotpoint.transition.items())[0], "action", "present"))
                 added.append(plotpoint)
             if plotpoint.elem is "P":
+                topics.append(Topic(plotpoint.subj, list(plotpoint.transition.items())[0], "statement", "present"))
+                added.append(plotpoint)
+            if plotpoint.elem is "IE":
                 topics.append(Topic(plotpoint.subj, list(plotpoint.transition.items())[0], "statement", "present"))
                 added.append(plotpoint)
             if len(predecessors) > 1:

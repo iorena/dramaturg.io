@@ -23,7 +23,7 @@ class FabulaElement:
         if self.elem is "P":
             return None
         if self.elem is "IE":
-            return None
+            return self.subj
         if self.elem is "E":
             return None
 
@@ -38,6 +38,6 @@ class FabulaElement:
         if self.elem is "P":
             return self.goal[self.subj]
         if self.elem is "IE":
-            return {"affect": "sadness"}
+            return {"affect": "happiness"}
         if self.elem is "E":
             return self.goal[self.subj]

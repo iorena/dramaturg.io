@@ -46,13 +46,10 @@ class AdjacencyPair:
         sentence_type = self.sentences[self.name][part]
         tokens = self.word_tokens[sentence_type]
         ques = sentence_type is "kys"
-        aux = False
-        if random.random() > 0.5:
-            aux = True
         if sentence_type in ["ter", "vas", "kui"]:
             #todo: change to accept cases with more than one token
             return (self.speakers[part], tokens[0].word)
-        sentence = Sentence(self.speakers[part], [self.speakers[part+1]], {"subj": tokens[0], "verb": tokens[1], "obj": tokens[2]}, ques, aux, self.obj_type, self.time)
+        sentence = Sentence(self.speakers[part], [self.speakers[part+1]], {"subj": tokens[0], "verb": tokens[1], "obj": tokens[2]}, ques, self.obj_type, self.time)
         return (self.speakers[part], sentence.styled)
 
 

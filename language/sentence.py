@@ -7,7 +7,7 @@ import random
 
 
 class Sentence:
-    def __init__(self, speaker, listeners, pos, question, aux, obj_type, tense):
+    def __init__(self, speaker, listeners, pos, question, obj_type, tense):
         self.speaker = speaker
         self.listeners = listeners
         self.subj = pos["subj"]
@@ -15,10 +15,10 @@ class Sentence:
         self.obj = pos["obj"]
         self.obj_type = obj_type
         self.tense = tense
-        self.inflected = self.get_inflected_sentence(question, aux)
+        self.inflected = self.get_inflected_sentence(question)
         self.styled = self.get_styled_sentence()
 
-    def get_inflected_sentence(self, question, aux):
+    def get_inflected_sentence(self, question):
         if self.verb is None:
             return None
         if self.verb.word is "olla":
@@ -42,8 +42,9 @@ class Sentence:
             if self.verb.word is "olla" and self.obj_type is "location":
                 advlp = create_phrase("NP", self.obj.word, {"CASE": "INE"})
                 add_advlp_to_vp(vp, advlp)
-            elif self.verb.word is "olla":
-                print(self.obj_type)
+            elif self.verb.word is "olla" and self.obj_type is "affect":
+                predv = create_phrase("NP", self.obj.word)
+                add_advlp_to_vp(vp, predv)
             #correct case for locations can be gotten with word2vec
             elif self.verb.word in word_dictionary["siirtyä"]:
                 advlp = create_phrase("NP", self.obj.word, {"CASE": "ILL"})
@@ -63,7 +64,7 @@ class Sentence:
 
         set_vp_mood_and_tense(vp, mood, tense)
 
-        if aux:
+        if self.tense is "future":
             aux = random.choices(list(auxiliary_verbs.keys()))[0]
             add_auxiliary_verb_to_vp(vp, aux)
         if question:
