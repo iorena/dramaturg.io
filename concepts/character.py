@@ -1,6 +1,7 @@
 from language.style import Style
-import random
+from concepts.affect.mood import Mood
 
+import random
 
 
 class Character:
@@ -16,6 +17,8 @@ class Character:
         self.perception = None
         self.relations = {}
         self.style = Style(random.random(), random.random())
+        self.personality = self.random_personality()
+        self.mood = Mood(self.personality)
 
     def __str__(self):
         return self.name
@@ -31,6 +34,9 @@ class Character:
         name = random.choices(Character.names)[0]
         Character.names.remove(name)
         return name
+
+    def random_personality(self):
+        return {"O": random.uniform(-1, 1), "C": random.uniform(-1, 1), "E": random.uniform(-1, 1), "A": random.uniform(-1, 1), "N": random.uniform(-1, 1)}
 
     def set_perception(self, world_state):
         self.perception = world_state
