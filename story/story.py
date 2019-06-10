@@ -87,28 +87,28 @@ class Story:
         for plotpoint in self.graph.nodes:
             predecessors = list(self.graph.predecessors(plotpoint))
             if plotpoint.elem is "G":
-                projects.append(Project(plotpoint.subj, list(plotpoint.transition.items())[0], "action", "future"))
+                projects.append(Project(plotpoint.subj, plotpoint.transition, "action", "future"))
                 added.append(plotpoint)
             if plotpoint.elem is "A":
-                projects.append(Project(plotpoint.subj, list(plotpoint.transition.items())[0], "action", "present"))
+                projects.append(Project(plotpoint.subj, plotpoint.transition, "action", "present"))
                 added.append(plotpoint)
             if plotpoint.elem is "P":
-                projects.append(Project(plotpoint.subj, list(plotpoint.transition.items())[0], "statement", "present"))
+                projects.append(Project(plotpoint.subj, plotpoint.transition, "statement", "present"))
                 added.append(plotpoint)
             if plotpoint.elem is "IE":
-                projects.append(Project(plotpoint.subj, list(plotpoint.transition.items())[0], "statement", "present"))
+                projects.append(Project(plotpoint.subj, plotpoint.transition, "statement", "present"))
                 added.append(plotpoint)
             if len(predecessors) > 1:
                 projects = []
                 for predecessor in predecessors:
                     if predecessor not in added:
                         if predecessor.elem is "A":
-                            projects.append(Project(predecessor.subj, list(predecessor.transition.items())[0], "statement", "present"))
-                            projects.append(Project(predecessor.subj, list(predecessor.transition.items())[0], "action", "past"))
+                            projects.append(Project(predecessor.subj, predecessor.transition, "statement", "present"))
+                            projects.append(Project(predecessor.subj, predecessor.transition, "action", "past"))
                             added.append(plotpoint)
                         if predecessor.elem is "P":
                             #relative clauses? "minä näin että..."
-                            projects.append(Situation(predecessor.subj, list(predecessor.transition.items())[0], "statement", "past"))
+                            projects.append(Situation(predecessor.subj, predecessor.transition, "statement", "past"))
                             added.append(plotpoint)
             if len(list(self.graph.successors(plotpoint))) is 0:
                 break
