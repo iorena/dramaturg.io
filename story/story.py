@@ -1,11 +1,15 @@
 from concepts.worldstate import WorldState
-from concepts.topic import Topic
+from scene.situation import Situation
+from concepts.project import Project
 from sequence.sequence import Sequence
 from story.plot import PlotGraph
 from story.transition import Transition
 
 import random
 import copy
+
+PAIR_TYPES = ["kys", "ilm"]
+
 
 class Story:
     def __init__(self):
@@ -15,7 +19,7 @@ class Story:
             char.set_perception(WorldState(self.world_state))
             char.set_goal(self.create_goal(char))
         self.graph = self.create_plot_points()
-        self.topics = self.create_topics()
+        self.situations = self.create_situations()
         self.sequences = self.create_sequences()
 
     def __str__(self):
@@ -67,56 +71,61 @@ class Story:
         plot.print_plot()
         return plot.graph
 
-    def create_topics(self):
+    def create_situations(self):
         """
         A list of things that have to be handled within the story. World state (including characters) must be introduced,
         and plot must be furthered
         Todo: not all introductions must be done before any plot points are handled
         """
-        topics = []
+        situations = []
+        projects = []
         added = []
         main_char = self.world_state.characters[0]
         #add topics that introduce the starting state of the story
         for attribute in main_char.attributes.items():
-            topics.append(Topic(main_char, attribute, "statement", "present"))
-        #add actual plot topics
+            projects.append(Project(main_char, attribute, "statement", "present"))
         for plotpoint in self.graph.nodes:
             predecessors = list(self.graph.predecessors(plotpoint))
             if plotpoint.elem is "G":
-                topics.append(Topic(plotpoint.subj, plotpoint.transition, "action", "future"))
+                projects.append(Project(plotpoint.subj, list(plotpoint.transition.items())[0], "action", "future"))
                 added.append(plotpoint)
             if plotpoint.elem is "A":
-                topics.append(Topic(plotpoint.subj, plotpoint.transition, "action", "present"))
+                projects.append(Project(plotpoint.subj, list(plotpoint.transition.items())[0], "action", "present"))
                 added.append(plotpoint)
             if plotpoint.elem is "P":
-                topics.append(Topic(plotpoint.subj, plotpoint.transition, "statement", "present"))
+                projects.append(Project(plotpoint.subj, list(plotpoint.transition.items())[0], "statement", "present"))
                 added.append(plotpoint)
             if plotpoint.elem is "IE":
-                topics.append(Topic(plotpoint.subj, plotpoint.transition, "statement", "present"))
+                projects.append(Project(plotpoint.subj, list(plotpoint.transition.items())[0], "statement", "present"))
                 added.append(plotpoint)
             if len(predecessors) > 1:
+                projects = []
                 for predecessor in predecessors:
                     if predecessor not in added:
                         if predecessor.elem is "A":
-                            topics.append(Topic(predecessor.subj, predecessor.transition, "statement", "present"))
-                            topics.append(Topic(predecessor.subj, predecessor.transition, "action", "past"))
+                            projects.append(Project(predecessor.subj, list(predecessor.transition.items())[0], "statement", "present"))
+                            projects.append(Project(predecessor.subj, list(predecessor.transition.items())[0], "action", "past"))
                             added.append(plotpoint)
                         if predecessor.elem is "P":
                             #relative clauses? "minä näin että..."
-                            topics.append(Topic(predecessor.subj, predecessor.transition, "statement", "past"))
+                            projects.append(Situation(predecessor.subj, list(predecessor.transition.items())[0], "statement", "past"))
                             added.append(plotpoint)
             if len(list(self.graph.successors(plotpoint))) is 0:
                 break
+            #todo: how to actually split projects into situations?
+            situations.append(Situation(self.world_state.characters, projects))
 
-        return topics
+        return situations
 
     def create_sequences(self):
         """
-        Generates sequences for each topic
+        Generates sequences for each situation
         """
         init_sequences = []
-        for topic in self.topics:
-            init_sequences.append(Sequence(self.world_state.characters, topic))
+        for situation in self.situations:
+            for project in situation.projects:
+                pair_type = random.choices(PAIR_TYPES)[0]
+                init_sequences.append(Sequence(self.world_state.characters, project, pair_type))
         return init_sequences
 
     def get_sequences(self):

@@ -1,55 +1,68 @@
 import random
 
 from sequence.sequencegrammar import sequence_dict
-from sequence.adjacency_pair.adjacency_pair import AdjacencyPair
-from concepts.topic import Topic
+from sequence.turn import Turn
+from concepts.project import Project
+
+import copy
 
 PAIR_TYPES = ["kys", "ilm"]
 
 
 class Sequence:
-    def __init__(self, speakers, topic):
+    def __init__(self, speakers, project, pair_type):
         self.speakers = speakers
-        self.adjacency_pairs = []
-        self.topic = topic
-        pair_type = random.choices(PAIR_TYPES)[0]
-        self.adjacency_pairs = self.generate_adjacency_pairs(self.topic, pair_type)
+        self.project = project
+        self.pair_type = pair_type
+        self.sentences = {
+            "ter": ("ter", "ter"),
+            "kys": ("kys", "vas"),
+            "ilm": ("ilm", "kui")
+        }
+        self.first_pair_part = self.generate_pair_part(self.speakers[0], self.sentences[self.pair_type][0])
+        self.second_pair_part = self.generate_pair_part(self.speakers[1], self.sentences[self.pair_type][1])
+        self.pre_expansion = self.generate_expansion()
+        self.infix_expansion = self.generate_expansion()
+        self.post_expansion = self.generate_expansion()
 
-    def generate_adjacency_pairs(self, topic, pair_type):
+    def generate_expansion(self):
         """
         Generate main adjacency pair and recursively add auxiliary pairs
         """
-        generated = []
-        generated.append(AdjacencyPair(self.speakers, pair_type, topic))
-        #generate postfix pairs
-        if random.random() > 0.5:
-            new_topic = topic
+        expansion = None
+        if random.random() > 0.8:
+            new_project = self.project
             new_pair_type = random.choices(PAIR_TYPES)[0]
             #if random.random() > 0.7:
-            #    new_topic = self.generate_new_topic()
-            new_pairs = self.generate_adjacency_pairs(new_topic, new_pair_type)
-            for pair in new_pairs:
-                generated.append(pair)
-        #generate infix pair(s)
-        if random.random() > 0.5:
-            generated_infix = [AdjacencyPair((self.speakers[1], self.speakers[0]), pair_type, topic)]
-            generated[0].add_infix_pairs(generated_infix)
-        return generated
+            #    new_project = self.generate_new_project()
+            expansion = Sequence(self.speakers, new_project, new_pair_type)
+        return expansion
+
+    def generate_pair_part(self, speaker, turn_type):
+        listeners = copy.copy(self.speakers)
+        listeners.remove(speaker)
+        return Turn(speaker, listeners, turn_type, self.project)
 
     def print_sequence(self):
         print(self)
 
-    def generate_new_topic(self):
+    def generate_new_project(self):
         """
-        Todo: how to generate new topics? Are new attributes invented for characters etc. and added to the world state?
+        Todo: how to generate new projects? Are new attributes invented for characters etc. and added to the world state?
         """
-        return Topic(random.choices(self.speakers)[0].name)
+        return Project(random.choices(self.speakers)[0].name)
 
     def __str__(self):
         ret = []
-        for pair in self.adjacency_pairs:
-            ret += self.get_pair_str(pair)
-        return "".join(ret)
+        if self.pre_expansion is not None:
+            ret.append(str(self.pre_expansion))
+        ret.append(str(self.first_pair_part))
+        if self.infix_expansion is not None:
+            ret.append(str(self.infix_expansion))
+        ret.append(str(self.second_pair_part))
+        if self.post_expansion is not None:
+            ret.append(str(self.post_expansion))
+        return "\n".join(ret)
 
     def get_pair_str(self, pair):
         ret = []
