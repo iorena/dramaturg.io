@@ -1,6 +1,6 @@
 
 
-class Project:
+class Topic:
     def __init__(self, subj, obj, topic_type, time):
         self.subj = subj.name
         self.type = topic_type
