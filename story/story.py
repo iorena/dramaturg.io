@@ -1,15 +1,10 @@
 from concepts.worldstate import WorldState
-from scene.situation import Situation
-from concepts.project import Project
+from concepts.topic import Topic
 from sequence.sequence import Sequence
 from story.plot import PlotGraph
-from story.transition import Transition
 
 import random
 import copy
-
-PAIR_TYPES = ["kys", "ilm"]
-
 
 class Story:
     def __init__(self):
@@ -19,11 +14,11 @@ class Story:
             char.set_perception(WorldState(self.world_state))
             char.set_goal(self.create_goal(char))
         self.graph = self.create_plot_points()
-        self.situations = self.create_situations()
+        self.topics = self.create_topics()
         self.sequences = self.create_sequences()
 
     def __str__(self):
-        transitions = "\n".join(map(lambda x: f'{x.start_value} -> {x.end_value}', self.possible_transitions))
+        transitions = "\n".join(map(lambda x: f'{x[0]} -> {x[1]}', self.possible_transitions))
         return f"{self.world_state}\nPossible transitions:\n{transitions}"
 
     def init_possible_transitions(self):
@@ -35,13 +30,7 @@ class Story:
             for loc2 in self.world_state.locations:
                 if loc != loc2:
                     if random.random() > 0.5:
-                        for char in self.world_state.characters:
-                            transition_space.append(Transition(char, "location", loc, loc2))
-        for obj in self.world_state.objects:
-            for char in self.world_state.characters:
-                for char2 in self.world_state.characters:
-                    if char != char2:
-                        transition_space.append(Transition(obj, "owner", char, char2))
+                        transition_space.append((loc, loc2))
         if len(transition_space) is 0:
             return self.init_possible_transitions()
         return transition_space
@@ -49,14 +38,17 @@ class Story:
     def print_possible_transitions(self):
         print("Possible transitions:")
         for transition in self.possible_transitions:
-            print(str(transition.start_value), "->", str(transition.end_value))
+            print(str(transition[0]), "->", str(transition[1]))
 
     def create_goal(self, character):
         """
-        Find a transition object whose end state represents the change the character wants to see in the world state
+        Create an object that represents the change the character wants to see in the world state
+        Yes, right now characters can only have goals related to themselves
         """
-        pool = list(filter(lambda x: x.get_person() is character, self.possible_transitions))
-        goal = random.choices(pool)[0]
+        pool = copy.copy(self.world_state.locations)
+        pool.remove(character.attributes["location"])
+        goal_loc = random.choices(pool)[0]
+        goal = { character: { "location": goal_loc } }
 
         return goal
 
@@ -71,19 +63,18 @@ class Story:
         plot.print_plot()
         return plot.graph
 
-    def create_situations(self):
+    def create_topics(self):
         """
         A list of things that have to be handled within the story. World state (including characters) must be introduced,
         and plot must be furthered
         Todo: not all introductions must be done before any plot points are handled
         """
-        situations = []
-        projects = []
+        topics = []
         added = []
         main_char = self.world_state.characters[0]
-        #add topics that introduce the starting state of the story
         for attribute in main_char.attributes.items():
-            projects.append(Project(main_char, attribute, "statement", "present"))
+            topics.append(Topic(main_char, attribute, "statement", "present"))
+        #add actual plot topics
         for plotpoint in self.graph.nodes:
             predecessors = list(self.graph.predecessors(plotpoint))
             if plotpoint.elem is "G":
@@ -99,7 +90,6 @@ class Story:
                 projects.append(Project(plotpoint.subj, plotpoint.transition, "statement", "present"))
                 added.append(plotpoint)
             if len(predecessors) > 1:
-                projects = []
                 for predecessor in predecessors:
                     if predecessor not in added:
                         if predecessor.elem is "A":
@@ -112,20 +102,16 @@ class Story:
                             added.append(plotpoint)
             if len(list(self.graph.successors(plotpoint))) is 0:
                 break
-            #todo: how to actually split projects into situations?
-            situations.append(Situation(self.world_state.characters, projects))
 
-        return situations
+        return topics
 
     def create_sequences(self):
         """
-        Generates sequences for each situation
+        Generates sequences for each topic
         """
         init_sequences = []
-        for situation in self.situations:
-            for project in situation.projects:
-                pair_type = random.choices(PAIR_TYPES)[0]
-                init_sequences.append(Sequence(self.world_state.characters, project, pair_type))
+        for topic in self.topics:
+            init_sequences.append(Sequence(self.world_state.characters, topic))
         return init_sequences
 
     def get_sequences(self):

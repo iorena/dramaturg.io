@@ -1,6 +1,6 @@
 
 
-class Project:
+class Topic:
     def __init__(self, subj, obj, topic_type, time):
         self.subj = subj.name
         self.type = topic_type
@@ -14,5 +14,3 @@ class Project:
             return "olla"
         if self.obj_type is "location":
             return "siirtyä"
-        if self.obj_type is "owner":
-            return "hankkia"
