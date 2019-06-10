@@ -3,6 +3,7 @@ from scene.situation import Situation
 from concepts.project import Project
 from sequence.sequence import Sequence
 from story.plot import PlotGraph
+from story.transition import Transition
 
 import random
 import copy
@@ -22,7 +23,7 @@ class Story:
         self.sequences = self.create_sequences()
 
     def __str__(self):
-        transitions = "\n".join(map(lambda x: f'{x[0]} -> {x[1]}', self.possible_transitions))
+        transitions = "\n".join(map(lambda x: f'{x.start_value} -> {x.end_value}', self.possible_transitions))
         return f"{self.world_state}\nPossible transitions:\n{transitions}"
 
     def init_possible_transitions(self):
@@ -34,7 +35,13 @@ class Story:
             for loc2 in self.world_state.locations:
                 if loc != loc2:
                     if random.random() > 0.5:
-                        transition_space.append((loc, loc2))
+                        for char in self.world_state.characters:
+                            transition_space.append(Transition(char, "location", loc, loc2))
+        for obj in self.world_state.objects:
+            for char in self.world_state.characters:
+                for char2 in self.world_state.characters:
+                    if char != char2:
+                        transition_space.append(Transition(obj, "owner", char, char2))
         if len(transition_space) is 0:
             return self.init_possible_transitions()
         return transition_space
@@ -42,17 +49,14 @@ class Story:
     def print_possible_transitions(self):
         print("Possible transitions:")
         for transition in self.possible_transitions:
-            print(str(transition[0]), "->", str(transition[1]))
+            print(str(transition.start_value), "->", str(transition.end_value))
 
     def create_goal(self, character):
         """
-        Create an object that represents the change the character wants to see in the world state
-        Yes, right now characters can only have goals related to themselves
+        Find a transition object whose end state represents the change the character wants to see in the world state
         """
-        pool = copy.copy(self.world_state.locations)
-        pool.remove(character.attributes["location"])
-        goal_loc = random.choices(pool)[0]
-        goal = { character: { "location": goal_loc } }
+        pool = list(filter(lambda x: x.get_person() is character, self.possible_transitions))
+        goal = random.choices(pool)[0]
 
         return goal
 
@@ -77,6 +81,7 @@ class Story:
         projects = []
         added = []
         main_char = self.world_state.characters[0]
+        #add topics that introduce the starting state of the story
         for attribute in main_char.attributes.items():
             projects.append(Project(main_char, attribute, "statement", "present"))
         for plotpoint in self.graph.nodes:

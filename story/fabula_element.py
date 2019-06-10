@@ -31,13 +31,6 @@ class FabulaElement:
         """
         Todo: Ditto
         """
-        if self.elem is "G":
-            return self.goal[self.subj]
-        if self.elem is "A":
-            return self.goal[self.subj]
-        if self.elem is "P":
-            return self.goal[self.subj]
         if self.elem is "IE":
-            return {"affect": "happiness"}
-        if self.elem is "E":
-            return self.goal[self.subj]
+            return ("affect", "happiness")
+        return (self.goal.attribute_name, self.goal.get_object())
