@@ -2,7 +2,6 @@ import copy
 
 from concepts.character import Character
 from concepts.location import Location
-from concepts.worldobject import WorldObject
 
 import random
 
@@ -14,17 +13,10 @@ class WorldState:
         else:
             self.locations = old.locations
             self.characters = old.characters
-            self.objects = old.objects
 
     def initialize_story_world(self):
         self.locations = [Location(), Location()]
         self.characters = [Character(self.get_random_loc()), Character(self.get_random_loc())]
-        self.objects = [WorldObject()]
-        for obj in self.objects:
-            owner = random.choices(self.characters)[0]
-            obj.set_owner(owner)
-            obj.set_location(owner.attributes["location"])
-        #set relationships
         for char in self.characters:
             for other in self.characters:
                 if char is other:

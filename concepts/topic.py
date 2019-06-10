@@ -14,5 +14,3 @@ class Topic:
             return "olla"
         if self.obj_type is "location":
             return "siirtyä"
-        if self.obj_type is "owner":
-            return "hankkia"

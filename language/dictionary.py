@@ -9,7 +9,6 @@ pos_dictionary = {
 }
 word_dictionary = {
     "siirtyä": ["mennä", "matkustaa", "liikkua", "juosta"],
-    "hankkia": ["ostaa", "hankkia", "hommata", "saada"],
     "sadness": ["surullinen", "pettynyt"],
     "happiness": ["onnellinen", "iloinen", "tyytyväinen"]
 }
