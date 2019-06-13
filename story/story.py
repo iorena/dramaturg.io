@@ -4,11 +4,12 @@ from concepts.project import Project
 from sequence.sequence import Sequence
 from story.plot import PlotGraph
 from story.transition import Transition
+from language.action_types import ActionType
 
 import random
 import copy
 
-PAIR_TYPES = ["kys", "ilm"]
+SEQUENCE_TYPES = ["SKÄS", "STIP", "STOP"]
 
 
 class Story:
@@ -18,6 +19,7 @@ class Story:
         for char in self.world_state.characters:
             char.set_perception(WorldState(self.world_state))
             char.set_goal(self.create_goal(char))
+        self.action_types = ActionType.load_action_types()
         self.graph = self.create_plot_points()
         self.situations = self.create_situations()
         self.sequences = self.create_sequences()
@@ -124,8 +126,11 @@ class Story:
         init_sequences = []
         for situation in self.situations:
             for project in situation.projects:
-                pair_type = random.choices(PAIR_TYPES)[0]
-                init_sequences.append(Sequence(self.world_state.characters, project, pair_type))
+                seq_type = random.choices(SEQUENCE_TYPES)[0]
+                #restrict imperative sentences when subject is speaker (you can't command yourself)
+                if project.subj is self.world_state.characters[0].name:
+                    seq_type = "STIP"
+                init_sequences.append(Sequence(self.world_state.characters, project, seq_type, self.action_types))
         return init_sequences
 
     def get_sequences(self):

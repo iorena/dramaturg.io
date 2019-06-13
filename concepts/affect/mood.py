@@ -34,7 +34,6 @@ class Mood:
         self.dominance = self.dominance + emotion.dominance
         if self.dominance > 1:
             self.dominance = 1
-        print(first, self.pleasure)
 
     def get_octant_name(self):
         if self.pleasure > 0:
