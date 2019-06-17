@@ -9,7 +9,7 @@ class Turn:
     """
     Todo: turns can have more than one sentence?
     """
-    def __init__(self, speaker, listeners, action_type, project):
+    def __init__(self, speaker, listeners, action_type, project, reverse):
         self.speaker = speaker
         #todo: where to do this??
         if project.obj_type is "affect" and self.speaker.name is project.subj:
@@ -21,6 +21,7 @@ class Turn:
         self.pos = {"subj": project.subj, "verb": project.verb, "obj": str(project.obj)}
         self.obj_type = project.obj_type
         self.speaker_mood = str(self.speaker.mood)
+        self.reversed = reverse
         self.inflected = self.inflect()
 
     def __str__(self):
@@ -28,7 +29,7 @@ class Turn:
         return f"{self.action_type.name}{space} {self.speaker.name}: {self.inflected}  |  Mood: {self.speaker_mood}"
 
     def inflect(self):
-        sentence = Sentence(self.speaker, self.listeners, self.pos, self.action_type, self.obj_type)
+        sentence = Sentence(self.speaker, self.listeners, self.pos, self.action_type, self.obj_type, self.reversed)
         return sentence.styled
 
 

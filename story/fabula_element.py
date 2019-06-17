@@ -28,9 +28,7 @@ class FabulaElement:
             return None
 
     def get_transition(self):
-        """
-        Todo: Ditto
-        """
         if self.elem is "IE":
-            return ("affect", "happy_for")
+            emotion = "happy_for" if self.goal else "disappointment"
+            return ("affect", emotion)
         return (self.goal.attribute_name, self.goal.get_object())

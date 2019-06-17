@@ -6,10 +6,15 @@ from concepts.project import Project
 
 import copy
 
-PAIR_TYPES = {
+PAIR_TYPES_POSITIVE = {
         "SKÄS": ("KÄS", "TOTN"),
         "STIP": ("TIP", "TIA+"),
         "STOP": ("TOP", "TOTN")
+        }
+PAIR_TYPES_NEGATIVE = {
+        "SKÄS": ("KÄS", "TOTS"),
+        "STIP": ("TIP", "TIA-"),
+        "STOP": ("TOP", "TOTS")
         }
 
 
@@ -19,8 +24,13 @@ class Sequence:
         self.project = project
         self.seq_type = seq_type
         self.action_types = action_types
-        self.first_pair_part = self.generate_pair_part(self.speakers[0], action_types[PAIR_TYPES[self.seq_type][0]])
-        self.second_pair_part = self.generate_pair_part(self.speakers[1], action_types[PAIR_TYPES[self.seq_type][1]])
+        self.pair_types = PAIR_TYPES_POSITIVE if project.valence else PAIR_TYPES_NEGATIVE
+        reverse = False
+        if seq_type in ["SKÄS", "STOE"] and self.speakers[0].name == self.project.subj and project.verb != "olla":
+            print(project.verb)
+            reverse = True
+        self.first_pair_part = self.generate_pair_part(self.speakers[0], action_types[self.pair_types[self.seq_type][0]], reverse)
+        self.second_pair_part = self.generate_pair_part(self.speakers[1], action_types[self.pair_types[self.seq_type][1]], reverse)
         self.pre_expansion = self.generate_expansion()
         self.infix_expansion = self.generate_expansion(True)
         self.post_expansion = self.generate_expansion()
@@ -29,10 +39,7 @@ class Sequence:
         expansion = None
         if random.random() > 0.8:
             new_project = self.project
-            new_seq_type = random.choices(list(PAIR_TYPES.keys()))[0]
-            #restrict if subject is speaker (you can't command yourself)
-            if self.project.subj == self.speakers[0].name:
-                new_seq_type = "STIP"
+            new_seq_type = random.choices(list(self.pair_types.keys()))[0]
             #if random.random() > 0.7:
             #    new_project = self.generate_new_project()
             speakers = self.speakers
@@ -41,10 +48,10 @@ class Sequence:
             expansion = Sequence(speakers, new_project, new_seq_type, self.action_types)
         return expansion
 
-    def generate_pair_part(self, speaker, action_type):
+    def generate_pair_part(self, speaker, action_type, reverse):
         listeners = copy.copy(self.speakers)
         listeners.remove(speaker)
-        return Turn(speaker, listeners, action_type, self.project)
+        return Turn(speaker, listeners, action_type, self.project, reverse)
 
     def print_sequence(self):
         print(self)

@@ -2,6 +2,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 from story.fabula_element import FabulaElement
+from story.transition import Transition
 
 import random
 
@@ -12,10 +13,10 @@ class PlotGraph:
     """
     def __init__(self, world_state, possible_transitions):
         self.world_state = world_state
-        self.graph = nx.DiGraph()
-        self.create_nodes()
         # make a graph of possible transitions and expand from there?
         self.possible_transitions = possible_transitions
+        self.graph = nx.DiGraph()
+        self.create_nodes()
 
     def create_nodes(self):
         """
@@ -25,10 +26,15 @@ class PlotGraph:
             for i in range(len(char.goals)):
                 goal = char.goals.pop(-1)
                 self.graph.add_node(FabulaElement("G", char, goal))
-                #todo: check if goal is a possible transition, add possibility of failed action
+                #todo: check if goal is a possible transition, add events where the goal is not met but something else changes in the world state?
                 self.graph.add_node(FabulaElement("A", char, goal))
-                self.graph.add_node(FabulaElement("P", char, goal))
-                self.graph.add_node(FabulaElement("IE", char, None))
+                success = random.random() > 0.4
+                if success:
+                    self.graph.add_node(FabulaElement("P", char, goal))
+                else:
+                    failed_goal = Transition(goal.obj, goal.attribute_name, goal.start_value, goal.start_value)
+                    self.graph.add_node(FabulaElement("P", char, failed_goal))
+                self.graph.add_node(FabulaElement("IE", char, success))
 
         nodes = list(self.graph.nodes())
         for i in range(len(nodes)):
