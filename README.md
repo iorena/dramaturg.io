@@ -40,3 +40,9 @@ Fix ownership and permissions so that python can access them. ie.
 $ chown <username>:<usergroup> -R /usr/local/share/hfst
 $ chmod a+rX /usr/local/share/hfst
 ```
+
+
+#### Adding lines into CSV files
+You can add new sequence and action types by editing the files sequence/sequence_types.csv, sequence/expansion_types.csv and language/action_types.csv
+
+Make sure each new sequence is handled in both sequence_types and expansion_types and each new action is added to action_types.csv

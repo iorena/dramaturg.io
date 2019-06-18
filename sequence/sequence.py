@@ -1,4 +1,4 @@
-from sequence.sequencegrammar import sequence_dict
+from sequence.sequence_types import SequenceType
 from sequence.turn import Turn
 from concepts.project import Project
 
@@ -6,22 +6,7 @@ import random
 import copy
 import csv
 
-PAIR_TYPES_POSITIVE = {
-        "SKÄS": ("KÄS", "TOTN"),
-        "STIP": ("TIP", "TIA+"),
-        "STOP": ("TOP", "TOTN"),
-        "SKAN": ("KAN", "SAM-KAN"),
-        "SKOR": ("KOA", "TOI"),
-        "STOI": ("TOI", "TOTN")
-        }
-PAIR_TYPES_NEGATIVE = {
-        "SKÄS": ("KÄS", "TOTS"),
-        "STIP": ("TIP", "TIA-"),
-        "STOP": ("TOP", "TOTS"),
-        "SKAN": ("KAN", "ERI-KAN"),
-        "SKOR": ("KOA", "TOI"),
-        "STOI": ("TOI", "TOTS")
-        }
+POS_SEQUENCES, NEG_SEQUENCES = SequenceType.load_sequence_types()
 
 EXPANSIONS = {}
 with open("sequence/expansion_types.csv") as csv_file:
@@ -37,13 +22,16 @@ class Sequence:
         self.seq_type = seq_type
         self.action_types = action_types
         self.parent = parent
-        self.pair_types = PAIR_TYPES_POSITIVE if project.valence else PAIR_TYPES_NEGATIVE
+        self.pair_types = POS_SEQUENCES if project.valence else NEG_SEQUENCES
         reverse = False
         if seq_type in ["SKÄS", "STOE"] and self.speakers[0].name == self.project.subj and project.verb != "olla":
             print(project.verb)
             reverse = True
         self.first_pair_part = self.generate_pair_part(self.speakers[0], self.pair_types[self.seq_type][0], reverse)
-        self.second_pair_part = self.generate_pair_part(self.speakers[1], self.pair_types[self.seq_type][1], reverse)
+        if self.pair_types[self.seq_type][1] is None:
+            self.second_pair_part = None
+        else:
+            self.second_pair_part = self.generate_pair_part(self.speakers[1], self.pair_types[self.seq_type][1], reverse)
         self.pre_expansion = self.generate_expansion("pre_expansions", None)
         self.infix_expansion = self.generate_expansion("infix_expansions", self.first_pair_part, True)
         self.post_expansion = self.generate_expansion("post_expansions", self.second_pair_part)
@@ -57,7 +45,7 @@ class Sequence:
             pool = EXPANSIONS[self.seq_type][position]
             new_seq_type = random.choices(pool)[0]
             #todo: implement more sequence types
-            if new_seq_type in ["", "SJSK", "SJTK", "SJPM"]:
+            if new_seq_type in ["", "SJTK", "SJPM"]:
                 return None
             #if random.random() > 0.7:
             #    new_project = self.generate_new_project()
@@ -92,7 +80,8 @@ class Sequence:
         ret.append(str(self.first_pair_part))
         if self.infix_expansion is not None:
             ret.append(str(self.infix_expansion))
-        ret.append(str(self.second_pair_part))
+        if self.second_pair_part:
+            ret.append(str(self.second_pair_part))
         if self.post_expansion is not None:
             ret.append(str(self.post_expansion))
         return "\n".join(ret)
