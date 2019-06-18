@@ -11,6 +11,13 @@ import copy
 
 SEQUENCE_TYPES = ["SKÄS", "STIP", "STOP"]
 
+PAIR_TYPES_POSITIVE = {
+        "SKÄS": ("KÄS", "TOTN"),
+        "STIP": ("TIP", "TIA+"),
+        "STOP": ("TOP", "TOTN"),
+        "SKOR": ("KOA", "TOI")
+        }
+
 
 class Story:
     def __init__(self):

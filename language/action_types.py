@@ -16,6 +16,8 @@ class ActionType:
         self.ques = ques == "TRUE"
         self.subj = subj
         self.verb = verb
+        if verb == "None":
+            self.verb = None
         if aux_verb == "None":
             self.aux_verb = None
         else:
@@ -23,3 +25,5 @@ class ActionType:
         self.modus = modus
         self.tempus = tempus
         self.pre_add = pre_add
+        if pre_add == "None":
+            self.pre_add = None

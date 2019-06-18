@@ -39,7 +39,7 @@ class Sentence:
 
     def get_inflected_sentence(self):
         if self.verb is None:
-            return None
+            as_list = [""]
         if self.verb is "olla":
             vp = create_copula_phrase()
         else:
@@ -105,7 +105,8 @@ class Sentence:
             add_auxiliary_verb_to_vp(vp, averb)
         if self.action_type.ques:
             turn_vp_into_question(vp)
-        as_list = vp.to_string().split()
+        if self.verb is not None:
+            as_list = vp.to_string().split()
 
         #add "minulle" in reversed commands
         if self.reversed:
@@ -116,7 +117,13 @@ class Sentence:
             case = "lle"
             if self.verb == "siirtyä":
                 case = "t"
-            as_list.append(pers + case)
+            as_list.insert(len(as_list) - 1, pers + case)
+
+        if self.action_type.pre_add is not None:
+            as_list.insert(0, self.action_type.pre_add)
+
+        if self.action_type.ques:
+            as_list.append("?")
 
         return as_list
 
