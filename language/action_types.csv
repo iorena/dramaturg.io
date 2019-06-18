@@ -11,8 +11,10 @@ TIA-	TRUE	FALSE	project	project	None	INDV	prees	None
 TIÄ	TRUE	FALSE	Speaker	tietää	None	INDV	prees	None
 TOR	FALSE	TRUE	Listener	luulla	None	INDV	prees	None
 VÄI	FALSE	FALSE	project	project	None	INDV	prees	None
-SAM-KAN	FALSE	FALSE	project	project	None,taitaa	INDV	prees	niin
+SAM-KAN	FALSE	FALSE	project	project	None,taitaa	INDV	prees	kyllä
 ERI-KAN	TRUE	FALSE	project	project	None	INDV	prees	None
 KAN	FALSE	FALSE	project	project	None	INDV	prees	None
 KER	FALSE	FALSE	project	project	None	INDV	imperf	None
-KOA	FALSE	TRUE	project	None	None	INDV	prees	mitä
+KOA	FALSE	TRUE	Listener	None	None	INDV	imperf	mitä
+MYÖ	FALSE	FALSE	project	project	None	INDV	prees	totta,
+KII	TRUE	FALSE	project	project	None	INDV	prees	ei

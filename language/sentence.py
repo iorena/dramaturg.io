@@ -120,7 +120,7 @@ class Sentence:
             as_list.insert(len(as_list) - 1, pers + case)
 
         if self.action_type.pre_add is not None:
-            as_list.insert(0, self.action_type.pre_add)
+            as_list.insert(0, self.get_synonym(self.action_type.pre_add))
 
         if self.action_type.ques:
             as_list.append("?")
