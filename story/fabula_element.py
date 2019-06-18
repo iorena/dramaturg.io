@@ -32,5 +32,5 @@ class FabulaElement:
         Todo: Ditto
         """
         if self.elem is "IE":
-            return ("affect", "happiness")
+            return ("affect", "happy_for")
         return (self.goal.attribute_name, self.goal.get_object())

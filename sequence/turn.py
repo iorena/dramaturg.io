@@ -1,11 +1,19 @@
 from language.word_token import WordToken
 from language.sentence import Sentence
+from concepts.affect.emotion import Emotion
+
+emotions = Emotion.load_emotions()
 
 import random
 
 class Turn:
     def __init__(self, speaker, listeners, turn_type, project):
         self.speaker = speaker
+        #todo: where to do this??
+        if project.obj_type is "affect" and self.speaker.name is project.subj:
+            self.speaker.mood.affect_mood(emotions[project.obj])
+        else:
+            self.speaker.mood.degrade_mood()
         self.listeners = listeners
         self.turn_type = turn_type
         self.verb = project.verb
@@ -13,6 +21,7 @@ class Turn:
         self.obj = project.obj
         self.obj_type = project.obj_type
         self.time = project.time
+        self.speaker_mood = str(self.speaker.mood)
         self.word_tokens = {
             "ter": [WordToken("tpart")],
             "kys": [WordToken("ppron", "subj", self.subj), WordToken("verb", None, self.verb), WordToken("noun", None, self.obj)],
@@ -23,7 +32,7 @@ class Turn:
         self.inflected = self.inflect()
 
     def __str__(self):
-        return f"{self.speaker.name}: {self.inflected}"
+        return f"{self.speaker.name}: {self.inflected}  |  Mood: {self.speaker_mood}"
 
     def inflect(self):
         tokens = self.word_tokens[self.turn_type]
