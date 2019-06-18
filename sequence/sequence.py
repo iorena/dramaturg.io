@@ -25,8 +25,9 @@ class Sequence:
         self.pair_types = POS_SEQUENCES if project.valence else NEG_SEQUENCES
         reverse = False
         if seq_type in ["SKÄS", "STOE"] and self.speakers[0].name == self.project.subj and project.verb != "olla":
-            print(project.verb)
             reverse = True
+        elif seq_type in ["SKÄS", "STOE"] and self.speakers[0].name == self.project.subj:
+            self.seq_type = "SKAN"
         self.first_pair_part = self.generate_pair_part(self.speakers[0], self.pair_types[self.seq_type][0], reverse)
         if self.pair_types[self.seq_type][1] is None:
             self.second_pair_part = None
