@@ -17,4 +17,3 @@ class Transition:
         if type(self.end_value) is Character:
             return self.obj
         return self.end_value
-

@@ -9,6 +9,7 @@ def main(do_story):
         print(story)
         for i, sequence in enumerate(story.get_sequences()):
             print(f"Sequence {i}\n{sequence}\n\n")
+            print(story.world_state)
     else:
         print("Did nothing!")
 

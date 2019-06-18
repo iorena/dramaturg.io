@@ -52,20 +52,37 @@ class WorldState:
 
     """
     Functions for executing story points that change the world state
+    Goals are Transitions objects, except boolean in IE
     """
+    def change(self, fe_type, subject, goal, success):
+        if fe_type is "G":
+            pass
+            #self.goal(subject, goal)
+        elif fe_type is "A":
+            self.action(subject, goal, success)
+        elif fe_type is "P":
+            self.perception(subject, goal, success)
+        elif fe_type is "IE":
+            #mood change is handled in Turn?
+            #self.internal(subject, emotion)
+            pass
 
     def goal(self, subject, goal):
         state = copy.deepcopy(self)
-        state.characters[goal[0]].attributes.update(goal[1])
+        state.characters[subject.id].attributes.update(goal)
         self.characters[subject.id].goals.append(state)
 
-    def action(self, subject, action):
-        state = copy.deepcopy(self)
-        state.characters[action[0]].attributes.update(action[1])
-        self.characters[subject.id].attributes.update(state)
+    def action(self, subject, action, success):
+        if success:
+            if type(action.obj) is Character:
+                self.characters[action.obj.id].attributes[action.attribute_name] = action.end_value
+                print("updated", action.attribute_name, action.end_value)
+            else:
+                self.objects[action.obj.id].attributes[action.attribute_name] = action.end_value
 
-    def perception(self, subject, perception):
+    #todo: add perceptions
+    def perception(self, subject, perception, success):
         self.characters[subject.id].perception = perception
 
     def internal(self, subject, emotion):
-        self.characters[subject.id].attributes.update({"affect": emotion})
+        self.characters[subject.id].mood.affect(emotion)

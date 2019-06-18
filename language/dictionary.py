@@ -13,3 +13,7 @@ word_dictionary = {
     "disappointment": ["surullinen", "pettynyt"],
     "happy_for": ["onnellinen", "iloinen", "tyytyväinen"]
 }
+reversed_word_dictionary = {
+    "siirtyä": ["viedä", "kuljettaa"],
+    "hankkia": ["ostaa", "hankkia", "hommata"]
+}
