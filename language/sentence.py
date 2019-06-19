@@ -38,8 +38,15 @@ class Sentence:
         self.styled = self.get_styled_sentence()
 
     def get_inflected_sentence(self):
+        #if there is no verb, skip creating a verb "pharse" with syntaxmaker and just pile words in a list
         if self.verb is None:
-            as_list = [""]
+            if self.subj is None:
+                as_list = [""]
+            else:
+                as_list = [self.subj]
+                #todo: figure out rule that governs when attributes are added and when not
+                if self.action_type.name == "KOBV" and self.obj_type is "attribute":
+                    as_list.insert(0, self.obj)
         if self.verb is "olla":
             vp = create_copula_phrase()
         else:

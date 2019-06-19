@@ -12,6 +12,7 @@ class Location:
         else:
             self.id = id
         self.keywords = self.get_keywords()
+        self.name = self.keywords["type"]
 
     def __str__(self):
         return self.keywords["type"]

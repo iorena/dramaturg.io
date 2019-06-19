@@ -2,7 +2,7 @@
 
 class Project:
     def __init__(self, subj, obj, topic_type, time, valence):
-        self.subj = subj.name
+        self.subj = subj if type(subj) is str else subj.name
         self.type = topic_type
         self.obj_type = obj[0]
         self.obj = obj[1]

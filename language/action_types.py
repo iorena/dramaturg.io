@@ -15,6 +15,8 @@ class ActionType:
         self.neg = neg == "TRUE"
         self.ques = ques == "TRUE"
         self.subj = subj
+        if self.subj == "None":
+            self.subj = None
         self.verb = verb
         if verb == "None":
             self.verb = None

@@ -1,5 +1,5 @@
 toimintotyyppi	kieltomuoto?	kysymys?	subjekti	verbi	apuverbi	modus	aikamuoto	Pre-vp 
-TER	FALSE	FALSE	project	None	None	None	None	None
+TER	FALSE	FALSE	None	None	None	None	None	None
 KÄS	FALSE	FALSE	project	project	None	IMPV	prees	None
 TOTN	FALSE	FALSE	project	project	None	INDV	prees	hyvä on
 TOTS	TRUE	FALSE	project	project	None	INDV	prees	None
@@ -15,6 +15,8 @@ SAM-KAN	FALSE	FALSE	project	project	None,taitaa	INDV	prees	kyllä
 ERI-KAN	TRUE	FALSE	project	project	None	INDV	prees	None
 KAN	FALSE	FALSE	project	project	None	INDV	prees	None
 KER	FALSE	FALSE	project	project	None	INDV	imperf	None
-KOA	FALSE	TRUE	Listener	None	None	INDV	imperf	mitä
+KOA	FALSE	TRUE	None	None	None	INDV	imperf	mitä
+KOB	FALSE	TRUE	project	None	None	INDV	prees	mikä
+KOBV	FALSE	FALSE	project	None	None	INDV	prees	None
 MYÖ	FALSE	FALSE	project	project	None	INDV	prees	totta,
 KII	TRUE	FALSE	project	project	None	INDV	prees	ei

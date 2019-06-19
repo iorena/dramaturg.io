@@ -16,6 +16,7 @@ class WorldObject:
         object_type = random.choices(WorldObject.names)[0]
         WorldObject.names.remove(object_type)
         self.attributes["type"] = object_type
+        self.name = self.attributes["type"]
 
     def __str__(self):
         return self.attributes["type"]
