@@ -2,6 +2,7 @@ from syntaxmaker.syntax_maker import (create_verb_pharse, create_personal_pronou
                                       create_copula_phrase, create_phrase, auxiliary_verbs, add_auxiliary_verb_to_vp,
                                       add_advlp_to_vp, set_vp_mood_and_tense, turn_vp_into_prefect,
                                       negate_verb_pharse)
+from syntaxmaker.inflector import inflect
 from language.dictionary import word_dictionary, reversed_word_dictionary
 
 import random
@@ -43,10 +44,15 @@ class Sentence:
             if self.subj is None:
                 as_list = [""]
             else:
-                as_list = [self.subj]
+                as_list = [self.get_synonym(self.subj)]
                 #todo: figure out rule that governs when attributes are added and when not
-                if self.action_type.name == "KOBV" and self.obj_type is "attribute":
-                    as_list.insert(0, self.obj)
+                if self.action_type.name == "KOBV" and self.obj:
+                    attribute = ""
+                    if self.obj_type == "owner":
+                        attribute = inflect(self.obj.name, "N", {"CASE": "GEN", "NUM": "SING"})
+                    elif self.obj_type == "location":
+                        attribute = inflect(self.obj.name, "N", {"CASE": "INE", "NUM": "SING"}) + " oleva"
+                    as_list.insert(0, attribute)
         if self.verb is "olla":
             vp = create_copula_phrase()
         else:
@@ -69,7 +75,7 @@ class Sentence:
 
         #check "object"
         if self.obj is not None:
-            obj = self.get_synonym(self.obj)
+            obj = self.get_synonym(self.obj.name)
             if self.verb is "olla" and self.obj_type is "location":
                 advlp = create_phrase("NP",obj, {"CASE": "INE"})
                 add_advlp_to_vp(vp, advlp)

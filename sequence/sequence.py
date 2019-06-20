@@ -1,6 +1,7 @@
 from sequence.sequence_types import SequenceType
 from sequence.turn import Turn
 from concepts.project import Project
+from concepts.character import Character
 
 import random
 import copy
@@ -53,8 +54,18 @@ class Sequence:
                 #new project with old object as subject? check if there is an object to take?
                 if self.project.obj:
                     target = self.project.obj
-                    print(target)
-                new_project = Project(target, ("attribute", "Pekan"), "statement", "present", True)
+                    #this only happens with emotions
+                    #todo: how to handle? asking "mikä surullinen?" doesn't really make sense, does it?
+                    if type(target) is str:
+                        attribute = "syvä"
+                    else:
+                        attributes = list(target.attributes.items())
+                        if len(attributes) is 0:
+                            attribute = ("attribute", None)
+                        else:
+                            attribute = random.choices(attributes)[0]
+
+                    new_project = Project(target, attribute, "statement", "present", True)
 
             speakers = self.speakers
             if switch_speakers:

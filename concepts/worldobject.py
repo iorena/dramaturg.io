@@ -15,17 +15,16 @@ class WorldObject:
         self.attributes = {}
         object_type = random.choices(WorldObject.names)[0]
         WorldObject.names.remove(object_type)
-        self.attributes["type"] = object_type
-        self.name = self.attributes["type"]
+        self.name = object_type
 
     def __str__(self):
-        return self.attributes["type"]
+        return self.name
 
     def __eq__(self, other):
         return self.id == other.id
 
     def __hash__(self):
-        return hash(self.attributes["type"])
+        return hash(self.name)
 
     def set_owner(self, owner):
         self.attributes["owner"] = owner
