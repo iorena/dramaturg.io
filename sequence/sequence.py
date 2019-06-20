@@ -50,20 +50,16 @@ class Sequence:
             #todo: implement more sequence types
             if new_seq_type in ["", "SJTK", "SJPM"]:
                 return None
-            if new_seq_type == "SKOR":
+            if new_seq_type == "SKORB":
                 #new project with old object as subject? check if there is an object to take?
                 if self.project.obj:
                     target = self.project.obj
-                    #this only happens with emotions
-                    #todo: how to handle? asking "mikä surullinen?" doesn't really make sense, does it?
-                    if type(target) is str:
-                        attribute = "syvä"
+                    #todo: how to handle emotions? asking "mikä surullinen?" doesn't really make sense, does it?
+                    attributes = list(target.attributes.items())
+                    if len(attributes) is 0:
+                        attribute = ("attribute", None)
                     else:
-                        attributes = list(target.attributes.items())
-                        if len(attributes) is 0:
-                            attribute = ("attribute", None)
-                        else:
-                            attribute = random.choices(attributes)[0]
+                        attribute = random.choices(attributes)[0]
 
                     new_project = Project(target, attribute, "statement", "present", True)
 

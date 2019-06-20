@@ -11,7 +11,6 @@ class Project:
         self.verb = self.get_verb()
         self.time = time
         self.valence = valence
-        print(self.obj, type(self.obj))
 
     def get_verb(self):
         if self.type is "statement":
