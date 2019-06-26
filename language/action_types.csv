@@ -1,16 +1,16 @@
 toimintotyyppi	kieltomuoto?	kysymys?	subjekti	verbi	“objekti”	apuverbi	modus	aikamuoto	Pre-vp 
-TER	FALSE	FALSE	None	None	None	None	None	None	None
+TER	FALSE	FALSE	None	None	None	None	None	None	moi
 KÄS	FALSE	FALSE	subject	project	object	None	IMPV	prees	None
 TOTN	FALSE	FALSE	subject	project	object	None	INDV	prees	hyvä on
 TOTS	TRUE	FALSE	subject	project	object	None	INDV	prees	None
 TOP	FALSE	TRUE	subject	project	object	None,voida,haluta	COND	prees	None
 TOE	FALSE	FALSE	subject	project	object	voida,haluta	COND	prees	None
 TIP	FALSE	TRUE	subject	project	object	None	INDV	prees	None
-TIPB	FALSE	TRUE	subject	project	QUES	None	INDV	prees	None
+TIPB	FALSE	FALSE	subject	project	interrogative	None	INDV	prees	None
 TIA+	FALSE	FALSE	subject	project	object	None	INDV	prees	kyllä
 TIA-	TRUE	FALSE	subject	project	object	None	INDV	prees	None
 TIAB+	FALSE	FALSE	None	None	object	None	INDV	prees	None
-TIAB-	FALSE	FALSE	subject	None	object	None	INDV	prees	None
+TIAB-	FALSE	FALSE	None	None	object	None	INDV	prees	None
 TIÄ	TRUE	FALSE	Speaker	tietää	object	None	INDV	prees	None
 TOR	FALSE	TRUE	Listener	luulla	object	None	INDV	prees	None
 VÄI	FALSE	FALSE	subject	project	object	None	INDV	prees	None

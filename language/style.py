@@ -14,7 +14,9 @@ class Style:
     def get_styled_expression(self, sentence):
         styled_sentence = []
         for word in sentence:
-            styled_sentence.append(self.get_styled_word(word))
+            styled = self.get_styled_word(word)
+            if styled is not None:
+                styled_sentence.append(styled)
         return " ".join(styled_sentence)
 
 
@@ -23,5 +25,5 @@ class Style:
             if random.random() < self.coll:
                 return word[0] + word[3]
             if random.random() < self.brev:
-                return ""
+                return None
         return word

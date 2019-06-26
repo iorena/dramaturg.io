@@ -13,6 +13,7 @@ class Sentence:
         self.speaker = speaker
         self.listeners = listeners
         self.attribute = False
+        self.pos = pos
         #subject
         if action_type.subj == "subject":
             self.subj = pos["subj"]
@@ -58,7 +59,7 @@ class Sentence:
         #if there is no verb, skip creating a verb "pharse" with syntaxmaker and just pile words in a list
         if self.verb is None:
             if self.subj is None:
-                as_list = [""]
+                as_list = []
             else:
                 as_list = [self.get_synonym(self.subj)]
                 #todo: figure out rule that governs when attributes are added and when not
@@ -91,33 +92,29 @@ class Sentence:
             person = "3"
             vp.components["subject"] = create_phrase("NP", self.get_synonym(self.subj))
 
+        obj_case = "NOM"
         #check "object"
+        obj = self.get_synonym(self.obj)
+        if self.pos["verb"] is "olla" and self.obj_type is "location":
+            obj_case = "INE"
+        #todo: fork syntaxmaker to allow copula sentence of type "x has y"?
+        elif self.pos["verb"] is "olla" and self.obj_type is "owner":
+            obj_case = "GEN"
+        #correct case for locations can be gotten with2vec
+        elif self.pos["verb"] == "siirtyä":
+            obj_case = "ILL"
+        #for some reason syntaxmaker doesn't accept objects for thes "hommata" and "saada", so must workaround
+        #this also causes problems when using imperative forms because object case isn't altered accordingly
+        elif self.pos["verb"] in word_dictionary["hankkia"]:
+            obj_case = "GEN"
+            if mood == "IMPV":
+                obj_case = "NOM"
         if self.obj is not None:
-            obj = self.get_synonym(self.obj)
-            if self.verb is "olla" and self.obj_type is "location":
-                advlp = create_phrase("NP",obj, {"CASE": "INE"})
-                add_advlp_to_vp(vp, advlp)
-            elif self.verb is "olla" and self.obj_type is "affect":
-                predv = create_phrase("NP", obj)
-                add_advlp_to_vp(vp, predv)
-            #todo: fork syntaxmaker to allow copula sentence of type "x has y"
-            elif self.verb is "olla" and self.obj_type is "owner":
+            obj = create_phrase("NP", obj, {"CASE": obj_case})
+            add_advlp_to_vp(vp, obj)
+            if self.verb is "olla" and self.obj_type is "owner":
                 pred = create_phrase("NP", "omistaja")
-                predv = create_phrase("NP", obj, {"CASE": "GEN"})
-                add_advlp_to_vp(vp, predv)
                 add_advlp_to_vp(vp, pred)
-            #correct case for locations can be gotten with2vec
-            elif self.verb == "siirtyä":
-                advlp = create_phrase("NP", obj, {"CASE": "ILL"})
-                add_advlp_to_vp(vp, advlp)
-            #for some reason syntaxmaker doesn't accept objects for thes "hommata" and "saada", so must workaround
-            #this also causes problems when using imperative forms because object case isn't altered accordingly
-            elif self.verb in word_dictionary["hankkia"]:
-                case = "GEN"
-                if mood == "IMPV":
-                    case = "NOM"
-                obj = create_phrase("NP", obj, {"CASE": case})
-                add_advlp_to_vp(vp, obj)
 
         #check tempus
         if self.action_type.tempus is "imperf":
@@ -150,6 +147,19 @@ class Sentence:
                 case = "t"
             as_list.insert(len(as_list) - 1, pers + case)
 
+        if self.action_type.name == "TIPB":
+            if self.obj_type == "owner" and self.verb == "olla":
+                as_list.insert(0, "omistaja")
+            #add appropriate interrogative
+            popped = as_list.pop()
+            if popped == "omistaja":
+                as_list.pop()
+            as_list.insert(0, self.get_interrogative(obj_case))
+            as_list.append("?")
+        if self.action_type.name in ["TIAB+", "TIAB-"]:
+            obj = as_list.pop()
+            as_list.append(inflect(obj, "N", {"PERS": "3", "CASE": obj_case, "NUM": "SG"}))
+
         if self.action_type.pre_add is not None:
             as_list.insert(0, self.get_synonym(self.action_type.pre_add))
 
@@ -165,6 +175,15 @@ class Sentence:
         if self.reversed and word in reversed_word_dictionary:
             options = reversed_word_dictionary[word]
         return random.choices(options)[0]
+
+    def get_interrogative(self, case):
+        if case == "GEN":
+            return "minkä"
+        elif case == "ILL":
+            return "mihin"
+        elif case == "INE":
+            return "missä"
+        return "mikä"
 
     def get_styled_sentence(self):
         if self.inflected is None:
