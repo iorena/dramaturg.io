@@ -4,7 +4,8 @@ word_dictionary = {
     "disappointment": ["surullinen", "pettynyt"],
     "happy_for": ["onnellinen", "iloinen", "tyytyväinen"],
     "kyllä": ["kyllä", "joo", "aivan", "niin"],
-    "mitä": ["mitä", "häh", "täh", "anteeksi"]
+    "mitä": ["mitä", "häh", "täh", "anteeksi"],
+    "QUES": ["mikä"]
 }
 reversed_word_dictionary = {
     "siirtyä": ["viedä", "kuljettaa"],

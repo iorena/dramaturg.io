@@ -12,18 +12,35 @@ class Sentence:
     def __init__(self, speaker, listeners, pos, action_type, obj_type, reverse):
         self.speaker = speaker
         self.listeners = listeners
-        if action_type.subj == "project":
+        self.attribute = False
+        #subject
+        if action_type.subj == "subject":
             self.subj = pos["subj"]
+        elif action_type.subj == "object":
+            self.subj = pos["obj"].name
         elif action_type.subj == "Listener":
             self.subj = listeners[0].name
         elif action_type.subj == "Speaker":
             self.subj = speaker.name
         else:
             self.subj = action_type.subj
+
+        #verb
         if action_type.verb == "project":
             self.verb = pos["verb"]
         else:
             self.verb = action_type.verb
+
+        #"object"
+        if pos["obj"] is None:
+            self.obj = None
+        elif action_type.obj == "object":
+            self.obj = pos["obj"].name
+        elif action_type.obj == "attribute":
+            self.obj = pos["obj"].name
+            self.attribute = True
+        else:
+            self.obj = action_type.obj
 
         #you can't command yourself, so instead you command the other person to do the action for you
         self.reversed = reverse
@@ -32,7 +49,6 @@ class Sentence:
         elif self.reversed and self.subj == self.listeners[0].name:
             self.subj = speaker.name
 
-        self.obj = pos["obj"]
         self.obj_type = obj_type
         self.action_type = action_type
         self.inflected = self.get_inflected_sentence()
@@ -46,13 +62,15 @@ class Sentence:
             else:
                 as_list = [self.get_synonym(self.subj)]
                 #todo: figure out rule that governs when attributes are added and when not
-                if self.action_type.name == "KOBV" and self.obj:
-                    attribute = ""
-                    if self.obj_type == "owner":
-                        attribute = inflect(self.obj.name, "N", {"CASE": "GEN", "NUM": "SING"})
-                    elif self.obj_type == "location":
-                        attribute = inflect(self.obj.name, "N", {"CASE": "INE", "NUM": "SING"}) + " oleva"
-                    as_list.insert(0, attribute)
+            if self.attribute:
+                attribute = ""
+                if self.obj_type == "owner":
+                    attribute = inflect(self.obj, "N", {"PERS": "3", "CASE": "GEN", "NUM": "SG"})
+                elif self.obj_type == "location":
+                    attribute = inflect(self.obj, "N", {"PERS": "3", "CASE": "INE", "NUM": "SG"}) + " oleva"
+                as_list.insert(0, attribute)
+            elif self.obj is not None:
+                as_list.insert(0, self.get_synonym(self.obj))
         if self.verb is "olla":
             vp = create_copula_phrase()
         else:
@@ -75,7 +93,7 @@ class Sentence:
 
         #check "object"
         if self.obj is not None:
-            obj = self.get_synonym(self.obj.name)
+            obj = self.get_synonym(self.obj)
             if self.verb is "olla" and self.obj_type is "location":
                 advlp = create_phrase("NP",obj, {"CASE": "INE"})
                 add_advlp_to_vp(vp, advlp)
