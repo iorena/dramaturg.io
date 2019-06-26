@@ -1,8 +1,6 @@
 from language.sentence import Sentence
 from concepts.affect.emotion import Emotion
 
-emotions = Emotion.load_emotions()
-
 import random
 
 class Turn:
@@ -13,12 +11,12 @@ class Turn:
         self.speaker = speaker
         #todo: where to do this??
         if project.obj_type is "affect" and self.speaker.name is project.subj:
-            self.speaker.mood.affect_mood(emotions[project.obj])
+            self.speaker.mood.affect_mood(project.obj)
         else:
             self.speaker.mood.degrade_mood()
         self.listeners = listeners
         self.action_type = action_type
-        self.pos = {"subj": project.subj, "verb": project.verb, "obj": str(project.obj)}
+        self.pos = {"subj": project.subj, "verb": project.verb, "obj": project.obj}
         self.obj_type = project.obj_type
         self.speaker_mood = str(self.speaker.mood)
         self.reversed = reverse

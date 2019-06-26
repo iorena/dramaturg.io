@@ -9,14 +9,7 @@ from language.action_types import ActionType
 import random
 import copy
 
-SEQUENCE_TYPES = ["SKÄS", "STIP", "STOP"]
-
-PAIR_TYPES_POSITIVE = {
-        "SKÄS": ("KÄS", "TOTN"),
-        "STIP": ("TIP", "TIA+"),
-        "STOP": ("TOP", "TOTN"),
-        "SKOR": ("KOA", "TOI")
-        }
+ROOT_SEQUENCE_TYPES = ["SKÄS", "STIP", "STOP", "STOE", "SVÄI", "SKAN"]
 
 
 class Story:
@@ -136,7 +129,7 @@ class Story:
         init_sequences = []
         for situation in self.situations:
             for project in situation.projects:
-                seq_type = random.choices(SEQUENCE_TYPES)[0]
+                seq_type = random.choices(ROOT_SEQUENCE_TYPES)[0]
                 init_sequences.append(Sequence(self.world_state.characters, project, seq_type, self.action_types))
         return init_sequences
 

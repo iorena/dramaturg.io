@@ -10,14 +10,19 @@ class ActionType:
                 actions[row[0]] = ActionType(*row)
         return actions
 
-    def __init__(self, name, neg, ques, subj, verb, aux_verb, modus, tempus, pre_add):
+    def __init__(self, name, neg, ques, subj, verb, obj, aux_verb, modus, tempus, pre_add):
         self.name = name
         self.neg = neg == "TRUE"
         self.ques = ques == "TRUE"
         self.subj = subj
+        if self.subj == "None":
+            self.subj = None
         self.verb = verb
         if verb == "None":
             self.verb = None
+        self.obj = obj
+        if obj == "None":
+            self.obj = None
         if aux_verb == "None":
             self.aux_verb = None
         else:

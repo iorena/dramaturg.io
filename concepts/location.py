@@ -11,19 +11,16 @@ class Location:
             Location.id_counter += 1
         else:
             self.id = id
-        self.keywords = self.get_keywords()
+        self.attributes = {}
+        location_type = random.choices(Location.names)[0]
+        Location.names.remove(location_type)
+        self.name = location_type
 
     def __str__(self):
-        return self.keywords["type"]
+        return self.name
 
     def __eq__(self, other):
         return self.id == other.id
 
     def __hash__(self):
-        return hash(self.keywords["type"])
-
-    def get_keywords(self):
-        location_type = random.choices(Location.names)[0]
-        Location.names.remove(location_type)
-        return {"type": location_type}
-
+        return hash(self.name)

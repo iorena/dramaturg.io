@@ -1,6 +1,7 @@
 from sequence.sequence_types import SequenceType
 from sequence.turn import Turn
 from concepts.project import Project
+from concepts.character import Character
 
 import random
 import copy
@@ -28,11 +29,12 @@ class Sequence:
             reverse = True
         elif seq_type in ["SKÄS", "STOE"] and self.speakers[0].name == self.project.subj:
             self.seq_type = "SKAN"
-        self.first_pair_part = self.generate_pair_part(self.speakers[0], self.pair_types[self.seq_type][0], reverse)
-        if self.pair_types[self.seq_type][1] is None:
+        action_names = random.choices(self.pair_types[self.seq_type])[0]
+        self.first_pair_part = self.generate_pair_part(self.speakers[0], action_names[0], reverse)
+        if action_names[1] is None:
             self.second_pair_part = None
         else:
-            self.second_pair_part = self.generate_pair_part(self.speakers[1], self.pair_types[self.seq_type][1], reverse)
+            self.second_pair_part = self.generate_pair_part(self.speakers[1], action_names[1], reverse)
         self.pre_expansion = self.generate_expansion("pre_expansions", None)
         self.infix_expansion = self.generate_expansion("infix_expansions", self.first_pair_part, True)
         self.post_expansion = self.generate_expansion("post_expansions", self.second_pair_part)
@@ -48,8 +50,19 @@ class Sequence:
             #todo: implement more sequence types
             if new_seq_type in ["", "SJTK", "SJPM"]:
                 return None
-            #if random.random() > 0.7:
-            #    new_project = self.generate_new_project()
+            if new_seq_type == "SKORB":
+                #new project with old object as subject? check if there is an object to take?
+                if self.project.obj:
+                    target = self.project.obj
+                    #todo: how to handle emotions? asking "mikä surullinen?" doesn't really make sense, does it?
+                    attributes = list(target.attributes.items())
+                    if len(attributes) is 0:
+                        attribute = ("attribute", None)
+                    else:
+                        attribute = random.choices(attributes)[0]
+
+                    new_project = Project(target, attribute, "statement", "present", True)
+
             speakers = self.speakers
             if switch_speakers:
                 speakers = [speakers[1], speakers[0]]

@@ -1,4 +1,6 @@
-from concepts import location
+from concepts.affect.emotion import Emotion
+
+emotions = Emotion.load_emotions()
 
 
 class FabulaElement:
@@ -15,6 +17,7 @@ class FabulaElement:
     def get_object(self):
         """
         Todo: replace hard-coding with actual functionality
+        is this used anywhere?
         """
         if self.elem is "G":
             return self.subj
@@ -30,5 +33,5 @@ class FabulaElement:
     def get_transition(self):
         if self.elem is "IE":
             emotion = "happy_for" if self.goal else "disappointment"
-            return ("affect", emotion)
+            return ("affect", emotions[emotion])
         return (self.goal.attribute_name, self.goal.get_object())
