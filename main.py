@@ -7,9 +7,10 @@ def main(do_story):
     if do_story:
         story = Story()
         print(story)
-        for i, sequence in enumerate(story.get_sequences()):
-            print(f"Sequence {i}\n{sequence}\n\n")
-            #print(story.world_state)
+        for i, situation in enumerate(story.situations):
+            print(f"Situation{i}: {situation.location}, {situation.element_type}\n")
+            for j, sequence in enumerate(situation.sequences):
+                print(f"Sequence{j}\n{sequence}\n\n")
     else:
         print("Did nothing!")
 

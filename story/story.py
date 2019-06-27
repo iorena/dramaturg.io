@@ -1,15 +1,11 @@
 from concepts.worldstate import WorldState
 from scene.situation import Situation
 from concepts.project import Project
-from sequence.sequence import Sequence
 from story.plot import PlotGraph
 from story.transition import Transition
-from language.action_types import ActionType
 
 import random
 import copy
-
-ROOT_SEQUENCE_TYPES = ["SKÄS", "STIP", "STOP", "STOE", "SVÄI", "SKAN"]
 
 
 class Story:
@@ -19,10 +15,8 @@ class Story:
         for char in self.world_state.characters:
             char.set_perception(WorldState(self.world_state))
             char.set_goal(self.create_goal(char))
-        self.action_types = ActionType.load_action_types()
         self.graph = self.create_plot_points()
         self.situations = self.create_situations()
-        self.sequences = self.create_sequences()
 
     def __str__(self):
         transitions = "\n".join(map(lambda x: f'{x.start_value} -> {x.end_value}', self.possible_transitions))
@@ -80,12 +74,11 @@ class Story:
         Todo: not all introductions must be done before any plot points are handled
         """
         situations = []
-        projects = []
         added = []
         main_char = self.world_state.characters[0]
         #add topics that introduce the starting state of the story
         for attribute in main_char.attributes.items():
-            projects.append(Project(main_char, attribute, "statement", "present", True))
+            situations.append(Situation("P", self.world_state.characters, Project(main_char, attribute, "statement", "present", True), main_char.attributes["location"]))
         for plotpoint in self.graph.nodes:
             predecessors = list(self.graph.predecessors(plotpoint))
             if plotpoint.elem is "G":
@@ -100,41 +93,21 @@ class Story:
             if plotpoint.elem is "IE":
                 success = True
                 project_type = "statement"
-            projects.append(Project(plotpoint.subj, plotpoint.transition, project_type, "present", success))
+            situations.append(Situation(plotpoint.elem, self.world_state.characters, Project(plotpoint.subj, plotpoint.transition, project_type, "present", success), main_char.attributes["location"]))
             self.world_state.change(plotpoint.elem, plotpoint.subj, plotpoint.goal, success)
             added.append(plotpoint)
+
             if len(predecessors) > 1:
-                projects = []
                 for predecessor in predecessors:
                     if predecessor not in added:
                         if predecessor.elem is "A":
-                            projects.append(Project(predecessor.subj, predecessor.transition, "statement", "present", True))
-                            projects.append(Project(predecessor.subj, predecessor.transition, "action", "past", True))
-                            added.append(plotpoint)
-                        if predecessor.elem is "P":
-                            #relative clauses? "minä näin että..."
-                            projects.append(Project(predecessor.subj, predecessor.transition, "statement", "past"))
+                            situations.append(Situation("P", self.world_state.characters, Project(predecessor.subj, predecessor.transition, "action", "past", True), main_char.attributes["location"]))
+                            situations.append(Situation(predecessor.elem, self.world_state.characters, Project(predecessor.subj, predecessor.transition, "action", "past", True), main_char.attributes["location"]))
                             added.append(plotpoint)
             if len(list(self.graph.successors(plotpoint))) is 0:
                 break
-            #todo: how to actually split projects into situations?
-            situations.append(Situation(self.world_state.characters, projects))
 
         return situations
-
-    def create_sequences(self):
-        """
-        Generates sequences for each situation
-        """
-        init_sequences = []
-        for situation in self.situations:
-            for project in situation.projects:
-                seq_type = random.choices(ROOT_SEQUENCE_TYPES)[0]
-                init_sequences.append(Sequence(self.world_state.characters, project, seq_type, self.action_types))
-        return init_sequences
-
-    def get_sequences(self):
-        return self.sequences
 
 
 def main():

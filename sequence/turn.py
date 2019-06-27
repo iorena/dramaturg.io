@@ -16,8 +16,8 @@ class Turn:
             self.speaker.mood.degrade_mood()
         self.listeners = listeners
         self.action_type = action_type
-        self.pos = {"subj": project.subj, "verb": project.verb, "obj": project.obj}
         self.obj_type = project.obj_type
+        self.project = project
         self.speaker_mood = str(self.speaker.mood)
         self.reversed = reverse
         self.inflected = self.inflect()
@@ -27,7 +27,7 @@ class Turn:
         return f"{self.action_type.name}{space} {self.speaker.name}: {self.inflected}  |  Mood: {self.speaker_mood}"
 
     def inflect(self):
-        sentence = Sentence(self.speaker, self.listeners, self.pos, self.action_type, self.obj_type, self.reversed)
+        sentence = Sentence(self.speaker, self.listeners, self.project, self.action_type, self.obj_type, self.reversed)
         return sentence.styled
 
 

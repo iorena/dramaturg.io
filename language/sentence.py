@@ -9,16 +9,16 @@ import random
 
 
 class Sentence:
-    def __init__(self, speaker, listeners, pos, action_type, obj_type, reverse):
+    def __init__(self, speaker, listeners, project, action_type, obj_type, reverse):
         self.speaker = speaker
         self.listeners = listeners
         self.attribute = False
-        self.pos = pos
+        self.project = project
         #subject
         if action_type.subj == "subject":
-            self.subj = pos["subj"]
+            self.subj = project.subj
         elif action_type.subj == "object":
-            self.subj = pos["obj"].name
+            self.subj = project.obj.name
         elif action_type.subj == "Listener":
             self.subj = listeners[0].name
         elif action_type.subj == "Speaker":
@@ -28,17 +28,17 @@ class Sentence:
 
         #verb
         if action_type.verb == "project":
-            self.verb = pos["verb"]
+            self.verb = project.verb
         else:
             self.verb = action_type.verb
 
         #"object"
-        if pos["obj"] is None:
+        if project.obj is None:
             self.obj = None
         elif action_type.obj == "object":
-            self.obj = pos["obj"].name
+            self.obj = project.obj.name
         elif action_type.obj == "attribute":
-            self.obj = pos["obj"].name
+            self.obj = project.obj.name
             self.attribute = True
         else:
             self.obj = action_type.obj
@@ -95,17 +95,17 @@ class Sentence:
         obj_case = "NOM"
         #check "object"
         obj = self.get_synonym(self.obj)
-        if self.pos["verb"] is "olla" and self.obj_type is "location":
+        if self.project.verb is "olla" and self.obj_type is "location":
             obj_case = "INE"
         #todo: fork syntaxmaker to allow copula sentence of type "x has y"?
-        elif self.pos["verb"] is "olla" and self.obj_type is "owner":
+        elif self.project.verb is "olla" and self.obj_type is "owner":
             obj_case = "GEN"
         #correct case for locations can be gotten with2vec
-        elif self.pos["verb"] == "siirtyä":
+        elif self.project.verb == "siirtyä":
             obj_case = "ILL"
         #for some reason syntaxmaker doesn't accept objects for thes "hommata" and "saada", so must workaround
         #this also causes problems when using imperative forms because object case isn't altered accordingly
-        elif self.pos["verb"] in word_dictionary["hankkia"]:
+        elif self.project.verb in word_dictionary["hankkia"]:
             obj_case = "GEN"
             if mood == "IMPV":
                 obj_case = "NOM"
@@ -117,9 +117,9 @@ class Sentence:
                 add_advlp_to_vp(vp, pred)
 
         #check tempus
-        if self.action_type.tempus is "imperf":
+        if self.project.time is "past":
             tense = "PAST"
-        elif self.action_type.tempus is "postpast":
+        elif self.project.time is "postpast":
             tense = "PAST"
             turn_vp_into_prefect(vp)
 
