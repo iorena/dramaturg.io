@@ -1,22 +1,17 @@
-from sequence.sequence_types import SequenceType
+from loaders import load_expansion_types
+from loaders import load_sequence_types
 from sequence.turn import Turn
 from concepts.project import Project
-from concepts.character import Character
 
 import random
 import copy
-import csv
 
-POS_SEQUENCES, NEG_SEQUENCES = SequenceType.load_sequence_types()
+POS_SEQUENCES, NEG_SEQUENCES = load_sequence_types()
 
-EXPANSIONS = {}
-with open("sequence/expansion_types.csv") as csv_file:
-    csv_reader = csv.reader(csv_file, delimiter="\t")
-    for row in csv_reader:
-        EXPANSIONS[row[0]] = {"pre_expansions": row[1].split(", "), "infix_expansions": row[2].split(", "), "post_expansions": row[3].split(", ")}
+EXPANSIONS = load_expansion_types()
 
 
-class Sequence:
+class Sequence():
     def __init__(self, speakers, project, seq_type, action_types, parent=None):
         self.speakers = speakers
         self.project = project
@@ -47,14 +42,14 @@ class Sequence:
                 return None
             pool = EXPANSIONS[self.seq_type][position]
             new_seq_type = random.choices(pool)[0]
-            #todo: implement more sequence types
+            # todo: implement more sequence types
             if new_seq_type in ["", "SJTK", "SJPM"]:
                 return None
             if new_seq_type == "SKORB":
-                #new project with old object as subject? check if there is an object to take?
+                # new project with old object as subject? check if there is an object to take?
                 if self.project.obj:
                     target = self.project.obj
-                    #todo: how to handle emotions? asking "mikä surullinen?" doesn't really make sense, does it?
+                    # todo: how to handle emotions? asking "mikä surullinen?" doesn't really make sense, does it?
                     attributes = list(target.attributes.items())
                     if len(attributes) is 0:
                         attribute = ("attribute", None)
@@ -99,6 +94,33 @@ class Sequence:
         if self.post_expansion is not None:
             ret.append(str(self.post_expansion))
         return "\n".join(ret)
+
+    def to_json(self):
+        ret = []
+        # if self.pre_expansion is not None:
+        #     ret.append(str(self.pre_expansion))
+        # ret.append(str(self.first_pair_part))
+        # if self.infix_expansion is not None:
+        #     ret.append(str(self.infix_expansion))
+        # if self.second_pair_part:
+        #     ret.append(str(self.second_pair_part))
+        # if self.post_expansion is not None:
+        #     ret.append(str(self.post_expansion))
+        # return ret
+        return {
+            "speakers": self.speakers,
+            # "project": self.project,
+            "seq_type": self.seq_type,
+            # "action_types": self.action_types,
+            # "parent": str(self.parent),
+            # "pair_types": self.pair_types,
+            "first_pair_part": self.first_pair_part,
+            "second_pair_part": self.second_pair_part,
+            "pre_expansion": self.pre_expansion,
+            "infix_expansion": self.infix_expansion,
+            "post_expansion": self.post_expansion
+        }
+
 
 def main(sequence):
     sequence.print_sequence()

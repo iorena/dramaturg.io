@@ -26,6 +26,11 @@ class Character:
         """
         return (f"{{Character{str(self.id)} {self.name}\nlocation: {self.attributes['location']}\n")
 
+    def to_json(self):
+        return {
+            **self.__dict__
+        }
+
     def __hash__(self):
         return hash(self.name)
 

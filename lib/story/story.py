@@ -1,4 +1,7 @@
+import json
+
 from concepts.worldstate import WorldState
+from loaders import load_action_types
 from scene.situation import Situation
 from concepts.project import Project
 from story.plot import PlotGraph
@@ -15,6 +18,7 @@ class Story:
         for char in self.world_state.characters:
             char.set_perception(WorldState(self.world_state))
             char.set_goal(self.create_goal(char))
+        self.action_types = load_action_types()
         self.graph = self.create_plot_points()
         self.situations = self.create_situations()
 
@@ -56,7 +60,7 @@ class Story:
 
         return goal
 
-    def create_plot_points(self):
+    def create_plot_points(self, plot_plot=False):
         """
         Create a graph of fabula elements
         Todo: Before executing each story point, ensure we can make
@@ -64,7 +68,8 @@ class Story:
         Ie. this genotype can be evaluated before moving on
         """
         plot = PlotGraph(self.world_state, self.possible_transitions)
-        plot.print_plot()
+        if plot_plot:
+            plot.print_plot()
         return plot.graph
 
     def create_situations(self):
@@ -104,6 +109,12 @@ class Story:
                 break
 
         return situations
+
+    def to_json(self):
+        return str(self)
+
+    def get_situations(self):
+        return self.situations
 
 
 def main():

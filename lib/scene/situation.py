@@ -58,5 +58,5 @@ class Situation:
             sequences = sequences + self.add_sequences(Sequence(self.speakers, post_project, seq_type, self.action_types))
         return sequences
 
-
-
+    def to_json(self):
+        return self.sequences

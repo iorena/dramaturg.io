@@ -41,6 +41,9 @@ class WorldState:
     def __str__(self):
         return f"Locations: {', '.join(map(str, self.locations))}\nCharacters: {', '.join(map(str, self.characters))}"
 
+    def to_json(self):
+        return {"wordstate": str(self)}
+
     def __eq__(self, other):
         if other is None:
             return False
