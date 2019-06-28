@@ -17,3 +17,8 @@ class Transition:
         if type(self.end_value) is Character:
             return self.obj
         return self.end_value
+
+    def to_json(self):
+        return {
+            'obj': str(self.obj),
+        }
