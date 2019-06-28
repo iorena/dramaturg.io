@@ -61,7 +61,7 @@ class Sequence:
                     else:
                         attribute = random.choices(attributes)[0]
 
-                    new_project = Project(target, attribute, "statement", "present", True)
+                    new_project = Project(target, attribute, "present", True)
 
             speakers = self.speakers
             if switch_speakers:

@@ -24,6 +24,8 @@ class WorldState:
             owner = random.choices(self.characters)[0]
             obj.set_owner(owner)
             obj.set_location(owner.attributes["location"])
+        self.weather = WorldObject(None, "sää")
+        self.appraisals = [WorldObject(None, "bad"), WorldObject(None, "okay"), WorldObject(None, "good")]
         #set relationships
         for char in self.characters:
             for other in self.characters:
