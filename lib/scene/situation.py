@@ -38,7 +38,7 @@ class Situation:
             #random topic: weather etc
             subj = self.world_state.weather
             obj = ("quality", random.choices(self.world_state.appraisals)[0])
-            pre_project = Project(subj, obj, self.main_project.time, True)
+            pre_project = Project(subj, obj, "statement", self.main_project.time, True)
 
             seq_type = random.choices(ROOT_SEQUENCE_TYPES)[0]
             sequences = self.add_sequences(Sequence(self.speakers, pre_project, seq_type, self.action_types)) + sequences
@@ -52,7 +52,8 @@ class Situation:
                 obj = ("quality", random.choices(self.world_state.appraisals)[0])
             else:
                 obj = random.choices(attributes)[0]
-            post_project = Project(subj, obj, self.main_project.time, True)
+                print(obj)
+            post_project = Project(subj, obj, "statement", self.main_project.time, True)
 
             seq_type = random.choices(ROOT_SEQUENCE_TYPES)[0]
             sequences = sequences + self.add_sequences(Sequence(self.speakers, post_project, seq_type, self.action_types))
