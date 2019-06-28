@@ -29,7 +29,7 @@ def say_hello():
 @app.route('/sequences')
 def print_sequences():
     print(story)
-    response = json.dumps(story.get_sequences(), cls=CustomEncoder, ensure_ascii=False), 'application/json'
+    response = json.dumps(story.get_situations(), cls=CustomEncoder, ensure_ascii=False), 'application/json'
     return response
     # for i, sequence in enumerate(story.get_sequences()):
     #    print(f"Sequence {i}\n{sequence}\n\n")
