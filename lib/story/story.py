@@ -1,10 +1,12 @@
+import json
+
 from concepts.worldstate import WorldState
+from loaders import load_action_types
 from scene.situation import Situation
 from concepts.project import Project
 from sequence.sequence import Sequence
 from story.plot import PlotGraph
 from story.transition import Transition
-from language.action_types import ActionType
 
 import random
 import copy
@@ -19,7 +21,7 @@ class Story:
         for char in self.world_state.characters:
             char.set_perception(WorldState(self.world_state))
             char.set_goal(self.create_goal(char))
-        self.action_types = ActionType.load_action_types()
+        self.action_types = load_action_types()
         self.graph = self.create_plot_points()
         self.situations = self.create_situations()
         self.sequences = self.create_sequences()
@@ -62,7 +64,7 @@ class Story:
 
         return goal
 
-    def create_plot_points(self):
+    def create_plot_points(self, plot_plot=False):
         """
         Create a graph of fabula elements
         Todo: Before executing each story point, ensure we can make
@@ -70,7 +72,8 @@ class Story:
         Ie. this genotype can be evaluated before moving on
         """
         plot = PlotGraph(self.world_state, self.possible_transitions)
-        plot.print_plot()
+        if plot_plot:
+            plot.print_plot()
         return plot.graph
 
     def create_situations(self):
@@ -135,6 +138,9 @@ class Story:
 
     def get_sequences(self):
         return self.sequences
+
+    def to_json(self):
+        return str(self.sequences)
 
 
 def main():

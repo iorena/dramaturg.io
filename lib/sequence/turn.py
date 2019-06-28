@@ -30,6 +30,12 @@ class Turn:
         sentence = Sentence(self.speaker, self.listeners, self.pos, self.action_type, self.obj_type, self.reversed)
         return sentence.styled
 
+    def to_json(self):
+        return {
+            **self.__dict__,
+            "pos": None,
+        }
+
 
 def main():
     print("Generated turn")

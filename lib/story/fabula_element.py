@@ -1,6 +1,6 @@
-from concepts.affect.emotion import Emotion
+from loaders import load_emotions
 
-emotions = Emotion.load_emotions()
+emotions = load_emotions()
 
 
 class FabulaElement:
