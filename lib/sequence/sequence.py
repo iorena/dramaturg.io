@@ -20,9 +20,9 @@ class Sequence():
         self.parent = parent
         self.pair_types = POS_SEQUENCES if project.valence else NEG_SEQUENCES
         reverse = False
-        if seq_type in ["SKÄS"] and self.speakers[0].name == self.project.subj and project.verb != "olla":
+        if seq_type in ["SKÄS"] and self.speakers[0].name == self.project.subj.name and project.verb != "olla":
             reverse = True
-        elif seq_type in ["SKÄS"] and self.speakers[0].name == self.project.subj:
+        elif seq_type in ["SKÄS"] and self.speakers[0].name == self.project.subj.name:
             self.seq_type = "SKAN"
         action_names = random.choices(self.pair_types[self.seq_type])[0]
         self.first_pair_part = self.generate_pair_part(self.speakers[0], action_names[0], reverse)

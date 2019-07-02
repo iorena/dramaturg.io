@@ -52,7 +52,6 @@ class Situation:
                 #don't stack "hyvä on mainio" - type chains
                 if sequence.project.obj_type in ["quality", "appraisal", "affect"]:
                     return sequences
-                print("yees", sequence.project.obj, sequence.project.obj_type)
                 obj = ("quality", self.speakers[0].perception.objects[subj.id])
             else:
                 obj = random.choices(attributes)[0]

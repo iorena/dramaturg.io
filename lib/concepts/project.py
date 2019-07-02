@@ -5,7 +5,7 @@ APPRAISALS = ["horrible", "bad", "okay", "good", "great"]
 
 class Project:
     def __init__(self, subj, obj, topic_type, time, valence):
-        self.subj = subj if type(subj) is str else subj.name
+        self.subj = subj
         self.obj_type = obj[0]
         self.obj = obj[1]
         self.type = topic_type
