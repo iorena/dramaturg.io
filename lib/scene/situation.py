@@ -49,10 +49,13 @@ class Situation:
             subj = sequence.project.obj
             attributes = list(sequence.project.obj.attributes.items())
             if len(attributes) is 0:
-                obj = ("quality", random.choices(self.world_state.appraisals)[0])
+                #don't stack "hyvä on mainio" - type chains
+                if sequence.project.obj_type in ["quality", "appraisal", "affect"]:
+                    return sequences
+                print("yees", sequence.project.obj, sequence.project.obj_type)
+                obj = ("quality", self.speakers[0].perception.objects[subj.id])
             else:
                 obj = random.choices(attributes)[0]
-                print(obj)
             post_project = Project(subj, obj, "statement", self.main_project.time, True)
 
             seq_type = random.choices(ROOT_SEQUENCE_TYPES)[0]

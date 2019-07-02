@@ -5,9 +5,11 @@ word_dictionary = {
     "happy_for": ["onnellinen", "iloinen", "tyytyväinen"],
     "kyllä": ["kyllä", "joo", "aivan", "niin"],
     "mitä": ["mitä", "häh", "täh", "anteeksi"],
+    "great": ["mahtava", "loistava", "upea"],
     "good": ["hyvä", "mainio", "kaunis"],
     "okay": ["kelvollinen", "mukiinmenevä"],
-    "bad": ["huono", "surkea", "onneton", "kurja"]
+    "bad": ["huono", "onneton", "kurja"],
+    "horrible": ["surkea", "hirveä"]
 }
 reversed_word_dictionary = {
     "siirtyä": ["viedä", "kuljettaa"],
