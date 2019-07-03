@@ -1,6 +1,11 @@
 from sequence.sequence import Sequence
 from language.action_types import ActionType
 from concepts.project import Project
+from concepts.character import Character
+
+from loaders.emotions_loader import load_emotions
+
+EMOTIONS = load_emotions()
 
 import random
 
@@ -17,7 +22,29 @@ class Situation:
         self.main_project = main_project
         self.location = location
         self.action_types = ActionType.load_action_types()
+        if element_type == "P" and type(self.main_project.subj) is Character:
+            self.affect_emotions()
         self.sequences = self.create_sequences()
+
+    def affect_emotions(self):
+        for character in self.speakers:
+            relationship = character.relations[self.main_project.subj.name] > 0.5
+            event_appraisal = self.main_project.appraisal.id > 91
+            if self.main_project.appraisal.id is 91:
+                #neutral event, nothing happens
+                return
+            emotion = EMOTIONS[self.get_emotion(relationship, event_appraisal)]
+            character.mood.affect_mood(emotion)
+
+    def get_emotion(self, relationship, event):
+        if relationship and event:
+            return "happy_for"
+        if relationship and not event:
+            return "pity"
+        if not relationship and event:
+            return "resentment"
+        if not relationship and not event:
+            return "gloating"
 
     def create_sequences(self):
         """
