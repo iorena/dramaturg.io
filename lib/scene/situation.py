@@ -33,10 +33,15 @@ class Situation:
             if self.main_project.appraisal.id is 91:
                 #neutral event, nothing happens
                 return
-            emotion = EMOTIONS[self.get_emotion(relationship, event_appraisal)]
+            is_self = character is self.main_project.subj
+            emotion = EMOTIONS[self.get_emotion(is_self, relationship, event_appraisal)]
             character.mood.affect_mood(emotion)
 
-    def get_emotion(self, relationship, event):
+    def get_emotion(self, is_self, relationship, event):
+        if is_self and event:
+            return "joy"
+        if is_self and not event:
+            return "distress"
         if relationship and event:
             return "happy_for"
         if relationship and not event:
