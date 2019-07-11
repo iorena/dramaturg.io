@@ -3,7 +3,7 @@ from syntaxmaker.syntax_maker import (create_verb_pharse, create_personal_pronou
                                       add_advlp_to_vp, set_vp_mood_and_tense, turn_vp_into_prefect,
                                       negate_verb_pharse)
 from syntaxmaker.inflector import inflect
-from language.dictionary import word_dictionary, reversed_word_dictionary
+from language.dictionary import verb_dictionary, noun_dictionary, reversed_verb_dictionary
 from concepts.character import Character
 
 import random
@@ -32,6 +32,7 @@ class Sentence:
             self.verb = project.verb
         else:
             self.verb = action_type.verb
+        self.verb_realization = None
 
         #"object"
         if project.obj is None:
@@ -73,10 +74,20 @@ class Sentence:
                 as_list.insert(0, attribute)
             elif self.obj is not None:
                 as_list.insert(0, self.get_synonym(self.obj))
+
+            if self.action_type.pre_add is not None:
+                as_list.insert(0, self.get_synonym(self.action_type.pre_add))
+
+            if self.action_type.ques:
+                as_list.append("?")
+
+            return as_list
+
         if self.verb is "olla":
             vp = create_copula_phrase()
         else:
-            vp = create_verb_pharse(self.get_synonym(self.verb))
+            self.verb_realization = self.get_synonym(self.verb)
+            vp = create_verb_pharse(self.verb_realization[0])
 
         mood = self.action_type.modus
         tense = "PRESENT"
@@ -101,15 +112,14 @@ class Sentence:
         #todo: fork syntaxmaker to allow copula sentence of type "x has y"?
         elif self.project.verb is "olla" and self.obj_type is "owner":
             obj_case = "GEN"
-        #correct case for locations can be gotten with2vec
-        elif self.project.verb == "siirtyä":
-            obj_case = "ILL"
         #for some reason syntaxmaker doesn't accept objects for thes "hommata" and "saada", so must workaround
         #this also causes problems when using imperative forms because object case isn't altered accordingly
-        elif self.project.verb in word_dictionary["hankkia"]:
+        elif self.verb in list(map(lambda x: x[0], verb_dictionary["hankkia"])):
             obj_case = "GEN"
             if mood == "IMPV":
                 obj_case = "NOM"
+        elif self.verb_realization:
+            obj_case = self.verb_realization[1]
         if self.obj is not None:
             obj = create_phrase("NP", obj, {"CASE": obj_case})
             add_advlp_to_vp(vp, obj)
@@ -170,12 +180,15 @@ class Sentence:
         return as_list
 
     def get_synonym(self, word):
-        if word not in word_dictionary:
-            return word
-        options = word_dictionary[word]
-        if self.reversed and word in reversed_word_dictionary:
-            options = reversed_word_dictionary[word]
-        return random.choices(options)[0]
+        if word in noun_dictionary:
+            return random.choices(noun_dictionary[word])[0]
+        if word in verb_dictionary:
+            options = verb_dictionary[word]
+            return random.choices(options)[0]
+        if self.reversed and word in reversed_verb_dictionary:
+            options = reversed_verb_dictionary[word]
+            return random.choices(options)
+        return word
 
     def get_interrogative(self, case):
         if case == "GEN":

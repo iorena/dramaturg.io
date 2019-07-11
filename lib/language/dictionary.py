@@ -1,6 +1,11 @@
-word_dictionary = {
-    "siirtyä": ["mennä", "matkustaa", "liikkua", "juosta"],
-    "hankkia": ["ostaa", "hankkia", "hommata", "saada"],
+verb_dictionary = {
+    "olla": [("olla", "NOM")],
+    "siirtyä": [("mennä", "ILL"), ("matkustaa", "ILL"), ("liikkua", "ILL"), ("juosta", "ILL")],
+    "pitää": [("tykätä", "ELA"), ("pitää", "ELA"), ("rakastaa", "PAR")],
+    "vihata": [("vihata", "PAR"), ("inhota", "PAR")],
+    "hankkia": [("ostaa", "GEN"), ("hankkia", "GEN"), ("hommata", "GEN"), ("saada", "GEN")]
+}
+noun_dictionary = {
     "disappointment": ["surullinen", "pettynyt"],
     "happy_for": ["onnellinen", "iloinen", "tyytyväinen"],
     "kyllä": ["kyllä", "joo", "aivan", "niin"],
@@ -11,7 +16,7 @@ word_dictionary = {
     "bad": ["huono", "onneton", "kurja"],
     "horrible": ["surkea", "hirveä"]
 }
-reversed_word_dictionary = {
-    "siirtyä": ["viedä", "kuljettaa"],
-    "hankkia": ["ostaa", "hankkia", "hommata"]
+reversed_verb_dictionary = {
+    "siirtyä": [("viedä", "ILL"), ("kuljettaa", "ILL")],
+    "hankkia": [("ostaa", "GEN"), ("hankkia", "GEN"), ("hommata", "GEN")]
 }
