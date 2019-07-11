@@ -12,9 +12,7 @@ class Mood:
 
     #formulas from Gebhard (2005)
     def default_mood(self, personality):
-        return (0.21 * personality["E"] + 0.59 * personality["A"] + 0.19 * personality["N"],
-                0.15 * personality["O"] + 0.3 * personality["A"] - 0.57 * personality["N"],
-                0.25 * personality["O"] + 0.17 * personality["C"] + 0.6 * personality["E"] - 0.32 * personality["A"])
+        return (Mood.get_default_pleasure(personality), Mood.get_default_arousal(personality), Mood.get_default_dominance(personality))
 
     #todo: check formula of degration towards default mood, does personality have an effect?
     def degrade_mood(self):
@@ -51,3 +49,14 @@ class Mood:
         if self.dominance > 0:
             return "disdainful"
         return "bored"
+
+    def get_default_pleasure(personality):
+        return 0.21 * personality["E"] + 0.59 * personality["A"] + 0.19 * personality["N"]
+
+    def get_default_arousal(personality):
+        return 0.15 * personality["O"] + 0.3 * personality["A"] - 0.57 * personality["N"]
+
+    def get_default_dominance(personality):
+        return 0.25 * personality["O"] + 0.17 * personality["C"] + 0.6 * personality["E"] - 0.32 * personality["A"]
+
+

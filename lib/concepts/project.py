@@ -1,5 +1,7 @@
 from concepts.worldobject import WorldObject
 
+import random
+
 APPRAISALS = ["horrible", "bad", "okay", "good", "great"]
 
 
@@ -17,12 +19,18 @@ class Project:
         self.valence = valence
 
     def get_verb(self):
+        if self.obj_type is "relationship":
+            if self.subj.relations[self.obj.name].liking["outgoing"] > 0.5:
+                return "pitää"
+            else:
+                return "vihata"
         if self.type is "statement":
             return "olla"
         if self.obj_type is "location":
             return "siirtyä"
         if self.obj_type is "owner":
             return "hankkia"
+
         return "olla"
 
     def get_appraisal(self):
@@ -33,3 +41,15 @@ class Project:
         if self.obj_type is "owner":
             return WorldObject(93, APPRAISALS[3])
         return WorldObject(92, APPRAISALS[2])
+
+    def get_new_project(speakers, main_project, world_state):
+        #random topic: weather etc
+        if random.random() > 0.5:
+            subj = world_state.weather
+            obj = ("quality", random.choices(world_state.appraisals)[0])
+            project = Project(subj, obj, "statement", main_project.time, True)
+        else:
+            subj = speakers[0]
+            obj = ("relationship", speakers[1])
+            project = Project(subj, obj, "statement", "present", True)
+        return project

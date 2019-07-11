@@ -3,6 +3,7 @@ import copy
 from concepts.character import Character
 from concepts.location import Location
 from concepts.worldobject import WorldObject
+from concepts.affect.relationship import Relationship
 
 import random
 
@@ -29,13 +30,18 @@ class WorldState:
             obj.set_location(owner.attributes["location"])
         self.weather = WorldObject(95, "sää")
         #set relationships
-        for char in self.characters:
-            for other in self.characters:
-                if char is other:
-                    relationship = 1
-                else:
-                    relationship = random.random()
-                char.set_relation(other, relationship)
+        char = self.characters[0]
+        for other in self.characters:
+            if char is other:
+                pass
+            else:
+                liking_out = random.random()
+                liking_in = random.random()
+                dominance = random.random()
+                char.set_relation(other.name, Relationship(other, liking_out, liking_in, dominance))
+                other.set_relation(char.name, Relationship(char, liking_in, liking_out, 1 - dominance))
+            other.set_relation(other.name, Relationship(other, 1, 1, 0.5))
+
 
     def get_random_loc(self):
         return random.choices(self.locations)[0]

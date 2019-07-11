@@ -53,8 +53,4 @@ class Character:
         self.goals.append(goal)
 
     def set_relation(self, other, relation):
-        """
-        After creating characters, set relations towards each character. For now, one-dimensional value between 0 and 1.
-        Todo: factorize relationship into different aspects; closeness, appreciation...?
-        """
-        self.relations[other.name] = relation
+        self.relations[other] = relation

@@ -28,7 +28,7 @@ class Situation:
 
     def affect_emotions(self):
         for character in self.speakers:
-            relationship = character.relations[self.main_project.subj.name] > 0.5
+            relationship = character.relations[self.main_project.subj.name].liking["outgoing"] > 0.5
             event_appraisal = self.main_project.appraisal.id > 91
             if self.main_project.appraisal.id is 91:
                 #neutral event, nothing happens
@@ -62,10 +62,7 @@ class Situation:
         sequences = [sequence]
         #pre-project
         if random.random() > 0.8:
-            #random topic: weather etc
-            subj = self.world_state.weather
-            obj = ("quality", random.choices(self.world_state.appraisals)[0])
-            pre_project = Project(subj, obj, "statement", self.main_project.time, True)
+            pre_project = Project.get_new_project(self.speakers, self.main_project, self.world_state)
 
             seq_type = random.choices(ROOT_SEQUENCE_TYPES)[0]
             sequences = self.add_sequences(Sequence(self.speakers, pre_project, seq_type, self.action_types)) + sequences
