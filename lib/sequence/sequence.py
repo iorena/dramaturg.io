@@ -76,12 +76,6 @@ class Sequence():
     def print_sequence(self):
         print(self)
 
-    def generate_new_project(self):
-        """
-        Todo: how to generate new projects? Are new attributes invented for characters etc. and added to the world state?
-        """
-        return Project(random.choices(self.speakers)[0].name)
-
     def __str__(self):
         ret = []
         if self.pre_expansion is not None:

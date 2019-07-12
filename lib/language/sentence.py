@@ -165,7 +165,7 @@ class Sentence:
             popped = as_list.pop()
             if popped == "omistaja":
                 as_list.pop()
-            as_list.insert(0, self.get_interrogative(obj_case))
+            as_list.insert(0, self.get_interrogative(obj_case, type(self.project.obj) is Character))
             as_list.append("?")
         if self.action_type.name in ["TIAB+", "TIAB-"]:
             obj = as_list.pop()
@@ -190,13 +190,30 @@ class Sentence:
             return random.choices(options)
         return word
 
-    def get_interrogative(self, case):
+    def get_interrogative(self, case, person):
+        if person:
+            if case == "GEN":
+                return "kenen"
+            elif case == "ILL":
+                return "keneen"
+            elif case == "INE":
+                return "kenessä"
+            elif case == "ELA":
+                return "kenestä"
+            elif case == "PAR":
+                return "ketä"
+            return "kuka"
+
         if case == "GEN":
             return "minkä"
         elif case == "ILL":
             return "mihin"
         elif case == "INE":
             return "missä"
+        elif case == "ELA":
+            return "mistä"
+        elif case == "PAR":
+            return "mitä"
         return "mikä"
 
     def get_styled_sentence(self):

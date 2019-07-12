@@ -1,11 +1,11 @@
-import copy
-
 from concepts.character import Character
 from concepts.location import Location
 from concepts.worldobject import WorldObject
 from concepts.affect.relationship import Relationship
+from concepts.affect.emotion import Emotion
 
 import random
+import copy
 
 
 class WorldState:
@@ -62,6 +62,20 @@ class WorldState:
             if other.characters[i].attributes != self.characters[i].attributes:
                 return False
         return True
+
+    def get_opposite(self, obj):
+        if type(obj) is Character:
+            choices = copy.copy(self.characters)
+            choices.remove(obj)
+        if type(obj) is Location:
+            choices = copy.copy(self.locations)
+        if type(obj) is WorldObject:
+            choices = copy.copy(self.objects)
+        if type(obj) is Emotion:
+            opposite = Emotion(None, 1 - obj.pleasure, 1 - obj.arousal, 1 - obj.dominance)
+        else:
+            opposite = random.choices(choices)[0]
+        return opposite
 
     """
     Functions for executing story points that change the world state

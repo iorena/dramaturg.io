@@ -44,12 +44,19 @@ class Project:
 
     def get_new_project(speakers, main_project, world_state):
         #random topic: weather etc
-        if random.random() > 0.5:
+        rand = random.random()
+        if rand > 0.7:
             subj = world_state.weather
             obj = ("quality", random.choices(world_state.appraisals)[0])
             project = Project(subj, obj, "statement", main_project.time, True)
+        #opposite topic
+        elif rand > 0.3 and main_project.type is "statement":
+            obj = (main_project.obj_type, world_state.get_opposite(main_project.obj))
+            project = Project(main_project.subj, obj, "statement", main_project.time, False)
+        #relationship between characters
         else:
             subj = speakers[0]
             obj = ("relationship", speakers[1])
             project = Project(subj, obj, "statement", "present", True)
+
         return project
