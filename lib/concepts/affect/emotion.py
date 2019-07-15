@@ -1,9 +1,11 @@
+import csv
+
 
 class Emotion:
     def __init__(self, name, pleasure, arousal, dominance):
         self.name = name
         if name is None:
-            self.name = self.identify_emotion(pleasure, arousal, dominance)
+            self.name = Emotion.identify_emotion(pleasure, arousal, dominance)
         self.pleasure = pleasure
         self.arousal = arousal
         self.dominance = dominance
@@ -20,8 +22,8 @@ class Emotion:
         pleasure = pleasure > 0
         arousal = arousal > 0
         dominance = dominance > 0
-        as_string = self.get_sign(pleasure) + "P" + self.get_sign(arousal) + "A" + self.get_sign(dominance) + "D"
-        with open(path) as csv_file:
+        as_string = Emotion.get_sign(pleasure) + "P" + Emotion.get_sign(arousal) + "A" + Emotion.get_sign(dominance) + "D"
+        with open("../data/emotion_to_pad.csv") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter="\t")
             for row in csv_reader:
                 if row[4] == as_string:
@@ -29,7 +31,7 @@ class Emotion:
         return "unknown"
 
 
-    def get_sign(self, value):
+    def get_sign(value):
         if value:
             return "+"
         return "-"

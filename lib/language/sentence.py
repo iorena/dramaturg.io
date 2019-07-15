@@ -24,6 +24,8 @@ class Sentence:
             self.subj = listeners[0].name
         elif action_type.subj == "Speaker":
             self.subj = speaker.name
+        elif action_type.subj == "parent":
+            self.subj = project.parent.subj
         else:
             self.subj = action_type.subj
 
