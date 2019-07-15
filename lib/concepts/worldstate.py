@@ -12,11 +12,14 @@ class WorldState:
         if old is None:
             self.initialize_story_world()
         else:
+            self.appraisals = old.appraisals
             self.locations = old.locations
             self.characters = old.characters
             self.objects = old.objects
+            self.weather = old.weather
 
     def initialize_story_world(self):
+        self.appraisals = [WorldObject(90, "horrible"), WorldObject(91, "bad"), WorldObject(92, "okay"), WorldObject(93, "good"), WorldObject(94, "great")]
         self.locations = [Location(), Location()]
         self.characters = [Character(self.get_random_loc()), Character(self.get_random_loc())]
         self.objects = [WorldObject()]
@@ -24,8 +27,7 @@ class WorldState:
             owner = random.choices(self.characters)[0]
             obj.set_owner(owner)
             obj.set_location(owner.attributes["location"])
-        self.weather = WorldObject(None, "sää")
-        self.appraisals = [WorldObject(None, "bad"), WorldObject(None, "okay"), WorldObject(None, "good")]
+        self.weather = WorldObject(95, "sää")
         #set relationships
         for char in self.characters:
             for other in self.characters:

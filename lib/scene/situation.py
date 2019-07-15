@@ -1,6 +1,11 @@
 from sequence.sequence import Sequence
 from language.action_types import ActionType
 from concepts.project import Project
+from concepts.character import Character
+
+from loaders.emotions_loader import load_emotions
+
+EMOTIONS = load_emotions()
 
 import random
 
@@ -17,7 +22,34 @@ class Situation:
         self.main_project = main_project
         self.location = location
         self.action_types = ActionType.load_action_types()
+        if element_type == "P" and type(self.main_project.subj) is Character:
+            self.affect_emotions()
         self.sequences = self.create_sequences()
+
+    def affect_emotions(self):
+        for character in self.speakers:
+            relationship = character.relations[self.main_project.subj.name] > 0.5
+            event_appraisal = self.main_project.appraisal.id > 91
+            if self.main_project.appraisal.id is 91:
+                #neutral event, nothing happens
+                return
+            is_self = character is self.main_project.subj
+            emotion = EMOTIONS[self.get_emotion(is_self, relationship, event_appraisal)]
+            character.mood.affect_mood(emotion)
+
+    def get_emotion(self, is_self, relationship, event):
+        if is_self and event:
+            return "joy"
+        if is_self and not event:
+            return "distress"
+        if relationship and event:
+            return "happy_for"
+        if relationship and not event:
+            return "pity"
+        if not relationship and event:
+            return "resentment"
+        if not relationship and not event:
+            return "gloating"
 
     def create_sequences(self):
         """
@@ -49,10 +81,12 @@ class Situation:
             subj = sequence.project.obj
             attributes = list(sequence.project.obj.attributes.items())
             if len(attributes) is 0:
-                obj = ("quality", random.choices(self.world_state.appraisals)[0])
+                #don't stack "hyvä on mainio" - type chains
+                if sequence.project.obj_type in ["quality", "appraisal", "affect"]:
+                    return sequences
+                obj = ("quality", self.speakers[0].perception.objects[subj.id])
             else:
                 obj = random.choices(attributes)[0]
-                print(obj)
             post_project = Project(subj, obj, "statement", self.main_project.time, True)
 
             seq_type = random.choices(ROOT_SEQUENCE_TYPES)[0]

@@ -4,6 +4,7 @@ from syntaxmaker.syntax_maker import (create_verb_pharse, create_personal_pronou
                                       negate_verb_pharse)
 from syntaxmaker.inflector import inflect
 from language.dictionary import word_dictionary, reversed_word_dictionary
+from concepts.character import Character
 
 import random
 
@@ -16,7 +17,7 @@ class Sentence:
         self.project = project
         #subject
         if action_type.subj == "subject":
-            self.subj = project.subj
+            self.subj = project.subj.name
         elif action_type.subj == "object":
             self.subj = project.obj.name
         elif action_type.subj == "Listener":
@@ -112,7 +113,7 @@ class Sentence:
         if self.obj is not None:
             obj = create_phrase("NP", obj, {"CASE": obj_case})
             add_advlp_to_vp(vp, obj)
-            if self.verb is "olla" and self.obj_type is "owner":
+            if self.verb is "olla" and self.obj_type is "owner" and type(self.project.subj) is Character:
                 pred = create_phrase("NP", "omistaja")
                 add_advlp_to_vp(vp, pred)
 
@@ -148,7 +149,7 @@ class Sentence:
             as_list.insert(len(as_list) - 1, pers + case)
 
         if self.action_type.name == "TIPB":
-            if self.obj_type == "owner" and self.verb == "olla":
+            if self.obj_type == "owner" and self.verb == "olla" and type(self.project.subj) is Character:
                 as_list.insert(0, "omistaja")
             #add appropriate interrogative
             popped = as_list.pop()
