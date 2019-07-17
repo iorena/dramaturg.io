@@ -30,6 +30,9 @@ class Situation:
         self.sequences = self.create_sequences()
 
     def affect_emotions(self):
+        """
+        When an event happens to a character, characters react emotionally to it
+        """
         for character in self.speakers:
             relationship = character.relations[self.main_project.subj.name].liking["outgoing"] > 0.5
             event_appraisal = self.main_project.appraisal.id > 91
@@ -66,16 +69,29 @@ class Situation:
         """
         sequences = [sequence]
         #pre-project
-        if random.random() > 0.8:
-            pre_project = Project.get_new_project(self.speakers, self.main_project, self.world_state)
+        #speaker is chosen from characters weighted by dominance
+        dominances = list(map(lambda x: x.mood.dominance, self.speakers))
+        character = random.choices(self.speakers, dominances)[0]
 
-            mood = self.speakers[0].mood
+        if random.random() < character.mood.arousal:
+            speakers = self.speakers
+            speakers.remove(character)
+            speakers.insert(0, character)
+
+            pre_project = Project.get_new_project(speakers, self.main_project, self.world_state)
+
+            mood = speakers[0].mood
             distances = list(map(lambda x: norm(array((mood.pleasure, mood.arousal, mood.dominance)) - array((PAD_VALUES[x]))), ROOT_SEQUENCE_TYPES))
             seq_type = random.choices(ROOT_SEQUENCE_TYPES, distances)[0]
-            sequences = self.add_sequences(Sequence(self.speakers, pre_project, seq_type, self.action_types, self.world_state, sequence.first_pair_part)) + sequences
+            sequences = self.add_sequences(Sequence(speakers, pre_project, seq_type, self.action_types, self.world_state, sequence.first_pair_part)) + sequences
 
         #post-project
-        if random.random() > 0.8:
+        character = random.choices(self.speakers, dominances)[0]
+        if random.random() < character.mood.arousal:
+            speakers = self.speakers
+            speakers.remove(character)
+            speakers.insert(0, character)
+
             #attribute expansion of main topic
             subj = sequence.project.obj
             attributes = list(sequence.project.obj.attributes.items())
@@ -88,12 +104,11 @@ class Situation:
                 obj = random.choices(attributes)[0]
 
             post_project = Project(subj, obj, "statement", self.main_project.time, True)
-            mood = self.speakers[0].mood
+            mood = speakers[0].mood
             distances = list(map(lambda x: norm(array((mood.pleasure, mood.arousal, mood.dominance)) - array((PAD_VALUES[x]))), ROOT_SEQUENCE_TYPES))
             seq_type = random.choices(ROOT_SEQUENCE_TYPES, distances)[0]
 
-
-            sequences = sequences + self.add_sequences(Sequence(self.speakers, post_project, seq_type, self.action_types, self.world_state, sequence.second_pair_part))
+            sequences = sequences + self.add_sequences(Sequence(speakers, post_project, seq_type, self.action_types, self.world_state, sequence.second_pair_part))
         return sequences
 
     def to_json(self):

@@ -39,8 +39,12 @@ class Sequence():
         self.post_expansion = self.generate_expansion("post_expansions", self.second_pair_part)
 
     def generate_expansion(self, position, parent, switch_speakers=False):
+        speakers = self.speakers
+        if switch_speakers:
+            speakers = [speakers[1], speakers[0]]
+
         expansion = None
-        if random.random() > 0.8:
+        if random.random() < speakers[0].mood.arousal:
             new_project = self.project
             if position not in EXPANSIONS[self.seq_type]:
                 return None
@@ -48,7 +52,7 @@ class Sequence():
             if pool[0] == "":
                 return None
 
-            mood = self.speakers[0].mood
+            mood = speakers[0].mood
             distances = list(map(lambda x: norm(array((mood.pleasure, mood.arousal, mood.dominance)) - array((PAD_VALUES[x]))), pool))
 
             new_seq_type = random.choices(pool, distances)[0]
@@ -65,9 +69,6 @@ class Sequence():
 
                     new_project = Project(target, attribute, "statement", "present", True)
 
-            speakers = self.speakers
-            if switch_speakers:
-                speakers = [speakers[1], speakers[0]]
 
             expansion = Sequence(speakers, new_project, new_seq_type, self.action_types, self.world_state, parent)
         return expansion
