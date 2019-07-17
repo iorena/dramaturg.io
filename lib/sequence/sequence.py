@@ -1,14 +1,17 @@
-from loaders import load_expansion_types
-from loaders import load_sequence_types
+from loaders import load_expansion_types, load_sequence_types, load_pad_values
 from sequence.turn import Turn
 from concepts.project import Project
 
 import random
 import copy
 
+from numpy import array
+from numpy.linalg import norm
+
 POS_SEQUENCES, NEG_SEQUENCES = load_sequence_types()
 
 EXPANSIONS = load_expansion_types()
+PAD_VALUES = load_pad_values()
 
 
 class Sequence():
@@ -42,10 +45,13 @@ class Sequence():
             if position not in EXPANSIONS[self.seq_type]:
                 return None
             pool = EXPANSIONS[self.seq_type][position]
-            new_seq_type = random.choices(pool)[0]
-            # todo: implement more sequence types
-            if new_seq_type in ["", "SJTK", "SJPM"]:
+            if pool[0] == "":
                 return None
+
+            mood = self.speakers[0].mood
+            distances = list(map(lambda x: norm(array((mood.pleasure, mood.arousal, mood.dominance)) - array((PAD_VALUES[x]))), pool))
+
+            new_seq_type = random.choices(pool, distances)[0]
             if new_seq_type == "SKORB":
                 # new project with old object as subject? check if there is an object to take?
                 if self.project.obj:

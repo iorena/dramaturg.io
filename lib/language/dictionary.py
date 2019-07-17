@@ -7,14 +7,17 @@ verb_dictionary = {
 }
 noun_dictionary = {
     "disappointment": ["surullinen", "pettynyt"],
-    "happy_for": ["onnellinen", "iloinen", "tyytyväinen"],
+    "gratification": ["tyytyväinen"],
+    "happy_for": ["onnellinen", "iloinen"],
     "kyllä": ["kyllä", "joo", "aivan", "niin"],
     "mitä": ["mitä", "häh", "täh", "anteeksi"],
     "great": ["mahtava", "loistava", "upea"],
     "good": ["hyvä", "mainio", "kaunis"],
     "okay": ["kelvollinen", "mukiinmenevä"],
     "bad": ["huono", "onneton", "kurja"],
-    "horrible": ["surkea", "hirveä"]
+    "horrible": ["surkea", "hirveä"],
+    "pahus": ["pahus", "harmi", "sääli"],
+    "hienoa": ["mainiota", "hienoa", "hyvä"]
 }
 reversed_verb_dictionary = {
     "siirtyä": [("viedä", "ILL"), ("kuljettaa", "ILL")],
