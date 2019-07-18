@@ -3,7 +3,7 @@ from syntaxmaker.syntax_maker import (create_verb_pharse, create_personal_pronou
                                       add_advlp_to_vp, set_vp_mood_and_tense, turn_vp_into_prefect,
                                       negate_verb_pharse)
 from syntaxmaker.inflector import inflect
-from language.dictionary import verb_dictionary, noun_dictionary, reversed_verb_dictionary
+from language.dictionary import verb_dictionary, noun_dictionary, reversed_verb_dictionary, evaluations_dictionary
 from concepts.character import Character
 
 import random
@@ -182,6 +182,10 @@ class Sentence:
         return as_list
 
     def get_synonym(self, word):
+        if word == "EVAL":
+            appraisal = self.project.get_appraisal(self.speaker)
+            options = evaluations_dictionary[appraisal.name]
+            return random.choices(options)[0]
         if word in noun_dictionary:
             return random.choices(noun_dictionary[word])[0]
         if word in verb_dictionary:
@@ -189,7 +193,7 @@ class Sentence:
             return random.choices(options)[0]
         if self.reversed and word in reversed_verb_dictionary:
             options = reversed_verb_dictionary[word]
-            return random.choices(options)
+            return random.choices(options)[0]
         return word
 
     def get_interrogative(self, case, person):

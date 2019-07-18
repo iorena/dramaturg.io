@@ -35,8 +35,8 @@ class Situation:
         """
         for character in self.speakers:
             relationship = character.relations[self.main_project.subj.name].liking["outgoing"] > 0.5
-            event_appraisal = self.main_project.appraisal.id > 91
-            if self.main_project.appraisal.id is 91:
+            event_appraisal = self.main_project.get_appraisal(character).id > 91
+            if self.main_project.get_appraisal(character).id is 91:
                 #neutral event, nothing happens
                 return
             emotion = EMOTIONS[self.get_emotion(relationship, event_appraisal)]

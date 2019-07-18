@@ -23,3 +23,11 @@ reversed_verb_dictionary = {
     "siirtyä": [("viedä", "ILL"), ("kuljettaa", "ILL")],
     "hankkia": [("ostaa", "GEN"), ("hankkia", "GEN"), ("hommata", "GEN")]
 }
+
+evaluations_dictionary = {
+    "great": ["vau", "loistavaa", "mahtavaa"],
+    "good": ["hyvä", "hienoa", "jee"],
+    "okay": ["okei", "selvä", "jep"],
+    "bad": ["pahus", "hitto", "eikä"],
+    "horrible": ["ei helvetti", "perkele", "ei voi olla totta"]
+}
