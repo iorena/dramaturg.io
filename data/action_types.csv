@@ -1,4 +1,4 @@
-toimintotyyppi	kieltomuoto?	kysymys?	subjekti	verbi	“objekti”	apuverbi	modus	aikamuoto	Pre-vp 
+toimintotyyppi	kieltomuoto?	verbi kysymysmuodossa	subjekti	verbi	“objekti”	apuverbi	modus	aikamuoto	Pre-vp
 TER	FALSE	FALSE	None	None	None	None	None	None	moi
 KÄS	FALSE	FALSE	subject	project	object	None	IMPV	prees	None
 TOTN	FALSE	FALSE	subject	project	object	None	INDV	prees	hyvä on
@@ -6,6 +6,7 @@ TOTS	TRUE	FALSE	subject	project	object	None	INDV	prees	None
 TOP	FALSE	TRUE	subject	project	object	None,voida,haluta	COND	prees	None
 TOE	FALSE	FALSE	subject	project	object	voida,haluta	COND	prees	None
 TIP	FALSE	TRUE	subject	project	object	None	INDV	prees	None
+TIPC	FALSE	FALSE	subject	project	object	None	INDV	prees	miksi
 TIPB	FALSE	FALSE	subject	project	interrogative	None	INDV	prees	None
 TIA+	FALSE	FALSE	subject	project	object	None	INDV	prees	kyllä
 TIA-	TRUE	FALSE	subject	project	object	None	INDV	prees	None

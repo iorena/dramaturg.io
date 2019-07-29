@@ -9,7 +9,7 @@ EMOTIONS = load_emotions()
 
 import random
 
-ROOT_SEQUENCE_TYPES = ["SKÄS", "STIP", "STOP", "STOE", "SVÄI", "SKAN"]
+ROOT_SEQUENCE_TYPES = ["STIPC"]#["SKÄS", "STIP", "STIPC", "STOP", "STOE", "SVÄI", "SKAN"]
 SEQUENCE_TYPES = {"present": {"G": ["STOE"], "A": ["SKÄS", "STIP", "STOP"], "P": ["SKAN", "SVÄI"], "IE": ["SKAN"]},
         "past": {"G": ["STOE"], "A": ["STIP", "STIPB"], "P": ["SKAN", "SVÄI"], "IE": ["SKAN"]}}
 
@@ -28,7 +28,7 @@ class Situation:
 
     def affect_emotions(self):
         for character in self.speakers:
-            relationship = character.relations[self.main_project.subj.name] > 0.5
+            relationship = character.relations[self.main_project.subj.name].liking["outgoing"] > 0.5
             event_appraisal = self.main_project.appraisal.id > 91
             if self.main_project.appraisal.id is 91:
                 #neutral event, nothing happens
@@ -56,7 +56,7 @@ class Situation:
         Generates sequences for each project
         """
         main_sequence_type = random.choices(SEQUENCE_TYPES[self.main_project.time][self.element_type])[0]
-        main_sequence = Sequence(self.speakers, self.main_project, main_sequence_type, self.action_types)
+        main_sequence = Sequence(self.speakers, self.main_project, main_sequence_type, self.action_types, self.world_state)
         sequences = self.add_sequences(main_sequence)
         return sequences
 
@@ -67,17 +67,14 @@ class Situation:
         sequences = [sequence]
         #pre-project
         if random.random() > 0.8:
-            #random topic: weather etc
-            subj = self.world_state.weather
-            obj = ("quality", random.choices(self.world_state.appraisals)[0])
-            pre_project = Project(subj, obj, "statement", self.main_project.time, True)
+            pre_project = Project.get_new_project(self.speakers, self.main_project, self.world_state)
 
             seq_type = random.choices(ROOT_SEQUENCE_TYPES)[0]
-            sequences = self.add_sequences(Sequence(self.speakers, pre_project, seq_type, self.action_types)) + sequences
+            sequences = self.add_sequences(Sequence(self.speakers, pre_project, seq_type, self.action_types, self.world_state, sequence.first_pair_part)) + sequences
 
         #post-project
         if random.random() > 0.8:
-            #expansion of main topic
+            #attribute expansion of main topic
             subj = sequence.project.obj
             attributes = list(sequence.project.obj.attributes.items())
             if len(attributes) is 0:
@@ -87,10 +84,12 @@ class Situation:
                 obj = ("quality", self.speakers[0].perception.objects[subj.id])
             else:
                 obj = random.choices(attributes)[0]
-            post_project = Project(subj, obj, "statement", self.main_project.time, True)
 
+            post_project = Project(subj, obj, "statement", self.main_project.time, True)
             seq_type = random.choices(ROOT_SEQUENCE_TYPES)[0]
-            sequences = sequences + self.add_sequences(Sequence(self.speakers, post_project, seq_type, self.action_types))
+
+
+            sequences = sequences + self.add_sequences(Sequence(self.speakers, post_project, seq_type, self.action_types, self.world_state, sequence.second_pair_part))
         return sequences
 
     def to_json(self):

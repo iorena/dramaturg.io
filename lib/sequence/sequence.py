@@ -12,12 +12,13 @@ EXPANSIONS = load_expansion_types()
 
 
 class Sequence():
-    def __init__(self, speakers, project, seq_type, action_types, parent=None):
+    def __init__(self, speakers, project, seq_type, action_types, world_state, parent=None):
         self.speakers = speakers
         self.project = project
         self.seq_type = seq_type
         self.action_types = action_types
         self.parent = parent
+        self.world_state = world_state
         self.pair_types = POS_SEQUENCES if project.valence else NEG_SEQUENCES
         reverse = False
         if seq_type in ["SKÄS"] and self.speakers[0].name == self.project.subj.name and project.verb != "olla":
@@ -61,7 +62,8 @@ class Sequence():
             speakers = self.speakers
             if switch_speakers:
                 speakers = [speakers[1], speakers[0]]
-            expansion = Sequence(speakers, new_project, new_seq_type, self.action_types, parent)
+
+            expansion = Sequence(speakers, new_project, new_seq_type, self.action_types, self.world_state, parent)
         return expansion
 
     def generate_pair_part(self, speaker, action_name, reverse):
@@ -69,18 +71,16 @@ class Sequence():
             action_type = self.action_types[self.parent.action_type.name]
         else:
             action_type = self.action_types[action_name]
+        project = self.project
+        if action_name == "KAN" and self.seq_type == "STIPC":
+            project =  Project.get_new_project(self.speakers, self.project, self.world_state)
+
         listeners = copy.copy(self.speakers)
         listeners.remove(speaker)
-        return Turn(speaker, listeners, action_type, self.project, reverse)
+        return Turn(speaker, listeners, action_type, project, reverse)
 
     def print_sequence(self):
         print(self)
-
-    def generate_new_project(self):
-        """
-        Todo: how to generate new projects? Are new attributes invented for characters etc. and added to the world state?
-        """
-        return Project(random.choices(self.speakers)[0].name)
 
     def __str__(self):
         ret = []
