@@ -17,7 +17,8 @@ noun_dictionary = {
     "bad": ["huono", "onneton", "kurja"],
     "horrible": ["surkea", "hirveä"],
     "pahus": ["pahus", "harmi", "sääli"],
-    "hienoa": ["mainiota", "hienoa", "hyvä"]
+    "hienoa": ["mainiota", "hienoa", "hyvä"],
+    "moi": ["terve", "moi", "hei"]
 }
 reversed_verb_dictionary = {
     "siirtyä": [("viedä", "ILL"), ("kuljettaa", "ILL")],
