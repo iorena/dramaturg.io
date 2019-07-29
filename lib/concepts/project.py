@@ -15,7 +15,6 @@ class Project:
         self.time = time
         if self.obj_type is "quality":
             time = "present"
-        self.appraisal = self.get_appraisal()
         self.valence = valence
 
     def get_verb(self):
@@ -33,7 +32,7 @@ class Project:
 
         return "olla"
 
-    def get_appraisal(self):
+    def get_appraisal(self, character):
         if self.obj_type is "quality" and type(self.obj) is WorldObject:
             return self.obj
         if self.obj_type is "location":

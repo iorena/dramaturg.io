@@ -24,3 +24,5 @@ KOB	FALSE	TRUE	subject	None	None	None	INDV	prees	mikä
 KOBV	FALSE	FALSE	subject	None	attribute	None	INDV	prees	None
 MYÖ	FALSE	FALSE	subject	project	object	None	INDV	prees	totta,
 KII	TRUE	FALSE	subject	project	object	None	INDV	prees	ei
+EVA	FALSE	FALSE	None	None	None	None	INDV	prees	EVAL
+JTK	FALSE	TRUE	None	None	None	None	INDV	prees	niinkö
