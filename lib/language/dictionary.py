@@ -18,7 +18,11 @@ noun_dictionary = {
     "horrible": ["surkea", "hirveä"],
     "pahus": ["pahus", "harmi", "sääli"],
     "hienoa": ["mainiota", "hienoa", "hyvä"],
-    "moi": ["terve", "moi", "hei"]
+    "moi": ["terve", "moi", "hei"],
+    "sunny": ["aurinkoinen"],
+    "cloudy": ["pilvinen"],
+    "rainy": ["sateinen"],
+    "stormy": ["myrskyinen"]
 }
 reversed_verb_dictionary = {
     "siirtyä": [("viedä", "ILL"), ("kuljettaa", "ILL")],

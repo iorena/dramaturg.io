@@ -3,6 +3,7 @@ from concepts.worldobject import WorldObject
 import random
 
 APPRAISALS = ["horrible", "bad", "okay", "good", "great"]
+WEATHERS = ["sunny", "cloudy", "rainy", "stormy"]
 
 
 class Location:
@@ -18,7 +19,8 @@ class Location:
         else:
             self.id = id
         score = Location.appraisals[self.id]
-        self.attributes = {"appraisal": WorldObject(90 + score, APPRAISALS[score])}
+        weather_score = random.randint(0, 3)
+        self.attributes = {"appraisal": WorldObject(90 + score, APPRAISALS[score]), "weather": WorldObject(95 + weather_score, WEATHERS[weather_score])}
         location_type = random.choices(Location.names)[0]
         Location.names.remove(location_type)
         self.name = location_type

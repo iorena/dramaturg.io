@@ -18,9 +18,11 @@ class WorldState:
             self.characters = old.characters
             self.objects = old.objects
             self.weather = old.weather
+            self.weather_types = old.weather_types
 
     def initialize_story_world(self):
         self.appraisals = [WorldObject(90, "horrible"), WorldObject(91, "bad"), WorldObject(92, "okay"), WorldObject(93, "good"), WorldObject(94, "great")]
+        self.weather_types = [WorldObject(95, "sunny"), WorldObject(96, "cloudy"), WorldObject(97, "rainy"), WorldObject(98, "stormy")]
         self.locations = [Location(), Location()]
         self.characters = [Character(self.get_random_loc()), Character(self.get_random_loc())]
         self.objects = [WorldObject()]
@@ -69,7 +71,10 @@ class WorldState:
             choices.remove(obj)
         if type(obj) is Location:
             choices = copy.copy(self.locations)
-        if type(obj) is WorldObject:
+        if obj in self.weather_types:
+            choices = copy.copy(self.weather_types)
+            choices.remove(obj)
+        elif type(obj) is WorldObject:
             choices = copy.copy(self.objects)
         if type(obj) is Emotion:
             opposite = Emotion(None, 1 - obj.pleasure, 1 - obj.arousal, 1 - obj.dominance)

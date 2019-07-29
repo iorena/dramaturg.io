@@ -103,7 +103,13 @@ class Situation:
                 #don't stack "hyvä on mainio" - type chains
                 if sequence.project.obj_type in ["quality", "appraisal", "affect"]:
                     return sequences
-                obj = ("quality", self.speakers[0].perception.objects[subj.id])
+                if subj.id < 90:
+                    obj = ("quality", self.speakers[0].perception.objects[subj.id])
+                elif subj.id < 95:
+                    obj = ("quality", self.speakers[0].perception.appraisals[subj.id - 90])
+                else:
+                    obj = ("quality", self.speakers[0].perception.weather_types[subj.id - 95])
+
             else:
                 obj = random.choices(attributes)[0]
 

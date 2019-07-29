@@ -40,8 +40,10 @@ class Sentence:
         if project.obj is None:
             self.obj = None
         elif action_type.obj == "object":
+            print("HAaloo", type(project.obj), project.obj)
             self.obj = project.obj.name
         elif action_type.obj == "attribute":
+            print("HAaloo", type(project.obj), project.obj)
             self.obj = project.obj.name
             self.attribute = True
         else:
