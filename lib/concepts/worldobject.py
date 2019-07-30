@@ -13,6 +13,8 @@ class WorldObject:
         else:
             self.id = id
         self.attributes = {}
+        if self.id in range(90, 95):
+            self.attributes["appraisal"] = self
         if name is None:
             object_type = random.choices(WorldObject.names)[0]
             WorldObject.names.remove(object_type)
