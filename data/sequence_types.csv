@@ -1,6 +1,7 @@
 sequence name	positive 1st pair part	positive 2nd pair part	negative 1st pair part	negative 2nd pair part
 SKÄS	KÄS	TOTN	KÄS	TOTS
 STIP	TIP	TIA+	TIP	TIA-
+STIP	TIP	TOR	TIP	TOR
 STIPB	TIPB	TIAB+	TIPB	TIAB-
 STIPC	TIPC	KAN	TIPC	KAN
 STOP	TOP	TOTN	TOP	TOTS
@@ -13,4 +14,4 @@ SVÄI	VÄI	MYÖ	VÄI	KII
 STOE	TOE	TOTN	TOE	TOTS
 SJPM	KAN		KAN	
 SJTK	JTK		JTK	
-STER	TER	TER		
+STER	TER	TER	TER	TER

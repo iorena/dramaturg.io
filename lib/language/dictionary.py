@@ -3,7 +3,8 @@ verb_dictionary = {
     "siirtyä": [("mennä", "ILL"), ("matkustaa", "ILL"), ("liikkua", "ILL"), ("juosta", "ILL")],
     "pitää": [("tykätä", "ELA"), ("pitää", "ELA"), ("rakastaa", "PAR")],
     "vihata": [("vihata", "PAR"), ("inhota", "PAR")],
-    "hankkia": [("ostaa", "GEN"), ("hankkia", "GEN"), ("hommata", "GEN"), ("saada", "GEN")]
+    "hankkia": [("ostaa", "GEN"), ("hankkia", "GEN"), ("hommata", "GEN"), ("saada", "GEN")],
+    "luulla": [("luulla", "PAR")]
 }
 noun_dictionary = {
     "disappointment": ["surullinen", "pettynyt"],
