@@ -44,7 +44,7 @@ class Sequence():
             speakers = [speakers[1], speakers[0]]
 
         expansion = None
-        if random.random() < speakers[0].mood.arousal:
+        if random.uniform(-1, 1) < speakers[0].mood.arousal:
             new_project = self.project
             if position not in EXPANSIONS[self.seq_type]:
                 return None

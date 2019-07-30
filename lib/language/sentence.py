@@ -40,10 +40,8 @@ class Sentence:
         if project.obj is None:
             self.obj = None
         elif action_type.obj == "object":
-            print("HAaloo", type(project.obj), project.obj)
             self.obj = project.obj.name
         elif action_type.obj == "attribute":
-            print("HAaloo", type(project.obj), project.obj)
             self.obj = project.obj.name
             self.attribute = True
         else:
@@ -176,7 +174,10 @@ class Sentence:
             as_list.append(inflect(obj, "N", {"PERS": "3", "CASE": obj_case, "NUM": "SG"}))
 
         if self.action_type.pre_add is not None:
-            as_list.insert(0, self.get_synonym(self.action_type.pre_add))
+            add = self.get_synonym(self.action_type.pre_add)
+            as_list.insert(0, add)
+            if self.speaker.mood.arousal < random.uniform(-1, 1):
+                as_list = [add]
 
         if self.action_type.ques:
             as_list.append("?")
