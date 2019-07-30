@@ -176,7 +176,7 @@ class Sentence:
         if self.action_type.pre_add is not None:
             add = self.get_synonym(self.action_type.pre_add)
             as_list.insert(0, add)
-            if self.speaker.mood.arousal < random.uniform(-1, 1):
+            if self.speaker.mood.arousal < random.uniform(-0.5, 0.5):
                 as_list = [add]
 
         if self.action_type.ques:

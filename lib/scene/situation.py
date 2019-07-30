@@ -77,7 +77,7 @@ class Situation:
         dominances = list(map(lambda x: x.mood.dominance, self.speakers))
         character = random.choices(self.speakers, dominances)[0]
 
-        if random.uniform(-1, 1) < character.mood.arousal:
+        if random.uniform(-0.5, 1.5) < character.mood.arousal:
             speakers = self.speakers
             speakers.remove(character)
             speakers.insert(0, character)
@@ -91,7 +91,7 @@ class Situation:
 
         #post-project
         character = random.choices(self.speakers, dominances)[0]
-        if random.uniform(-1, 1) < character.mood.arousal:
+        if random.uniform(-0.5, 1.5) < character.mood.arousal:
             speakers = self.speakers
             speakers.remove(character)
             speakers.insert(0, character)
