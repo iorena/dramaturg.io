@@ -80,39 +80,44 @@ class Story:
         """
         situations = []
         added = []
-        main_char = self.world_state.characters[0]
-        #add topics that introduce the starting state of the story
+        main_char = random.choices(self.world_state.characters)[0]
+        other_char = self.world_state.characters[0] if main_char.id == 1 else self.world_state.characters[1]
+        disagreement = self.get_disagreement(other_char)
+        #apply differing...
+        if disagreement.attribute_name == "appraisal":
+            print("moi")
+        #...or incorrect belief
+        self.world_state.perception(main_char, disagreement, True)
+
+        #add topics that introduce the starting state of the story, alkutilanne
+        #todo: make sure at this point to talk only about agreed topics
         for attribute in main_char.attributes.items():
             situations.append(Situation(self.world_state, "P", self.world_state.characters, Project(main_char, attribute, "statement", "present", True), main_char.attributes["location"]))
-        for plotpoint in self.graph.nodes:
-            predecessors = list(self.graph.predecessors(plotpoint))
-            if plotpoint.elem is "G":
-                topic_type = "action"
-                success = True
-            if plotpoint.elem is "A":
-                topic_type = "action"
-                success = plotpoint.goal.start_value != plotpoint.goal.end_value
-            if plotpoint.elem is "P":
-                topic_type = "statement"
-                success = plotpoint.goal.start_value != plotpoint.goal.end_value
-            if plotpoint.elem is "IE":
-                topic_type = "statement"
-                success = True
-            situations.append(Situation(self.world_state, plotpoint.elem, self.world_state.characters, Project(plotpoint.subj, plotpoint.transition, topic_type, "present", success), main_char.attributes["location"]))
-            self.world_state.change(plotpoint.elem, plotpoint.subj, plotpoint.goal, success)
-            added.append(plotpoint)
-
-            if len(predecessors) > 1:
-                for predecessor in predecessors:
-                    if predecessor not in added:
-                        if predecessor.elem is "A":
-                            situations.append(Situation(self.world_state, "P", self.world_state.characters, Project(predecessor.subj, predecessor.transition, "statement", "past", True), main_char.attributes["location"]))
-                            situations.append(Situation(self.world_state, predecessor.elem, self.world_state.characters, Project(predecessor.subj, predecessor.transition, "action", "past", True), main_char.attributes["location"]))
-                            added.append(plotpoint)
-            if len(list(self.graph.successors(plotpoint))) is 0:
-                break
+        #add conflict: introduce discussion about disagreement topic
+        situations.append(Situation(self.world_state, "P", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present", False), main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, "IE", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present", False), main_char.attributes["location"]))
+        #turning point: plan to action
+        situations.append(Situation(self.world_state, "G", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present", False), main_char.attributes["location"]))
+        #plan gets excecuted
+        situations.append(Situation(self.world_state, "A", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present", False), main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, "P", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present", False), main_char.attributes["location"]))
+        #resolution
+        situations.append(Situation(self.world_state, "IE", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present", False), main_char.attributes["location"]))
 
         return situations
+
+    def get_disagreement(self, char):
+        """
+        Get one random part of the worldstate that characters disagree on, that is the conflict of the story
+        """
+        pool = []
+        for location in char.perception.locations:
+            for attribute in location.attributes:
+                pool.append(Transition(location, attribute, location.attributes[attribute], self.world_state.get_opposite_attribute(location.attributes[attribute])))
+        for obj in char.perception.objects:
+            for attribute in obj.attributes:
+                pool.append(Transition(obj, attribute, obj.attributes[attribute], self.world_state.get_opposite_attribute(obj.attributes[attribute])))
+        return random.choices(pool)[0]
 
     def to_json(self):
         return str(self)
