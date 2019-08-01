@@ -154,7 +154,7 @@ class WorldState:
         elif perception.obj in self.characters:
             world_state.characters[perception.obj.id].attributes[perception.attribute_name] = perception.end_value
         elif perception.obj in self.locations:
-            world_state.locations[perception.obj.id - 95].attributes[perception.attribute_name] = perception.end_value
+            world_state.locations[perception.obj.id].attributes[perception.attribute_name] = perception.end_value
         else:
             raise Exception("warning, this shouldn't happen", perception.obj)
 
