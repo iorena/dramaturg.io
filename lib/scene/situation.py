@@ -65,7 +65,7 @@ class Situation:
         return [hello_sequence] + sequences
 
     def create_hello_sequence(self):
-        return Sequence(self.speakers, Project(self.speakers[0], ("greeting", self.speakers[0]), "statement", "present", True), "STER", self.action_types, self.world_state, None)
+        return Sequence(self.speakers, Project(self.speakers[0], ("greeting", self.speakers[0]), "statement", "present"), "STER", self.action_types, self.world_state, None)
 
     def add_sequences(self, sequence):
         """
@@ -113,7 +113,7 @@ class Situation:
             else:
                 obj = random.choices(attributes)[0]
 
-            post_project = Project(subj, obj, "statement", self.main_project.time, True)
+            post_project = Project(subj, obj, "statement", self.main_project.time)
             mood = speakers[0].mood
             distances = list(map(lambda x: norm(array((mood.pleasure, mood.arousal, mood.dominance)) - array((PAD_VALUES[x]))), ROOT_SEQUENCE_TYPES))
             seq_type = random.choices(ROOT_SEQUENCE_TYPES, distances)[0]

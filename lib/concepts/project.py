@@ -7,7 +7,7 @@ APPRAISALS = ["horrible", "bad", "okay", "good", "great"]
 
 
 class Project:
-    def __init__(self, subj, obj, topic_type, time, valence):
+    def __init__(self, subj, obj, topic_type, time):
         self.subj = subj
         self.obj_type = obj[0]
         self.obj = obj[1]
@@ -16,7 +16,6 @@ class Project:
         self.time = time
         if self.obj_type is "quality":
             time = "present"
-        self.valence = valence
 
     def get_verb(self):
         if self.obj_type is "relationship":
@@ -41,21 +40,29 @@ class Project:
             return character.perception.get_object(self.obj).attributes["appraisal"]
         return WorldObject(92, APPRAISALS[2])
 
+    def speakers_agree(self, speakers):
+        first_perception = speakers[0].perception.get_object(self.subj)
+        second_perception = speakers[1].perception.get_object(self.subj)
+        if first_perception == second_perception:
+            return True
+        return False
+
     def get_new_project(speakers, main_project, world_state):
         #random topic: weather etc
         rand = random.random()
         if rand > 0.7:
             subj = world_state.weather
             obj = ("weather", speakers[0].attributes["location"].attributes["weather"])
-            project = Project(subj, obj, "statement", main_project.time, True)
+            project = Project(subj, obj, "statement", main_project.time)
         #opposite topic
         elif rand > 0.3 and main_project.type is "statement":
             obj = (main_project.obj_type, world_state.get_opposite(main_project.obj))
-            project = Project(main_project.subj, obj, "statement", main_project.time, False)
+            project = Project(main_project.subj, obj, "statement", main_project.time)
         #relationship between characters
         else:
             subj = speakers[0]
             obj = ("relationship", speakers[1])
-            project = Project(subj, obj, "statement", "present", True)
+            project = Project(subj, obj, "statement", "present")
 
         return project
+

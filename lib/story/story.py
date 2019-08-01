@@ -83,26 +83,23 @@ class Story:
         main_char = random.choices(self.world_state.characters)[0]
         other_char = self.world_state.characters[0] if main_char.id == 1 else self.world_state.characters[1]
         disagreement = self.get_disagreement(other_char)
-        #apply differing...
-        if disagreement.attribute_name == "appraisal":
-            print("moi")
-        #...or incorrect belief
+        #apply differing or incorrect belief
         self.world_state.perception(main_char, disagreement, True)
 
         #add topics that introduce the starting state of the story, alkutilanne
         #todo: make sure at this point to talk only about agreed topics
         for attribute in main_char.attributes.items():
-            situations.append(Situation(self.world_state, "P", self.world_state.characters, Project(main_char, attribute, "statement", "present", True), main_char.attributes["location"]))
+            situations.append(Situation(self.world_state, "P", self.world_state.characters, Project(main_char, attribute, "statement", "present"), main_char.attributes["location"]))
         #add conflict: introduce discussion about disagreement topic
-        situations.append(Situation(self.world_state, "P", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present", False), main_char.attributes["location"]))
-        situations.append(Situation(self.world_state, "IE", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present", False), main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, "P", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present"), main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, "IE", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present"), main_char.attributes["location"]))
         #turning point: plan to action
-        situations.append(Situation(self.world_state, "G", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present", False), main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, "G", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present"), main_char.attributes["location"]))
         #plan gets excecuted
-        situations.append(Situation(self.world_state, "A", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present", False), main_char.attributes["location"]))
-        situations.append(Situation(self.world_state, "P", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present", False), main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, "A", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present"), main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, "P", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present"), main_char.attributes["location"]))
         #resolution
-        situations.append(Situation(self.world_state, "IE", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present", False), main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, "IE", self.world_state.characters, Project(disagreement.obj, (disagreement.attribute_name, disagreement.end_value), "statement", "present"), main_char.attributes["location"]))
 
         return situations
 
