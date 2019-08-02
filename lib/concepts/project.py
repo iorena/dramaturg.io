@@ -41,11 +41,17 @@ class Project:
         return WorldObject(92, APPRAISALS[2])
 
     def speakers_agree(self, speakers):
-        first_perception = speakers[0].perception.get_object(self.subj)
-        second_perception = speakers[1].perception.get_object(self.subj)
-        if first_perception == second_perception:
+        if self.type == "statement":
+            first_perception = speakers[0].perception.get_object(self.subj)
+            second_perception = speakers[1].perception.get_object(self.subj)
+            if first_perception.attributes == second_perception.attributes:
+                return True
+            return False
+        elif self.type == "action":
+            evaluation = self.get_appraisal(speakers[1])
+            if evaluation.id < 92:
+                return False
             return True
-        return False
 
     def get_new_project(speakers, main_project, world_state):
         #random topic: weather etc
@@ -65,4 +71,3 @@ class Project:
             project = Project(subj, obj, "statement", "present")
 
         return project
-

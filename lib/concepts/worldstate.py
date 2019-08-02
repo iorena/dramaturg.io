@@ -86,20 +86,24 @@ class WorldState:
 
     def get_opposite(self, obj):
         if type(obj) is Character:
-            choices = copy.copy(self.characters)
-            choices.remove(obj)
+            choices = copy.deepcopy(self.characters)
+            choices.pop(obj.id)
         if type(obj) is Location:
-            choices = copy.copy(self.locations)
+            choices = copy.deepcopy(self.locations)
+            choices.pop(obj.id)
         if obj in self.weather_types:
-            choices = copy.copy(self.weather_types)
-            choices.remove(obj)
+            choices = copy.deepcopy(self.weather_types)
+            choices.pop(obj.id - 95)
+        elif obj in self.appraisals:
+            choices = copy.deepcopy(self.appraisals)
+            choices.pop(obj.id - 90)
         elif type(obj) is WorldObject:
-            choices = copy.copy(self.objects)
+            choices = copy.deepcopy(self.objects)
+            choices.pop(obj.id)
         if type(obj) is Emotion:
             opposite = Emotion(None, 1 - obj.pleasure, 1 - obj.arousal, 1 - obj.dominance)
         else:
             opposite = random.choices(choices)[0]
-        print("heh", obj, opposite)
         return opposite
 
     def get_opposite_attribute(self, attribute):
@@ -148,7 +152,7 @@ class WorldState:
     def perception(self, subject, perception, success):
         if not success:
             return
-        world_state = copy.copy(subject.perception)
+        world_state = copy.deepcopy(subject.perception)
         if perception.obj in self.objects:
             world_state.objects[perception.obj.id].attributes[perception.attribute_name] = perception.end_value
         elif perception.obj in self.characters:
@@ -157,6 +161,7 @@ class WorldState:
             world_state.locations[perception.obj.id].attributes[perception.attribute_name] = perception.end_value
         else:
             raise Exception("warning, this shouldn't happen", perception.obj)
+        subject.perception = world_state
 
     def internal(self, subject, emotion):
         self.characters[subject.id].mood.affect(emotion)

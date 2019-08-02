@@ -22,3 +22,6 @@ class Transition:
         return {
             'obj': str(self.obj),
         }
+
+    def __str__(self):
+        return f"{self.obj}, {self.attribute_name}, {self.start_value} -> {self.end_value}"
