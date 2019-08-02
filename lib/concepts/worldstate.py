@@ -158,6 +158,5 @@ class WorldState:
         else:
             raise Exception("warning, this shouldn't happen", perception.obj)
 
-
     def internal(self, subject, emotion):
         self.characters[subject.id].mood.affect(emotion)
