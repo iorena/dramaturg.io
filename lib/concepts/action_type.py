@@ -1,6 +1,6 @@
 class ActionType:
 
-    def __init__(self, name, neg, ques, subj, verb, obj, aux_verb, modus, tempus, pre_add):
+    def __init__(self, name, neg, ques, subj, verb, obj, aux_verb, modus, tempus, passive, pre_add, post_add):
         self.name = name
         self.neg = neg == "TRUE"
         self.ques = ques == "TRUE"
@@ -19,6 +19,10 @@ class ActionType:
             self.aux_verb = aux_verb.split(",")
         self.modus = modus
         self.tempus = tempus
+        self.passive = passive == "TRUE"
         self.pre_add = pre_add
         if pre_add == "None":
             self.pre_add = None
+        self.post_add = post_add
+        if post_add == "None":
+            self.post_add = None

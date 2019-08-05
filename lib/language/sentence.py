@@ -1,7 +1,7 @@
 from syntaxmaker.syntax_maker import (create_verb_pharse, create_personal_pronoun_phrase, turn_vp_into_question,
                                       create_copula_phrase, create_phrase, auxiliary_verbs, add_auxiliary_verb_to_vp,
                                       add_advlp_to_vp, set_vp_mood_and_tense, turn_vp_into_prefect,
-                                      negate_verb_pharse)
+                                      negate_verb_pharse, turn_vp_into_passive)
 from syntaxmaker.inflector import inflect
 from language.dictionary import verb_dictionary, noun_dictionary, reversed_verb_dictionary, evaluations_dictionary
 from concepts.character import Character
@@ -138,6 +138,9 @@ class Sentence:
 
         set_vp_mood_and_tense(vp, mood, tense)
 
+        if self.action_type.passive:
+            turn_vp_into_passive(vp)
+
         if self.action_type.neg:
             negate_verb_pharse(vp)
 
@@ -176,6 +179,9 @@ class Sentence:
             as_list.insert(0, add)
             if self.action_type.name != "TIPC" and self.speaker.mood.arousal < random.uniform(-0.5, 0.5):
                 as_list = [add]
+        if self.action_type.post_add is not None:
+            add = self.get_synonym(self.action_type.post_add)
+            as_list.append(add)
 
         if self.action_type.ques:
             as_list.append("?")
