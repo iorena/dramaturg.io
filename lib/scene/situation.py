@@ -109,7 +109,7 @@ class Situation:
             else:
                 obj = random.choices(attributes)[0]
 
-            post_project = Project(subj, obj, "statement", self.main_project.time)
+            post_project = Project(subj, "olla", obj, self.main_project.time, 1)
             mood = speakers[0].mood
             distances = list(map(lambda x: norm(array((mood.pleasure, mood.arousal, mood.dominance)) - array((PAD_VALUES[x]))), ROOT_SEQUENCE_TYPES))
             seq_type = random.choices(ROOT_SEQUENCE_TYPES, distances)[0]

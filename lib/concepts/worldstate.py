@@ -68,6 +68,16 @@ class WorldState:
                 return False
         return True
 
+    def get_object_by_name(self, name):
+        locs = [loc.name for loc in self.locations]
+        if name in locs:
+            return self.locations[locs.index(name)]
+        objs = [obj.name for obj in self.objects]
+        if name in objs:
+            return self.objects[objs.index(name)]
+        raise Exception("asked for object named", name)
+
+
     def get_object(self, obj):
         """
         Get a specific character's version of an object. Used by calling character.perception
