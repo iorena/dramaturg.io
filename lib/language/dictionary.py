@@ -9,7 +9,8 @@ verb_dictionary = {
     "leikata": [("leikata", "GEN")],
     "tulla": [("tulla", "NOM")],
     "käydä": [("käydä", "ADE")],
-    "tuijottaa": [("tuijottaa", "AKK")]
+    "tuijottaa": [("tuijottaa", "AKK")],
+    "mennä": [("mennä", "ALL")]
 }
 noun_dictionary = {
     "disappointment": ["surullinen", "pettynyt"],

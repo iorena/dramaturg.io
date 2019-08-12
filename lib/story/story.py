@@ -80,16 +80,25 @@ class Story:
         added = []
         main_char = random.choices(self.world_state.characters)[0]
         other_char = self.world_state.characters[0] if main_char.id == 1 else self.world_state.characters[1]
+        chars = [main_char, other_char]
+        chars_reversed = copy.copy(chars)
+        chars_reversed.reverse()
 
 
         #add topics that introduce the starting state of the story, alkutilanne
         for attribute in main_char.attributes.items():
-            situations.append(Situation(self.world_state, "P", self.world_state.characters, Project(main_char, "olla", attribute, "present", 1), main_char.attributes["location"]))
+            situations.append(Situation(self.world_state, "P", chars, Project(main_char, "olla", attribute, "present", 1), main_char.attributes["location"]))
 
-        situations.append(Situation(self.world_state, "P", self.world_state.characters, self.pos_topics[0], main_char.attributes["location"]))
-        situations.append(Situation(self.world_state, "IE", self.world_state.characters, self.neg_topics[0], main_char.attributes["location"]))
-        situations.append(Situation(self.world_state, "P", self.world_state.characters, self.pos_topics[1], main_char.attributes["location"]))
-        situations.append(Situation(self.world_state, "P", self.world_state.characters, self.neg_topics[1], main_char.attributes["location"]))
+        #let's go to the cabin
+        situations.append(Situation(self.world_state, "G", chars, Project(main_char, "mennä", ("location", self.world_state.get_opposite(main_char.attributes["location"])), "present", 5), main_char.attributes["location"]))
+
+        situations.append(Situation(self.world_state, "O", chars_reversed, self.neg_topics[0], main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, "IE", chars, self.pos_topics[0], main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, "P", chars_reversed, self.neg_topics[1], main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, "P", chars, self.pos_topics[1], main_char.attributes["location"]))
+
+        #reprise main question
+        situations.append(Situation(self.world_state, "G", self.world_state.characters, Project(main_char, "mennä", ("location", self.world_state.get_opposite(main_char.attributes["location"])), "present", 5), main_char.attributes["location"]))
 
         return situations
 

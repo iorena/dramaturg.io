@@ -18,6 +18,7 @@ TIAB-	FALSE	FALSE	None	None	object	None	INDV	prees	FALSE	None	None
 TIÄ	TRUE	FALSE	Speaker	tietää	object	None	INDV	prees	FALSE	None	None
 TOR	FALSE	FALSE	Listener	luulla	interrogative	None	INDV	prees	FALSE	None	None
 VÄI	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
+VÄIB	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	mutta kun	None
 SAM-KAN	FALSE	FALSE	subject	project	object	None,taitaa	INDV	prees	FALSE	kyllä	None
 ERI-KAN	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
 KAN	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None

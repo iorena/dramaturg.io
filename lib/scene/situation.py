@@ -13,7 +13,7 @@ from numpy import array
 from numpy.linalg import norm
 
 ROOT_SEQUENCE_TYPES = ["SKÄS", "STIP", "STIPC", "STOP", "STOE", "SVÄI", "SKAN"]
-SEQUENCE_TYPES = {"present": {"G": ["STOE"], "A": ["SKÄS", "STIP", "STOP"], "P": ["SKAN", "SVÄI"], "IE": ["SKAN"]},
+SEQUENCE_TYPES = {"present": {"G": ["STOE"], "O": ["SVVÄI"], "A": ["SKÄS", "STIP", "STOP"], "P": ["SKAN", "SVÄI"], "IE": ["SKAN"]},
         "past": {"G": ["STOE"], "A": ["STIP", "STIPB"], "P": ["SKAN", "SVÄI"], "IE": ["SKAN"]}}
 
 
