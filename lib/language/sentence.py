@@ -122,7 +122,7 @@ class Sentence:
                 obj_case = "NOM"
         elif self.verb_realization:
             obj_case = self.verb_realization[1]
-        if self.obj is not None:
+        if self.obj is not None and self.obj != "interrogative":
             obj = create_phrase("NP", obj, {"CASE": obj_case})
             add_advlp_to_vp(vp, obj)
             if self.verb is "olla" and self.obj_type is "owner" and type(self.project.subj) is Character:
@@ -163,18 +163,19 @@ class Sentence:
         if self.action_type.name == "TIPB":
             if self.obj_type == "owner" and self.verb == "olla" and type(self.project.subj) is Character:
                 as_list.insert(0, "omistaja")
-            #add appropriate interrogative
-            popped = as_list.pop()
-            if popped == "omistaja":
-                as_list.pop()
-            as_list.insert(0, self.get_interrogative(obj_case, type(self.project.obj) is Character))
+        #add appropriate interrogative
+        if self.obj == "interrogative":
+            as_list.insert(0, self.get_interrogative(obj_case))
             as_list.append("?")
         if self.action_type.name in ["TIAB+", "TIAB-"]:
             obj = as_list.pop()
             as_list.append(inflect(obj, "N", {"PERS": "3", "CASE": obj_case, "NUM": "SG"}))
 
         if self.action_type.pre_add is not None:
-            as_list.insert(0, self.get_synonym(self.action_type.pre_add))
+            add = self.get_synonym(self.action_type.pre_add)
+            as_list.insert(0, add)
+            if self.action_type.name != "TIPC" and self.speaker.mood.arousal < random.uniform(-0.5, 0.5):
+                as_list = [add]
 
         if self.action_type.ques:
             as_list.append("?")
@@ -196,7 +197,8 @@ class Sentence:
             return random.choices(options)[0]
         return word
 
-    def get_interrogative(self, case, person):
+    def get_interrogative(self, case):
+        person = type(self.obj) is Character
         if person:
             if case == "GEN":
                 return "kenen"

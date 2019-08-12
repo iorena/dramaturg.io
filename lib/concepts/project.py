@@ -1,4 +1,5 @@
 from concepts.worldobject import WorldObject
+from concepts.location import Location
 
 import random
 
@@ -33,12 +34,11 @@ class Project:
         return "olla"
 
     def get_appraisal(self, character):
-        if self.obj_type is "quality" and type(self.obj) is WorldObject:
-            return self.obj
-        if self.obj_type is "location":
-            return self.obj.attributes["appraisal"]
         if self.obj_type is "owner":
+            #todo: shouldn't this be the appraisal of the object owned?
             return WorldObject(93, APPRAISALS[3])
+        elif type(self.obj) in [WorldObject, Location]:
+            return character.perception.get_object(self.obj).attributes["appraisal"]
         return WorldObject(92, APPRAISALS[2])
 
     def get_new_project(speakers, main_project, world_state):
@@ -46,7 +46,7 @@ class Project:
         rand = random.random()
         if rand > 0.7:
             subj = world_state.weather
-            obj = ("quality", random.choices(world_state.appraisals)[0])
+            obj = ("weather", speakers[0].attributes["location"].attributes["weather"])
             project = Project(subj, obj, "statement", main_project.time, True)
         #opposite topic
         elif rand > 0.3 and main_project.type is "statement":

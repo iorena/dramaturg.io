@@ -66,7 +66,11 @@ class Situation:
         main_sequence_type = random.choices(SEQUENCE_TYPES[self.main_project.time][self.element_type], distances)[0]
         main_sequence = Sequence(self.speakers, self.main_project, main_sequence_type, self.action_types, self.world_state)
         sequences = self.add_sequences(main_sequence)
-        return sequences
+        hello_sequence = self.create_hello_sequence()
+        return [hello_sequence] + sequences
+
+    def create_hello_sequence(self):
+        return Sequence(self.speakers, Project(self.speakers[0], ("greeting", self.speakers[0]), "statement", "present", True), "STER", self.action_types, self.world_state, None)
 
     def add_sequences(self, sequence):
         """
@@ -78,7 +82,7 @@ class Situation:
         dominances = list(map(lambda x: x.mood.dominance, self.speakers))
         character = random.choices(self.speakers, dominances)[0]
 
-        if random.random() < character.mood.arousal:
+        if random.uniform(-0.5, 1.5) < character.mood.arousal:
             speakers = self.speakers
             speakers.remove(character)
             speakers.insert(0, character)
@@ -92,7 +96,7 @@ class Situation:
 
         #post-project
         character = random.choices(self.speakers, dominances)[0]
-        if random.random() < character.mood.arousal:
+        if random.uniform(-0.5, 1.5) < character.mood.arousal:
             speakers = self.speakers
             speakers.remove(character)
             speakers.insert(0, character)
@@ -104,7 +108,13 @@ class Situation:
                 #don't stack "hyvä on mainio" - type chains
                 if sequence.project.obj_type in ["quality", "appraisal", "affect"]:
                     return sequences
-                obj = ("quality", self.speakers[0].perception.objects[subj.id])
+                if subj.id < 90:
+                    obj = ("quality", self.speakers[0].perception.objects[subj.id])
+                elif subj.id < 95:
+                    obj = ("quality", self.speakers[0].perception.appraisals[subj.id - 90])
+                else:
+                    obj = ("quality", self.speakers[0].perception.weather_types[subj.id - 95])
+
             else:
                 obj = random.choices(attributes)[0]
 
