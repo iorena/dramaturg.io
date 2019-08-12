@@ -43,11 +43,14 @@ class Character:
         return {"O": random.uniform(-1, 1), "C": random.uniform(-1, 1), "E": random.uniform(-1, 1), "A": random.uniform(-1, 1), "N": random.uniform(-1, 1)}
 
     def set_perception(self, world_state):
-        print(world_state)
-        self.perception = world_state
         #todo: should we check and change only objects that don't have an appraisal yet?
         for obj in world_state.objects:
             obj.attributes["appraisal"] = random.choices(world_state.appraisals)[0]
+        for obj in world_state.weather_types:
+            obj.attributes["appraisal"] = random.choices(world_state.appraisals)[0]
+        for obj in world_state.locations:
+            obj.attributes["appraisal"] = random.choices(world_state.appraisals)[0]
+        self.perception = world_state
 
     def set_goal(self, goal):
         self.goals.append(goal)

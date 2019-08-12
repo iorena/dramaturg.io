@@ -18,9 +18,11 @@ class WorldState:
             self.characters = old.characters
             self.objects = old.objects
             self.weather = old.weather
+            self.weather_types = old.weather_types
 
     def initialize_story_world(self):
         self.appraisals = [WorldObject(90, "horrible"), WorldObject(91, "bad"), WorldObject(92, "okay"), WorldObject(93, "good"), WorldObject(94, "great")]
+        self.weather_types = [WorldObject(95, "sunny"), WorldObject(96, "cloudy"), WorldObject(97, "rainy"), WorldObject(98, "stormy")]
         self.locations = [Location(), Location()]
         self.characters = [Character(self.get_random_loc()), Character(self.get_random_loc())]
         self.objects = [WorldObject()]
@@ -63,13 +65,32 @@ class WorldState:
                 return False
         return True
 
+    def get_object(self, obj):
+        """
+        Get a specific character's version of an object. Used by calling character.perception
+        """
+        if type(obj) is Character:
+            return self.characters[obj.id]
+        if type(obj) is Location:
+            return self.locations[obj.id]
+        if obj in self.weather_types:
+            return self.weather_types[obj.id - 95]
+        if obj in self.appraisals:
+            return obj
+        elif type(obj) is WorldObject:
+            return self.objects[obj.id]
+        return obj
+
     def get_opposite(self, obj):
         if type(obj) is Character:
             choices = copy.copy(self.characters)
             choices.remove(obj)
         if type(obj) is Location:
             choices = copy.copy(self.locations)
-        if type(obj) is WorldObject:
+        if obj in self.weather_types:
+            choices = copy.copy(self.weather_types)
+            choices.remove(obj)
+        elif type(obj) is WorldObject:
             choices = copy.copy(self.objects)
         if type(obj) is Emotion:
             opposite = Emotion(None, 1 - obj.pleasure, 1 - obj.arousal, 1 - obj.dominance)
@@ -109,7 +130,17 @@ class WorldState:
 
     #todo: add perceptions
     def perception(self, subject, perception, success):
-        self.characters[subject.id].perception = perception
+        if not success:
+            return
+        world_state = copy.copy(self)
+        if perception.attribute_name == "owner":
+            world_state.objects[perception.get_object().id].attributes[perception.attribute_name] = perception.get_person()
+        elif perception.attribute_name == "location":
+            world_state.characters[perception.get_person().id].attributes[perception.attribute_name] = perception.get_object()
+        else:
+            raise Exception("warning, this shouldn't happen", perception.attribute_name)
+
+        self.characters[subject.id].perception = world_state
 
     def internal(self, subject, emotion):
         self.characters[subject.id].mood.affect(emotion)

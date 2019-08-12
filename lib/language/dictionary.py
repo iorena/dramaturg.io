@@ -3,7 +3,8 @@ verb_dictionary = {
     "siirtyä": [("mennä", "ILL"), ("matkustaa", "ILL"), ("liikkua", "ILL"), ("juosta", "ILL")],
     "pitää": [("tykätä", "ELA"), ("pitää", "ELA"), ("rakastaa", "PAR")],
     "vihata": [("vihata", "PAR"), ("inhota", "PAR")],
-    "hankkia": [("ostaa", "GEN"), ("hankkia", "GEN"), ("hommata", "GEN"), ("saada", "GEN")]
+    "hankkia": [("ostaa", "GEN"), ("hankkia", "GEN"), ("hommata", "GEN"), ("saada", "GEN")],
+    "luulla": [("luulla", "PAR")]
 }
 noun_dictionary = {
     "disappointment": ["surullinen", "pettynyt"],
@@ -17,7 +18,12 @@ noun_dictionary = {
     "bad": ["huono", "onneton", "kurja"],
     "horrible": ["surkea", "hirveä"],
     "pahus": ["pahus", "harmi", "sääli"],
-    "hienoa": ["mainiota", "hienoa", "hyvä"]
+    "hienoa": ["mainiota", "hienoa", "hyvä"],
+    "moi": ["terve", "moi", "hei"],
+    "sunny": ["aurinkoinen"],
+    "cloudy": ["pilvinen"],
+    "rainy": ["sateinen"],
+    "stormy": ["myrskyinen"]
 }
 reversed_verb_dictionary = {
     "siirtyä": [("viedä", "ILL"), ("kuljettaa", "ILL")],
