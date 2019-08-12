@@ -32,6 +32,12 @@ class Project:
             if first_perception.attributes == second_perception.attributes:
                 return True
             return False
+        elif self.verb == "mennä":
+            first_perception = speakers[0].perception.get_object(self.obj)
+            second_perception = speakers[1].perception.get_object(self.obj)
+            if first_perception.attributes == second_perception.attributes:
+                return True
+            return False
         else:
             evaluation = self.get_appraisal(speakers[1])
             if evaluation.id < 92:

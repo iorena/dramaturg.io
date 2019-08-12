@@ -1,7 +1,7 @@
 from language.style import Style
 from concepts.affect.mood import Mood
 
-import random
+import random, copy
 
 
 class Character:
@@ -42,7 +42,8 @@ class Character:
     def random_personality(self):
         return {"O": random.uniform(-1, 1), "C": random.uniform(-1, 1), "E": random.uniform(-1, 1), "A": random.uniform(-1, 1), "N": random.uniform(-1, 1)}
 
-    def set_perception(self, world_state):
+    def set_random_perceptions(self, world_state):
+        world_state = copy.deepcopy(world_state)
         #todo: should we check and change only objects that don't have an appraisal yet?
         for obj in world_state.objects:
             obj.attributes["appraisal"] = random.choices(world_state.appraisals)[0]

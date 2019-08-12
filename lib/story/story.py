@@ -19,7 +19,7 @@ class Story:
         self.neg_topics.sort(key=lambda x: x.score)
         self.possible_transitions = self.init_possible_transitions()
         for char in self.world_state.characters:
-            char.set_perception(WorldState(self.world_state))
+            char.set_random_perceptions(WorldState(self.world_state))
             char.set_goal(self.create_goal(char))
         self.action_types = load_action_types()
         self.graph = self.create_plot_points()
@@ -89,8 +89,12 @@ class Story:
         for attribute in main_char.attributes.items():
             situations.append(Situation(self.world_state, "P", chars, Project(main_char, "olla", attribute, "present", 1), main_char.attributes["location"]))
 
+        cabin = self.world_state.get_opposite(main_char.attributes["location"])
         #let's go to the cabin
-        situations.append(Situation(self.world_state, "G", chars, Project(main_char, "mennä", ("location", self.world_state.get_opposite(main_char.attributes["location"])), "present", 5), main_char.attributes["location"]))
+        #make sure second character doesn't want to go to the cabin
+        chars[0].perception.locations[cabin.id].attributes["appraisal"] = self.world_state.appraisals[4]
+        chars[1].perception.locations[cabin.id].attributes["appraisal"] = self.world_state.appraisals[1]
+        situations.append(Situation(self.world_state, "G", chars, Project(main_char, "mennä", ("location", cabin), "present", 5), main_char.attributes["location"]))
 
         situations.append(Situation(self.world_state, "O", chars_reversed, self.neg_topics[0], main_char.attributes["location"]))
         situations.append(Situation(self.world_state, "IE", chars, self.pos_topics[0], main_char.attributes["location"]))
