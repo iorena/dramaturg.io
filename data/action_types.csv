@@ -4,7 +4,7 @@ KÄS	FALSE	FALSE	subject	project	object	None	IMPV	prees	FALSE	None	None
 TOTN	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	hyvä on	None
 TOTNP	FALSE	FALSE	subject	project	object	None	INDV	prees	TRUE	None	vaan
 TOTS	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
-TOTNP	FALSE	FALSE	subject	project	object	None	INDV	prees	TRUE	None	None
+TOTNS	TRUE	FALSE	subject	project	object	None	INDV	prees	TRUE	None	None
 TOP	FALSE	TRUE	subject	project	object	None,voida,haluta	COND	prees	FALSE	None	None
 TOE	FALSE	FALSE	subject	project	object	voida,haluta	COND	prees	FALSE	None	None
 TOEP	FALSE	TRUE	subject	project	object	None	INDV	prees	TRUE	None	None
