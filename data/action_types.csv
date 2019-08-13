@@ -10,6 +10,7 @@ TOE	FALSE	FALSE	subject	project	object	voida,haluta	COND	prees	FALSE	None	None
 TOEP	FALSE	TRUE	subject	project	object	None	INDV	prees	TRUE	None	None
 TIP	FALSE	TRUE	subject	project	object	None	INDV	prees	FALSE	None	None
 TIPC	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	miksi	None
+SEL	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	koska	None
 TIPB	FALSE	FALSE	subject	project	interrogative	None	INDV	prees	FALSE	None	None
 TIA+	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	kyllä	None
 TIA-	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None

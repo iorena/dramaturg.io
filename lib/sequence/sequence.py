@@ -81,8 +81,8 @@ class Sequence():
         else:
             action_type = self.action_types[action_name]
         project = self.project
-        if action_name == "KAN" and self.seq_type == "STIPC":
-            project =  Project.get_new_project(self.speakers, self.project, self.world_state)
+        if action_name == "SEL":
+            project = Project.get_new_project(self.speakers, self.project, self.world_state)
 
         listeners = copy.copy(self.speakers)
         listeners.remove(speaker)
