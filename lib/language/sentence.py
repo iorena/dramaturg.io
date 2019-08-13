@@ -191,6 +191,8 @@ class Sentence:
     def get_synonym(self, word):
         if word == "EVAL":
             appraisal = self.project.get_appraisal(self.speaker)
+            if not self.project.speakers_agree([self.speaker, self.listeners[0]]):
+                appraisal = self.project.get_appraisal(self.listeners[0])
             options = evaluations_dictionary[appraisal.name]
             return random.choices(options)[0]
         if word in noun_dictionary:
