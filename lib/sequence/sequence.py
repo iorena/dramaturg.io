@@ -65,7 +65,7 @@ class Sequence():
                     # todo: how to handle emotions? asking "mikä surullinen?" doesn't really make sense, does it?
                     attributes = list(target.attributes.items())
                     if len(attributes) is 0:
-                        attribute = ("attribute", None)
+                        return None
                     else:
                         attribute = random.choices(attributes)[0]
 

@@ -73,6 +73,12 @@ class Sentence:
                     attribute = inflect(self.obj, "N", {"PERS": "3", "CASE": "GEN", "NUM": "SG"})
                 elif self.obj_type == "location":
                     attribute = inflect(self.obj, "N", {"PERS": "3", "CASE": "INE", "NUM": "SG"}) + " oleva"
+                elif self.obj_type in ["weather", "appraisal"]:
+                    obj_case = self.get_synonym(self.project.verb)[1]
+                    attribute = inflect(self.get_synonym(self.obj), "N", {"PERS": "3", "CASE": obj_case, "NUM": "SG"})
+                else:
+                    print(self.obj_type)
+
                 as_list.insert(0, attribute)
             elif self.obj is not None:
                 as_list.insert(0, self.get_synonym(self.obj))

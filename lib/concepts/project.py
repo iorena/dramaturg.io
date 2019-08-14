@@ -13,6 +13,8 @@ class Project:
         self.obj = obj[1]
         self.verb = verb
         self.time = time
+        if self.obj is None:
+            print("none", self.subj, self.obj_type, self.verb)
         if self.obj_type is "quality":
             time = "present"
         self.score = score
