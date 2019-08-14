@@ -85,6 +85,8 @@ class Sentence:
                 as_list.insert(0, add)
             if self.action_type.name in ["TIAB+", "TIAB-"]:
                 obj_case = self.get_synonym(self.project.verb)[1]
+                if obj_case == "GEN" and self.action_type.neg:
+                    obj_case = "PAR"
                 obj = as_list.pop()
                 obj_i = inflect(obj, "N", {"PERS": "3", "CASE": obj_case, "NUM": "SG"})
                 as_list.append(obj_i)
@@ -131,6 +133,8 @@ class Sentence:
                 obj_case = "NOM"
         elif self.verb_realization:
             obj_case = self.verb_realization[1]
+        if obj_case == "GEN" and self.action_type.neg:
+            obj_case = "PAR"
         if self.obj is not None and self.obj != "interrogative":
             obj = create_phrase("NP", obj, {"CASE": obj_case})
             add_advlp_to_vp(vp, obj)
