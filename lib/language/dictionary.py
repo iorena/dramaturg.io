@@ -5,7 +5,7 @@ verb_dictionary = {
     "vihata": [("vihata", "PAR"), ("inhota", "PAR")],
     "hankkia": [("ostaa", "GEN"), ("hankkia", "GEN"), ("hommata", "GEN"), ("saada", "GEN")],
     "luulla": [("luulla", "PAR")],
-    "kastella": [("kastella", "AKK")],
+    "kastella": [("kastella", "GEN")],
     "leikata": [("leikata", "GEN")],
     "tulla": [("tulla", "NOM")],
     "käydä": [("käydä", "ADE")],

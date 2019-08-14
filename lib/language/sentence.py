@@ -78,7 +78,16 @@ class Sentence:
                 as_list.insert(0, self.get_synonym(self.obj))
 
             if self.action_type.pre_add is not None:
-                as_list.insert(0, self.get_synonym(self.action_type.pre_add))
+                if self.action_type.pre_add == "interrogative":
+                    add = self.get_interrogative("NOM")
+                else:
+                    add = self.get_synonym(self.action_type.pre_add)
+                as_list.insert(0, add)
+            if self.action_type.name in ["TIAB+", "TIAB-"]:
+                obj_case = self.get_synonym(self.project.verb)[1]
+                obj = as_list.pop()
+                obj_i = inflect(obj, "N", {"PERS": "3", "CASE": obj_case, "NUM": "SG"})
+                as_list.append(obj_i)
 
             if self.action_type.ques:
                 as_list.append("?")
@@ -170,12 +179,12 @@ class Sentence:
         if self.obj == "interrogative":
             as_list.insert(0, self.get_interrogative(obj_case))
             as_list.append("?")
-        if self.action_type.name in ["TIAB+", "TIAB-"]:
-            obj = as_list.pop()
-            as_list.append(inflect(obj, "N", {"PERS": "3", "CASE": obj_case, "NUM": "SG"}))
 
         if self.action_type.pre_add is not None:
-            add = self.get_synonym(self.action_type.pre_add)
+            if self.action_type.pre_add == "interrogative":
+                add = self.get_interrogative("NOM")
+            else:
+                add = self.get_synonym(self.action_type.pre_add)
             as_list.insert(0, add)
             if self.action_type.name in ["TOTN", "TIA+", "SAM-KAN", "MYÖ", "KII"] and self.speaker.mood.arousal < random.uniform(-0.5, 0.5):
                 as_list = [add]
@@ -210,6 +219,8 @@ class Sentence:
         if person:
             if case == "GEN":
                 return "kenen"
+            elif case == "AKK":
+                return "kenet"
             elif case == "ILL":
                 return "keneen"
             elif case == "INE":
@@ -222,6 +233,8 @@ class Sentence:
 
         if case == "GEN":
             return "minkä"
+        elif case == "AKK":
+            return "minkä"
         elif case == "ILL":
             return "mihin"
         elif case == "INE":
@@ -230,6 +243,8 @@ class Sentence:
             return "mistä"
         elif case == "PAR":
             return "mitä"
+        if self.obj_type in ["appraisal", "weather", "quality"]:
+            return "millainen"
         return "mikä"
 
     def get_styled_sentence(self):

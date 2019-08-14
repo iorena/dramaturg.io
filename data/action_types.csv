@@ -25,7 +25,7 @@ ERI-KAN	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
 KAN	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
 KER	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	None	None
 KOA	FALSE	TRUE	None	None	None	None	INDV	imperf	FALSE	mitä	None
-KOB	FALSE	TRUE	subject	None	None	None	INDV	prees	FALSE	mikä	None
+KOB	FALSE	TRUE	subject	None	None	None	INDV	prees	FALSE	interrogative	None
 KOBV	FALSE	FALSE	subject	None	attribute	None	INDV	prees	FALSE	None	None
 MYÖ	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	totta,	None
 KII	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	ei	None
