@@ -8,6 +8,9 @@ from concepts.character import Character
 
 import random
 
+from numpy import array
+from numpy.linalg import norm
+
 
 class Sentence:
     def __init__(self, speaker, listeners, project, action_type, obj_type, reverse):
@@ -76,7 +79,7 @@ class Sentence:
                     attribute = inflect(self.obj, "N", {"PERS": "3", "CASE": "INE", "NUM": "SG"}) + " oleva"
                 elif self.obj_type in ["weather", "appraisal"]:
                     if self.speaker.mood.arousal > random.random():
-                        explicative = self.get_explicative()
+                        explicative = self.get_explicative([self.speaker.mood.pleasure, self.speaker.mood.arousal, self.speaker.mood.dominance])
                     obj_case = self.get_synonym(self.project.verb)[1]
                     attribute = inflect(self.get_synonym(self.obj), "N", {"PERS": "3", "CASE": obj_case, "NUM": "SG"})
                 else:
@@ -189,7 +192,7 @@ class Sentence:
 
         #add "tosi"/"erittäin" in the right place
         if self.obj_type in ["weather", "appraisal"] and self.speaker.mood.arousal > random.random():
-            explicative = self.get_explicative()
+            explicative = self.get_explicative([self.speaker.mood.pleasure, self.speaker.mood.arousal, self.speaker.mood.dominance])
             as_list.insert(len(as_list) - 1, explicative)
 
         if self.action_type.name == "TIPB":
@@ -267,9 +270,10 @@ class Sentence:
             return "millainen"
         return "mikä"
 
-    def get_explicative(self):
+    def get_explicative(self, mood):
         valence = "pos" if not self.action_type.neg else "neg"
-        return random.choices(explicatives_dictionary[valence])[0]
+        distances = list(map(lambda x: norm(array(mood) - x), explicatives_dictionary[valence].values()))
+        return random.choices(list(explicatives_dictionary[valence].keys()), distances)[0]
 
     def get_styled_sentence(self):
         if self.inflected is None:
