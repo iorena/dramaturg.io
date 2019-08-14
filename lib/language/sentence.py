@@ -3,7 +3,7 @@ from syntaxmaker.syntax_maker import (create_verb_pharse, create_personal_pronou
                                       add_advlp_to_vp, set_vp_mood_and_tense, turn_vp_into_prefect,
                                       negate_verb_pharse, turn_vp_into_passive)
 from syntaxmaker.inflector import inflect
-from language.dictionary import verb_dictionary, noun_dictionary, reversed_verb_dictionary, evaluations_dictionary
+from language.dictionary import verb_dictionary, noun_dictionary, reversed_verb_dictionary, evaluations_dictionary, explicatives_dictionary
 from concepts.character import Character
 
 import random
@@ -68,18 +68,23 @@ class Sentence:
                 as_list = [self.get_synonym(self.subj)]
                 #todo: figure out rule that governs when attributes are added and when not
             if self.attribute:
+                explicative = None
                 attribute = ""
                 if self.obj_type == "owner":
                     attribute = inflect(self.obj, "N", {"PERS": "3", "CASE": "GEN", "NUM": "SG"})
                 elif self.obj_type == "location":
                     attribute = inflect(self.obj, "N", {"PERS": "3", "CASE": "INE", "NUM": "SG"}) + " oleva"
                 elif self.obj_type in ["weather", "appraisal"]:
+                    if self.speaker.mood.arousal > random.random():
+                        explicative = self.get_explicative()
                     obj_case = self.get_synonym(self.project.verb)[1]
                     attribute = inflect(self.get_synonym(self.obj), "N", {"PERS": "3", "CASE": obj_case, "NUM": "SG"})
                 else:
                     print(self.obj_type)
 
                 as_list.insert(0, attribute)
+                if explicative:
+                    as_list.insert(0, explicative)
             elif self.obj is not None:
                 as_list.insert(0, self.get_synonym(self.obj))
 
@@ -182,6 +187,11 @@ class Sentence:
                 case = "t"
             as_list.insert(len(as_list) - 1, pers + case)
 
+        #add "tosi"/"erittäin" in the right place
+        if self.obj_type in ["weather", "appraisal"] and self.speaker.mood.arousal > random.random():
+            explicative = self.get_explicative()
+            as_list.insert(len(as_list) - 1, explicative)
+
         if self.action_type.name == "TIPB":
             if self.obj_type == "owner" and self.verb == "olla" and type(self.project.subj) is Character:
                 as_list.insert(0, "omistaja")
@@ -256,6 +266,10 @@ class Sentence:
         if self.obj_type in ["appraisal", "weather", "quality"]:
             return "millainen"
         return "mikä"
+
+    def get_explicative(self):
+        valence = "pos" if not self.action_type.neg else "neg"
+        return random.choices(explicatives_dictionary[valence])[0]
 
     def get_styled_sentence(self):
         if self.inflected is None:
