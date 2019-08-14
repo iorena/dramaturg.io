@@ -4,7 +4,13 @@ verb_dictionary = {
     "pitää": [("tykätä", "ELA"), ("pitää", "ELA"), ("rakastaa", "PAR")],
     "vihata": [("vihata", "PAR"), ("inhota", "PAR")],
     "hankkia": [("ostaa", "GEN"), ("hankkia", "GEN"), ("hommata", "GEN"), ("saada", "GEN")],
-    "luulla": [("luulla", "PAR")]
+    "luulla": [("luulla", "PAR")],
+    "kastella": [("kastella", "GEN")],
+    "leikata": [("leikata", "GEN")],
+    "tulla": [("tulla", "NOM")],
+    "käydä": [("käydä", "ADE")],
+    "tuijottaa": [("tuijottaa", "AKK")],
+    "mennä": [("mennä", "ALL")]
 }
 noun_dictionary = {
     "disappointment": ["surullinen", "pettynyt"],

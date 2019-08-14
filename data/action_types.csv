@@ -1,28 +1,33 @@
-toimintotyyppi	kieltomuoto?	verbi kysymysmuodossa	subjekti	verbi	“objekti”	apuverbi	modus	aikamuoto	Pre-vp
-TER	FALSE	FALSE	None	None	None	None	None	None	moi
-KÄS	FALSE	FALSE	subject	project	object	None	IMPV	prees	None
-TOTN	FALSE	FALSE	subject	project	object	None	INDV	prees	hyvä on
-TOTS	TRUE	FALSE	subject	project	object	None	INDV	prees	None
-TOP	FALSE	TRUE	subject	project	object	None,voida,haluta	COND	prees	None
-TOE	FALSE	FALSE	subject	project	object	voida,haluta	COND	prees	None
-TIP	FALSE	TRUE	subject	project	object	None	INDV	prees	None
-TIPC	FALSE	FALSE	subject	project	object	None	INDV	prees	miksi
-TIPB	FALSE	FALSE	subject	project	interrogative	None	INDV	prees	None
-TIA+	FALSE	FALSE	subject	project	object	None	INDV	prees	kyllä
-TIA-	TRUE	FALSE	subject	project	object	None	INDV	prees	None
-TIAB+	FALSE	FALSE	None	None	object	None	INDV	prees	None
-TIAB-	FALSE	FALSE	None	None	object	None	INDV	prees	None
-TIÄ	TRUE	FALSE	Speaker	tietää	object	None	INDV	prees	None
-TOR	FALSE	FALSE	Listener	luulla	interrogative	None	INDV	prees	None
-VÄI	FALSE	FALSE	subject	project	object	None	INDV	prees	None
-SAM-KAN	FALSE	FALSE	subject	project	object	None,taitaa	INDV	prees	kyllä
-ERI-KAN	TRUE	FALSE	subject	project	object	None	INDV	prees	None
-KAN	FALSE	FALSE	subject	project	object	None	INDV	prees	None
-KER	FALSE	FALSE	subject	project	object	None	INDV	imperf	None
-KOA	FALSE	TRUE	None	None	None	None	INDV	imperf	mitä
-KOB	FALSE	TRUE	subject	None	None	None	INDV	prees	mikä
-KOBV	FALSE	FALSE	subject	None	attribute	None	INDV	prees	None
-MYÖ	FALSE	FALSE	subject	project	object	None	INDV	prees	totta,
-KII	TRUE	FALSE	subject	project	object	None	INDV	prees	ei
-EVA	FALSE	FALSE	None	None	None	None	INDV	prees	EVAL
-JTK	FALSE	TRUE	None	None	None	None	INDV	prees	niinkö
+toimintotyyppi	kieltomuoto?	verbi kysymysmuodossa	subjekti	verbi	“objekti”	apuverbi	modus	aikamuoto	passiivi	Pre-vp	Post-vp
+TER	FALSE	FALSE	None	None	None	None	None	None	FALSE	moi	None
+KÄS	FALSE	FALSE	subject	project	object	None	IMPV	prees	FALSE	None	None
+TOTN	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	hyvä on	None
+TOTNP	FALSE	FALSE	subject	project	object	None	INDV	prees	TRUE	None	vaan
+TOTS	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
+TOTNS	TRUE	FALSE	subject	project	object	None	INDV	prees	TRUE	None	None
+TOP	FALSE	TRUE	subject	project	object	None,voida,haluta	COND	prees	FALSE	None	None
+TOE	FALSE	FALSE	subject	project	object	voida,haluta	COND	prees	FALSE	None	None
+TOEP	FALSE	TRUE	subject	project	object	None	INDV	prees	TRUE	None	None
+TIP	FALSE	TRUE	subject	project	object	None	INDV	prees	FALSE	None	None
+TIPC	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	miksi	None
+SEL	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	koska	None
+TIPB	FALSE	FALSE	subject	project	interrogative	None	INDV	prees	FALSE	None	None
+TIA+	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	kyllä	None
+TIA-	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
+TIAB+	FALSE	FALSE	None	None	object	None	INDV	prees	FALSE	None	None
+TIAB-	FALSE	FALSE	None	None	object	None	INDV	prees	FALSE	None	None
+TIÄ	TRUE	FALSE	Speaker	tietää	object	None	INDV	prees	FALSE	None	None
+TOR	FALSE	FALSE	Listener	luulla	interrogative	None	INDV	prees	FALSE	None	None
+VÄI	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
+VÄIB	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	mutta kun	None
+SAM-KAN	FALSE	FALSE	subject	project	object	None,taitaa	INDV	prees	FALSE	kyllä	None
+ERI-KAN	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
+KAN	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
+KER	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	None	None
+KOA	FALSE	TRUE	None	None	None	None	INDV	imperf	FALSE	mitä	None
+KOB	FALSE	TRUE	subject	None	None	None	INDV	prees	FALSE	interrogative	None
+KOBV	FALSE	FALSE	subject	None	attribute	None	INDV	prees	FALSE	None	None
+MYÖ	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	totta,	None
+KII	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	ei	None
+EVA	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	EVAL	None
+JTK	FALSE	TRUE	None	None	None	None	INDV	prees	FALSE	niinkö	None

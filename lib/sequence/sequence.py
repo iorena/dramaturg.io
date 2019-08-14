@@ -22,7 +22,7 @@ class Sequence():
         self.action_types = action_types
         self.parent = parent
         self.world_state = world_state
-        self.pair_types = POS_SEQUENCES if project.valence else NEG_SEQUENCES
+        self.pair_types = POS_SEQUENCES if project.speakers_agree(speakers) else NEG_SEQUENCES
         reverse = False
         if seq_type in ["SKÄS"] and self.speakers[0].name == self.project.subj.name and project.verb != "olla":
             reverse = True
@@ -69,7 +69,7 @@ class Sequence():
                     else:
                         attribute = random.choices(attributes)[0]
 
-                    new_project = Project(target, attribute, "statement", "present", True)
+                    new_project = Project(target, "olla", attribute, "present", 1)
 
 
             expansion = Sequence(speakers, new_project, new_seq_type, self.action_types, self.world_state, parent)
@@ -81,8 +81,8 @@ class Sequence():
         else:
             action_type = self.action_types[action_name]
         project = self.project
-        if action_name == "KAN" and self.seq_type == "STIPC":
-            project =  Project.get_new_project(self.speakers, self.project, self.world_state)
+        if action_name == "SEL":
+            project = Project.get_new_project(self.speakers, self.project, self.world_state)
 
         listeners = copy.copy(self.speakers)
         listeners.remove(speaker)

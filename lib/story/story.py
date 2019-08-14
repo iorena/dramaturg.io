@@ -1,7 +1,7 @@
 import json
 
 from concepts.worldstate import WorldState
-from loaders import load_action_types
+from loaders import load_action_types, load_topics
 from scene.situation import Situation
 from concepts.project import Project
 from story.plot import PlotGraph
@@ -14,9 +14,12 @@ import copy
 class Story:
     def __init__(self):
         self.world_state = WorldState()
+        self.pos_topics, self.neg_topics = load_topics(self.world_state)
+        self.pos_topics.sort(key=lambda x: x.score)
+        self.neg_topics.sort(key=lambda x: x.score)
         self.possible_transitions = self.init_possible_transitions()
         for char in self.world_state.characters:
-            char.set_perception(WorldState(self.world_state))
+            char.set_random_perceptions(WorldState(self.world_state))
             char.set_goal(self.create_goal(char))
         self.action_types = load_action_types()
         self.graph = self.create_plot_points()
@@ -24,7 +27,7 @@ class Story:
 
     def __str__(self):
         transitions = "\n".join(map(lambda x: f'{x.start_value} -> {x.end_value}', self.possible_transitions))
-        return f"{self.world_state}\nPossible transitions:\n{transitions}"
+        return f"{self.world_state}\nPossible transitions: ({len(self.possible_transitions)})" #"\n{transitions}"
 
     def init_possible_transitions(self):
         """
@@ -45,11 +48,6 @@ class Story:
         if len(transition_space) is 0:
             return self.init_possible_transitions()
         return transition_space
-
-    def print_possible_transitions(self):
-        print("Possible transitions:")
-        for transition in self.possible_transitions:
-            print(str(transition.start_value), "->", str(transition.end_value))
 
     def create_goal(self, character):
         """
@@ -80,37 +78,31 @@ class Story:
         """
         situations = []
         added = []
-        main_char = self.world_state.characters[0]
-        #add topics that introduce the starting state of the story
-        for attribute in main_char.attributes.items():
-            situations.append(Situation(self.world_state, "P", self.world_state.characters, Project(main_char, attribute, "statement", "present", True), main_char.attributes["location"]))
-        for plotpoint in self.graph.nodes:
-            predecessors = list(self.graph.predecessors(plotpoint))
-            if plotpoint.elem is "G":
-                topic_type = "action"
-                success = True
-            if plotpoint.elem is "A":
-                topic_type = "action"
-                success = plotpoint.goal.start_value != plotpoint.goal.end_value
-            if plotpoint.elem is "P":
-                topic_type = "statement"
-                success = plotpoint.goal.start_value != plotpoint.goal.end_value
-            if plotpoint.elem is "IE":
-                topic_type = "statement"
-                success = True
-            situations.append(Situation(self.world_state, plotpoint.elem, self.world_state.characters, Project(plotpoint.subj, plotpoint.transition, topic_type, "present", success), main_char.attributes["location"]))
-            self.world_state.change(plotpoint.elem, plotpoint.subj, plotpoint.goal, success)
-            added.append(plotpoint)
+        main_char = random.choices(self.world_state.characters)[0]
+        other_char = self.world_state.characters[0] if main_char.id == 1 else self.world_state.characters[1]
+        chars = [main_char, other_char]
+        chars_reversed = copy.copy(chars)
+        chars_reversed.reverse()
 
-            if len(predecessors) > 1:
-                for predecessor in predecessors:
-                    if predecessor not in added:
-                        if predecessor.elem is "A":
-                            situations.append(Situation(self.world_state, "P", self.world_state.characters, Project(predecessor.subj, predecessor.transition, "statement", "past", True), main_char.attributes["location"]))
-                            situations.append(Situation(self.world_state, predecessor.elem, self.world_state.characters, Project(predecessor.subj, predecessor.transition, "action", "past", True), main_char.attributes["location"]))
-                            added.append(plotpoint)
-            if len(list(self.graph.successors(plotpoint))) is 0:
-                break
+
+        #add topics that introduce the starting state of the story, alkutilanne
+        for attribute in main_char.attributes.items():
+            situations.append(Situation(self.world_state, "P", chars, Project(main_char, "olla", attribute, "present", 1), main_char.attributes["location"]))
+
+        cabin = self.world_state.get_opposite(main_char.attributes["location"])
+        #let's go to the cabin
+        #make sure second character doesn't want to go to the cabin
+        chars[0].perception.locations[cabin.id].attributes["appraisal"] = self.world_state.appraisals[4]
+        chars[1].perception.locations[cabin.id].attributes["appraisal"] = self.world_state.appraisals[1]
+        situations.append(Situation(self.world_state, "G", chars, Project(main_char, "mennä", ("location", cabin), "present", 5), main_char.attributes["location"]))
+
+        situations.append(Situation(self.world_state, "O", chars_reversed, self.neg_topics[0], main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, "IE", chars, self.pos_topics[0], main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, "P", chars_reversed, self.neg_topics[1], main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, "P", chars, self.pos_topics[1], main_char.attributes["location"]))
+
+        #reprise main question
+        situations.append(Situation(self.world_state, "G", self.world_state.characters, Project(main_char, "mennä", ("location", self.world_state.get_opposite(main_char.attributes["location"])), "present", 5), main_char.attributes["location"]))
 
         return situations
 

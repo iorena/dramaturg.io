@@ -7,6 +7,9 @@ from concepts.affect.emotion import Emotion
 import random
 import copy
 
+APPRAISALS = ["horrible", "bad", "okay", "good", "great"]
+WEATHER_TYPES = ["sunny", "cloudy", "rainy", "stormy"]
+
 
 class WorldState:
     def __init__(self, old=None):
@@ -65,6 +68,16 @@ class WorldState:
                 return False
         return True
 
+    def get_object_by_name(self, name):
+        locs = [loc.name for loc in self.locations]
+        if name in locs:
+            return self.locations[locs.index(name)]
+        objs = [obj.name for obj in self.objects]
+        if name in objs:
+            return self.objects[objs.index(name)]
+        raise Exception("asked for object named", name)
+
+
     def get_object(self, obj):
         """
         Get a specific character's version of an object. Used by calling character.perception
@@ -83,20 +96,38 @@ class WorldState:
 
     def get_opposite(self, obj):
         if type(obj) is Character:
-            choices = copy.copy(self.characters)
-            choices.remove(obj)
+            choices = copy.deepcopy(self.characters)
+            choices.pop(obj.id)
         if type(obj) is Location:
-            choices = copy.copy(self.locations)
+            choices = copy.deepcopy(self.locations)
+            choices.pop(obj.id)
         if obj in self.weather_types:
-            choices = copy.copy(self.weather_types)
-            choices.remove(obj)
+            choices = copy.deepcopy(self.weather_types)
+            choices.pop(obj.id - 95)
+        elif obj in self.appraisals:
+            choices = copy.deepcopy(self.appraisals)
+            choices.pop(obj.id - 90)
         elif type(obj) is WorldObject:
-            choices = copy.copy(self.objects)
+            choices = copy.deepcopy(self.objects)
+            choices.pop(obj.id)
         if type(obj) is Emotion:
             opposite = Emotion(None, 1 - obj.pleasure, 1 - obj.arousal, 1 - obj.dominance)
         else:
             opposite = random.choices(choices)[0]
         return opposite
+
+    def get_opposite_attribute(self, attribute):
+        if attribute in self.appraisals:
+            value = attribute.id
+            if value < 92:
+                return WorldObject(value + 2, APPRAISALS[value - 88])
+            if value > 92:
+                return WorldObject(value - 2, APPRAISALS[value - 92])
+            if value == 92 and random.random() > 0.5:
+                return WorldObject(94, "great")
+            return WorldObject(90, "horrible")
+        return self.get_opposite(attribute)
+
 
     """
     Functions for executing story points that change the world state
@@ -128,19 +159,19 @@ class WorldState:
             else:
                 self.objects[action.obj.id].attributes[action.attribute_name] = action.end_value
 
-    #todo: add perceptions
     def perception(self, subject, perception, success):
         if not success:
             return
-        world_state = copy.copy(self)
-        if perception.attribute_name == "owner":
-            world_state.objects[perception.get_object().id].attributes[perception.attribute_name] = perception.get_person()
-        elif perception.attribute_name == "location":
-            world_state.characters[perception.get_person().id].attributes[perception.attribute_name] = perception.get_object()
+        world_state = copy.deepcopy(subject.perception)
+        if perception.obj in self.objects:
+            world_state.objects[perception.obj.id].attributes[perception.attribute_name] = perception.end_value
+        elif perception.obj in self.characters:
+            world_state.characters[perception.obj.id].attributes[perception.attribute_name] = perception.end_value
+        elif perception.obj in self.locations:
+            world_state.locations[perception.obj.id].attributes[perception.attribute_name] = perception.end_value
         else:
-            raise Exception("warning, this shouldn't happen", perception.attribute_name)
-
-        self.characters[subject.id].perception = world_state
+            raise Exception("warning, this shouldn't happen", perception.obj)
+        subject.perception = world_state
 
     def internal(self, subject, emotion):
         self.characters[subject.id].mood.affect(emotion)

@@ -1,7 +1,7 @@
 from syntaxmaker.syntax_maker import (create_verb_pharse, create_personal_pronoun_phrase, turn_vp_into_question,
                                       create_copula_phrase, create_phrase, auxiliary_verbs, add_auxiliary_verb_to_vp,
                                       add_advlp_to_vp, set_vp_mood_and_tense, turn_vp_into_prefect,
-                                      negate_verb_pharse)
+                                      negate_verb_pharse, turn_vp_into_passive)
 from syntaxmaker.inflector import inflect
 from language.dictionary import verb_dictionary, noun_dictionary, reversed_verb_dictionary, evaluations_dictionary
 from concepts.character import Character
@@ -78,7 +78,18 @@ class Sentence:
                 as_list.insert(0, self.get_synonym(self.obj))
 
             if self.action_type.pre_add is not None:
-                as_list.insert(0, self.get_synonym(self.action_type.pre_add))
+                if self.action_type.pre_add == "interrogative":
+                    add = self.get_interrogative("NOM")
+                else:
+                    add = self.get_synonym(self.action_type.pre_add)
+                as_list.insert(0, add)
+            if self.action_type.name in ["TIAB+", "TIAB-"]:
+                obj_case = self.get_synonym(self.project.verb)[1]
+                if obj_case == "GEN" and self.action_type.neg:
+                    obj_case = "PAR"
+                obj = as_list.pop()
+                obj_i = inflect(obj, "N", {"PERS": "3", "CASE": obj_case, "NUM": "SG"})
+                as_list.append(obj_i)
 
             if self.action_type.ques:
                 as_list.append("?")
@@ -122,6 +133,8 @@ class Sentence:
                 obj_case = "NOM"
         elif self.verb_realization:
             obj_case = self.verb_realization[1]
+        if obj_case == "GEN" and self.action_type.neg:
+            obj_case = "PAR"
         if self.obj is not None and self.obj != "interrogative":
             obj = create_phrase("NP", obj, {"CASE": obj_case})
             add_advlp_to_vp(vp, obj)
@@ -137,6 +150,9 @@ class Sentence:
             turn_vp_into_prefect(vp)
 
         set_vp_mood_and_tense(vp, mood, tense)
+
+        if self.action_type.passive:
+            turn_vp_into_passive(vp)
 
         if self.action_type.neg:
             negate_verb_pharse(vp)
@@ -167,15 +183,18 @@ class Sentence:
         if self.obj == "interrogative":
             as_list.insert(0, self.get_interrogative(obj_case))
             as_list.append("?")
-        if self.action_type.name in ["TIAB+", "TIAB-"]:
-            obj = as_list.pop()
-            as_list.append(inflect(obj, "N", {"PERS": "3", "CASE": obj_case, "NUM": "SG"}))
 
         if self.action_type.pre_add is not None:
-            add = self.get_synonym(self.action_type.pre_add)
+            if self.action_type.pre_add == "interrogative":
+                add = self.get_interrogative("NOM")
+            else:
+                add = self.get_synonym(self.action_type.pre_add)
             as_list.insert(0, add)
-            if self.action_type.name != "TIPC" and self.speaker.mood.arousal < random.uniform(-0.5, 0.5):
+            if self.action_type.name in ["TOTN", "TIA+", "SAM-KAN", "MYÖ", "KII"] and self.speaker.mood.arousal < random.uniform(-0.5, 0.5):
                 as_list = [add]
+        if self.action_type.post_add is not None:
+            add = self.get_synonym(self.action_type.post_add)
+            as_list.append(add)
 
         if self.action_type.ques:
             as_list.append("?")
@@ -185,6 +204,8 @@ class Sentence:
     def get_synonym(self, word):
         if word == "EVAL":
             appraisal = self.project.get_appraisal(self.speaker)
+            if not self.project.speakers_agree([self.speaker, self.listeners[0]]):
+                appraisal = self.project.get_appraisal(self.listeners[0])
             options = evaluations_dictionary[appraisal.name]
             return random.choices(options)[0]
         if word in noun_dictionary:
@@ -202,6 +223,8 @@ class Sentence:
         if person:
             if case == "GEN":
                 return "kenen"
+            elif case == "AKK":
+                return "kenet"
             elif case == "ILL":
                 return "keneen"
             elif case == "INE":
@@ -214,6 +237,8 @@ class Sentence:
 
         if case == "GEN":
             return "minkä"
+        elif case == "AKK":
+            return "minkä"
         elif case == "ILL":
             return "mihin"
         elif case == "INE":
@@ -222,6 +247,8 @@ class Sentence:
             return "mistä"
         elif case == "PAR":
             return "mitä"
+        if self.obj_type in ["appraisal", "weather", "quality"]:
+            return "millainen"
         return "mikä"
 
     def get_styled_sentence(self):

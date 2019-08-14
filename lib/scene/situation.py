@@ -13,7 +13,7 @@ from numpy import array
 from numpy.linalg import norm
 
 ROOT_SEQUENCE_TYPES = ["SKÄS", "STIP", "STIPC", "STOP", "STOE", "SVÄI", "SKAN"]
-SEQUENCE_TYPES = {"present": {"G": ["STOE"], "A": ["SKÄS", "STIP", "STOP"], "P": ["SKAN", "SVÄI"], "IE": ["SKAN"]},
+SEQUENCE_TYPES = {"present": {"G": ["STOE"], "O": ["SVVÄI"], "A": ["SKÄS", "STIP", "STOP"], "P": ["SKAN", "SVÄI"], "IE": ["SKAN"]},
         "past": {"G": ["STOE"], "A": ["STIP", "STIPB"], "P": ["SKAN", "SVÄI"], "IE": ["SKAN"]}}
 
 
@@ -35,8 +35,8 @@ class Situation:
         """
         for character in self.speakers:
             relationship = character.relations[self.main_project.subj.name].liking["outgoing"] > 0.5
-            event_appraisal = self.main_project.get_appraisal(character).id > 91
-            if self.main_project.get_appraisal(character).id is 91:
+            event_appraisal = self.main_project.get_appraisal(character).id > 92
+            if self.main_project.get_appraisal(character).id is 92:
                 #neutral event, nothing happens
                 return
             is_self = character is self.main_project.subj
@@ -118,7 +118,7 @@ class Situation:
             else:
                 obj = random.choices(attributes)[0]
 
-            post_project = Project(subj, obj, "statement", self.main_project.time, True)
+            post_project = Project(subj, "olla", obj, self.main_project.time, 1)
             mood = speakers[0].mood
             distances = list(map(lambda x: norm(array((mood.pleasure, mood.arousal, mood.dominance)) - array((PAD_VALUES[x]))), ROOT_SEQUENCE_TYPES))
             seq_type = random.choices(ROOT_SEQUENCE_TYPES, distances)[0]
