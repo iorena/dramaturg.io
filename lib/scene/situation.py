@@ -39,10 +39,15 @@ class Situation:
             if self.main_project.get_appraisal(character).id is 92:
                 #neutral event, nothing happens
                 return
-            emotion = EMOTIONS[self.get_emotion(relationship, event_appraisal)]
+            is_self = character is self.main_project.subj
+            emotion = EMOTIONS[self.get_emotion(is_self, relationship, event_appraisal)]
             character.mood.affect_mood(emotion)
 
-    def get_emotion(self, relationship, event):
+    def get_emotion(self, is_self, relationship, event):
+        if is_self and event:
+            return "joy"
+        if is_self and not event:
+            return "distress"
         if relationship and event:
             return "happy_for"
         if relationship and not event:
@@ -61,7 +66,11 @@ class Situation:
         main_sequence_type = random.choices(SEQUENCE_TYPES[self.main_project.time][self.element_type], distances)[0]
         main_sequence = Sequence(self.speakers, self.main_project, main_sequence_type, self.action_types, self.world_state)
         sequences = self.add_sequences(main_sequence)
-        return sequences
+        hello_sequence = self.create_hello_sequence()
+        return [hello_sequence] + sequences
+
+    def create_hello_sequence(self):
+        return Sequence(self.speakers, Project(self.speakers[0], ("greeting", self.speakers[0]), "statement", "present", True), "STER", self.action_types, self.world_state, None)
 
     def add_sequences(self, sequence):
         """
