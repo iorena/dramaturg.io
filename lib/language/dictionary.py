@@ -43,3 +43,19 @@ evaluations_dictionary = {
     "bad": ["pahus", "hitto", "eikä"],
     "horrible": ["ei helvetti", "perkele", "ei voi olla totta"]
 }
+
+explicatives_dictionary = {
+    "pos": {
+        "tosi": [1, 1, 0],
+        "erittäin": [0.7, 0.7, 0.2],
+        "hemmetin": [-0.5, 0.5, 0.5],
+        "pirun": [-1, 0.5, 1],
+        "niin": [-0.5, 0, 0],
+        "kyllä": [0, 0.5, 0.2],
+        "sitten": [-0.5, 0, 0.2]
+    },
+    "neg": {
+        "yhtään": [-1, 1, 1],
+        "kovin": [0, 0.5, 0]
+    }
+}
