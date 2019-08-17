@@ -191,7 +191,7 @@ class Sentence:
             as_list.insert(len(as_list) - 1, pers + case)
 
         #add "tosi"/"erittäin" in the right place
-        if self.obj_type in ["weather", "appraisal"] and self.speaker.mood.arousal > random.random():
+        if self.obj_type in ["weather", "appraisal"] and self.speaker.mood.arousal > random.random() and self.action_type.name not in ["TIPB"]:
             explicative = self.get_explicative([self.speaker.mood.pleasure, self.speaker.mood.arousal, self.speaker.mood.dominance])
             as_list.insert(len(as_list) - 1, explicative)
 
