@@ -10,7 +10,8 @@ verb_dictionary = {
     "tulla": [("tulla", "NOM")],
     "käydä": [("käydä", "ADE")],
     "tuijottaa": [("tuijottaa", "AKK")],
-    "mennä": [("mennä", "ALL")]
+    "mennä": [("mennä", "ALL")],
+    "vastata": [("vastata", "ALL")]
 }
 noun_dictionary = {
     "disappointment": ["surullinen", "pettynyt"],
@@ -59,3 +60,12 @@ explicatives_dictionary = {
         "kovin": [0, 0.5, 0]
     }
 }
+
+pivot_dictionary = [
+    "muuten, ",
+    "tiesitkö, että ",
+    "olen miettinyt, että ",
+    "tiedätkös, ",
+    "kuule, ",
+    "tulikin mieleen, että "
+]

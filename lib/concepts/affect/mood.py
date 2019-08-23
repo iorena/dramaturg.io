@@ -50,6 +50,26 @@ class Mood:
             return "disdainful"
         return "bored"
 
+    def get_character_description(self, dimension):
+        if dimension == "pleasure":
+            if self.pleasure > 0.2:
+                return "hyväntuulinen"
+            elif self.pleasure < -0.2:
+                return "pahantuulinen"
+            return None
+        if dimension == "arousal":
+            if self.arousal > 0.2:
+                return "vireä"
+            elif self.arousal < -0.2:
+                return "vetelä"
+            return None
+        if dimension == "dominance":
+            if self.dominance > 0.2:
+                return "hallitseva"
+            elif self.dominance < -0.2:
+                return "alistuva"
+            return None
+
     def get_default_pleasure(personality):
         return 0.21 * personality["E"] + 0.59 * personality["A"] + 0.19 * personality["N"]
 

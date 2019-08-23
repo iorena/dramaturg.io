@@ -2,19 +2,21 @@ from sequence.sequence import Sequence
 from language.action_types import ActionType
 from concepts.project import Project
 from concepts.character import Character
+from language.dictionary import pivot_dictionary
 
 from loaders import load_emotions, load_action_types, load_pad_values
 
 EMOTIONS = load_emotions()
 PAD_VALUES = load_pad_values()
 
-import random
+import random, copy
 from numpy import array
 from numpy.linalg import norm
 
-ROOT_SEQUENCE_TYPES = ["SKÄS", "STIP", "STIPC", "STOP", "STOE", "SVÄI", "SKAN"]
-SEQUENCE_TYPES = {"present": {"G": ["STOE"], "O": ["SVVÄI"], "A": ["SKÄS", "STIP", "STOP"], "P": ["SKAN", "SVÄI"], "IE": ["SKAN"]},
-        "past": {"G": ["STOE"], "A": ["STIP", "STIPB"], "P": ["SKAN", "SVÄI"], "IE": ["SKAN"]}}
+ROOT_SEQUENCE_TYPES = {"personal": ["SKÄS", "STIP", "STIPC", "STOP", "STOE", "SVÄI", "SKAN"],
+        "impersonal": ["STIP", "STIPC", "STOE","SVÄI", "SKAN"]}
+SEQUENCE_TYPES = {"personal": {"in": ["STOE", "STOP", "SKÄS"], "out": ["SVÄI"], "meta": ["SEST", "STIPC", "STII"]},
+        "impersonal": {"in": ["STOP"], "out": ["SVÄI"], "meta": ["SEST", "STIPC", "STII"]}}
 
 
 class Situation:
@@ -25,9 +27,12 @@ class Situation:
         self.main_project = main_project
         self.location = location
         self.action_types = load_action_types()
-        if element_type == "P" and type(self.main_project.subj) is Character:
+        self.mood_change = {}
+        if type(self.main_project.subj) is Character:
             self.affect_emotions()
         self.sequences = self.create_sequences()
+        if self.element_type == "out":
+            self.add_topic_pivot()
 
     def affect_emotions(self):
         """
@@ -41,7 +46,27 @@ class Situation:
                 return
             is_self = character is self.main_project.subj
             emotion = EMOTIONS[self.get_emotion(is_self, relationship, event_appraisal)]
+            old_mood = copy.copy(character.mood)
             character.mood.affect_mood(emotion)
+            new_mood = copy.copy(character.mood)
+            change = None
+            if old_mood.get_character_description("pleasure") != new_mood.get_character_description("pleasure"):
+                if old_mood.pleasure < new_mood.pleasure:
+                    change = "ilahtuu"
+                else:
+                    change = "suuttuu"
+            if old_mood.get_character_description("arousal") != new_mood.get_character_description("arousal"):
+                if old_mood.arousal < new_mood.arousal:
+                    change = "ilahtuu"
+                else:
+                    change = "suuttuu"
+            if old_mood.get_character_description("dominance") != new_mood.get_character_description("dominance"):
+                if old_mood.dominance < new_mood.dominance:
+                    change = "ilahtuu"
+                else:
+                    change = "suuttuu"
+            if change is not None:
+                self.mood_change[character.name] = change
 
     def get_emotion(self, is_self, relationship, event):
         if is_self and event:
@@ -62,8 +87,9 @@ class Situation:
         Generates sequences for each project
         """
         mood = self.speakers[0].mood
-        distances = list(map(lambda x: norm(array((mood.pleasure, mood.arousal, mood.dominance)) - array((PAD_VALUES[x]))), SEQUENCE_TYPES[self.main_project.time][self.element_type]))
-        main_sequence_type = random.choices(SEQUENCE_TYPES[self.main_project.time][self.element_type], distances)[0]
+        personal = "personal" if self.main_project.subj is Character else "impersonal"
+        distances = list(map(lambda x: norm(array((mood.pleasure, mood.arousal, mood.dominance)) - array((PAD_VALUES[x]))), SEQUENCE_TYPES[personal][self.element_type]))
+        main_sequence_type = random.choices(SEQUENCE_TYPES[personal][self.element_type], distances)[0]
         main_sequence = Sequence(self.speakers, self.main_project, main_sequence_type, self.action_types, self.world_state)
         sequences = self.add_sequences(main_sequence)
         return sequences
@@ -86,8 +112,9 @@ class Situation:
             pre_project = Project.get_new_project(speakers, self.main_project, self.world_state)
 
             mood = speakers[0].mood
-            distances = list(map(lambda x: norm(array((mood.pleasure, mood.arousal, mood.dominance)) - array((PAD_VALUES[x]))), ROOT_SEQUENCE_TYPES))
-            seq_type = random.choices(ROOT_SEQUENCE_TYPES, distances)[0]
+            personal = "personal" if self.main_project.subj is Character else "impersonal"
+            distances = list(map(lambda x: norm(array((mood.pleasure, mood.arousal, mood.dominance)) - array((PAD_VALUES[x]))), ROOT_SEQUENCE_TYPES[personal]))
+            seq_type = random.choices(ROOT_SEQUENCE_TYPES[personal], distances)[0]
             sequences = self.add_sequences(Sequence(speakers, pre_project, seq_type, self.action_types, self.world_state, sequence.first_pair_part)) + sequences
 
         #post-project
@@ -116,11 +143,26 @@ class Situation:
 
             post_project = Project(subj, "olla", obj, self.main_project.time, 1)
             mood = speakers[0].mood
-            distances = list(map(lambda x: norm(array((mood.pleasure, mood.arousal, mood.dominance)) - array((PAD_VALUES[x]))), ROOT_SEQUENCE_TYPES))
-            seq_type = random.choices(ROOT_SEQUENCE_TYPES, distances)[0]
+            personal = "personal" if self.main_project.subj is Character else "impersonal"
+            distances = list(map(lambda x: norm(array((mood.pleasure, mood.arousal, mood.dominance)) - array((PAD_VALUES[x]))), ROOT_SEQUENCE_TYPES[personal]))
+            seq_type = random.choices(ROOT_SEQUENCE_TYPES[personal], distances)[0]
 
             sequences = sequences + self.add_sequences(Sequence(speakers, post_project, seq_type, self.action_types, self.world_state, sequence.second_pair_part))
         return sequences
+
+    def add_topic_pivot(self):
+        pre_exp_exists = self.sequences[0].pre_expansion is not None
+        first_turn = self.sequences[0].pre_expansion.inflected if pre_exp_exists else self.sequences[0].first_pair_part.inflected
+        if random.random() > 0.5:
+        #type A: topic proposition
+            pivoted = random.choices(pivot_dictionary)[0] + first_turn
+            if pre_exp_exists:
+                self.sequences[0].pre_expansion.inflected = pivoted
+            else:
+                self.sequences[0].first_pair_part.inflected = pivoted
+        #else:
+        #type B: stepwise transition
+
 
     def to_json(self):
         return self.sequences

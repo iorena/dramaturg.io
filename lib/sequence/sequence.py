@@ -37,8 +37,23 @@ class Sequence():
         self.pre_expansion = self.generate_expansion("pre_expansions", None)
         self.infix_expansion = self.generate_expansion("infix_expansions", self.first_pair_part, True)
         self.post_expansion = self.generate_expansion("post_expansions", self.second_pair_part)
+        self.turns = []
+        if self.pre_expansion is not None:
+            for turn in self.pre_expansion.turns:
+                self.turns.append(turn)
+        self.turns.append(self.first_pair_part)
+        if self.infix_expansion is not None:
+            for turn in self.infix_expansion.turns:
+                self.turns.append(turn)
+        if self.second_pair_part is not None:
+            self.turns.append(self.second_pair_part)
+        if self.post_expansion is not None:
+            for turn in self.post_expansion.turns:
+                self.turns.append(turn)
 
     def generate_expansion(self, position, parent, switch_speakers=False):
+        if self.second_pair_part is None:
+            return None
         speakers = self.speakers
         if switch_speakers:
             speakers = [speakers[1], speakers[0]]
@@ -77,6 +92,8 @@ class Sequence():
 
     def generate_pair_part(self, speaker, action_name, reverse):
         if action_name == "TOI":
+            if self.parent is None:
+                print(self.project.subj, self.project.verb, self.project.obj)
             action_type = self.action_types[self.parent.action_type.name]
         else:
             action_type = self.action_types[action_name]

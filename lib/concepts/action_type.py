@@ -20,9 +20,11 @@ class ActionType:
         self.modus = modus
         self.tempus = tempus
         self.passive = passive == "TRUE"
-        self.pre_add = pre_add
         if pre_add == "None":
             self.pre_add = None
-        self.post_add = post_add
+        else:
+            self.pre_add = pre_add.split(",")
         if post_add == "None":
             self.post_add = None
+        else:
+            self.post_add = post_add.split(",")

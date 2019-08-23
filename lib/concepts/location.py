@@ -8,7 +8,7 @@ WEATHERS = ["sunny", "cloudy", "rainy", "stormy"]
 
 class Location:
     id_counter = 0
-    names = ["talo", "mökki", "katu", "luola"]
+    names = ["koti", "mökki"]
     #appraisals from 0 = horrible to 4 = great
     appraisals = [2, 3, 1, 2]
 

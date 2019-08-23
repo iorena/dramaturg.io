@@ -19,7 +19,9 @@ class Sentence:
         self.attribute = False
         self.project = project
         #subject
-        if action_type.subj == "subject":
+        if project.subj is None:
+            self.subj = None
+        elif action_type.subj == "subject":
             self.subj = project.subj.name
         elif action_type.subj == "object":
             self.subj = project.obj.name
@@ -47,6 +49,8 @@ class Sentence:
         elif action_type.obj == "attribute":
             self.obj = project.obj.name
             self.attribute = True
+        elif action_type.obj == "Speaker":
+            self.obj = speaker.name
         else:
             self.obj = action_type.obj
 
@@ -92,18 +96,29 @@ class Sentence:
                 as_list.insert(0, self.get_synonym(self.obj))
 
             if self.action_type.pre_add is not None:
-                if self.action_type.pre_add == "interrogative":
+                pre_add = random.choices(self.action_type.pre_add)[0]
+                if pre_add == "interrogative":
                     add = self.get_interrogative("NOM")
                 else:
-                    add = self.get_synonym(self.action_type.pre_add)
-                as_list.insert(0, add)
+                    add = self.get_synonym(pre_add)
+                if add != "None":
+                    as_list.insert(0, add)
             if self.action_type.name in ["TIAB+", "TIAB-"]:
                 obj_case = self.get_synonym(self.project.verb)[1]
-                if obj_case == "GEN" and self.action_type.neg:
+                if obj_case == "GEN" and (self.action_type.neg or self.action_type.passive or self.action_type.modus == "IMPV"):
                     obj_case = "PAR"
                 obj = as_list.pop()
                 obj_i = inflect(obj, "N", {"PERS": "3", "CASE": obj_case, "NUM": "SG"})
                 as_list.append(obj_i)
+
+            if self.action_type.post_add is not None:
+                post_add = random.choices(self.action_type.post_add)[0]
+                if post_add == "interrogative":
+                    add = self.get_interrogative("NOM")
+                else:
+                    add = self.get_synonym(post_add)
+                if add != "None":
+                    as_list.append(add)
 
             if self.action_type.ques:
                 as_list.append("?")
@@ -125,7 +140,7 @@ class Sentence:
             vp.components["subject"] = create_personal_pronoun_phrase()
         elif self.subj in [listener.name for listener in self.listeners]:
             person = "2"
-            prodrop = mood == "IMPV"
+            prodrop = mood == "IMPV" or self.action_type.name in ["TOEB"]
             vp.components["subject"] = create_personal_pronoun_phrase("2", "SG", prodrop)
         else:
             person = "3"
@@ -147,10 +162,17 @@ class Sentence:
                 obj_case = "NOM"
         elif self.verb_realization:
             obj_case = self.verb_realization[1]
-        if obj_case == "GEN" and self.action_type.neg:
+        if obj_case == "GEN" and (self.action_type.neg or self.action_type.passive or mood == "IMPV"):
             obj_case = "PAR"
         if self.obj is not None and self.obj != "interrogative":
-            obj = create_phrase("NP", obj, {"CASE": obj_case})
+            if self.speaker.name == obj:
+                obj = create_personal_pronoun_phrase()
+                obj.morphology = {"PERS": "1", "NUM": "SG", "CASE": obj_case}
+            elif self.listeners[0].name == obj:
+                obj = create_personal_pronoun_phrase("2", "SG")
+                obj.morphology = {"PERS": "2", "NUM": "SG", "CASE": obj_case}
+            else:
+                obj = create_phrase("NP", obj, {"CASE": obj_case})
             add_advlp_to_vp(vp, obj)
             if self.verb is "olla" and self.obj_type is "owner" and type(self.project.subj) is Character:
                 pred = create_phrase("NP", "omistaja")
@@ -204,16 +226,20 @@ class Sentence:
             as_list.append("?")
 
         if self.action_type.pre_add is not None:
-            if self.action_type.pre_add == "interrogative":
+            pre_add = random.choices(self.action_type.pre_add)[0]
+            if pre_add == "interrogative":
                 add = self.get_interrogative("NOM")
             else:
-                add = self.get_synonym(self.action_type.pre_add)
-            as_list.insert(0, add)
+                add = self.get_synonym(pre_add)
+            if add != "None":
+                as_list.insert(0, add)
             if self.action_type.name in ["TOTN", "TIA+", "SAM-KAN", "MYÖ", "KII"] and self.speaker.mood.arousal < random.uniform(-0.5, 0.5):
                 as_list = [add]
         if self.action_type.post_add is not None:
-            add = self.get_synonym(self.action_type.post_add)
-            as_list.append(add)
+            post_add = random.choices(self.action_type.post_add)[0]
+            add = self.get_synonym(post_add)
+            if add != "None":
+                as_list.append(add)
 
         if self.action_type.ques:
             as_list.append("?")
@@ -266,6 +292,8 @@ class Sentence:
             return "mistä"
         elif case == "PAR":
             return "mitä"
+        elif case == "ALL":
+            return "minne"
         if self.obj_type in ["appraisal", "weather", "quality"]:
             return "millainen"
         return "mikä"

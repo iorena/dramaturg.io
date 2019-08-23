@@ -1,14 +1,16 @@
-import json
-
 from concepts.worldstate import WorldState
 from loaders import load_action_types, load_topics
 from scene.situation import Situation
 from concepts.project import Project
-from story.plot import PlotGraph
 from story.transition import Transition
+
+from nltk.parse.generate import generate
+from nltk import CFG
+from scene.situation_grammar import grammar
 
 import random
 import copy
+import json
 
 
 class Story:
@@ -22,7 +24,7 @@ class Story:
             char.set_random_perceptions(WorldState(self.world_state))
             char.set_goal(self.create_goal(char))
         self.action_types = load_action_types()
-        self.graph = self.create_plot_points()
+        self.grammar = CFG.fromstring(grammar)
         self.situations = self.create_situations()
 
     def __str__(self):
@@ -58,18 +60,6 @@ class Story:
 
         return goal
 
-    def create_plot_points(self, plot_plot=False):
-        """
-        Create a graph of fabula elements
-        Todo: Before executing each story point, ensure we can make
-        a chain that doesn't go back and forth between the same states?
-        Ie. this genotype can be evaluated before moving on
-        """
-        plot = PlotGraph(self.world_state, self.possible_transitions)
-        if plot_plot:
-            plot.print_plot()
-        return plot.graph
-
     def create_situations(self):
         """
         A list of things that have to be handled within the story. World state (including characters) must be introduced,
@@ -87,22 +77,42 @@ class Story:
 
         #add topics that introduce the starting state of the story, alkutilanne
         for attribute in main_char.attributes.items():
-            situations.append(Situation(self.world_state, "P", chars, Project(main_char, "olla", attribute, "present", 1), main_char.attributes["location"]))
+            situations.append(Situation(self.world_state, "in", chars, Project(main_char, "olla", attribute, "present", 1), main_char.attributes["location"]))
 
         cabin = self.world_state.get_opposite(main_char.attributes["location"])
         #let's go to the cabin
         #make sure second character doesn't want to go to the cabin
         chars[0].perception.locations[cabin.id].attributes["appraisal"] = self.world_state.appraisals[4]
         chars[1].perception.locations[cabin.id].attributes["appraisal"] = self.world_state.appraisals[1]
-        situations.append(Situation(self.world_state, "G", chars, Project(main_char, "mennä", ("location", cabin), "present", 5), main_char.attributes["location"]))
 
-        situations.append(Situation(self.world_state, "O", chars_reversed, self.neg_topics[0], main_char.attributes["location"]))
-        situations.append(Situation(self.world_state, "IE", chars, self.pos_topics[0], main_char.attributes["location"]))
-        situations.append(Situation(self.world_state, "P", chars_reversed, self.neg_topics[1], main_char.attributes["location"]))
-        situations.append(Situation(self.world_state, "P", chars, self.pos_topics[1], main_char.attributes["location"]))
+        for sit in generate(self.grammar, n=1):
+            i = 0
+            for situation in sit:
+                if i == 0 or i == len(sit):
+                    project = Project(main_char, "mennä", ("location", cabin), "present", 5)
+                elif situation == "in":
+                    project = situations[-2].main_project
+                elif situation == "out":
+                    #pick project from ordered list
+                    if i % 2 == 0:
+                        pool = self.pos_topics
+                    else:
+                        pool = self.neg_topics
+                    project = random.choices(pool)[0]
+                    for proj in pool:
+                        pool.remove(proj)
+                        if proj == project:
+                            break
+                elif situation == "meta":
+                    project = situations[-1].main_project
+                situations.append(Situation(self.world_state, situation, self.world_state.characters, project, main_char.attributes["location"]))
+                i += 1
+
+        situations.append(Situation(self.world_state, "in", chars, Project(main_char, "mennä", ("location", cabin), "present", 5), main_char.attributes["location"]))
+
 
         #reprise main question
-        situations.append(Situation(self.world_state, "G", self.world_state.characters, Project(main_char, "mennä", ("location", self.world_state.get_opposite(main_char.attributes["location"])), "present", 5), main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, "in", self.world_state.characters, Project(main_char, "mennä", ("location", self.world_state.get_opposite(main_char.attributes["location"])), "present", 5), main_char.attributes["location"]))
 
         return situations
 
