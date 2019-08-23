@@ -3,14 +3,56 @@ import argparse
 from story.story import Story
 
 
-def main(do_story):
-    if do_story:
+def main(do_story, print_dev_data):
+    if do_story and print_dev_data:
         story = Story()
         print(story)
         for i, situation in enumerate(story.situations):
             print(f"Situation{i}: {situation.location}, {situation.element_type}\n")
             for j, sequence in enumerate(situation.sequences):
                 print(f"Sequence{j}\n{sequence}\n\n")
+    elif do_story:
+        story = Story()
+        turns = []
+        for char in story.world_state.characters:
+            keywords = ', '.join(list(filter(lambda x: x is not None, [char.mood.get_character_description('pleasure'), char.mood.get_character_description('arousal'), char.mood.get_character_description('dominance')])))
+            print(f"{char.name}: {keywords}")
+
+        print("\n\nKohtaus 1\n")
+
+        for situation in story.situations:
+            for seq in situation.sequences:
+                for turn in seq.turns:
+                    turns.append(turn)
+            first = situation.speakers[0].name
+            second = situation.speakers[1].name
+            if any(situation.mood_change) and situation is not story.situations[-1]:
+                mood_changes = []
+                if first in situation.mood_change:
+                    mood_changes.append(f"{first} {situation.mood_change[first]}")
+                if second in situation.mood_change:
+                    mood_changes.append(f"{second} {situation.mood_change[second]}")
+                turns.append("(" + ", ".join(mood_changes) + ")")
+
+        uppercased = turns[0].inflected[0].upper()
+        line = uppercased + turns[0].inflected[1:]
+        if line [-1] == "?":
+            line = line[0:-2] + line[-1]
+        line += ". " if line[-1] != "?" else " "
+        last_turn = turns[0]
+        for turn in turns[1:]:
+            if type(turn) is str:
+                print(turn)
+            else:
+                if last_turn.speaker.name != turn.speaker.name:
+                    print(f"\t{last_turn.speaker.name}\n{line}")
+                    line = ""
+                uppercased = turn.inflected[0].upper()
+                line += uppercased + turn.inflected[1:]
+                if line [-1] == "?":
+                    line = line[0:-2] + line[-1]
+                line += ". " if line[-1] != "?" else " "
+                last_turn = turn
     else:
         print("Did nothing!")
 
@@ -19,6 +61,7 @@ def parse_arguments():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("someargument", nargs="?", default=None)
     parser.add_argument("-s", "--story", help="Create a story!", action='store_true')
+    parser.add_argument("-d", "--development", help="Show action type names and mood", action='store_true')
 
     return parser.parse_args()
 
@@ -26,4 +69,4 @@ def parse_arguments():
 if __name__ == "__main__":
     args = parse_arguments()
     print(args)
-    main(args.story)
+    main(args.story, args.development)

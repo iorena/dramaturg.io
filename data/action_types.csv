@@ -7,9 +7,13 @@ TOTS	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
 TOTNS	TRUE	FALSE	subject	project	object	None	INDV	prees	TRUE	None	None
 TOP	FALSE	TRUE	subject	project	object	None,voida,haluta	COND	prees	FALSE	None	None
 TOE	FALSE	FALSE	subject	project	object	voida,haluta	COND	prees	FALSE	None	None
+TOEB	FALSE	FALSE	subject	project	object	None	COND	prees	FALSE	None	None,nyt
 TOEP	FALSE	TRUE	subject	project	object	None	INDV	prees	TRUE	None	None
 TIP	FALSE	TRUE	subject	project	object	None	INDV	prees	FALSE	None	None
-TIPC	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	miksi	None
+TIPC	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	miksi	?
+TIPD	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	miksi	juuri nyt ?,yhtäkkiä ?
+TII	TRUE	FALSE	Listener	vastata	Speaker	None,voida,haluta	INDV	prees	FALSE	miksi	?
+TIIB	FALSE	FALSE	mikä sinulla	olla	None	None	INDV	prees	FALSE	None	None
 SEL	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	koska	None
 TIPB	FALSE	FALSE	subject	project	interrogative	None	INDV	prees	FALSE	None	None
 TIA+	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	kyllä	None
@@ -27,7 +31,8 @@ KER	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	None	None
 KOA	FALSE	TRUE	None	None	None	None	INDV	imperf	FALSE	mitä	None
 KOB	FALSE	TRUE	subject	None	None	None	INDV	prees	FALSE	interrogative	None
 KOBV	FALSE	FALSE	subject	None	attribute	None	INDV	prees	FALSE	None	None
-MYÖ	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	totta,	None
+MYÖ	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	totta	None
 KII	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	ei	None
 EVA	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	EVAL	None
 JTK	FALSE	TRUE	None	None	None	None	INDV	prees	FALSE	niinkö	None
+EST	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	älä viitsi	None
