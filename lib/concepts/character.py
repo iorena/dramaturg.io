@@ -16,7 +16,7 @@ class Character:
         self.name = self.random_name()
         self.perception = None
         self.relations = {}
-        self.style = Style(random.random(), random.random())
+        self.style = Style(random.random(), random.random(), random.random())
         self.personality = self.random_personality()
         self.mood = Mood(self.personality)
 
