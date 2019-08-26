@@ -14,7 +14,8 @@ import json
 
 
 class Story:
-    def __init__(self):
+    def __init__(self, embeddings):
+        self.embeddings = embeddings
         self.world_state = WorldState()
         self.pos_topics, self.neg_topics = load_topics(self.world_state)
         self.pos_topics.sort(key=lambda x: x.score)
@@ -77,7 +78,7 @@ class Story:
 
         #add topics that introduce the starting state of the story, alkutilanne
         for attribute in main_char.attributes.items():
-            situations.append(Situation(self.world_state, "in", chars, Project(main_char, "olla", attribute, "present", 1), main_char.attributes["location"]))
+            situations.append(Situation(self.world_state, self.embeddings, "in", chars, Project(main_char, "olla", attribute, "present", 1), main_char.attributes["location"]))
 
         cabin = self.world_state.get_opposite(main_char.attributes["location"])
         #let's go to the cabin
@@ -105,14 +106,14 @@ class Story:
                             break
                 elif situation == "meta":
                     project = situations[-1].main_project
-                situations.append(Situation(self.world_state, situation, self.world_state.characters, project, main_char.attributes["location"]))
+                situations.append(Situation(self.world_state, self.embeddings, situation, self.world_state.characters, project, main_char.attributes["location"]))
                 i += 1
 
-        situations.append(Situation(self.world_state, "in", chars, Project(main_char, "mennä", ("location", cabin), "present", 5), main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, self.embeddings, "in", chars, Project(main_char, "mennä", ("location", cabin), "present", 5), main_char.attributes["location"]))
 
 
         #reprise main question
-        situations.append(Situation(self.world_state, "in", self.world_state.characters, Project(main_char, "mennä", ("location", self.world_state.get_opposite(main_char.attributes["location"])), "present", 5), main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, self.embeddings, "in", self.world_state.characters, Project(main_char, "mennä", ("location", self.world_state.get_opposite(main_char.attributes["location"])), "present", 5), main_char.attributes["location"]))
 
         return situations
 

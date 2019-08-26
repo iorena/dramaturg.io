@@ -20,8 +20,9 @@ SEQUENCE_TYPES = {"personal": {"in": ["STOE", "STOP", "SKÄS"], "out": ["SVÄI"]
 
 
 class Situation:
-    def __init__(self, world_state, element_type, speakers, main_project, location):
+    def __init__(self, world_state, embeddings, element_type, speakers, main_project, location):
         self.world_state = world_state
+        self.embeddings = embeddings
         self.element_type = element_type
         self.speakers = speakers
         self.main_project = main_project
@@ -162,6 +163,7 @@ class Situation:
                 self.sequences[0].first_pair_part.inflected = pivoted
         #else:
         #type B: stepwise transition
+
 
 
     def to_json(self):
