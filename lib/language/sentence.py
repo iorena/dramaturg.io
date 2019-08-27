@@ -5,6 +5,7 @@ from syntaxmaker.syntax_maker import (create_verb_pharse, create_personal_pronou
 from syntaxmaker.inflector import inflect
 from language.dictionary import verb_dictionary, noun_dictionary, reversed_verb_dictionary, evaluations_dictionary, explicatives_dictionary
 from concepts.character import Character
+from language.embeddings import Embeddings
 
 import random
 
@@ -13,6 +14,8 @@ from numpy.linalg import norm
 
 
 class Sentence:
+    embeddings = Embeddings()
+
     def __init__(self, speaker, listeners, project, action_type, obj_type, reverse):
         self.speaker = speaker
         self.listeners = listeners
@@ -51,6 +54,8 @@ class Sentence:
             self.attribute = True
         elif action_type.obj == "Speaker":
             self.obj = speaker.name
+        elif action_type.obj == "noun":
+            self.obj = Sentence.embeddings.get_noun_from_verb(self.project.verb)
         else:
             self.obj = action_type.obj
 
@@ -93,7 +98,11 @@ class Sentence:
                 if explicative:
                     as_list.insert(0, explicative)
             elif self.obj is not None:
-                as_list.insert(0, self.get_synonym(self.obj))
+                if self.obj_type == "location":
+                    obj = Sentence.embeddings.get_location_inflection(self.obj)
+                else:
+                    obj = self.get_synonym(self.obj)
+                as_list.insert(0, obj)
 
             if self.action_type.pre_add is not None:
                 pre_add = random.choices(self.action_type.pre_add)[0]

@@ -13,7 +13,8 @@ TIP	FALSE	TRUE	subject	project	object	None	INDV	prees	FALSE	None	None
 TIPC	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	miksi	?
 TIPD	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	miksi	juuri nyt ?,yhtäkkiä ?
 TII	TRUE	FALSE	Listener	vastata	Speaker	None,voida,haluta	INDV	prees	FALSE	miksi	?
-TIIB	FALSE	FALSE	mikä sinulla	olla	None	None	INDV	prees	FALSE	None	None
+TIIC	FALSE	FALSE	Listener	puhua	noun	None,haluta	INDV	prees	FALSE	miksi	?
+TIIB	FALSE	FALSE	mikä sinulla	olla	None	None	INDV	prees	FALSE	None	?
 SEL	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	koska	None
 TIPB	FALSE	FALSE	subject	project	interrogative	None	INDV	prees	FALSE	None	None
 TIA+	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	kyllä	None
@@ -36,3 +37,4 @@ KII	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	ei	None
 EVA	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	EVAL	None
 JTK	FALSE	TRUE	None	None	None	None	INDV	prees	FALSE	niinkö	None
 EST	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	älä viitsi	None
+PIV1	FALSE	FALSE	subject	None	None	None	INVD	prees	FALSE	None	kuuluu mökkeilyyn

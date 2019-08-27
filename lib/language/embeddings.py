@@ -33,15 +33,32 @@ import os
 
 class Embeddings:
     def __init__(self):
-        self.wv = WV.load("../data/finnish_4B_parsebank_skgram.bin",10000,500000)
-        self.get_noun_from_adjective_vector = self.wv.w_to_normv("kuumuus") - self.wv.w_to_normv("kuuma")
+        self.wordforms = WV.load("../data/finnish_s24_skgram.bin",10000,500000)
+        self.lemmas = WV.load("../data/finnish_s24_skgram_lemmas.bin", 10000, 500000)
+        self.get_noun_from_adjective_vector = self.lemmas.w_to_normv("kuumuus") - self.lemmas.w_to_normv("kuuma")
+        self.get_noun_from_verb_vector = self.lemmas.w_to_normv("puhe") - self.lemmas.w_to_normv("puhua")
+        self.get_location_vector = self.wordforms.w_to_normv("kaupassa") - self.wordforms.w_to_normv("kauppa")
 
     def get_noun_from_adjective(self, adjective):
-        target = self.wv.w_to_normv(adjective) + self.get_noun_from_adjective_vector
+        target = self.lemmas.w_to_normv(adjective) + self.get_noun_from_adjective_vector
         target /= numpy.linalg.norm(target, ord=None)
-        sims = self.wv.vectors.dot(target) / self.wv.norm_constants #cosine similarity to all other vecs
-        return sorted(((sims[idx],self.wv.words[idx]) for idx in numpy.argpartition(sims, -2)[-2:]), reverse=True)[1:][0][1]
+        sims = self.lemmas.vectors.dot(target) / self.lemmas.norm_constants #cosine similarity to all other vecs
+        word = sorted(((sims[idx],self.lemmas.words[idx]) for idx in numpy.argpartition(sims, -2)[-2:]), reverse=True)[1:][0][1]
+        return word.replace("#", "")
 
+    def get_noun_from_verb(self, verb):
+        target = self.lemmas.w_to_normv(verb) + self.get_noun_from_verb_vector
+        target /= numpy.linalg.norm(target, ord=None)
+        sims = self.lemmas.vectors.dot(target) / self.lemmas.norm_constants #cosine similarity to all other vecs
+        word = sorted(((sims[idx],self.lemmas.words[idx]) for idx in numpy.argpartition(sims, -2)[-2:]), reverse=True)[1:][0][1]
+        return word.replace("#", "")
+
+    def get_location_inflection(self, place):
+        target = self.lemmas.w_to_normv(place) + self.get_location_vector
+        target /= numpy.linalg.norm(target, ord=None)
+        sims = self.wordforms.vectors.dot(target) / self.wordforms.norm_constants #cosine similarity to all other vecs
+        word = sorted(((sims[idx],self.wordforms.words[idx]) for idx in numpy.argpartition(sims, -2)[-2:]), reverse=True)[1:][0][1]
+        return word.replace("#", "")
 
 #so we can write lwvlib.load(...)
 def load(*args,**kwargs):

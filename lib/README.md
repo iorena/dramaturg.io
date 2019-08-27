@@ -42,7 +42,7 @@ $ chmod a+rX /usr/local/share/hfst
 ```
 
 #### Adding embeddings model
-Download Turku NLP word embeddings binary model from here: http://dl.turkunlp.org/finnish-embeddings/ and put it into /data.
+Download Turku NLP word embeddings binary models from here: http://dl.turkunlp.org/finnish-embeddings/ and put them into /data. You need finnish_s24_skgram.bin and finnish_s24_skgram_lemmas.bin.
 
 
 #### Adding lines into CSV files

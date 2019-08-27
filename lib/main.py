@@ -6,7 +6,7 @@ from language.embeddings import Embeddings
 
 def main(do_story, print_dev_data):
     if do_story and print_dev_data:
-        embeddings = Embeddings(embeddings)
+        embeddings = Embeddings()
         story = Story(embeddings)
         print(story)
         for i, situation in enumerate(story.situations):

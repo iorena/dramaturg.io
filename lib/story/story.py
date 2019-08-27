@@ -78,7 +78,7 @@ class Story:
 
         #add topics that introduce the starting state of the story, alkutilanne
         for attribute in main_char.attributes.items():
-            situations.append(Situation(self.world_state, self.embeddings, "in", chars, Project(main_char, "olla", attribute, "present", 1), main_char.attributes["location"]))
+            situations.append(Situation(self.world_state, self.embeddings, "in", chars, Project(main_char, "olla", attribute, "present", 1), None, main_char.attributes["location"]))
 
         cabin = self.world_state.get_opposite(main_char.attributes["location"])
         #let's go to the cabin
@@ -106,14 +106,14 @@ class Story:
                             break
                 elif situation == "meta":
                     project = situations[-1].main_project
-                situations.append(Situation(self.world_state, self.embeddings, situation, self.world_state.characters, project, main_char.attributes["location"]))
+                situations.append(Situation(self.world_state, self.embeddings, situation, self.world_state.characters, project, situations[i-1].main_project, main_char.attributes["location"]))
                 i += 1
 
-        situations.append(Situation(self.world_state, self.embeddings, "in", chars, Project(main_char, "mennä", ("location", cabin), "present", 5), main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, self.embeddings, "in", chars, Project(main_char, "mennä", ("location", cabin), "present", 5), situations[-1].main_project, main_char.attributes["location"]))
 
 
         #reprise main question
-        situations.append(Situation(self.world_state, self.embeddings, "in", self.world_state.characters, Project(main_char, "mennä", ("location", self.world_state.get_opposite(main_char.attributes["location"])), "present", 5), main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, self.embeddings, "in", self.world_state.characters, Project(main_char, "mennä", ("location", self.world_state.get_opposite(main_char.attributes["location"])), "present", 5), Project(main_char, "mennä", ("location", cabin), "present", 5), main_char.attributes["location"]))
 
         return situations
 
