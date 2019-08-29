@@ -14,7 +14,8 @@ import json
 
 
 class Story:
-    def __init__(self):
+    def __init__(self, embeddings):
+        self.embeddings = embeddings
         self.world_state = WorldState()
         self.pos_topics, self.neg_topics = load_topics(self.world_state)
         self.pos_topics.sort(key=lambda x: x.score)
@@ -51,6 +52,22 @@ class Story:
             return self.init_possible_transitions()
         return transition_space
 
+    def get_title(self):
+        bow = {}
+        for sit in self.situations:
+            for seq in sit.sequences:
+                for turn in seq.turns:
+                    for word in turn.inflected.split(" "):
+                        if word in bow:
+                            bow[word] = bow[word] + 1
+                        else:
+                            bow[word] = 1
+        sorted_bow = sorted(bow.items(), key=lambda x: x[1])
+        source_word_idx = random.choices([-3, -4, -5, -6])[0]
+        strip_punc = sorted_bow[source_word_idx][0].replace(",", "")
+        similar = self.embeddings.get_similar(strip_punc)
+        return similar
+
     def create_goal(self, character):
         """
         Find a transition object whose end state represents the change the character wants to see in the world state
@@ -77,7 +94,7 @@ class Story:
 
         #add topics that introduce the starting state of the story, alkutilanne
         for attribute in main_char.attributes.items():
-            situations.append(Situation(self.world_state, "in", chars, Project(main_char, "olla", attribute, "present", 1), main_char.attributes["location"]))
+            situations.append(Situation(self.world_state, self.embeddings, "in", chars, Project(main_char, "olla", attribute, "present", 1), None, main_char.attributes["location"]))
 
         cabin = self.world_state.get_opposite(main_char.attributes["location"])
         #let's go to the cabin
@@ -90,14 +107,18 @@ class Story:
             for situation in sit:
                 if i == 0 or i == len(sit):
                     project = Project(main_char, "mennä", ("location", cabin), "present", 5)
+                    characters = chars
                 elif situation == "in":
                     project = situations[-2].main_project
+                    characters = chars
                 elif situation == "out":
                     #pick project from ordered list
                     if i % 2 == 0:
                         pool = self.pos_topics
+                        characters = chars
                     else:
                         pool = self.neg_topics
+                        characters = chars_reversed
                     project = random.choices(pool)[0]
                     for proj in pool:
                         pool.remove(proj)
@@ -105,14 +126,14 @@ class Story:
                             break
                 elif situation == "meta":
                     project = situations[-1].main_project
-                situations.append(Situation(self.world_state, situation, self.world_state.characters, project, main_char.attributes["location"]))
+                    characters = chars
+                situations.append(Situation(self.world_state, self.embeddings, situation, characters, project, situations[i-1].main_project, main_char.attributes["location"]))
                 i += 1
 
-        situations.append(Situation(self.world_state, "in", chars, Project(main_char, "mennä", ("location", cabin), "present", 5), main_char.attributes["location"]))
-
+        situations.append(Situation(self.world_state, self.embeddings, "in", chars, Project(main_char, "mennä", ("location", cabin), "present", 5), situations[-1].main_project, main_char.attributes["location"]))
 
         #reprise main question
-        situations.append(Situation(self.world_state, "in", self.world_state.characters, Project(main_char, "mennä", ("location", self.world_state.get_opposite(main_char.attributes["location"])), "present", 5), main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, self.embeddings, "in", self.world_state.characters, Project(main_char, "mennä", ("location", self.world_state.get_opposite(main_char.attributes["location"])), "present", 5), Project(main_char, "mennä", ("location", cabin), "present", 5), main_char.attributes["location"]))
 
         return situations
 

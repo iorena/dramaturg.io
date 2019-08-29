@@ -5,6 +5,7 @@ from syntaxmaker.syntax_maker import (create_verb_pharse, create_personal_pronou
 from syntaxmaker.inflector import inflect
 from language.dictionary import verb_dictionary, noun_dictionary, reversed_verb_dictionary, evaluations_dictionary, explicatives_dictionary
 from concepts.character import Character
+from language.embeddings import Embeddings
 
 import random
 
@@ -13,6 +14,8 @@ from numpy.linalg import norm
 
 
 class Sentence:
+    embeddings = Embeddings()
+
     def __init__(self, speaker, listeners, project, action_type, obj_type, reverse):
         self.speaker = speaker
         self.listeners = listeners
@@ -51,6 +54,8 @@ class Sentence:
             self.attribute = True
         elif action_type.obj == "Speaker":
             self.obj = speaker.name
+        elif action_type.obj == "noun":
+            self.obj = "noun"
         else:
             self.obj = action_type.obj
 
@@ -93,7 +98,8 @@ class Sentence:
                 if explicative:
                     as_list.insert(0, explicative)
             elif self.obj is not None:
-                as_list.insert(0, self.get_synonym(self.obj))
+                obj = self.get_synonym(self.obj)
+                as_list.insert(0, obj)
 
             if self.action_type.pre_add is not None:
                 pre_add = random.choices(self.action_type.pre_add)[0]
@@ -148,7 +154,10 @@ class Sentence:
 
         obj_case = "NOM"
         #check "object"
-        obj = self.get_synonym(self.obj)
+        if self.obj == "noun":
+            obj = Sentence.embeddings.get_noun_from_verb(self.project.verb)
+        else:
+            obj = self.get_synonym(self.obj)
         if self.project.verb is "olla" and self.obj_type is "location":
             obj_case = "INE"
         #todo: fork syntaxmaker to allow copula sentence of type "x has y"?
@@ -173,6 +182,8 @@ class Sentence:
                 obj.morphology = {"PERS": "2", "NUM": "SG", "CASE": obj_case}
             else:
                 obj = create_phrase("NP", obj, {"CASE": obj_case})
+                if self.obj == "noun":
+                    add_advlp_to_vp(vp, create_phrase("NP", self.project.obj.name, {"CASE": "GEN"}))
             add_advlp_to_vp(vp, obj)
             if self.verb is "olla" and self.obj_type is "owner" and type(self.project.subj) is Character:
                 pred = create_phrase("NP", "omistaja")

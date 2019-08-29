@@ -41,6 +41,9 @@ $ chown <username>:<usergroup> -R /usr/local/share/hfst
 $ chmod a+rX /usr/local/share/hfst
 ```
 
+#### Adding embeddings model
+Download Turku NLP word embeddings binary models from here: http://dl.turkunlp.org/finnish-embeddings/ and put them into /data. You need finnish_s24_skgram.bin and finnish_s24_skgram_lemmas.bin.
+
 
 #### Adding lines into CSV files
 You can add new sequence and action types by editing the files sequence/sequence_types.csv, sequence/expansion_types.csv and language/action_types.csv

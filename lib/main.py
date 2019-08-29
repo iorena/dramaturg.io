@@ -1,24 +1,29 @@
 import argparse
 
 from story.story import Story
+from language.embeddings import Embeddings
 
 
 def main(do_story, print_dev_data):
     if do_story and print_dev_data:
-        story = Story()
+        embeddings = Embeddings()
+        story = Story(embeddings)
         print(story)
         for i, situation in enumerate(story.situations):
             print(f"Situation{i}: {situation.location}, {situation.element_type}\n")
             for j, sequence in enumerate(situation.sequences):
                 print(f"Sequence{j}\n{sequence}\n\n")
     elif do_story:
-        story = Story()
+        embeddings = Embeddings()
+        story = Story(embeddings)
         turns = []
         for char in story.world_state.characters:
             keywords = ', '.join(list(filter(lambda x: x is not None, [char.mood.get_character_description('pleasure'), char.mood.get_character_description('arousal'), char.mood.get_character_description('dominance')])))
             print(f"{char.name}: {keywords}")
 
-        print("\n\nKohtaus 1\n")
+        title = story.get_title()
+
+        print(f"\n\n{title[0].upper() + title[1:]}\n")
 
         for situation in story.situations:
             for seq in situation.sequences:

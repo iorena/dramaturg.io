@@ -11,7 +11,8 @@ verb_dictionary = {
     "käydä": [("käydä", "ADE")],
     "tuijottaa": [("tuijottaa", "AKK")],
     "mennä": [("mennä", "ALL")],
-    "vastata": [("vastata", "ALL")]
+    "vastata": [("vastata", "ALL")],
+    "puhua": [("puhua", "ELA")]
 }
 noun_dictionary = {
     "disappointment": ["surullinen", "pettynyt"],
