@@ -1,7 +1,7 @@
 opposing	score	subject	verb	aux verb	object	object type
 TRUE	1	PERSON	kastella	täytyä, pitää	pensas	other
 TRUE	1	PERSON	leikata	täytyä, pitää	nurmikko	other
-TRUE	2	televisiosta	tulla	NONE	Salkkarit	other
+TRUE	2	televisiosta	tulla	NONE	Paratiisihotelli	other
 TRUE	6	mökki	olla	NONE	tylsä	other
 FALSE	4	PASSIVE	käydä	kuulua, täytyä	mökillä	other
 FALSE	2	kotona	olla	NONE	kuuma	other

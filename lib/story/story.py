@@ -107,14 +107,18 @@ class Story:
             for situation in sit:
                 if i == 0 or i == len(sit):
                     project = Project(main_char, "mennä", ("location", cabin), "present", 5)
+                    characters = chars
                 elif situation == "in":
                     project = situations[-2].main_project
+                    characters = chars
                 elif situation == "out":
                     #pick project from ordered list
                     if i % 2 == 0:
                         pool = self.pos_topics
+                        characters = chars
                     else:
                         pool = self.neg_topics
+                        characters = chars_reversed
                     project = random.choices(pool)[0]
                     for proj in pool:
                         pool.remove(proj)
@@ -122,11 +126,11 @@ class Story:
                             break
                 elif situation == "meta":
                     project = situations[-1].main_project
-                situations.append(Situation(self.world_state, self.embeddings, situation, self.world_state.characters, project, situations[i-1].main_project, main_char.attributes["location"]))
+                    characters = chars
+                situations.append(Situation(self.world_state, self.embeddings, situation, characters, project, situations[i-1].main_project, main_char.attributes["location"]))
                 i += 1
 
         situations.append(Situation(self.world_state, self.embeddings, "in", chars, Project(main_char, "mennä", ("location", cabin), "present", 5), situations[-1].main_project, main_char.attributes["location"]))
-
 
         #reprise main question
         situations.append(Situation(self.world_state, self.embeddings, "in", self.world_state.characters, Project(main_char, "mennä", ("location", self.world_state.get_opposite(main_char.attributes["location"])), "present", 5), Project(main_char, "mennä", ("location", cabin), "present", 5), main_char.attributes["location"]))

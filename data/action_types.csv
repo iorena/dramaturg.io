@@ -13,6 +13,7 @@ TOEP	FALSE	TRUE	subject	project	object	None	INDV	prees	TRUE	None	None
 TIP	FALSE	TRUE	subject	project	object	None	INDV	prees	FALSE	None	None
 TIPC	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	miksi	?
 TIPD	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	miksi	juuri nyt ?,yhtäkkiä ?
+TIPE	FALSE	FALSE	subject	project	object	None	COND	prees	FALSE	miksi	?
 TII	TRUE	FALSE	Listener	vastata	Speaker	None,voida,haluta	INDV	prees	FALSE	miksi	?
 TIIC	FALSE	FALSE	Listener	puhua	noun	None,haluta	INDV	prees	FALSE	miksi	?
 TIIB	FALSE	FALSE	mikä sinulla	olla	None	None	INDV	prees	FALSE	None	?

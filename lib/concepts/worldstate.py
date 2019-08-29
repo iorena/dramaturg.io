@@ -27,7 +27,7 @@ class WorldState:
         self.appraisals = [WorldObject(90, "horrible"), WorldObject(91, "bad"), WorldObject(92, "okay"), WorldObject(93, "good"), WorldObject(94, "great")]
         self.weather_types = [WorldObject(95, "sunny"), WorldObject(96, "cloudy"), WorldObject(97, "rainy"), WorldObject(98, "stormy")]
         self.locations = [Location(), Location()]
-        self.characters = [Character(self.get_random_loc()), Character(self.get_random_loc())]
+        self.characters = [Character(self.locations[1]), Character(self.locations[1])]
         self.objects = [WorldObject()]
         for obj in self.objects:
             owner = random.choices(self.characters)[0]
@@ -47,9 +47,6 @@ class WorldState:
                 other.set_relation(char.name, Relationship(char, liking_in, liking_out, 1 - dominance))
             other.set_relation(other.name, Relationship(other, 1, 1, 0.5))
 
-
-    def get_random_loc(self):
-        return random.choices(self.locations)[0]
 
     def __str__(self):
         return f"Locations: {', '.join(map(str, self.locations))}\nCharacters: {', '.join(map(str, self.characters))}"
