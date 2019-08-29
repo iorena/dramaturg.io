@@ -98,10 +98,7 @@ class Sentence:
                 if explicative:
                     as_list.insert(0, explicative)
             elif self.obj is not None:
-                if self.obj_type == "location":
-                    obj = Sentence.embeddings.get_location_inflection(self.obj)
-                else:
-                    obj = self.get_synonym(self.obj)
+                obj = self.get_synonym(self.obj)
                 as_list.insert(0, obj)
 
             if self.action_type.pre_add is not None:

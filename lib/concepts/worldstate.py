@@ -27,7 +27,7 @@ class WorldState:
         self.appraisals = [WorldObject(90, "horrible"), WorldObject(91, "bad"), WorldObject(92, "okay"), WorldObject(93, "good"), WorldObject(94, "great")]
         self.weather_types = [WorldObject(95, "sunny"), WorldObject(96, "cloudy"), WorldObject(97, "rainy"), WorldObject(98, "stormy")]
         self.locations = [Location(), Location()]
-        self.characters = [Character(self.locations[1]), Character(self.locations[1])]
+        self.characters = [Character(self.locations[0]), Character(self.locations[0])]
         self.objects = [WorldObject()]
         for obj in self.objects:
             owner = random.choices(self.characters)[0]
