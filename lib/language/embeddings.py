@@ -40,7 +40,12 @@ class Embeddings:
         self.get_location_vector = self.wordforms.w_to_normv("kaupassa") - self.wordforms.w_to_normv("kauppa")
 
     def get_noun_from_adjective(self, adjective):
-        target = self.lemmas.w_to_normv(adjective) + self.get_noun_from_adjective_vector
+        if adjective is None:
+            return None
+        adjective_vector = self.lemmas.w_to_normv(adjective)
+        if adjective_vector is None:
+            return None
+        target =  adjective_vector + self.get_noun_from_adjective_vector
         target /= numpy.linalg.norm(target, ord=None)
         sims = self.lemmas.vectors.dot(target) / self.lemmas.norm_constants #cosine similarity to all other vecs
         word = sorted(((sims[idx],self.lemmas.words[idx]) for idx in numpy.argpartition(sims, -2)[-2:]), reverse=True)[1:][0][1]
@@ -54,7 +59,7 @@ class Embeddings:
         return word.replace("#", "")
 
     def get_location_inflection(self, place):
-        target = self.lemmas.w_to_normv(place) + self.get_location_vector
+        target = self.wordforms.w_to_normv(place) + self.get_location_vector
         target /= numpy.linalg.norm(target, ord=None)
         sims = self.wordforms.vectors.dot(target) / self.wordforms.norm_constants #cosine similarity to all other vecs
         word = sorted(((sims[idx],self.wordforms.words[idx]) for idx in numpy.argpartition(sims, -2)[-2:]), reverse=True)[1:][0][1]

@@ -55,7 +55,7 @@ class Sentence:
         elif action_type.obj == "Speaker":
             self.obj = speaker.name
         elif action_type.obj == "noun":
-            self.obj = Sentence.embeddings.get_noun_from_verb(self.project.verb)
+            self.obj = "noun"
         else:
             self.obj = action_type.obj
 
@@ -157,7 +157,10 @@ class Sentence:
 
         obj_case = "NOM"
         #check "object"
-        obj = self.get_synonym(self.obj)
+        if self.obj == "noun":
+            obj = Sentence.embeddings.get_noun_from_verb(self.project.verb)
+        else:
+            obj = self.get_synonym(self.obj)
         if self.project.verb is "olla" and self.obj_type is "location":
             obj_case = "INE"
         #todo: fork syntaxmaker to allow copula sentence of type "x has y"?
@@ -182,6 +185,8 @@ class Sentence:
                 obj.morphology = {"PERS": "2", "NUM": "SG", "CASE": obj_case}
             else:
                 obj = create_phrase("NP", obj, {"CASE": obj_case})
+                if self.obj == "noun":
+                    add_advlp_to_vp(vp, create_phrase("NP", self.project.obj.name, {"CASE": "GEN"}))
             add_advlp_to_vp(vp, obj)
             if self.verb is "olla" and self.obj_type is "owner" and type(self.project.subj) is Character:
                 pred = create_phrase("NP", "omistaja")

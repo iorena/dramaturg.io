@@ -16,7 +16,7 @@ from numpy.linalg import norm
 
 ROOT_SEQUENCE_TYPES = {"personal": ["SKÄS", "STIP", "STIPC", "STOP", "STOE", "SVÄI", "SKAN"],
         "impersonal": ["STIP", "STIPC", "STOE","SVÄI", "SKAN"]}
-SEQUENCE_TYPES = {"personal": {"in": ["STOE", "STOP", "SKÄS"], "out": ["SVÄI"], "meta": ["SEST", "STIPC", "STII"]},
+SEQUENCE_TYPES = {"personal": {"in": ["STOE", "STOP", "STOPB", "SKÄS"], "out": ["SVÄI"], "meta": ["SEST", "STIPC", "STII"]},
         "impersonal": {"in": ["STOP"], "out": ["SVÄI"], "meta": ["SEST", "STIPC", "STII"]}}
 
 
@@ -33,6 +33,7 @@ class Situation:
         self.mood_change = {}
         if type(self.main_project.subj) is Character:
             self.affect_emotions()
+        self.main_sequence_id = 0
         self.sequences = self.create_sequences()
         if self.element_type == "in":
             self.add_topic_pivot()
@@ -119,6 +120,7 @@ class Situation:
             distances = list(map(lambda x: norm(array((mood.pleasure, mood.arousal, mood.dominance)) - array((PAD_VALUES[x]))), ROOT_SEQUENCE_TYPES[personal]))
             seq_type = random.choices(ROOT_SEQUENCE_TYPES[personal], distances)[0]
             sequences = self.add_sequences(Sequence(speakers, pre_project, seq_type, self.action_types, self.world_state, sequence.first_pair_part)) + sequences
+            self.main_sequence_id += 1
 
         #post-project
         character = random.choices(self.speakers, dominances)[0]
@@ -154,8 +156,8 @@ class Situation:
         return sequences
 
     def add_topic_pivot(self):
-        pre_exp_exists = self.sequences[0].pre_expansion is not None
-        first_turn = self.sequences[0].pre_expansion if pre_exp_exists else self.sequences[0].first_pair_part
+        pre_exp_exists = self.sequences[self.main_sequence_id].pre_expansion is not None
+        first_turn = self.sequences[self.main_sequence_id].pre_expansion if pre_exp_exists else self.sequences[0].first_pair_part
         if random.random() > 0.5 or self.prev_project is None:
         #type A: topic proposition
             pivoted = random.choices(pivot_dictionary)[0] + first_turn.inflected
@@ -166,6 +168,8 @@ class Situation:
         else:
         #type B: stepwise transition
             pivot_subj = self.embeddings.get_noun_from_adjective(self.prev_project.obj.name)
+            if pivot_subj is None:
+                return
             pivot_sentence = pivot_subj + " kuuluu mökille"
             pivoted = pivot_sentence + ". " + first_turn.inflected[0].upper() + first_turn.inflected[1:]
             if pre_exp_exists:
