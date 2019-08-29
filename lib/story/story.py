@@ -52,6 +52,22 @@ class Story:
             return self.init_possible_transitions()
         return transition_space
 
+    def get_title(self):
+        bow = {}
+        for sit in self.situations:
+            for seq in sit.sequences:
+                for turn in seq.turns:
+                    for word in turn.inflected.split(" "):
+                        if word in bow:
+                            bow[word] = bow[word] + 1
+                        else:
+                            bow[word] = 1
+        sorted_bow = sorted(bow.items(), key=lambda x: x[1])
+        source_word_idx = random.choices([-3, -4, -5, -6])[0]
+        strip_punc = sorted_bow[source_word_idx][0].replace(",", "")
+        similar = self.embeddings.get_similar(strip_punc)
+        return similar
+
     def create_goal(self, character):
         """
         Find a transition object whose end state represents the change the character wants to see in the world state

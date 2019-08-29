@@ -21,7 +21,9 @@ def main(do_story, print_dev_data):
             keywords = ', '.join(list(filter(lambda x: x is not None, [char.mood.get_character_description('pleasure'), char.mood.get_character_description('arousal'), char.mood.get_character_description('dominance')])))
             print(f"{char.name}: {keywords}")
 
-        print("\n\nKohtaus 1\n")
+        title = story.get_title()
+
+        print(f"\n\n{title[0].upper() + title[1:]}\n")
 
         for situation in story.situations:
             for seq in situation.sequences:

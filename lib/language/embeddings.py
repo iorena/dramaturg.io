@@ -29,6 +29,7 @@ wv.norm_constants
 import numpy
 import mmap
 import os
+import random
 #import StringIO
 
 class Embeddings:
@@ -38,6 +39,13 @@ class Embeddings:
         self.get_noun_from_adjective_vector = self.lemmas.w_to_normv("kuumuus") - self.lemmas.w_to_normv("kuuma")
         self.get_noun_from_verb_vector = self.lemmas.w_to_normv("puhe") - self.lemmas.w_to_normv("puhua")
         self.get_location_vector = self.wordforms.w_to_normv("kaupassa") - self.wordforms.w_to_normv("kauppa")
+
+    def get_similar(self, word):
+        random_idx = random.choices([0, 1, 2, 3, 4])[0]
+        similar = self.wordforms.nearest(word, 5)
+        if similar is None:
+            return word
+        return similar[random_idx][1]
 
     def get_noun_from_adjective(self, adjective):
         if adjective is None:
