@@ -96,6 +96,8 @@ class Situation:
         main_sequence_type = random.choices(SEQUENCE_TYPES[personal][self.element_type], distances)[0]
         main_sequence = Sequence(self.speakers, self.main_project, main_sequence_type, self.action_types, self.world_state)
         sequences = self.add_sequences(main_sequence)
+        #add hello sequence
+        sequences = [Sequence(self.speakers, Project.get_hello_project(self.speakers), "STER", self.action_types, self.world_state)] + sequences
         return sequences
 
     def add_sequences(self, sequence):

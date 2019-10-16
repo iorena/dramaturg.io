@@ -1,12 +1,10 @@
-
 import random
 
 
 class WorldObject:
     id_counter = 0
-    names = ["koiranpentu", "jäätelö", "makkara"]
 
-    def __init__(self, id=None, name=None):
+    def __init__(self, name, id=None):
         if id is None:
             self.id = WorldObject.id_counter
             WorldObject.id_counter += 1
@@ -15,12 +13,7 @@ class WorldObject:
         self.attributes = {}
         if self.id in range(90, 95):
             self.attributes["appraisal"] = self
-        if name is None:
-            object_type = random.choices(WorldObject.names)[0]
-            WorldObject.names.remove(object_type)
-            self.name = object_type
-        else:
-            self.name = name
+        self.name = name
 
     def __str__(self):
         return self.name

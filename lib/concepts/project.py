@@ -22,10 +22,10 @@ class Project:
     def get_appraisal(self, character):
         if self.obj_type is "owner":
             #todo: shouldn't this be the appraisal of the object owned?
-            return WorldObject(93, APPRAISALS[3])
+            return WorldObject(APPRAISALS[3], 93)
         elif type(self.obj) in [WorldObject, Location]:
             return character.perception.get_object(self.obj).attributes["appraisal"]
-        return WorldObject(92, APPRAISALS[2])
+        return WorldObject(APPRAISALS[2], 92)
 
     def speakers_agree(self, speakers):
         if self.verb == "olla":
@@ -67,3 +67,11 @@ class Project:
             project = Project(subj, verb, obj, "present", 4)
 
         return project
+
+    def get_hello_project(speakers):
+        #same place
+        if speakers[0].attributes["location"] == speakers[1].attributes["location"]:
+            return Project(speakers[0], "tehdä", ("location", speakers[0].attributes["location"]), "present", 1)
+        #different place -> phone call
+        else:
+            return Project(speakers[0], "soittaa", ("character", speakers[1]), "past", 1)

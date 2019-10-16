@@ -40,8 +40,18 @@ class Embeddings:
         self.get_noun_from_verb_vector = self.lemmas.w_to_normv("puhe") - self.lemmas.w_to_normv("puhua")
         self.get_location_vector = self.wordforms.w_to_normv("kaupassa") - self.wordforms.w_to_normv("kauppa")
 
+    def get_inheritance_object(self):
+        random_idx = random.randint(0, 5)
+        similar = self.wordforms.nearest("maljakko", 6)
+        return similar[random_idx][1]
+
+    def get_relative(self):
+        random_idx = random.randint(0, 5)
+        similar = self.wordforms.nearest("äiti", 6)
+        return similar[random_idx][1]
+
     def get_similar(self, word):
-        random_idx = random.choices([0, 1, 2, 3, 4])[0]
+        random_idx = random.randint(0, 4)
         similar = self.wordforms.nearest(word, 5)
         if similar is None:
             return word

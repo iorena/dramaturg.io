@@ -20,7 +20,7 @@ class Location:
             self.id = id
         score = Location.appraisals[self.id]
         weather_score = random.randint(0, 3)
-        self.attributes = {"appraisal": WorldObject(90 + score, APPRAISALS[score]), "weather": WorldObject(95 + weather_score, WEATHERS[weather_score])}
+        self.attributes = {"appraisal": WorldObject(APPRAISALS[score], 90 + score), "weather": WorldObject(WEATHERS[weather_score], 95 + weather_score)}
         location_type = Location.names[self.id]
         self.name = location_type
 

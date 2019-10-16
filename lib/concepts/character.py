@@ -8,12 +8,15 @@ class Character:
     id_counter = 0
     names = ["Pekka", "Ville", "Kalle", "Maija"]
 
-    def __init__(self, location):
+    def __init__(self, location, name=None):
         self.id = Character.id_counter
         Character.id_counter += 1
         self.attributes = {"location": location}
         self.goals = []
-        self.name = self.random_name()
+        if name is None:
+            self.name = self.random_name()
+        else:
+            self.name = name
         self.perception = None
         self.relations = {}
         self.style = Style(random.random(), random.random(), random.random())

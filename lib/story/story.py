@@ -16,13 +16,13 @@ import json
 class Story:
     def __init__(self, embeddings):
         self.embeddings = embeddings
-        self.world_state = WorldState()
-        self.pos_topics, self.neg_topics = load_topics(self.world_state)
-        self.pos_topics.sort(key=lambda x: x.score)
-        self.neg_topics.sort(key=lambda x: x.score)
+        self.world_state = WorldState(self.embeddings)
+        #self.pos_topics, self.neg_topics = load_topics(self.world_state)
+        #self.pos_topics.sort(key=lambda x: x.score)
+        #self.neg_topics.sort(key=lambda x: x.score)
         self.possible_transitions = self.init_possible_transitions()
         for char in self.world_state.characters:
-            char.set_random_perceptions(WorldState(self.world_state))
+            char.set_random_perceptions(WorldState(None, self.world_state))
             char.set_goal(self.create_goal(char))
         self.action_types = load_action_types()
         self.grammar = CFG.fromstring(grammar)
@@ -85,55 +85,18 @@ class Story:
         """
         situations = []
         added = []
-        main_char = random.choices(self.world_state.characters)[0]
-        other_char = self.world_state.characters[0] if main_char.id == 1 else self.world_state.characters[1]
+        main_char = self.world_state.characters[0]
+        other_char = self.world_state.characters[1]
         chars = [main_char, other_char]
-        chars_reversed = copy.copy(chars)
-        chars_reversed.reverse()
+        chars_reversed = [other_char, main_char]
 
+        #char1 calls char2
+        #char1 finds out that relative is dead (before scene)
 
-        #add topics that introduce the starting state of the story, alkutilanne
-        for attribute in main_char.attributes.items():
-            situations.append(Situation(self.world_state, self.embeddings, "in", chars, Project(main_char, "olla", attribute, "present", 1), None, main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, self.embeddings, "in", chars, Project(self.world_state.dead_relative, "kuolla", ("character", other_char), "past", 5), None, main_char.attributes["location"]))
 
-        cabin = self.world_state.get_opposite(main_char.attributes["location"])
-        #let's go to the cabin
-        #make sure second character doesn't want to go to the cabin
-        chars[0].perception.locations[cabin.id].attributes["appraisal"] = self.world_state.appraisals[4]
-        chars[1].perception.locations[cabin.id].attributes["appraisal"] = self.world_state.appraisals[1]
-
-        for sit in generate(self.grammar, n=1):
-            i = 0
-            for situation in sit:
-                if i == 0 or i == len(sit):
-                    project = Project(main_char, "mennä", ("location", cabin), "present", 5)
-                    characters = chars
-                elif situation == "in":
-                    project = situations[-2].main_project
-                    characters = chars
-                elif situation == "out":
-                    #pick project from ordered list
-                    if i % 2 == 0:
-                        pool = self.pos_topics
-                        characters = chars
-                    else:
-                        pool = self.neg_topics
-                        characters = chars_reversed
-                    project = random.choices(pool)[0]
-                    for proj in pool:
-                        pool.remove(proj)
-                        if proj == project:
-                            break
-                elif situation == "meta":
-                    project = situations[-1].main_project
-                    characters = chars
-                situations.append(Situation(self.world_state, self.embeddings, situation, characters, project, situations[i-1].main_project, main_char.attributes["location"]))
-                i += 1
-
-        situations.append(Situation(self.world_state, self.embeddings, "in", chars, Project(main_char, "mennä", ("location", cabin), "present", 5), situations[-1].main_project, main_char.attributes["location"]))
-
-        #reprise main question
-        situations.append(Situation(self.world_state, self.embeddings, "in", self.world_state.characters, Project(main_char, "mennä", ("location", self.world_state.get_opposite(main_char.attributes["location"])), "present", 5), Project(main_char, "mennä", ("location", cabin), "present", 5), main_char.attributes["location"]))
+        #char2 comes to get inheritance
+        situations.append(Situation(self.world_state, self.embeddings, "in", chars_reversed, Project(other_char, "ottaa", ("object", self.world_state.inheritance_object), "present", 5), Project(main_char, "soittaa", ("character", other_char), "present", 5), main_char.attributes["location"]))
 
         return situations
 
