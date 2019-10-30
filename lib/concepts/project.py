@@ -5,7 +5,6 @@ import random
 
 APPRAISALS = ["horrible", "bad", "okay", "good", "great"]
 
-
 class Project:
     def __init__(self, owner, subj, verb, obj, time, score):
         self.owner = owner
@@ -47,6 +46,13 @@ class Project:
                 return False
             return True
 
+    def get_surprise(self, model, subject):
+        if self.verb != model.verb:
+            return True
+        if model.subj == "self" and self.subj != subject:
+            return True
+        return False
+
     def get_new_project(speakers, main_project, world_state):
         #random topic: weather etc
         rand = random.random()
@@ -76,3 +82,4 @@ class Project:
         #different place -> phone call
         else:
             return Project(speakers[0], speakers[0], "soittaa", ("character", speakers[1]), "past", 1)
+

@@ -1,5 +1,6 @@
 from language.style import Style
 from concepts.affect.mood import Mood
+from concepts.project import Project
 
 import random, copy
 
@@ -11,7 +12,7 @@ class Character:
     def __init__(self, location, name=None):
         self.id = Character.id_counter
         Character.id_counter += 1
-        self.attributes = {"location": location}
+        self.attributes = {"location": location, "vitality": "alive"}
         self.goals = []
         if name is None:
             self.name = self.random_name()
@@ -22,6 +23,8 @@ class Character:
         self.style = Style(random.random(), random.random(), random.random())
         self.personality = self.random_personality()
         self.mood = Mood(self.personality)
+        self.memory = []
+        self.world_model = self.init_causal_relations()
 
     def __str__(self):
         """
@@ -61,3 +64,13 @@ class Character:
 
     def set_relation(self, other, relation):
         self.relations[other] = relation
+
+    def init_causal_relations(self):
+        """
+        Causal requirements for events. Determines whether a character is surprised by an event
+        """
+        events = {
+            "kuolla": [Project(None, "someone", "tappaa", "self", None, 1)]
+            }
+        return events
+

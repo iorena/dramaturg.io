@@ -20,37 +20,15 @@ class Story:
         #self.pos_topics, self.neg_topics = load_topics(self.world_state)
         #self.pos_topics.sort(key=lambda x: x.score)
         #self.neg_topics.sort(key=lambda x: x.score)
-        self.possible_transitions = self.init_possible_transitions()
         for char in self.world_state.characters:
             char.set_random_perceptions(WorldState(None, self.world_state))
-            char.set_goal(self.create_goal(char))
+            #char.set_goal(self.create_goal(char))
         self.action_types = load_action_types()
         self.grammar = CFG.fromstring(grammar)
         self.situations = self.create_situations()
 
     def __str__(self):
-        transitions = "\n".join(map(lambda x: f'{x.start_value} -> {x.end_value}', self.possible_transitions))
-        return f"{self.world_state}\nPossible transitions: ({len(self.possible_transitions)})" #"\n{transitions}"
-
-    def init_possible_transitions(self):
-        """
-        Creates a list of tuples representing all possible transitions, keeping each transition at random
-        """
-        transition_space = []
-        for loc in self.world_state.locations:
-            for loc2 in self.world_state.locations:
-                if loc != loc2:
-                    if random.random() > 0.5:
-                        for char in self.world_state.characters:
-                            transition_space.append(Transition(char, "location", loc, loc2))
-        for obj in self.world_state.objects:
-            for char in self.world_state.characters:
-                for char2 in self.world_state.characters:
-                    if char != char2:
-                        transition_space.append(Transition(obj, "owner", char, char2))
-        if len(transition_space) is 0:
-            return self.init_possible_transitions()
-        return transition_space
+        return f"{self.world_state}"
 
     def get_title(self):
         bow = {}

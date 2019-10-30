@@ -18,11 +18,12 @@ class Sequence():
     def __init__(self, speakers, project, seq_type, action_types, world_state, parent=None):
         self.speakers = speakers
         self.project = project
+        self.reaction = self.get_reaction()
         self.seq_type = seq_type
         self.action_types = action_types
         self.parent = parent
         self.world_state = world_state
-        self.pair_types = POS_SEQUENCES if project.speakers_agree(speakers) else NEG_SEQUENCES
+        self.pair_types = POS_SEQUENCES if not self.reaction else NEG_SEQUENCES
         reverse = False
         if seq_type in ["SKÄS"] and self.speakers[0].name == self.project.subj.name and project.verb != "olla":
             reverse = True
@@ -50,6 +51,17 @@ class Sequence():
         if self.post_expansion is not None:
             for turn in self.post_expansion.turns:
                 self.turns.append(turn)
+
+    def get_reaction(self):
+        if not self.project.verb in self.speakers[1].world_model:
+            return True
+        causes = self.speakers[1].world_model[self.project.verb]
+        for cause in causes:
+            for event in self.speakers[1].memory:
+                surprise = cause.get_surprise(memory, self.project.subj)
+                if not surprise:
+                    return False
+        return True
 
     def generate_expansion(self, position, parent, switch_speakers=False):
         if self.second_pair_part is None:
