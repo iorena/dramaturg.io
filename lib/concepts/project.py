@@ -7,7 +7,8 @@ APPRAISALS = ["horrible", "bad", "okay", "good", "great"]
 
 
 class Project:
-    def __init__(self, subj, verb, obj, time, score):
+    def __init__(self, owner, subj, verb, obj, time, score):
+        self.owner = owner
         self.subj = subj
         self.obj_type = obj[0]
         self.obj = obj[1]
@@ -52,11 +53,11 @@ class Project:
         if rand > 0.7:
             subj = world_state.weather
             obj = ("weather", speakers[0].attributes["location"].attributes["weather"])
-            project = Project(subj, "olla", obj, main_project.time, 0)
+            project = Project(speakers[0], subj, "olla", obj, main_project.time, 0)
         #opposite topic
         elif rand > 0.3 and main_project.verb is "olla":
             obj = (main_project.obj_type, world_state.get_opposite(main_project.obj))
-            project = Project(main_project.subj, "olla", obj, main_project.time, main_project.score)
+            project = Project(speakers[0], main_project.subj, "olla", obj, main_project.time, main_project.score)
         #relationship between characters
         else:
             subj = speakers[0]
@@ -64,14 +65,14 @@ class Project:
             verb = "pitää"
             if subj.relations[speakers[1].name].liking["outgoing"] < 0.5:
                 verb = "vihata"
-            project = Project(subj, verb, obj, "present", 4)
+            project = Project(speakers[0], subj, verb, obj, "present", 4)
 
         return project
 
     def get_hello_project(speakers):
         #same place
         if speakers[0].attributes["location"] == speakers[1].attributes["location"]:
-            return Project(speakers[0], "tehdä", ("location", speakers[0].attributes["location"]), "present", 1)
+            return Project(speakers[0], speakers[0], "tehdä", ("location", speakers[0].attributes["location"]), "present", 1)
         #different place -> phone call
         else:
-            return Project(speakers[0], "soittaa", ("character", speakers[1]), "past", 1)
+            return Project(speakers[0], speakers[0], "soittaa", ("character", speakers[1]), "past", 1)

@@ -29,7 +29,7 @@ class WorldState:
         self.appraisals = [WorldObject("horrible", 90), WorldObject("bad", 91), WorldObject("okay", 92), WorldObject("good", 93), WorldObject("great", 94)]
         self.weather_types = [WorldObject("sunny", 95), WorldObject("cloudy", 96), WorldObject("rainy", 97), WorldObject("stormy", 98)]
         self.locations = [Location(), Location()]
-        self.characters = [Character(self.locations[0]), Character(self.locations[0]), Character(self.locations[0], self.embeddings.get_relative())]
+        self.characters = [Character(self.locations[0]), Character(self.locations[1]), Character(self.locations[0], self.embeddings.get_relative())]
         self.objects = [WorldObject(self.embeddings.get_inheritance_object())]
         self.inheritance_object = self.objects[0]
         self.dead_relative = self.characters[2]

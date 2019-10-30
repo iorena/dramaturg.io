@@ -148,7 +148,7 @@ class Situation:
             else:
                 obj = random.choices(attributes)[0]
 
-            post_project = Project(subj, "olla", obj, self.main_project.time, 1)
+            post_project = Project(self.speakers[0], subj, "olla", obj, self.main_project.time, 1)
             mood = speakers[0].mood
             personal = "personal" if self.main_project.subj is Character else "impersonal"
             distances = list(map(lambda x: norm(array((mood.pleasure, mood.arousal, mood.dominance)) - array((PAD_VALUES[x]))), ROOT_SEQUENCE_TYPES[personal]))

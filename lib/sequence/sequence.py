@@ -53,6 +53,7 @@ class Sequence():
 
     def generate_expansion(self, position, parent, switch_speakers=False):
         if self.second_pair_part is None:
+            #return lisäkysymys: "onko kaikki hyvin", "soitinko huonoon aikaan?"
             return None
         speakers = self.speakers
         if switch_speakers:
@@ -84,7 +85,7 @@ class Sequence():
                     else:
                         attribute = random.choices(attributes)[0]
 
-                    new_project = Project(target, "olla", attribute, "present", 1)
+                    new_project = Project(speakers[0], target, "olla", attribute, "present", 1)
 
 
             expansion = Sequence(speakers, new_project, new_seq_type, self.action_types, self.world_state, parent)
