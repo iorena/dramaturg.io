@@ -1,8 +1,11 @@
 from language.style import Style
 from concepts.affect.mood import Mood
 from concepts.project import Project
+from concepts.worldobject import WorldObject
 
 import random, copy
+
+alive = WorldObject("alive", 100)
 
 
 class Character:
@@ -12,7 +15,7 @@ class Character:
     def __init__(self, location, name=None):
         self.id = Character.id_counter
         Character.id_counter += 1
-        self.attributes = {"location": location, "vitality": "alive"}
+        self.attributes = {"location": location, "vitality": alive}
         self.goals = []
         if name is None:
             self.name = self.random_name()

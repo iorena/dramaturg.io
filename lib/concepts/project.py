@@ -46,12 +46,25 @@ class Project:
                 return False
             return True
 
-    def get_surprise(self, model, subject):
-        if self.verb != model.verb:
+    def get_surprise(self, subject):
+        if not self.verb in subject.world_model:
             return True
-        if model.subj == "self" and self.subj != subject:
-            return True
-        return False
+        causes = subject.world_model[self.verb]
+        for cause in causes:
+            for event in subject.memory:
+                surprise = False
+                if self.verb != event.verb:
+                    surprise = True
+                if self.subj == "self" and event.subj != subject:
+                    surprise = True
+                #todo: more conditional clauses?
+                if not surprise:
+                    return False
+        return True
+
+    def get_surprise_project(self):
+        #todo: owner of project should be OTHER char
+        return Project(self.owner, self.subj, self.verb, (self.obj_type, self.obj), "present", 2)
 
     def get_new_project(speakers, main_project, world_state):
         #random topic: weather etc

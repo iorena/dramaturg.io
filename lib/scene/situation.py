@@ -14,10 +14,8 @@ import random, copy
 from numpy import array
 from numpy.linalg import norm
 
-ROOT_SEQUENCE_TYPES = {"personal": ["SKÄS", "STIP", "STIPC", "STOP", "STOE", "SVÄI", "SKAN"],
-        "impersonal": ["STIP", "STIPC", "STOE","SVÄI", "SKAN"]}
-SEQUENCE_TYPES = {"personal": {"in": ["STOE", "STOP", "STOPB", "SKÄS"], "out": ["SVÄI"], "meta": ["SEST", "STIPC", "STII"]},
-        "impersonal": {"in": ["STOP"], "out": ["SVÄI"], "meta": ["SEST", "STIPC", "STII"]}}
+SEQUENCE_TYPES = {"personal": {"proposal": ["STOE", "STOP", "STOPB", "SKÄS"], "narration": ["SVÄI"], "surprise": ["SEST", "STIPC", "STII"]},
+        "impersonal": {"proposal": ["STOP"], "narration": ["SVÄI"], "surprise": ["SEST", "STIPC", "STII"]}}
 
 
 class Situation:
@@ -34,9 +32,8 @@ class Situation:
         if type(self.main_project.subj) is Character:
             self.affect_emotions()
         self.main_sequence_id = 0
+        self.open_questions = [Project.get_hello_project(self.speakers), self.main_project]
         self.sequences = self.create_sequences()
-        if self.element_type == "in":
-            self.add_topic_pivot()
 
     def affect_emotions(self):
         """
@@ -91,20 +88,34 @@ class Situation:
         Generates sequences for each project
         """
         mood = self.speakers[0].mood
-        personal = "personal" if self.main_project.subj is Character else "impersonal"
-        distances = list(map(lambda x: norm(array((mood.pleasure, mood.arousal, mood.dominance)) - array((PAD_VALUES[x]))), SEQUENCE_TYPES[personal][self.element_type]))
-        main_sequence_type = random.choices(SEQUENCE_TYPES[personal][self.element_type], distances)[0]
-        main_sequence = Sequence(self.speakers, self.main_project, main_sequence_type, self.action_types, self.world_state)
-        sequences = self.add_sequences(main_sequence)
-        #add hello sequence
-        sequences = [Sequence(self.speakers, Project.get_hello_project(self.speakers), "STER", self.action_types, self.world_state)] + sequences
+
+        sequences = []
+        for i in range(len(self.open_questions)):
+            project = self.open_questions[i]
+            personal = "personal" if project.subj is Character else "impersonal"
+            sequence_type = random.choice(SEQUENCE_TYPES[personal][self.element_type])
+            if i == 0:
+                sequence_type = "STER"
+            sequences.append(Sequence(self.speakers, project, sequence_type, self.action_types, self.world_state))
+            if project.get_surprise(self.speakers[1]):
+                surprise_project = project.get_surprise_project()
+                sequence_type = random.choice(SEQUENCE_TYPES[personal]["surprise"])
+                sequences.append(Sequence([self.speakers[1], self.speakers[0]], surprise_project, sequence_type, self.action_types, self.world_state))
+
         return sequences
 
     def add_sequences(self, sequence):
         """
         Takes a sequence and returns a list including that sequence and possible additions
         """
+        """
+        if hello sequence causes surprise, add surprise reaction sequence
+        pre-sequences leading to main project?
+        if second character resists, add active resistance sequences?
+        """
+
         sequences = [sequence]
+
         #pre-project
         #speaker is chosen from characters weighted by dominance
         dominances = list(map(lambda x: x.mood.dominance, self.speakers))

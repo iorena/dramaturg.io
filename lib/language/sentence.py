@@ -50,6 +50,7 @@ class Sentence:
         elif action_type.obj == "object":
             self.obj = project.obj.name
         elif action_type.obj == "attribute":
+            print(project.obj)
             self.obj = project.obj.name
             self.attribute = True
         elif action_type.obj == "Speaker":
