@@ -64,6 +64,7 @@ class Project:
 
     def get_surprise_project(self):
         #todo: owner of project should be OTHER char
+        #todo: happy surprise or sad surprise?
         return Project(self.owner, self.subj, self.verb, (self.obj_type, self.obj), "present", 2)
 
     def get_new_project(speakers, main_project, world_state):

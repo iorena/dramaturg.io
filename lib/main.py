@@ -16,7 +16,6 @@ def main(do_story, print_dev_data):
     elif do_story:
         embeddings = Embeddings()
         story = Story(embeddings)
-        turns = []
         for char in story.world_state.characters:
             keywords = ', '.join(list(filter(lambda x: x is not None, [char.mood.get_character_description('pleasure'), char.mood.get_character_description('arousal'), char.mood.get_character_description('dominance')])))
             print(f"{char.name}: {keywords}")
@@ -25,7 +24,9 @@ def main(do_story, print_dev_data):
 
         print(f"\n\n{title[0].upper() + title[1:]}\n")
 
-        for situation in story.situations:
+        for i, situation in enumerate(story.situations):
+            print(f"\nKohtaus {i+1}: {situation.location}\n")
+            turns = []
             for seq in situation.sequences:
                 for turn in seq.turns:
                     turns.append(turn)
@@ -39,25 +40,25 @@ def main(do_story, print_dev_data):
                     mood_changes.append(f"{second} {situation.mood_change[second]}")
                 turns.append("(" + ", ".join(mood_changes) + ")")
 
-        uppercased = turns[0].inflected[0].upper()
-        line = uppercased + turns[0].inflected[1:]
-        if line [-1] == "?":
-            line = line[0:-2] + line[-1]
-        line += ". " if line[-1] != "?" else " "
-        last_turn = turns[0]
-        for turn in turns[1:]:
-            if type(turn) is str:
-                print(turn)
-            else:
-                if last_turn.speaker.name != turn.speaker.name:
-                    print(f"\t{last_turn.speaker.name}\n{line}")
-                    line = ""
-                uppercased = turn.inflected[0].upper()
-                line += uppercased + turn.inflected[1:]
-                if line [-1] == "?":
-                    line = line[0:-2] + line[-1]
-                line += ". " if line[-1] != "?" else " "
-                last_turn = turn
+            uppercased = turns[0].inflected[0].upper()
+            line = uppercased + turns[0].inflected[1:]
+            if line [-1] == "?":
+                line = line[0:-2] + line[-1]
+            line += ". " if line[-1] != "?" else " "
+            last_turn = turns[0]
+            for turn in turns[1:]:
+                if type(turn) is str:
+                    print(turn)
+                else:
+                    if last_turn.speaker.name != turn.speaker.name:
+                        print(f"\t{last_turn.speaker.name}\n{line}")
+                        line = ""
+                    uppercased = turn.inflected[0].upper()
+                    line += uppercased + turn.inflected[1:]
+                    if line [-1] == "?":
+                        line = line[0:-2] + line[-1]
+                    line += ". " if line[-1] != "?" else " "
+                    last_turn = turn
     else:
         print("Did nothing!")
 

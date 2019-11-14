@@ -8,7 +8,7 @@ import copy
 from numpy import array
 from numpy.linalg import norm
 
-POS_SEQUENCES, NEG_SEQUENCES = load_sequence_types()
+POS_SEQUENCES, NEG_SEQUENCES, PASS_SEQUENCES = load_sequence_types()
 
 EXPANSIONS = load_expansion_types()
 PAD_VALUES = load_pad_values()
@@ -22,7 +22,10 @@ class Sequence():
         self.action_types = action_types
         self.parent = parent
         self.world_state = world_state
-        self.pair_types = POS_SEQUENCES if not self.project.get_surprise(self.speakers[1]) else NEG_SEQUENCES
+        surprise = self.project.get_surprise(self.speakers[1])
+        self.pair_types = POS_SEQUENCES if not surprise else PASS_SEQUENCES
+        if surprise and self.speakers[1].mood.dominance > self.speakers[0].mood.dominance:
+            self.pair_types = NEG_SEQUENCES
         reverse = False
         if seq_type in ["SKÄS"] and self.speakers[0].name == self.project.subj.name and project.verb != "olla":
             reverse = True
@@ -30,7 +33,7 @@ class Sequence():
             self.seq_type = "SKAN"
         action_names = random.choices(self.pair_types[self.seq_type])[0]
         self.first_pair_part = self.generate_pair_part(self.speakers[0], action_names[0], reverse)
-        if action_names[1] is None:
+        if action_names[1] is None or self.speakers[0].mood.dominance > self.speakers[1].mood.dominance + 0.5:
             self.second_pair_part = None
         else:
             self.second_pair_part = self.generate_pair_part(self.speakers[1], action_names[1], reverse)

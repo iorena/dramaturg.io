@@ -77,3 +77,7 @@ class Character:
             }
         return events
 
+    def set_methods(self, methods):
+        self.methods = []
+        for method in methods:
+            self.methods.append(method)

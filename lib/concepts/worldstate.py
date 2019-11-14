@@ -3,6 +3,7 @@ from concepts.location import Location
 from concepts.worldobject import WorldObject
 from concepts.affect.relationship import Relationship
 from concepts.affect.emotion import Emotion
+from concepts.method import Method
 
 import random
 import copy
@@ -38,6 +39,9 @@ class WorldState:
             obj.set_owner(owner)
             obj.set_location(owner.attributes["location"])
         self.weather = WorldObject("sää", 95)
+        self.influence_methods = [Method("pyytäminen", 1), Method("neuvottelu", 2), Method("lahjonta", 5), Method("uhkailu", 8)]
+        for char in self.characters:
+            char.set_methods(self.influence_methods)
         #set relationships
         char = self.characters[0]
         for other in self.characters:
