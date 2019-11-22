@@ -90,7 +90,7 @@ class Sequence():
                     else:
                         attribute = random.choices(attributes)[0]
 
-                    new_project = Project(speakers[0], target, "olla", attribute,  "statement", "present", 1)
+                    new_project = Project(target, "olla", attribute,  "statement", "present", 1)
 
 
             expansion = Sequence(speakers, new_project, new_seq_type, self.action_types, self.world_state, parent)

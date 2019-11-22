@@ -74,7 +74,7 @@ class Character:
         Causal requirements for events. Determines whether a character is surprised by an event
         """
         events = {
-            "kuolla": [Project(None, "someone", "tappaa", "self", None, None, 1)]
+            "kuolla": [Project("someone", "tappaa", "self", None, None, 1)]
             }
         return events
 

@@ -85,7 +85,7 @@ class Situation:
         project = Project.get_hello_project(self.speakers)
         self.sequences.append(self.get_new_sequence(project, self.speakers))
         while len(self.speakers[0].goals) > 0 or len(self.speakers[1].goals) > 0:
-            if len(self.speakers[0].goals) == 0 or self.speakers[0].mood.dominance < self.speakers[1].mood.dominance:
+            if len(self.speakers[0].goals) == 0 or (len(self.speakers[1].goals) > 0 and self.speakers[0].mood.dominance < self.speakers[1].mood.dominance):
                 project = self.speakers[1].pop_goal()
                 speaker = self.speakers[1]
                 reacter = self.speakers[0]
@@ -108,9 +108,8 @@ class Situation:
                 prev = None if len(self.sequences) is 0 else self.sequences[-1]
                 self.sequences.append(Sequence([reacter, speaker], surprise_project, sequence_type, self.action_types, self.world_state, prev))
 
-            #???
+            #todo: while disagreement, goal isn't removed?
             #disagreement = project == self.main_project and abs(self.speakers[0].mood.dominance - self.speakers[1].mood.dominance) < 0.75
-            #todo: while characters have unresolved goals
 
     def get_new_sequence(self, project, speakers):
         #todo: is it tho?
