@@ -1,3 +1,4 @@
+from numpy import array
 
 
 class Mood:
@@ -69,6 +70,21 @@ class Mood:
             elif self.dominance < -0.2:
                 return "alistuva"
             return None
+
+    def as_array(self):
+        return array((self.pleasure, self.arousal, self.dominance))
+
+    def in_bounds(self, bounds):
+        lower_bound = bounds[0]
+        upper_bound = bounds[1]
+        if self.pleasure < lower_bound[0] or self.pleasure > upper_bound[0]:
+            return False
+        if self.arousal < lower_bound[1] or self.arousal > upper_bound[1]:
+            return False
+        if self.dominance < lower_bound[2] or self.dominance > upper_bound[2]:
+            return False
+
+        return True
 
     def get_default_pleasure(personality):
         return 0.21 * personality["E"] + 0.59 * personality["A"] + 0.19 * personality["N"]

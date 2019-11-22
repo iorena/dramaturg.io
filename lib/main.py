@@ -10,7 +10,7 @@ def main(do_story, print_dev_data):
         story = Story(embeddings)
         print(story)
         for i, situation in enumerate(story.situations):
-            print(f"Situation{i}: {situation.location}, {situation.element_type}\n")
+            print(f"Situation{i}: {situation.location}\n")
             for j, sequence in enumerate(situation.sequences):
                 print(f"Sequence{j}\n{sequence}\n\n")
     elif do_story:

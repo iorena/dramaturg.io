@@ -6,12 +6,13 @@ import random
 APPRAISALS = ["horrible", "bad", "okay", "good", "great"]
 
 class Project:
-    def __init__(self, owner, subj, verb, obj, time, score):
+    def __init__(self, owner, subj, verb, obj, proj_type, time, score):
         self.owner = owner
         self.subj = subj
         self.obj_type = obj[0]
         self.obj = obj[1]
         self.verb = verb
+        self.proj_type = proj_type
         self.time = time
         if self.obj is None:
             print("none", self.subj, self.obj_type, self.verb)
@@ -65,7 +66,7 @@ class Project:
     def get_surprise_project(self):
         #todo: owner of project should be OTHER char
         #todo: happy surprise or sad surprise?
-        return Project(self.owner, self.subj, self.verb, (self.obj_type, self.obj), "present", 2)
+        return Project(self.owner, self.subj, self.verb, (self.obj_type, self.obj), "surprise", "present", 2)
 
     def get_new_project(speakers, main_project, world_state):
         #random topic: weather etc
@@ -73,11 +74,12 @@ class Project:
         if rand > 0.7:
             subj = world_state.weather
             obj = ("weather", speakers[0].attributes["location"].attributes["weather"])
-            project = Project(speakers[0], subj, "olla", obj, main_project.time, 0)
+            #todo: can weather be something else besides statement?
+            project = Project(speakers[0], subj, "olla", obj, "statement", main_project.time, 0)
         #opposite topic
         elif rand > 0.3 and main_project.verb is "olla":
             obj = (main_project.obj_type, world_state.get_opposite(main_project.obj))
-            project = Project(speakers[0], main_project.subj, "olla", obj, main_project.time, main_project.score)
+            project = Project(speakers[0], main_project.subj, "olla", obj, "statement",  main_project.time, main_project.score)
         #relationship between characters
         else:
             subj = speakers[0]
@@ -85,15 +87,15 @@ class Project:
             verb = "pitää"
             if subj.relations[speakers[1].name].liking["outgoing"] < 0.5:
                 verb = "vihata"
-            project = Project(speakers[0], subj, verb, obj, "present", 4)
+            project = Project(speakers[0], subj, verb, obj, "statement", "present", 4)
 
         return project
 
     def get_hello_project(speakers):
         #same place
         if speakers[0].attributes["location"] == speakers[1].attributes["location"]:
-            return Project(speakers[0], speakers[0], "tehdä", ("location", speakers[0].attributes["location"]), "present", 1)
+            return Project(speakers[0], speakers[0], "tehdä", ("location", speakers[0].attributes["location"]), "statement", "present", 1)
         #different place -> phone call
         else:
-            return Project(speakers[0], speakers[0], "soittaa", ("character", speakers[1]), "past", 1)
+            return Project(speakers[0], speakers[0], "soittaa", ("character", speakers[1]),  "statement", "past", 1)
 

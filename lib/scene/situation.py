@@ -14,26 +14,21 @@ import random, copy
 from numpy import array
 from numpy.linalg import norm
 
-SEQUENCE_TYPES = {"personal": {"proposal": ["STOE", "STOP", "STOPB", "SKÄS"], "narration": ["SVÄI"], "surprise": ["SEST", "STIPC", "STII"]},
-        "impersonal": {"proposal": ["STOP"], "narration": ["SVÄI"], "surprise": ["SEST", "STIPC", "STII"]}}
+SEQUENCE_TYPES = {"personal": {"proposal": ["STOE", "STOP", "STOPB", "SKÄS"], "statement": ["SVÄI"], "surprise": ["SEST", "STIPC", "STII"]},
+        "impersonal": {"proposal": ["STOP"], "statement": ["SVÄI"], "surprise": ["SEST", "STIPC", "STII"]}}
 
 
 class Situation:
-    def __init__(self, world_state, embeddings, element_type, speakers, main_project, prev_project, location):
+    def __init__(self, world_state, embeddings, speakers, location):
         self.world_state = world_state
         self.embeddings = embeddings
-        self.element_type = element_type
         self.speakers = speakers
-        self.main_project = main_project
-        self.prev_project = prev_project
         self.location = location
         self.action_types = load_action_types()
         self.mood_change = {}
-        if type(self.main_project.subj) is Character:
-            self.affect_emotions()
         self.main_sequence_id = 0
-        self.open_questions = [Project.get_hello_project(self.speakers), self.main_project]
-        self.sequences = self.create_sequences()
+        self.sequences = []
+        self.create_sequences()
 
     def affect_emotions(self):
         """
@@ -87,13 +82,22 @@ class Situation:
         """
         Generates sequences for each project
         """
-        sequences = []
-        for i in range(len(self.open_questions)):
-            project = self.open_questions[i]
-            mood = self.speakers[0].mood
+        project = Project.get_hello_project(self.speakers)
+        self.sequences.append(self.get_new_sequence(project, self.speakers))
+        while len(self.speakers[0].goals) > 0 or len(self.speakers[1].goals) > 0:
+            if len(self.speakers[0].goals) == 0 or self.speakers[0].mood.dominance < self.speakers[1].mood.dominance:
+                project = self.speakers[1].pop_goal()
+                speaker = self.speakers[1]
+                reacter = self.speakers[0]
+            else:
+                project = self.speakers[0].pop_goal()
+                speaker = self.speakers[0]
+                reacter = self.speakers[1]
+
+            mood = speaker.mood
             surprise = False
-            sequences.append(self.get_new_sequence(sequences, project))
-            if project.get_surprise(self.speakers[1]):
+            self.sequences.append(self.get_new_sequence(project, [speaker, reacter]))
+            if project.get_surprise(reacter):
                 surprise = True
 
             if surprise:
@@ -101,23 +105,28 @@ class Situation:
                 #todo: weight sequence type by mood?
                 personal = "personal" if project.subj is Character else "impersonal"
                 sequence_type = random.choice(SEQUENCE_TYPES[personal]["surprise"])
-                prev = None if len(sequences) is 0 else sequences[-1]
-                sequences.append(Sequence([self.speakers[1], self.speakers[0]], surprise_project, sequence_type, self.action_types, self.world_state, prev))
+                prev = None if len(self.sequences) is 0 else self.sequences[-1]
+                self.sequences.append(Sequence([reacter, speaker], surprise_project, sequence_type, self.action_types, self.world_state, prev))
 
-            disagreement = project == self.main_project and abs(self.speakers[0].mood.dominance - self.speakers[1].mood.dominance) < 0.75
-            while disagreement:
-                sequences.append(self.get_new_sequence(sequences, project))
-                disagreement = project == self.main_project and abs(self.speakers[0].mood.dominance - self.speakers[1].mood.dominance) > 0.75
+            #???
+            #disagreement = project == self.main_project and abs(self.speakers[0].mood.dominance - self.speakers[1].mood.dominance) < 0.75
+            #todo: while characters have unresolved goals
 
-        return sequences
-
-    def get_new_sequence(self, sequences, project):
+    def get_new_sequence(self, project, speakers):
+        #todo: is it tho?
+        #todo: expansion
+        speaker = speakers[0]
         personal = "personal" if project.subj is Character else "impersonal"
-        sequence_type = random.choice(SEQUENCE_TYPES[personal][self.element_type])
-        if project == self.open_questions[0]:
+        available_sequence_types = [seq_type for seq_type in SEQUENCE_TYPES[personal][project.proj_type] if speaker.mood.in_bounds(PAD_VALUES[seq_type][1])]
+        if len(available_sequence_types) == 0:
+            print("no available sequence types")
+            return None
+        available_sequence_types.sort(key=lambda x: norm(speaker.mood.as_array() - array((PAD_VALUES[x][0]))))
+        sequence_type = available_sequence_types[0]
+        if len(self.sequences) == 0:
             sequence_type = "STER"
-        prev = None if len(sequences) is 0 else sequences[-1]
-        return Sequence(self.speakers, project, sequence_type, self.action_types, self.world_state, prev)
+        prev = None if len(self.sequences) is 0 else self.sequences[-1]
+        return Sequence(speakers, project, sequence_type, self.action_types, self.world_state, prev)
 
     def to_json(self):
         return self.sequences

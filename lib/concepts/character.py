@@ -63,6 +63,7 @@ class Character:
         self.perception = world_state
 
     def set_goal(self, goal):
+        #todo: arrange by weight?
         self.goals.append(goal)
 
     def set_relation(self, other, relation):
@@ -73,9 +74,12 @@ class Character:
         Causal requirements for events. Determines whether a character is surprised by an event
         """
         events = {
-            "kuolla": [Project(None, "someone", "tappaa", "self", None, 1)]
+            "kuolla": [Project(None, "someone", "tappaa", "self", None, None, 1)]
             }
         return events
+
+    def pop_goal(self):
+        return self.goals.pop(0)
 
     def set_methods(self, methods):
         self.methods = []
