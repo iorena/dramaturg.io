@@ -33,6 +33,7 @@ class Situation:
     def affect_emotions(self):
         """
         When an event happens to a character, characters react emotionally to it
+        NOT IN USE
         """
         for character in self.speakers:
             relationship = character.relations[self.main_project.subj.name].liking["outgoing"] > 0.5
@@ -85,12 +86,13 @@ class Situation:
         project = Project.get_hello_project(self.speakers)
         self.sequences.append(self.get_new_sequence(project, self.speakers))
         while len(self.speakers[0].goals) > 0 or len(self.speakers[1].goals) > 0:
-            if len(self.speakers[0].goals) == 0 or (len(self.speakers[1].goals) > 0 and self.speakers[0].mood.dominance < self.speakers[1].mood.dominance):
-                project = self.speakers[1].pop_goal()
+            #higher dominance gets to speak
+            if len(self.speakers[0].goals) == 0 or (len(self.speakers[1].goals) > 0 and self.speakers[0].mood.dominance + random.uniform(0, 0.5) < self.speakers[1].mood.dominance):
+                project = self.speakers[1].goals[0]
                 speaker = self.speakers[1]
                 reacter = self.speakers[0]
             else:
-                project = self.speakers[0].pop_goal()
+                project = self.speakers[0].goals[0]
                 speaker = self.speakers[0]
                 reacter = self.speakers[1]
 
@@ -99,6 +101,7 @@ class Situation:
             self.sequences.append(self.get_new_sequence(project, [speaker, reacter]))
             if project.get_surprise(reacter):
                 surprise = True
+                #arrange so that cannot be surprised again by same thing
 
             if surprise:
                 surprise_project = project.get_surprise_project()
@@ -108,12 +111,23 @@ class Situation:
                 prev = None if len(self.sequences) is 0 else self.sequences[-1]
                 self.sequences.append(Sequence([reacter, speaker], surprise_project, sequence_type, self.action_types, self.world_state, prev))
 
-            #todo: while disagreement, goal isn't removed?
-            #disagreement = project == self.main_project and abs(self.speakers[0].mood.dominance - self.speakers[1].mood.dominance) < 0.75
+            #resolve goal if both agree
+            if project.speakers_agree(self.speakers):
+                for speaker in self.speakers:
+                    speaker.resolve_goal(project)
+                    print(len(self.speakers[0].goals), len(self.speakers[1].goals))
+                    if len(self.speakers[1].goals) > 0:
+                        print(self.speakers[1].goals[0])
+
+            else:
+                #change mind if affected enough
+                if speaker.mood.dominance > reacter.mood.dominance + 0.5:
+                    reacter.set_goal(project)
+
+
 
     def get_new_sequence(self, project, speakers):
-        #todo: is it tho?
-        #todo: expansion
+        #todo: expansions
         speaker = speakers[0]
         personal = "personal" if project.subj is Character else "impersonal"
         available_sequence_types = [seq_type for seq_type in SEQUENCE_TYPES[personal][project.proj_type] if speaker.mood.in_bounds(PAD_VALUES[seq_type][1])]

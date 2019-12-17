@@ -23,16 +23,24 @@ class Mood:
 
     #todo: add personality effect on how emotions affect mood
     def affect_mood(self, emotion):
-        first = self.pleasure
+        print("affecting with", emotion.dominance)
         self.pleasure = self.pleasure + emotion.pleasure
         if self.pleasure > 1:
             self.pleasure = 1
+        if self.pleasure < -1:
+            self.pleasure = -1
         self.arousal = self.arousal + emotion.arousal
         if self.arousal > 1:
             self.arousal = 1
+        if self.arousal < -1:
+            self.arousal = -1
+        print("before", self.dominance)
         self.dominance = self.dominance + emotion.dominance
+        print("after", self.dominance)
         if self.dominance > 1:
             self.dominance = 1
+        if self.dominance < -1:
+            self.dominance = -1
 
     def get_octant_name(self):
         if self.pleasure > 0:

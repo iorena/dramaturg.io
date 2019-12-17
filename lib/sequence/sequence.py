@@ -1,6 +1,7 @@
 from loaders import load_expansion_types, load_sequence_types, load_pad_values
 from sequence.turn import Turn
 from concepts.project import Project
+from concepts.affect.emotion import Emotion
 
 import random
 import copy
@@ -23,9 +24,10 @@ class Sequence():
         self.parent = parent
         self.world_state = world_state
         surprise = self.project.get_surprise(self.speakers[1])
-        self.pair_types = POS_SEQUENCES if not surprise else PASS_SEQUENCES
-        if surprise and self.speakers[1].mood.dominance > self.speakers[0].mood.dominance:
-            self.pair_types = NEG_SEQUENCES
+        agreement = self.project.speakers_agree(self.speakers)
+        self.pair_types = POS_SEQUENCES if agreement else NEG_SEQUENCES
+        if surprise:
+            self.pair_types = PASS_SEQUENCES
         reverse = False
         if seq_type in ["SKÄS"] and self.speakers[0].name == self.project.subj.name and project.verb != "olla":
             reverse = True
@@ -33,7 +35,7 @@ class Sequence():
             self.seq_type = "SKAN"
         action_names = random.choices(self.pair_types[self.seq_type])[0]
         self.first_pair_part = self.generate_pair_part(self.speakers[0], action_names[0], reverse)
-        if action_names[1] is None or self.speakers[0].mood.dominance > self.speakers[1].mood.dominance + 0.5:
+        if surprise and not agreement:
             self.second_pair_part = None
         else:
             self.second_pair_part = self.generate_pair_part(self.speakers[1], action_names[1], reverse)
@@ -53,6 +55,7 @@ class Sequence():
         if self.post_expansion is not None:
             for turn in self.post_expansion.turns:
                 self.turns.append(turn)
+
 
     def generate_expansion(self, position, parent, switch_speakers=False):
         return None

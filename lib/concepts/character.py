@@ -62,9 +62,14 @@ class Character:
             obj.attributes["appraisal"] = random.choices(world_state.appraisals)[0]
         self.perception = world_state
 
-    def set_goal(self, goal):
+    def set_goal(self, new_goal):
         #todo: arrange by weight?
-        self.goals.append(goal)
+        for goal in self.goals:
+            #todo: refine checking goal conflict, now only works for inheritance object want goal
+            if goal.verb == new_goal.verb and goal.subj != new_goal.subj and goal.obj == new_goal.obj:
+                self.goals.remove(goal)
+                print("removed conflicting goal", goal.subj, goal.verb, goal.obj)
+        self.goals.append(new_goal)
 
     def set_relation(self, other, relation):
         self.relations[other] = relation
@@ -78,8 +83,11 @@ class Character:
             }
         return events
 
-    def pop_goal(self):
-        return self.goals.pop(0)
+    def resolve_goal(self, goal):
+        self.goals.remove(goal)
+
+    def add_memory(self, memory):
+        self.memory.append(memory)
 
     def set_methods(self, methods):
         self.methods = []

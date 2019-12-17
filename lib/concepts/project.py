@@ -19,6 +19,9 @@ class Project:
             time = "present"
         self.score = score
 
+    def __str__(self):
+        return (f"{self.subj} {self.verb} {self.obj}")
+
     def get_appraisal(self, character):
         if self.obj_type is "owner":
             #todo: shouldn't this be the appraisal of the object owned?
@@ -28,6 +31,10 @@ class Project:
         return WorldObject(APPRAISALS[2], 92)
 
     def speakers_agree(self, speakers):
+        if self in speakers[0].goals and self in speakers[1].goals:
+            return True
+        return False
+    """
         if self.verb == "olla":
             first_perception = speakers[0].perception.get_object(self.subj)
             second_perception = speakers[1].perception.get_object(self.subj)
@@ -45,8 +52,17 @@ class Project:
             if evaluation.id < 92:
                 return False
             return True
+    """
 
     def get_surprise(self, subject):
+        return False
+        if self in subject.memory:
+            return False
+        subject.add_memory(self)
+        return True
+
+    """
+    this stuff should be used for generating surprise projects, no?
         if not self.verb in subject.world_model:
             return True
         causes = subject.world_model[self.verb]
@@ -61,9 +77,9 @@ class Project:
                 if not surprise:
                     return False
         return True
+    """
 
     def get_surprise_project(self):
-        #todo: owner of project should be OTHER char
         #todo: happy surprise or sad surprise?
         return Project(self.subj, self.verb, (self.obj_type, self.obj), "surprise", "present", 2)
 
