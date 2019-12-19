@@ -115,15 +115,11 @@ class Situation:
             if project.speakers_agree(self.speakers):
                 for speaker in self.speakers:
                     speaker.resolve_goal(project)
-                    print(len(self.speakers[0].goals), len(self.speakers[1].goals))
-                    if len(self.speakers[1].goals) > 0:
-                        print(self.speakers[1].goals[0])
 
             else:
                 #change mind if affected enough
                 if speaker.mood.dominance > reacter.mood.dominance + 0.5:
                     reacter.set_goal(project)
-
 
 
     def get_new_sequence(self, project, speakers):

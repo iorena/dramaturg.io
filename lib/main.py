@@ -47,18 +47,13 @@ def main(do_story, print_dev_data):
             line += ". " if line[-1] != "?" else " "
             last_turn = turns[0]
             for turn in turns[1:]:
-                if type(turn) is str:
-                    print(turn)
-                else:
-                    if last_turn.speaker.name != turn.speaker.name:
-                        print(f"\t{last_turn.speaker.name}\n{line}")
-                        line = ""
-                    uppercased = turn.inflected[0].upper()
-                    line += uppercased + turn.inflected[1:]
-                    if line [-1] == "?":
-                        line = line[0:-2] + line[-1]
-                    line += ". " if line[-1] != "?" else " "
-                    last_turn = turn
+                line = ""
+                uppercased = turn.inflected[0].upper()
+                line += uppercased + turn.inflected[1:]
+                if line [-1] == "?":
+                    line = line[0:-2] + line[-1]
+                line += ". " if line[-1] != "?" else " "
+                print(f"\t{turn.speaker.name}\n{line}")
     else:
         print("Did nothing!")
 

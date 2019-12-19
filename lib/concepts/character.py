@@ -89,6 +89,9 @@ class Character:
     def add_memory(self, memory):
         self.memory.append(memory)
 
+    def reset_mood(self):
+        self.mood = Mood(self.personality)
+
     def set_methods(self, methods):
         self.methods = []
         for method in methods:

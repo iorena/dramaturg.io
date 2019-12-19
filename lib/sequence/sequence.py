@@ -35,7 +35,8 @@ class Sequence():
             self.seq_type = "SKAN"
         action_names = random.choices(self.pair_types[self.seq_type])[0]
         self.first_pair_part = self.generate_pair_part(self.speakers[0], action_names[0], reverse)
-        if surprise and not agreement:
+        if self.seq_type is not "STER" and surprise and not agreement:
+            #todo: empty second pair part should affect speaker: annoyance etc
             self.second_pair_part = None
         else:
             self.second_pair_part = self.generate_pair_part(self.speakers[1], action_names[1], reverse)

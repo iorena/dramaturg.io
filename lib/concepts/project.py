@@ -55,10 +55,10 @@ class Project:
     """
 
     def get_surprise(self, subject):
-        return False
         if self in subject.memory:
             return False
         subject.add_memory(self)
+        print("boo")
         return True
 
     """
@@ -81,7 +81,7 @@ class Project:
 
     def get_surprise_project(self):
         #todo: happy surprise or sad surprise?
-        return Project(self.subj, self.verb, (self.obj_type, self.obj), "surprise", "present", 2)
+        return Project(self.subj, self.verb, (self.obj_type, self.obj), "surprise", "present", self.score - 2)
 
     def get_new_project(speakers, main_project, world_state):
         #random topic: weather etc

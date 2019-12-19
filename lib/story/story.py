@@ -75,6 +75,10 @@ class Story:
 
         situations.append(Situation(self.world_state, self.embeddings, chars, main_char.attributes["location"]))
 
+        #reset moods
+        for char in chars:
+            char.reset_mood()
+
         #char2 comes to get inheritance
         inheritance_want_project_main = Project(main_char, "ottaa", ("object", self.world_state.inheritance_object), "proposal", "present", 5)
         inheritance_want_project_other = Project(other_char, "ottaa", ("object", self.world_state.inheritance_object), "proposal", "present", 5)

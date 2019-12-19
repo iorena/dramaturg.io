@@ -34,9 +34,7 @@ class Mood:
             self.arousal = 1
         if self.arousal < -1:
             self.arousal = -1
-        print("before", self.dominance)
         self.dominance = self.dominance + emotion.dominance
-        print("after", self.dominance)
         if self.dominance > 1:
             self.dominance = 1
         if self.dominance < -1:
