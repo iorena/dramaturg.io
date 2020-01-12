@@ -8,14 +8,13 @@ from language.dictionary import pivot_dictionary
 from loaders import load_emotions, load_action_types, load_pad_values
 
 EMOTIONS = load_emotions()
-PAD_VALUES = load_pad_values()
 
 import random, copy
 from numpy import array
 from numpy.linalg import norm
 
-SEQUENCE_TYPES = {"personal": {"proposal": ["STOE", "STOP", "STOPB", "SKÄS"], "statement": ["SVÄI"], "surprise": ["SEST", "STIPC", "STII"]},
-        "impersonal": {"proposal": ["STOP"], "statement": ["SVÄI"], "surprise": ["SEST", "STIPC", "STII"]}}
+#todo: 8 surprise lines
+SEQUENCE_TYPES = {"proposal": "STOP", "statement": "SVÄI", "surprise": "STOP"}
 
 
 class Situation:
@@ -25,6 +24,7 @@ class Situation:
         self.speakers = speakers
         self.location = location
         self.action_types = load_action_types()
+        self.action_types = load_pad_values(self.action_types)
         self.mood_change = {}
         self.main_sequence_id = 0
         self.sequences = []
@@ -106,8 +106,8 @@ class Situation:
             if surprise:
                 surprise_project = project.get_surprise_project()
                 #todo: weight sequence type by mood?
-                personal = "personal" if project.subj is Character else "impersonal"
-                sequence_type = random.choice(SEQUENCE_TYPES[personal]["surprise"])
+                #personal = "personal" if project.subj is Character else "impersonal"
+                sequence_type = SEQUENCE_TYPES["surprise"]
                 prev = None if len(self.sequences) is 0 else self.sequences[-1]
                 self.sequences.append(Sequence([reacter, speaker], surprise_project, sequence_type, self.action_types, self.world_state, prev))
 
@@ -126,12 +126,7 @@ class Situation:
         #todo: expansions
         speaker = speakers[0]
         personal = "personal" if project.subj is Character else "impersonal"
-        available_sequence_types = [seq_type for seq_type in SEQUENCE_TYPES[personal][project.proj_type] if speaker.mood.in_bounds(PAD_VALUES[seq_type][1])]
-        if len(available_sequence_types) == 0:
-            print("no available sequence types")
-            return None
-        available_sequence_types.sort(key=lambda x: norm(speaker.mood.as_array() - array((PAD_VALUES[x][0]))))
-        sequence_type = available_sequence_types[0]
+        sequence_type = SEQUENCE_TYPES[project.proj_type]
         if len(self.sequences) == 0:
             sequence_type = "STER"
         prev = None if len(self.sequences) is 0 else self.sequences[-1]

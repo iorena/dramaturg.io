@@ -17,12 +17,8 @@ class Story:
     def __init__(self, embeddings):
         self.embeddings = embeddings
         self.world_state = WorldState(self.embeddings)
-        #self.pos_topics, self.neg_topics = load_topics(self.world_state)
-        #self.pos_topics.sort(key=lambda x: x.score)
-        #self.neg_topics.sort(key=lambda x: x.score)
         for char in self.world_state.characters:
             char.set_random_perceptions(WorldState(None, self.world_state))
-            #char.set_goal(self.create_goal(char))
         self.action_types = load_action_types()
         self.grammar = CFG.fromstring(grammar)
         self.situations = self.create_situations()
@@ -70,7 +66,7 @@ class Story:
 
         #char1 calls char2
         #char1 finds out that relative is dead (before scene)
-        relative_died_project = Project(self.world_state.dead_relative, "kuolla", ("character", other_char),  "statement", "past", 5)
+        relative_died_project = Project(self.world_state.dead_relative, "kuolla", ("character", other_char),  "statement", "imperf", 5)
         other_char.set_goal(relative_died_project)
 
         situations.append(Situation(self.world_state, self.embeddings, chars, main_char.attributes["location"]))
@@ -80,8 +76,8 @@ class Story:
             char.reset_mood()
 
         #char2 comes to get inheritance
-        inheritance_want_project_main = Project(main_char, "ottaa", ("object", self.world_state.inheritance_object), "proposal", "present", 5)
-        inheritance_want_project_other = Project(other_char, "ottaa", ("object", self.world_state.inheritance_object), "proposal", "present", 5)
+        inheritance_want_project_main = Project(main_char, "ottaa", ("object", self.world_state.inheritance_object), "proposal", "prees", 5)
+        inheritance_want_project_other = Project(other_char, "ottaa", ("object", self.world_state.inheritance_object), "proposal", "prees", 5)
 
         main_char.set_goal(inheritance_want_project_main)
         other_char.set_goal(inheritance_want_project_other)

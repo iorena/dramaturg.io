@@ -1,10 +1,6 @@
-from loaders import load_pad_values
 from language.sentence import Sentence
-from concepts.affect.emotion import Emotion
 
 import random
-
-PAD_VALUES = load_pad_values()
 
 class Turn:
     """
@@ -14,6 +10,8 @@ class Turn:
         self.speaker = speaker
         self.listeners = listeners
         self.action_type = action_type
+        #todo: determine PAD realization of action type here?
+        #-> edit action type class
         self.obj_type = project.obj_type
         self.project = project
         self.speaker_mood = str(self.speaker.mood)
@@ -31,9 +29,7 @@ class Turn:
 
     def affect_mood(self):
         #todo: how do expansions affect mood? does this work as is? add importance coefficient?
-        emotion = PAD_VALUES[self.action_type.name][0]
-        self.listeners[0].mood.affect_mood(Emotion(None, emotion[0], emotion[1], emotion[2]))
-        print(emotion[2])
+        self.listeners[0].mood.affect_mood(self.action_type.effect)
         print(self.listeners[0].name, self.listeners[0].mood)
 
     def to_json(self):

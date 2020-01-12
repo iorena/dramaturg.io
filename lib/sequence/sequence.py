@@ -1,4 +1,4 @@
-from loaders import load_expansion_types, load_sequence_types, load_pad_values
+from loaders import load_expansion_types, load_sequence_types
 from sequence.turn import Turn
 from concepts.project import Project
 from concepts.affect.emotion import Emotion
@@ -12,7 +12,6 @@ from numpy.linalg import norm
 POS_SEQUENCES, NEG_SEQUENCES, PASS_SEQUENCES = load_sequence_types()
 
 EXPANSIONS = load_expansion_types()
-PAD_VALUES = load_pad_values()
 
 
 class Sequence():
@@ -33,7 +32,9 @@ class Sequence():
             reverse = True
         elif seq_type in ["SKÄS"] and self.speakers[0].name == self.project.subj.name:
             self.seq_type = "SKAN"
-        action_names = random.choices(self.pair_types[self.seq_type])[0]
+        #todo: add emotional weights
+        #also do this before second pair part is even determined?
+        action_names = random.choice(self.pair_types[self.seq_type])
         self.first_pair_part = self.generate_pair_part(self.speakers[0], action_names[0], reverse)
         if self.seq_type is not "STER" and surprise and not agreement:
             #todo: empty second pair part should affect speaker: annoyance etc
@@ -87,7 +88,7 @@ class Sequence():
                 # new project with old object as subject? check if there is an object to take?
                 if self.project.obj:
                     target = self.project.obj
-                    # todo: how to handle emotions? asking "mikä surullinen?" doesn't really make sense, does it?
+                    # todo: how to handle emotions? asking "mikä surullinen?" doesn')t really make sense, does it?
                     attributes = list(target.attributes.items())
                     if len(attributes) is 0:
                         return None
@@ -106,7 +107,12 @@ class Sequence():
                 print(self.project.subj, self.project.verb, self.project.obj)
             action_type = self.action_types[self.parent.action_type.name]
         else:
-            action_type = self.action_types[action_name]
+            print("action name", action_name)
+            action_types_pool = [act_name for act_name in self.action_types if act_name.class_name == action_name and act_name.can_use(self.speakers[0].mood)]
+            if len(action_types_pool) == 0:
+                print("no available turn types!")
+                return None
+            action_type = random.choice(action_types_pool)
         project = self.project
         if action_name == "SEL":
             project = Project.get_new_project(self.speakers, self.project, self.world_state)

@@ -15,7 +15,10 @@ verb_dictionary = {
     "puhua": [("puhua", "ELA")],
     "soittaa": [("soittaa", "ALL")],
     "ottaa": [("ottaa", "GEN")],
-    "kuolla": [("kuolla", "NONE")]
+    "kuolla": [("kuolla", "NONE")],
+    "kuulua": [("kuulua", "ALL")],
+    "arvata": [("arvata", "NONE")],
+    "höpsiä": [("höpsiä", "NONE")]
 }
 noun_dictionary = {
     "disappointment": ["surullinen", "pettynyt"],

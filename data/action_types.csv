@@ -1,11 +1,30 @@
 toimintotyyppi	kieltomuoto?	verbi kysymysmuodossa	subjekti	verbi	“objekti”	apuverbi	modus	aikamuoto	passiivi	Pre-vp	Post-vp
 TER	FALSE	FALSE	None	None	None	None	None	None	FALSE	moi	None
 KÄS	FALSE	FALSE	subject	project	object	None	IMPV	prees	FALSE	None	None
-TOTN	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	hyvä on	None
-TOTNP	FALSE	FALSE	subject	project	object	None	INDV	prees	TRUE	None	vaan
-TOTS	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
-TOTNS	TRUE	FALSE	subject	project	object	None	INDV	prees	TRUE	None	None
-TOP	FALSE	TRUE	subject	project	object	None,voida	COND	prees	FALSE	None	None
+TTN+++	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	hyvä on	None
+TTN++-	FALSE	FALSE	object	kuulua	subject	None	INDV	prees	FALSE	Niin	None
+TTN+-+	FALSE	FALSE	subject	project	None	None	IMPV	prees	FALSE	None	ihmeessä, toki, vain
+TTN-++	FALSE	FALSE	subject	project	None	None	IMPV	prees	FALSE	None, no	sitten jos se on niin tärkeä sinulle
+TTN+--	FALSE	FALSE	None	None	None	None	IMPV	None	FALSE	ole hyvä	None
+TTN-+-	FALSE	FALSE	Speaker	arvata	None	None	INDV	imperf	FALSE	None	että tässä käy näin
+TTN--+	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	siitä vaan	None
+TTN---	FALSE	FALSE	subject	project	None	None	IMPV	prees	FALSE	no	None, sitten
+TTS+++	FALSE	FALSE	subject	project	object	None	COND	prees	FALSE	hah!	? et voi olla tosissasi
+TTS++-	FALSE	FALSE	subject	project	object	None	COND	prees	FALSE	None	? ei kai nyt sentään ?
+TTS+-+	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
+TTS-++	TRUE	FALSE	subject	project	None	None	INDV	prees	FALSE	None	None
+TTS+--	TRUE	FALSE	subject	project	object	None	COND	prees	FALSE	None	None
+TTS-+-	FALSE	FALSE	subject	project	object	haluta	INDV	prees	FALSE	älä vain sano että	None
+TTS--+	TRUE	FALSE	subject	project	None	None	INDV	prees	FALSE	None	None
+TTS---	FALSE	FALSE	None	None	object	None	INDV	prees	FALSE	Ei ! Ei	None
+TOP+++	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	eikö niin ?, vai mitä ?
+TOP++-	FALSE	FALSE	subject	project	object	None	COND	prees	FALSE	jos et pane pahaksesi, jos sopii	None
+TOP+-+	FALSE	TRUE	subject	project	object	voida, haluta	COND	prees	FALSE	None	None
+TOP-++	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None, ja sinulla ei ole siihen mitään sanomista
+TOP+--	FALSE	FALSE	subject	project	object	None	COND	prees	FALSE	sopisiko sinulle mitenkään että	None
+TOP-+-	FALSE	FALSE	subject	project	object	täytyä	COND	prees	FALSE	None	None
+TOP--+	FALSE	FALSE	object	kuulua	subject	None	INDV	prees	FALSE	None	None
+TOP---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	vaasi	tänne
 TOPB	FALSE	TRUE	subject	project	object	haluta	COND	prees	FALSE	None	None
 TOE	FALSE	FALSE	subject	project	object	voida,haluta	COND	prees	FALSE	None	None
 TOEB	FALSE	FALSE	subject	project	object	None	COND	prees	FALSE	None	None,nyt
@@ -26,7 +45,14 @@ TIAB-	FALSE	FALSE	None	None	object	None	INDV	prees	FALSE	None	None
 TIÄ	TRUE	FALSE	Speaker	tietää	object	None	INDV	prees	FALSE	None	None
 TOR	FALSE	FALSE	Listener	luulla	interrogative	None	INDV	prees	FALSE	None	None
 TORB	TRUE	FALSE	None	None	None	None	INVD	prees	FALSE	ei kuulu sinulle	None
-VÄI	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
+VÄI+++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
+VÄI++-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
+VÄI+-+	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
+VÄI-++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
+VÄI+--	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
+VÄI-+-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
+VÄI--+	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
+VÄI---	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
 VÄIB	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	mutta kun	None
 SAM-KAN	FALSE	FALSE	subject	project	object	None,taitaa	INDV	prees	FALSE	kyllä	None
 ERI-KAN	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
@@ -35,10 +61,23 @@ KER	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	None	None
 KOA	FALSE	TRUE	None	None	None	None	INDV	imperf	FALSE	mitä	None
 KOB	FALSE	TRUE	subject	None	None	None	INDV	prees	FALSE	interrogative	None
 KOBV	FALSE	FALSE	subject	None	attribute	None	INDV	prees	FALSE	None	None
-MYÖ	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	totta	None
-KII	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	ei	None
+MYÖ+++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	hänen aikansa oli tullut	None
+MYÖ++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kiitos kun kerroit minulle	None
+MYÖ+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	aavistinkin jotain tällaista	None
+MYÖ-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	miksi kerrot tästä vasta nyt ?	None
+MYÖ+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	jep	None
+MYÖ-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	se tästä vielä puuttuikin	None
+MYÖ--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	senkin pahanilmanlintu	None
+MYÖ---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	EVAL	None
+KII+++	TRUE	FALSE	subject	project	object	None	INDV	perf	FALSE	sinun täytyy olla erehtynyt	None
+KII++-	TRUE	FALSE	subject	project	object	voida	INDV	perf	FALSE	None	None
+KII+-+	TRUE	FALSE	Listener	höpsiä	None	None	IMPV	prees	FALSE	None	None
+KII-++	TRUE	FALSE	Listener	puhua	None	None	IMPV	prees	FALSE	None	paskaa
+KII+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	höpö höpö	None
+KII-+-	FALSE	FALSE	None	None	None	None	INDV	project	FALSE	ei muuten pidä paikkaansa	None
+KII--+	FALSE	FALSE	Listener	olla	None	None	INDV	prees	FALSE	None	väärässä
+KII---	TRUE	FALSE	null	olla	None	None	INDV	prees	FALSE	None	totta
 EVA	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	EVAL	None
 JTK	FALSE	TRUE	None	None	None	None	INDV	prees	FALSE	niinkö	None
 EST	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	älä viitsi	None
-PIV1	FALSE	FALSE	subject	None	None	None	INVD	prees	FALSE	None	kuuluu mökkeilyyn
-PASS	FALSE	FALSE	None	None	None	None	INVD	prees	FALSE		
+MYÖB	FALSE	FALSE	None	None	None	None	INVD	prees	FALSE	niinpä	

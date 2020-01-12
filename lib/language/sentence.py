@@ -34,6 +34,8 @@ class Sentence:
             self.subj = speaker.name
         elif action_type.subj == "parent":
             self.subj = project.parent.subj
+        elif action_type.subj == "null":
+            self.subj = "null"
         else:
             self.subj = action_type.subj
 
@@ -43,12 +45,19 @@ class Sentence:
         else:
             self.verb = action_type.verb
         self.verb_realization = None
+        print(action_type.tempus)
+        if action_type.tempus == "project":
+            self.tempus = project.time
+        else:
+            self.tempus = action_type.tempus
 
         #"object"
         if project.obj is None:
             self.obj = None
         elif action_type.obj == "object":
             self.obj = project.obj.name
+        elif action_type.obj == "subject":
+            self.obj = project.subj.name
         elif action_type.obj == "attribute":
             print(project.obj)
             self.obj = project.obj.name
@@ -139,7 +148,6 @@ class Sentence:
             vp = create_verb_pharse(self.verb_realization[0])
 
         mood = self.action_type.modus
-        tense = "PRESENT"
 
         #check person
         if self.speaker.name == self.subj:
@@ -147,6 +155,7 @@ class Sentence:
             vp.components["subject"] = create_personal_pronoun_phrase()
         elif self.subj in [listener.name for listener in self.listeners]:
             person = "2"
+            #todo, more prodrop?
             prodrop = mood == "IMPV" or self.action_type.name in ["TOEB"]
             vp.components["subject"] = create_personal_pronoun_phrase("2", "SG", prodrop)
         else:
@@ -191,13 +200,16 @@ class Sentence:
                 add_advlp_to_vp(vp, pred)
 
         #check tempus
-        if self.project.time is "past":
+        if self.tempus is "imperf":
             tense = "PAST"
-        elif self.project.time is "postpast":
+            set_vp_mood_and_tense(vp, mood, tense)
+        elif self.tempus is "perf":
             tense = "PAST"
+            set_vp_mood_and_tense(vp, mood, tense)
             turn_vp_into_prefect(vp)
-
-        set_vp_mood_and_tense(vp, mood, tense)
+        else:
+            tense = "PRESENT"
+            set_vp_mood_and_tense(vp, mood, tense)
 
         if self.action_type.passive:
             turn_vp_into_passive(vp)
@@ -211,6 +223,7 @@ class Sentence:
         if self.action_type.ques:
             turn_vp_into_question(vp)
         if self.verb is not None:
+            print(self.subj, self.verb, self.obj)
             as_list = vp.to_string().split()
 
         #add "minulle" in reversed commands
@@ -252,6 +265,10 @@ class Sentence:
             add = self.get_synonym(post_add)
             if add != "None":
                 as_list.append(add)
+
+        #remove null subject
+        if "null" in as_list:
+            as_list.remove("null")
 
         if self.action_type.ques:
             as_list.append("?")

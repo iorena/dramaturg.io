@@ -55,6 +55,7 @@ class Project:
     """
 
     def get_surprise(self, subject):
+        return False
         if self in subject.memory:
             return False
         subject.add_memory(self)
