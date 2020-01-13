@@ -18,6 +18,7 @@ verb_dictionary = {
     "kuolla": [("kuolla", "NONE")],
     "kuulua": [("kuulua", "ALL")],
     "arvata": [("arvata", "NONE")],
+    "puhua": [("puhua", "PAR")],
     "höpsiä": [("höpsiä", "NONE")]
 }
 noun_dictionary = {

@@ -45,7 +45,6 @@ class Sentence:
         else:
             self.verb = action_type.verb
         self.verb_realization = None
-        print(action_type.tempus)
         if action_type.tempus == "project":
             self.tempus = project.time
         else:
@@ -200,11 +199,11 @@ class Sentence:
                 add_advlp_to_vp(vp, pred)
 
         #check tempus
-        if self.tempus is "imperf":
+        if self.tempus == "imperf":
             tense = "PAST"
             set_vp_mood_and_tense(vp, mood, tense)
-        elif self.tempus is "perf":
-            tense = "PAST"
+        elif self.tempus == "perf":
+            tense = "PRESENT"
             set_vp_mood_and_tense(vp, mood, tense)
             turn_vp_into_prefect(vp)
         else:
