@@ -15,14 +15,13 @@ EXPANSIONS = load_expansion_types()
 
 
 class Sequence():
-    def __init__(self, speakers, project, seq_type, action_types, world_state, parent=None):
+    def __init__(self, speakers, project, seq_type, surprise, action_types, world_state, parent=None):
         self.speakers = speakers
         self.project = project
         self.seq_type = seq_type
         self.action_types = action_types
         self.parent = parent
         self.world_state = world_state
-        surprise = self.project.get_surprise(self.speakers[1])
         agreement = self.project.speakers_agree(self.speakers)
         self.pair_types = POS_SEQUENCES if agreement else NEG_SEQUENCES
         if surprise:
@@ -98,6 +97,7 @@ class Sequence():
                     new_project = Project(target, "olla", attribute,  "statement", "present", 1)
 
 
+            #todo: add surprise
             expansion = Sequence(speakers, new_project, new_seq_type, self.action_types, self.world_state, parent)
         return expansion
 
@@ -107,7 +107,7 @@ class Sequence():
                 print(self.project.subj, self.project.verb, self.project.obj)
             action_type = self.action_types[self.parent.action_type.name]
         else:
-            print("action name", action_name)
+            #print("action name", action_name)
             action_types_pool = [act_name for act_name in self.action_types if act_name.class_name == action_name and act_name.can_use(self.speakers[0].mood)]
             if len(action_types_pool) == 0:
                 print("no available turn types!")

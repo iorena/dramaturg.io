@@ -13,8 +13,7 @@ import random, copy
 from numpy import array
 from numpy.linalg import norm
 
-#todo: 8 surprise lines
-SEQUENCE_TYPES = {"proposal": "STOP", "statement": "SVÄI", "surprise": "STOP"}
+SEQUENCE_TYPES = {"proposal": "STOP", "statement": "SVÄI", "surprise": "SYLL"}
 
 
 class Situation:
@@ -84,7 +83,8 @@ class Situation:
         Generates sequences for each project
         """
         project = Project.get_hello_project(self.speakers)
-        self.sequences.append(self.get_new_sequence(project, self.speakers))
+        #todo: can be surprised by hello?
+        self.sequences.append(self.get_new_sequence(project, self.speakers, False))
         while len(self.speakers[0].goals) > 0 or len(self.speakers[1].goals) > 0:
             #higher dominance gets to speak
             if len(self.speakers[0].goals) == 0 or (len(self.speakers[1].goals) > 0 and self.speakers[0].mood.dominance + random.uniform(0, 0.5) < self.speakers[1].mood.dominance):
@@ -98,10 +98,9 @@ class Situation:
 
             mood = speaker.mood
             surprise = False
-            self.sequences.append(self.get_new_sequence(project, [speaker, reacter]))
             if project.get_surprise(reacter):
                 surprise = True
-                #arrange so that cannot be surprised again by same thing
+            self.sequences.append(self.get_new_sequence(project, [speaker, reacter], surprise))
 
             if surprise:
                 surprise_project = project.get_surprise_project()
@@ -109,7 +108,8 @@ class Situation:
                 #personal = "personal" if project.subj is Character else "impersonal"
                 sequence_type = SEQUENCE_TYPES["surprise"]
                 prev = None if len(self.sequences) is 0 else self.sequences[-1]
-                self.sequences.append(Sequence([reacter, speaker], surprise_project, sequence_type, self.action_types, self.world_state, prev))
+                self.sequences.append(Sequence([reacter, speaker], surprise_project, sequence_type, False, self.action_types, self.world_state, prev))
+                print("heloo, surprise here")
 
             #resolve goal if both agree
             if project.speakers_agree(self.speakers):
@@ -122,7 +122,7 @@ class Situation:
                     reacter.set_goal(project)
 
 
-    def get_new_sequence(self, project, speakers):
+    def get_new_sequence(self, project, speakers, surprise):
         #todo: expansions
         speaker = speakers[0]
         personal = "personal" if project.subj is Character else "impersonal"
@@ -130,7 +130,7 @@ class Situation:
         if len(self.sequences) == 0:
             sequence_type = "STER"
         prev = None if len(self.sequences) is 0 else self.sequences[-1]
-        return Sequence(speakers, project, sequence_type, self.action_types, self.world_state, prev)
+        return Sequence(speakers, project, sequence_type, surprise, self.action_types, self.world_state, prev)
 
     def to_json(self):
         return self.sequences

@@ -31,6 +31,8 @@ class Project:
         return WorldObject(APPRAISALS[2], 92)
 
     def speakers_agree(self, speakers):
+        if self.proj_type == "surprise":
+            return True
         if self in speakers[0].goals and self in speakers[1].goals:
             return True
         return False
@@ -55,11 +57,9 @@ class Project:
     """
 
     def get_surprise(self, subject):
-        return False
         if self in subject.memory:
             return False
         subject.add_memory(self)
-        print("boo")
         return True
 
     """

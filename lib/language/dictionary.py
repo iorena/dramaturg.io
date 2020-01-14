@@ -17,6 +17,7 @@ verb_dictionary = {
     "ottaa": [("ottaa", "GEN")],
     "kuolla": [("kuolla", "NONE")],
     "kuulua": [("kuulua", "ALL")],
+    "kuulla": [("kuulla", "PAR")],
     "arvata": [("arvata", "NONE")],
     "puhua": [("puhua", "PAR")],
     "höpsiä": [("höpsiä", "NONE")]
