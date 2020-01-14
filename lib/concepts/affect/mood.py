@@ -23,7 +23,7 @@ class Mood:
 
     #todo: add personality effect on how emotions affect mood
     def affect_mood(self, emotion):
-        print("affecting with", emotion.dominance)
+        #print("affecting with", emotion.dominance)
         self.pleasure = self.pleasure + emotion.pleasure
         if self.pleasure > 1:
             self.pleasure = 1

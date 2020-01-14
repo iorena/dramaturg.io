@@ -82,7 +82,13 @@ class Project:
 
     def get_surprise_project(self):
         #todo: happy surprise or sad surprise?
-        return Project(self.subj, self.verb, (self.obj_type, self.obj), "surprise", "present", self.score - 2)
+        if self.verb == "kuolla":
+            verb = "sairastua"
+        elif self.verb == "ottaa":
+            verb = "haluta"
+        else:
+            verb = self.verb
+        return Project(self.subj, verb, (self.obj_type, self.obj), "surprise", "present", self.score - 2)
 
     def get_new_project(speakers, main_project, world_state):
         #random topic: weather etc

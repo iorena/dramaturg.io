@@ -1,6 +1,6 @@
 import csv
 
-def load_pad_values(action_types, path="../data/seq_and_action_types_to_pad.csv"):
+def load_pad_values(action_types, path="../data/action_types_to_pad.csv"):
     padded_action_types = []
     with open(path) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter="\t")
