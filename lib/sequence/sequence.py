@@ -59,8 +59,6 @@ class Sequence():
 
 
     def generate_expansion(self, position, parent, switch_speakers=False):
-        return None
-
         if self.second_pair_part is None:
             #return lisäkysymys: "onko kaikki hyvin", "soitinko huonoon aikaan?"
             return None
@@ -69,7 +67,7 @@ class Sequence():
             speakers = [speakers[1], speakers[0]]
 
         expansion = None
-        rand = random.uniform(-0.5, 1.4)
+        rand = random.uniform(0, 1.4)
         mood = speakers[0].mood.arousal
         if rand < mood:
             new_project = self.project
@@ -80,9 +78,9 @@ class Sequence():
                 return None
 
             mood = speakers[0].mood
-            distances = list(map(lambda x: norm(array((mood.pleasure, mood.arousal, mood.dominance)) - array((PAD_VALUES[x]))), pool))
+            #todo: weight by mood?
 
-            new_seq_type = random.choices(pool, distances)[0]
+            new_seq_type = random.choice(pool)
             if new_seq_type == "SKORB":
                 # new project with old object as subject? check if there is an object to take?
                 if self.project.obj:
@@ -96,9 +94,7 @@ class Sequence():
 
                     new_project = Project(target, "olla", attribute,  "statement", "present", 1)
 
-
-            #todo: add surprise
-            expansion = Sequence(speakers, new_project, new_seq_type, self.action_types, self.world_state, parent)
+            expansion = Sequence(speakers, new_project, new_seq_type, False, self.action_types, self.world_state, parent)
         return expansion
 
     def generate_pair_part(self, speaker, action_name, reverse):
@@ -108,7 +104,7 @@ class Sequence():
             action_type = self.action_types[self.parent.action_type.name]
         else:
             #print("action name", action_name)
-            action_types_pool = [act_name for act_name in self.action_types if act_name.class_name == action_name and act_name.can_use(self.speakers[0].mood)]
+            action_types_pool = [act_name for act_name in self.action_types.values() if act_name.class_name == action_name and act_name.can_use(self.speakers[0].mood)]
             if len(action_types_pool) == 0:
                 print("no available turn types!")
                 return None

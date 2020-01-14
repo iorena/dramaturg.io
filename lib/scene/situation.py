@@ -22,8 +22,7 @@ class Situation:
         self.embeddings = embeddings
         self.speakers = speakers
         self.location = location
-        self.action_types = load_action_types()
-        self.action_types = load_pad_values(self.action_types)
+        self.action_types = load_pad_values(load_action_types())
         self.mood_change = {}
         self.main_sequence_id = 0
         self.sequences = []
