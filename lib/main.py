@@ -47,6 +47,8 @@ def main(do_story, print_dev_data):
             line += ". " if line[-1] != "?" else " "
             last_turn = turns[0]
             for turn in turns[1:]:
+                if turn is None:
+                    continue
                 line = ""
                 uppercased = turn.inflected[0].upper()
                 line += uppercased + turn.inflected[1:]

@@ -42,12 +42,12 @@ class Embeddings:
 
     def get_inheritance_object(self):
         random_idx = random.randint(0, 5)
-        similar = self.wordforms.nearest("maljakko", 6)
+        similar = self.lemmas.nearest("maljakko", 6)
         return similar[random_idx][1]
 
     def get_relative(self):
         random_idx = random.randint(0, 5)
-        similar = self.wordforms.nearest("mummo", 6)
+        similar = self.wordforms.nearest("isoäiti", 8)
         return similar[random_idx][1]
 
     def get_similar(self, word):

@@ -70,7 +70,7 @@ class Sequence():
         rand = random.uniform(0, 1.4)
         mood = speakers[0].mood.arousal
         if rand < mood:
-            new_project = self.project
+            new_project = self.project.get_expansion_project()
             if position not in EXPANSIONS[self.seq_type]:
                 return None
             pool = EXPANSIONS[self.seq_type][position]
@@ -92,7 +92,7 @@ class Sequence():
                     else:
                         attribute = random.choices(attributes)[0]
 
-                    new_project = Project(target, "olla", attribute,  "statement", "present", 1)
+                    new_project = Project(target, "olla", attribute, "expansion", "present", 1)
 
             expansion = Sequence(speakers, new_project, new_seq_type, False, self.action_types, self.world_state, parent)
         return expansion
@@ -106,7 +106,7 @@ class Sequence():
             #print("action name", action_name)
             action_types_pool = [act_name for act_name in self.action_types.values() if act_name.class_name == action_name and act_name.can_use(self.speakers[0].mood)]
             if len(action_types_pool) == 0:
-                print("no available turn types!")
+                print("no available turn types!", action_name)
                 return None
             action_type = random.choice(action_types_pool)
         project = self.project

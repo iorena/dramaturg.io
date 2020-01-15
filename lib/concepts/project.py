@@ -12,11 +12,11 @@ class Project:
         self.obj = obj[1]
         self.verb = verb
         self.proj_type = proj_type
-        self.time = time
         if self.obj is None:
             print("none", self.subj, self.obj_type, self.verb)
         if self.obj_type is "quality":
             time = "present"
+        self.time = time
         self.score = score
 
     def __str__(self):
@@ -31,7 +31,7 @@ class Project:
         return WorldObject(APPRAISALS[2], 92)
 
     def speakers_agree(self, speakers):
-        if self.proj_type == "surprise":
+        if self.proj_type in ["surprise", "expansion"]:
             return True
         if self in speakers[0].goals and self in speakers[1].goals:
             return True
@@ -57,6 +57,8 @@ class Project:
     """
 
     def get_surprise(self, subject):
+        if self.proj_type == "expansion":
+            return False
         if self in subject.memory:
             return False
         subject.add_memory(self)
@@ -88,7 +90,10 @@ class Project:
             verb = "haluta"
         else:
             verb = self.verb
-        return Project(self.subj, verb, (self.obj_type, self.obj), "surprise", "present", self.score - 2)
+        return Project(self.subj, verb, (self.obj_type, self.obj), "surprise", self.time, self.score - 2)
+
+    def get_expansion_project(self):
+        return Project(self.subj, self.verb, (self.obj_type, self.obj), "expansion", self.time, self.score - 4)
 
     def get_new_project(speakers, main_project, world_state):
         #random topic: weather etc

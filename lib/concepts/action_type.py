@@ -5,7 +5,10 @@ class ActionType:
 
     def __init__(self, name, neg, ques, subj, verb, obj, aux_verb, modus, tempus, passive, pre_add, post_add):
         self.name = name
-        self.class_name = name[0:3]
+        if len(name) == 6:
+            self.class_name = name[0:3]
+        else:
+            self.class_name = name
         self.neg = neg == "TRUE"
         self.ques = ques == "TRUE"
         self.subj = subj

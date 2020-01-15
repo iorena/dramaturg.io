@@ -4,7 +4,7 @@ KÄS	FALSE	FALSE	subject	project	object	None	IMPV	prees	FALSE	None	None
 TTN+++	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	hyvä on	None
 TTN++-	FALSE	FALSE	object	kuulua	subject	None	INDV	prees	FALSE	Niin	None
 TTN+-+	FALSE	FALSE	subject	project	None	None	IMPV	prees	FALSE	None	ihmeessä,toki,vain
-TTN-++	FALSE	FALSE	subject	project	None	None	IMPV	prees	FALSE	None, no	sitten jos se on niin tärkeä sinulle
+TTN-++	FALSE	FALSE	subject	project	None	None	IMPV	prees	FALSE	None,no	sitten jos se on niin tärkeä sinulle
 TTN+--	FALSE	FALSE	None	None	None	None	IMPV	None	FALSE	ole hyvä	None
 TTN-+-	FALSE	FALSE	Speaker	arvata	None	None	INDV	imperf	FALSE	None	että tässä käy näin
 TTN--+	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	siitä vaan	None
@@ -29,15 +29,15 @@ TOPB	FALSE	TRUE	subject	project	object	haluta	COND	prees	FALSE	None	None
 TOE	FALSE	FALSE	subject	project	object	voida,haluta	COND	prees	FALSE	None	None
 TOEB	FALSE	FALSE	subject	project	object	None	COND	prees	FALSE	None	None,nyt
 TOEP	FALSE	TRUE	subject	project	object	None	INDV	prees	TRUE	None	None
-TIP	FALSE	TRUE	subject	project	object	None	INDV	prees	FALSE	None	None
-TIPC	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	miksi	?
+TIP	FALSE	TRUE	subject	project	object	None	INDV	project	FALSE	None	None
+TIPC	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	miksi	?
 TIPD	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	miksi	juuri nyt ?,yhtäkkiä ?
 TIPE	FALSE	FALSE	subject	project	object	None	COND	prees	FALSE	miksi	?
 TII	TRUE	FALSE	Listener	vastata	Speaker	None,voida,haluta	INDV	prees	FALSE	miksi	?
 TIIC	FALSE	FALSE	Listener	puhua	noun	None,haluta	INDV	prees	FALSE	miksi	?
 TIIB	FALSE	FALSE	mikä sinulla	olla	None	None	INDV	prees	FALSE	None	?
 SEL	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	koska	None
-TIPB	FALSE	FALSE	subject	project	interrogative	None	INDV	prees	FALSE	None	None
+TIPB	FALSE	FALSE	subject	project	interrogative	None	INDV	project	FALSE	None	None
 TIA+	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	kyllä	None
 TIA-	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
 TIAB+	FALSE	FALSE	None	None	object	None	INDV	prees	FALSE	None	None
@@ -56,7 +56,7 @@ VÄI---	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
 VÄIB	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	mutta kun	None
 SAM-KAN	FALSE	FALSE	subject	project	object	None,taitaa	INDV	prees	FALSE	kyllä	None
 ERI-KAN	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
-KAN	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
+KAN	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
 KER	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	None	None
 KOA	FALSE	TRUE	None	None	None	None	INDV	imperf	FALSE	mitä	None
 KOB	FALSE	TRUE	subject	None	None	None	INDV	prees	FALSE	interrogative	None
@@ -82,15 +82,15 @@ JTK	FALSE	TRUE	None	None	None	None	INDV	prees	FALSE	niinkö	None
 EST	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	älä viitsi	None
 MYÖB	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	niinpä	None
 YLL+++	FALSE	FALSE	Speaker	kuulla	tämä	None	INDV	prees	FALSE	niinkö ? Miksi	vasta nyt
-YLL++-	FALSE	TRUE	subject	project	object	None	INDV	perf	FALSE	mitä ?	?
-YLL+-+	FALSE	TRUE	Listener	olla	None	None	INDV	prees	FALSE	None	tosissasi ?
+YLL++-	FALSE	TRUE	subject	project	object	None	INDV	perf	FALSE	mitä ?	None
+YLL+-+	FALSE	TRUE	Listener	olla	None	None	INDV	prees	FALSE	None	tosissasi
 YLL-++	FALSE	FALSE	subject	project	object	None	INDV	perf	FALSE	mikset ole kertonut minulle että	?
 YLL+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ihanko totta ?	None
 YLL-+-	FALSE	FALSE	subject	project	object	None	INDV	perf	FALSE	en tiennyt että	None
 YLL--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mitä sinä selität ?	None
 YLL---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mitä hittoa	?
-VYL+++	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	Niin .	viime viikolla
-VYL++-	FALSE	FALSE	subject	project	object	None	INDV	perf	FALSE	valitan, en ehtinyt ilmoittaa sinulle että	None
+VYL+++	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	niin.	viime viikolla
+VYL++-	FALSE	FALSE	subject	project	object	None	INDV	perf	FALSE	valitettavasti en ehtinyt ilmoittaa sinulle että	None
 VYL+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	niinhän minä sanoin	None
 VYL-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuulit kyllä mitä sanoin	None
 VYL+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	näin se valitettavasti on.	None

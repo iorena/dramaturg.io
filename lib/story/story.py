@@ -31,6 +31,8 @@ class Story:
         for sit in self.situations:
             for seq in sit.sequences:
                 for turn in seq.turns:
+                    if turn is None:
+                        continue
                     for word in turn.inflected.split(" "):
                         if word in bow:
                             bow[word] = bow[word] + 1
