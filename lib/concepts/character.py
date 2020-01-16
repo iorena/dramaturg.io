@@ -28,6 +28,8 @@ class Character:
         self.mood = Mood(self.personality)
         self.memory = []
         self.world_model = self.init_causal_relations()
+        #todo: make this vary by personality
+        self.stress_capacity = 3
 
     def __str__(self):
         """
@@ -71,12 +73,14 @@ class Character:
                 print("removed conflicting goal", goal.subj, goal.verb, goal.obj)
         self.goals.append(new_goal)
 
-    def set_relation(self, other, relation):
-        self.relations[other] = relation
+    def set_relation(self, other):
+        self.relations[other.name] = Mood(self.random_personality())
+        print(self.relations)
 
     def init_causal_relations(self):
         """
         Causal requirements for events. Determines whether a character is surprised by an event
+        NOT IN USE?
         """
         events = {
             "kuolla": [Project("someone", "tappaa", "self", None, None, 1)]
@@ -96,3 +100,8 @@ class Character:
         self.methods = []
         for method in methods:
             self.methods.append(method)
+
+    def add_stress(self):
+        self.stress =+ 1
+        if self.stress > self.stress_capacity:
+            self.remove_goal()

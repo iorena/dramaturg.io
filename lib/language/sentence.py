@@ -21,6 +21,7 @@ class Sentence:
         self.listeners = listeners
         self.attribute = False
         self.project = project
+        self.hesitation = action_type.get_hesitation(speaker, listeners[0])
         #subject
         if project.subj is None:
             self.subj = None
@@ -334,4 +335,9 @@ class Sentence:
     def get_styled_sentence(self):
         if self.inflected is None:
             return None
-        return self.speaker.style.get_styled_expression(self.inflected)
+        styled = self.speaker.style.get_styled_expression(self.inflected)
+
+        if self.hesitation:
+            styled = self.speaker.style.get_hesitant_expression(styled)
+
+        return styled

@@ -2,7 +2,7 @@ toimintotyyppi	kieltomuoto?	verbi kysymysmuodossa	subjekti	verbi	“objekti”	a
 TER	FALSE	FALSE	None	None	None	None	None	None	FALSE	moi	None
 KÄS	FALSE	FALSE	subject	project	object	None	IMPV	prees	FALSE	None	None
 TTN+++	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	hyvä on	None
-TTN++-	FALSE	FALSE	object	kuulua	subject	None	INDV	prees	FALSE	Niin	None
+TTN++-	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	tee niin kuin parhaaksi näet	None
 TTN+-+	FALSE	FALSE	subject	project	None	None	IMPV	prees	FALSE	None	ihmeessä,toki,vain
 TTN-++	FALSE	FALSE	subject	project	None	None	IMPV	prees	FALSE	None,no	sitten jos se on niin tärkeä sinulle
 TTN+--	FALSE	FALSE	None	None	None	None	IMPV	None	FALSE	ole hyvä	None

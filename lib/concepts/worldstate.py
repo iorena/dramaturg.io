@@ -1,7 +1,6 @@
 from concepts.character import Character
 from concepts.location import Location
 from concepts.worldobject import WorldObject
-from concepts.affect.relationship import Relationship
 from concepts.affect.emotion import Emotion
 from concepts.method import Method
 
@@ -39,21 +38,15 @@ class WorldState:
             obj.set_owner(owner)
             obj.set_location(owner.attributes["location"])
         self.weather = WorldObject("sää", 95)
-        self.influence_methods = [Method("pyytäminen", 1), Method("neuvottelu", 2), Method("lahjonta", 5), Method("uhkailu", 8)]
-        for char in self.characters:
-            char.set_methods(self.influence_methods)
+        #todo: are we using this?
+        #self.influence_methods = [Method("pyytäminen", 1), Method("neuvottelu", 2), Method("lahjonta", 5), Method("uhkailu", 8)]
         #set relationships
-        char = self.characters[0]
-        for other in self.characters:
-            if char is other:
-                pass
-            else:
-                liking_out = random.random()
-                liking_in = random.random()
-                dominance = random.random()
-                char.set_relation(other.name, Relationship(other, liking_out, liking_in, dominance))
-                other.set_relation(char.name, Relationship(char, liking_in, liking_out, 1 - dominance))
-            other.set_relation(other.name, Relationship(other, 1, 1, 0.5))
+        for char in self.characters:
+            for other in self.characters:
+                if char is other:
+                    pass
+                else:
+                    char.set_relation(other)
 
 
     def __str__(self):
@@ -84,7 +77,6 @@ class WorldState:
         if name in chars:
             return self.characters[chars.index(name)]
         raise Exception("asked for object named", name)
-
 
     def get_object(self, obj):
         """

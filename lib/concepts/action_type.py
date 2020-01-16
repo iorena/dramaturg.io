@@ -48,3 +48,15 @@ class ActionType:
                 if self.upper_bound.dominance >= emotion.dominance and emotion.dominance >= self.lower_bound.dominance:
                     return True
         return False
+
+    def get_hesitation(self, speaker, listener):
+        """
+        Character hesitates if his goals make him use turns that he doesn't want to use (because of relationship)
+        """
+        perceived_mood = speaker.perception.get_object_by_name(listener.name).mood
+        current_mood_diff = perceived_mood - speaker.relations[listener.name]
+        mood_diff_after_turn = perceived_mood.affect_mood(self.effect) - speaker.relations[listener.name]
+        if current_mood_diff < mood_diff_after_turn:
+            speaker.add_stress()
+            return True
+        return False

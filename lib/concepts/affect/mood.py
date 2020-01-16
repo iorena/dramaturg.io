@@ -11,6 +11,9 @@ class Mood:
     def __str__(self):
         return f"{self.pleasure:.2f}P {self.arousal:.2f}A {self.dominance:.2f}D {self.get_octant_name()}"
 
+    def __sub__(self, other):
+        return (abs(self.pleasure - other.pleasure), abs(self.arousal - other.arousal), abs(self.dominance - other.dominance))
+
     #formulas from Gebhard (2005)
     def default_mood(self, personality):
         return (Mood.get_default_pleasure(personality), Mood.get_default_arousal(personality), Mood.get_default_dominance(personality))
@@ -39,6 +42,7 @@ class Mood:
             self.dominance = 1
         if self.dominance < -1:
             self.dominance = -1
+        return self
 
     def get_octant_name(self):
         if self.pleasure > 0:
