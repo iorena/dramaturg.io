@@ -17,6 +17,7 @@ class Character:
         Character.id_counter += 1
         self.attributes = {"location": location, "vitality": alive}
         self.goals = []
+        self.stress = 0
         if name is None:
             self.name = self.random_name()
         else:
@@ -29,7 +30,7 @@ class Character:
         self.memory = []
         self.world_model = self.init_causal_relations()
         #todo: make this vary by personality
-        self.stress_capacity = 3
+        self.stress_capacity = 1
 
     def __str__(self):
         """
@@ -75,12 +76,11 @@ class Character:
 
     def set_relation(self, other):
         self.relations[other.name] = Mood(self.random_personality())
-        print(self.relations)
 
     def init_causal_relations(self):
         """
         Causal requirements for events. Determines whether a character is surprised by an event
-        NOT IN USE?
+        NOT IN USE, replaced by get_surprise_project
         """
         events = {
             "kuolla": [Project("someone", "tappaa", "self", None, None, 1)]
@@ -88,7 +88,11 @@ class Character:
         return events
 
     def resolve_goal(self, goal):
-        self.goals.remove(goal)
+        if goal.proj_type not in ["expansion", "surprise"] and goal in self.goals:
+            self.goals.remove(goal)
+
+    def resolve_stress(self, project):
+        self.set_goal(project)
 
     def add_memory(self, memory):
         self.memory.append(memory)
@@ -101,7 +105,9 @@ class Character:
         for method in methods:
             self.methods.append(method)
 
-    def add_stress(self):
-        self.stress =+ 1
+    def add_stress(self, project):
+        self.stress += 1
+        print(self.stress)
         if self.stress > self.stress_capacity:
-            self.remove_goal()
+            self.resolve_stress(project)
+            self.stress = 0

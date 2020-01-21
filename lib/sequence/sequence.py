@@ -15,8 +15,10 @@ EXPANSIONS = load_expansion_types()
 
 
 class Sequence():
-    def __init__(self, speakers, project, seq_type, surprise, action_types, world_state, parent=None):
-        self.speakers = speakers
+    def __init__(self, speaker_i, project, seq_type, surprise, action_types, world_state, parent=None):
+        self.speakers = world_state.characters[:2]
+        self.speaker_i = speaker_i
+        self.reacter_i = 0 if speaker_i == 1 else 1
         self.project = project
         self.seq_type = seq_type
         self.action_types = action_types
@@ -27,19 +29,19 @@ class Sequence():
         if surprise:
             self.pair_types = PASS_SEQUENCES
         reverse = False
-        if seq_type in ["SKÄS"] and self.speakers[0].name == self.project.subj.name and project.verb != "olla":
+        if seq_type in ["SKÄS"] and self.speakers[speaker_i].name == self.project.subj.name and project.verb != "olla":
             reverse = True
-        elif seq_type in ["SKÄS"] and self.speakers[0].name == self.project.subj.name:
+        elif seq_type in ["SKÄS"] and self.speakers[speaker_i].name == self.project.subj.name:
             self.seq_type = "SKAN"
         #todo: add emotional weights
         #also do this before second pair part is even determined?
         action_names = random.choice(self.pair_types[self.seq_type])
-        self.first_pair_part = self.generate_pair_part(self.speakers[0], action_names[0], reverse)
+        self.first_pair_part = self.generate_pair_part(self.speakers[speaker_i], action_names[0], reverse)
         if self.seq_type is not "STER" and surprise and not agreement:
             #todo: empty second pair part should affect speaker: annoyance etc
             self.second_pair_part = None
         else:
-            self.second_pair_part = self.generate_pair_part(self.speakers[1], action_names[1], reverse)
+            self.second_pair_part = self.generate_pair_part(self.speakers[self.reacter_i], action_names[1], reverse)
         self.pre_expansion = self.generate_expansion("pre_expansions", None)
         self.infix_expansion = self.generate_expansion("infix_expansions", self.first_pair_part, True)
         self.post_expansion = self.generate_expansion("post_expansions", self.second_pair_part)
@@ -62,13 +64,14 @@ class Sequence():
         if self.second_pair_part is None:
             #return lisäkysymys: "onko kaikki hyvin", "soitinko huonoon aikaan?"
             return None
-        speakers = self.speakers
         if switch_speakers:
-            speakers = [speakers[1], speakers[0]]
+            speaker_i = 0 if self.speaker_i == 1 else 1
+        else:
+            speaker_i = self.speaker_i
 
         expansion = None
         rand = random.uniform(0, 1.4)
-        mood = speakers[0].mood.arousal
+        mood = self.speakers[speaker_i].mood.arousal
         if rand < mood:
             new_project = self.project.get_expansion_project()
             if position not in EXPANSIONS[self.seq_type]:
@@ -77,7 +80,7 @@ class Sequence():
             if pool[0] == "":
                 return None
 
-            mood = speakers[0].mood
+            mood = self.speakers[speaker_i].mood
             #todo: weight by mood?
 
             new_seq_type = random.choice(pool)
@@ -94,7 +97,7 @@ class Sequence():
 
                     new_project = Project(target, "olla", attribute, "expansion", "present", 1)
 
-            expansion = Sequence(speakers, new_project, new_seq_type, False, self.action_types, self.world_state, parent)
+            expansion = Sequence(speaker_i, new_project, new_seq_type, False, self.action_types, self.world_state, parent)
         return expansion
 
     def generate_pair_part(self, speaker, action_name, reverse):
@@ -108,14 +111,29 @@ class Sequence():
             if len(action_types_pool) == 0:
                 print("no available turn types!", action_name)
                 return None
-            action_type = random.choice(action_types_pool)
+            action_type = self.find_best_action_type(speaker, action_types_pool)
         project = self.project
         if action_name == "SEL":
             project = Project.get_new_project(self.speakers, self.project, self.world_state)
 
-        listeners = copy.copy(self.speakers)
-        listeners.remove(speaker)
+        listeners = []
+        for char in self.speakers:
+            if char.name is not speaker.name:
+                listeners.append(char)
         return Turn(speaker, listeners, action_type, project, reverse)
+
+    def find_best_action_type(self, speaker, pool):
+        other_char = self.world_state.get_opposite(speaker)
+        target_mood = speaker.relations[other_char.name]
+        current_mood = speaker.perception.get_object_by_name(other_char.name).mood
+        best = pool[0]
+        smallest_mood_diff = 9001.0
+        for act_type in pool:
+            mood_diff = norm(current_mood.affect_mood(act_type.effect) - target_mood)
+            if mood_diff < smallest_mood_diff:
+                smallest_mood_diff = mood_diff
+                best = act_type
+        return best
 
     def print_sequence(self):
         print(self)

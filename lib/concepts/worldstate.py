@@ -48,7 +48,6 @@ class WorldState:
                 else:
                     char.set_relation(other)
 
-
     def __str__(self):
         return f"Locations: {', '.join(map(str, self.locations))}\nCharacters: {', '.join(map(str, self.characters))}"
 
@@ -113,7 +112,7 @@ class WorldState:
         if type(obj) is Emotion:
             opposite = Emotion(None, 1 - obj.pleasure, 1 - obj.arousal, 1 - obj.dominance)
         else:
-            opposite = random.choices(choices)[0]
+            opposite = random.choice(choices)
         return opposite
 
     def get_opposite_attribute(self, attribute):

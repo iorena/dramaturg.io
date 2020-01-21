@@ -68,7 +68,7 @@ class Story:
 
         #char1 calls char2
         #char1 finds out that relative is dead (before scene)
-        relative_died_project = Project(self.world_state.dead_relative, "kuolla", ("character", other_char),  "statement", "perf", 5)
+        relative_died_project = Project(self.world_state.dead_relative, "kuolla", (None, None),  "statement", "perf", 5)
         other_char.set_goal(relative_died_project)
 
         situations.append(Situation(self.world_state, self.embeddings, chars, main_char.attributes["location"]))

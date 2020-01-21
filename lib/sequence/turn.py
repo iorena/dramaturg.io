@@ -10,8 +10,6 @@ class Turn:
         self.speaker = speaker
         self.listeners = listeners
         self.action_type = action_type
-        #todo: determine PAD realization of action type here?
-        #-> edit action type class
         self.obj_type = project.obj_type
         self.project = project
         self.speaker_mood = str(self.speaker.mood)
@@ -24,7 +22,8 @@ class Turn:
         return f"{self.action_type.name}{space} {self.speaker.name}: {self.inflected}  |  Mood: {self.speaker_mood}"
 
     def inflect(self):
-        sentence = Sentence(self.speaker, self.listeners, self.project, self.action_type, self.obj_type, self.reversed)
+        hesitation = self.action_type.get_hesitation(self.speaker, self.listeners[0], self.project)
+        sentence = Sentence(self.speaker, self.listeners, self.project, self.action_type, self.obj_type, self.reversed, hesitation)
         return sentence.styled
 
     def affect_mood(self):

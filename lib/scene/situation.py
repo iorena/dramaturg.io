@@ -83,23 +83,32 @@ class Situation:
         """
         project = Project.get_hello_project(self.speakers)
         #todo: can be surprised by hello?
-        self.sequences.append(self.get_new_sequence(project, self.speakers, False))
+        self.sequences.append(self.get_new_sequence(project, 0, False))
         while len(self.speakers[0].goals) > 0 or len(self.speakers[1].goals) > 0:
             #higher dominance gets to speak
+
             if len(self.speakers[0].goals) == 0 or (len(self.speakers[1].goals) > 0 and self.speakers[0].mood.dominance + random.uniform(0, 0.5) < self.speakers[1].mood.dominance):
-                project = self.speakers[1].goals[0]
-                speaker = self.speakers[1]
-                reacter = self.speakers[0]
+                speaker_i = 1
+                reacter_i = 0
             else:
-                project = self.speakers[0].goals[0]
-                speaker = self.speakers[0]
-                reacter = self.speakers[1]
+                speaker_i = 0
+                reacter_i = 1
+
+            speaker = self.speakers[speaker_i]
+            reacter = self.speakers[reacter_i]
+            project = speaker.goals[0]
+
+            #resolve goal if both agree
+            #if project.speakers_agree(self.speakers):
+            for speaker in self.speakers:
+                speaker.resolve_goal(project)
+
 
             mood = speaker.mood
             surprise = False
             if project.get_surprise(reacter):
                 surprise = True
-            self.sequences.append(self.get_new_sequence(project, [speaker, reacter], surprise))
+            self.sequences.append(self.get_new_sequence(project, speaker_i, surprise))
 
             if surprise:
                 surprise_project = project.get_surprise_project()
@@ -107,29 +116,19 @@ class Situation:
                 #personal = "personal" if project.subj is Character else "impersonal"
                 sequence_type = SEQUENCE_TYPES["surprise"]
                 prev = None if len(self.sequences) is 0 else self.sequences[-1]
-                self.sequences.append(Sequence([reacter, speaker], surprise_project, sequence_type, False, self.action_types, self.world_state, prev))
-                print("heloo, surprise here")
-
-            #resolve goal if both agree
-            if project.speakers_agree(self.speakers):
-                for speaker in self.speakers:
-                    speaker.resolve_goal(project)
-
-            else:
-                #change mind if affected enough
-                if speaker.mood.dominance > reacter.mood.dominance + 0.5:
-                    reacter.set_goal(project)
+                self.sequences.append(Sequence(speaker_i, surprise_project, sequence_type, False, self.action_types, self.world_state, prev))
 
 
-    def get_new_sequence(self, project, speakers, surprise):
+
+    def get_new_sequence(self, project, speaker_i, surprise):
         #todo: expansions
-        speaker = speakers[0]
+        speaker = self.world_state.characters[speaker_i]
         personal = "personal" if project.subj is Character else "impersonal"
         sequence_type = SEQUENCE_TYPES[project.proj_type]
         if len(self.sequences) == 0:
             sequence_type = "STER"
         prev = None if len(self.sequences) is 0 else self.sequences[-1]
-        return Sequence(speakers, project, sequence_type, surprise, self.action_types, self.world_state, prev)
+        return Sequence(speaker_i, project, sequence_type, surprise, self.action_types, self.world_state, prev)
 
     def to_json(self):
         return self.sequences

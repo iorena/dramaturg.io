@@ -16,12 +16,12 @@ from numpy.linalg import norm
 class Sentence:
     embeddings = Embeddings()
 
-    def __init__(self, speaker, listeners, project, action_type, obj_type, reverse):
+    def __init__(self, speaker, listeners, project, action_type, obj_type, reverse, hesitation):
         self.speaker = speaker
         self.listeners = listeners
         self.attribute = False
         self.project = project
-        self.hesitation = action_type.get_hesitation(speaker, listeners[0])
+        self.hesitation = hesitation
         #subject
         if project.subj is None:
             self.subj = None
@@ -119,7 +119,8 @@ class Sentence:
                     add = self.get_synonym(pre_add)
                 if add != "None":
                     as_list.insert(0, add)
-            if self.action_type.name in ["TIAB+", "TIAB-"]:
+
+            if len(as_list) > 0 and self.action_type.name in ["TIAB+", "TIAB-"]:
                 obj_case = self.get_synonym(self.project.verb)[1]
                 if obj_case == "GEN" and (self.action_type.neg or self.action_type.passive or self.action_type.modus == "IMPV"):
                     obj_case = "PAR"
