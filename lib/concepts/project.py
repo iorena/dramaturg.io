@@ -34,6 +34,8 @@ class Project:
         if self.proj_type in ["surprise", "expansion"]:
             return True
         if self in speakers[0].goals and self in speakers[1].goals:
+            for speaker in speakers:
+                speaker.resolve_goal(self)
             return True
         return False
     """

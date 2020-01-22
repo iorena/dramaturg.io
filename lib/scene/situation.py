@@ -98,11 +98,6 @@ class Situation:
             reacter = self.speakers[reacter_i]
             project = speaker.goals[0]
 
-            #resolve goal if both agree
-            #if project.speakers_agree(self.speakers):
-            for speaker in self.speakers:
-                speaker.resolve_goal(project)
-
             mood = speaker.mood
             surprise = False
             if project.get_surprise(reacter):
