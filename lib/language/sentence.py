@@ -183,7 +183,7 @@ class Sentence:
             obj_case = self.verb_realization[1]
         if obj_case == "GEN" and (self.action_type.neg or self.action_type.passive or mood == "IMPV"):
             obj_case = "PAR"
-        if self.obj is not None and obj_case is not "NONE" and self.obj in ["interrogative", "demonstrative"]:
+        if self.obj is not None and obj_case is not "NONE" and self.obj not in ["interrogative", "demonstrative"]:
             if self.speaker.name == obj:
                 obj = create_personal_pronoun_phrase()
                 obj.morphology = {"PERS": "1", "NUM": "SG", "CASE": obj_case}
