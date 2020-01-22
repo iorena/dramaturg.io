@@ -6,7 +6,6 @@ from syntaxmaker.inflector import inflect
 from language.dictionary import verb_dictionary, noun_dictionary, reversed_verb_dictionary, evaluations_dictionary, explicatives_dictionary
 from concepts.character import Character
 from language.embeddings import Embeddings
-
 import random
 
 from numpy import array
@@ -184,7 +183,7 @@ class Sentence:
             obj_case = self.verb_realization[1]
         if obj_case == "GEN" and (self.action_type.neg or self.action_type.passive or mood == "IMPV"):
             obj_case = "PAR"
-        if self.obj is not None and obj_case is not "NONE" and self.obj != "interrogative":
+        if self.obj is not None and obj_case is not "NONE" and self.obj in ["interrogative", "demonstrative"]:
             if self.speaker.name == obj:
                 obj = create_personal_pronoun_phrase()
                 obj.morphology = {"PERS": "1", "NUM": "SG", "CASE": obj_case}
@@ -246,10 +245,12 @@ class Sentence:
         if self.action_type.name == "TIPB":
             if self.obj_type == "owner" and self.verb == "olla" and type(self.project.subj) is Character:
                 as_list.insert(0, "omistaja")
-        #add appropriate interrogative
+        #add appropriate interrogative and demonstrative
         if self.obj == "interrogative":
             as_list.insert(0, self.get_interrogative(obj_case))
             as_list.append("?")
+        if self.obj == "demonstrative":
+            as_list.insert(0, self.get_demonstrative(obj_case))
 
         if self.action_type.pre_add is not None:
             pre_add = random.choices(self.action_type.pre_add)[0]
@@ -327,6 +328,19 @@ class Sentence:
         if self.obj_type in ["appraisal", "weather", "quality"]:
             return "millainen"
         return "mikä"
+
+    def get_demonstrative(self, case):
+        if case == "GEN":
+            return "tämän"
+        elif case == "AKK":
+            return "tämän"
+        elif case == "ILL":
+            return "tähän"
+        elif case == "INE":
+            return "tässä"
+        elif case == "ELA":
+            return "tästä"
+        return "tämä"
 
     def get_explicative(self, mood):
         valence = "pos" if not self.action_type.neg else "neg"

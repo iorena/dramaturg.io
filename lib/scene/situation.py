@@ -103,7 +103,6 @@ class Situation:
             for speaker in self.speakers:
                 speaker.resolve_goal(project)
 
-
             mood = speaker.mood
             surprise = False
             if project.get_surprise(reacter):
@@ -116,7 +115,7 @@ class Situation:
                 #personal = "personal" if project.subj is Character else "impersonal"
                 sequence_type = SEQUENCE_TYPES["surprise"]
                 prev = None if len(self.sequences) is 0 else self.sequences[-1]
-                self.sequences.append(Sequence(speaker_i, surprise_project, sequence_type, False, self.action_types, self.world_state, prev))
+                self.sequences.append(Sequence(reacter_i, surprise_project, sequence_type, False, self.action_types, self.world_state, prev))
 
 
 

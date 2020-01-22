@@ -20,7 +20,7 @@ class Project:
         self.score = score
 
     def __str__(self):
-        return (f"{self.subj} {self.verb} {self.obj}")
+        return (f"{self.subj} {self.verb} {self.obj} {self.proj_type}")
 
     def get_appraisal(self, character):
         if self.obj_type is "owner":
@@ -59,6 +59,8 @@ class Project:
     def get_surprise(self, subject):
         if self.proj_type == "expansion":
             return False
+        for item in subject.memory:
+            print("##", item, ":", self)
         if self in subject.memory:
             return False
         subject.add_memory(self)
