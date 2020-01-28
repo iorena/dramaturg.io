@@ -22,7 +22,9 @@ verb_dictionary = {
     "kuulla": [("kuulla", "PAR")],
     "arvata": [("arvata", "NONE")],
     "puhua": [("puhua", "PAR")],
-    "höpsiä": [("höpsiä", "NONE")]
+    "höpsiä": [("höpsiä", "NONE")],
+    "syntyä": [("syntyä", "NONE")],
+    "nimetä": [("nimetä", "GEN")]
 }
 noun_dictionary = {
     "disappointment": ["surullinen", "pettynyt"],

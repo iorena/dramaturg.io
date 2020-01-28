@@ -81,9 +81,9 @@ class Situation:
         """
         Generates sequences for each project
         """
-        project = Project.get_hello_project(self.speakers)
+        hello_project = Project.get_hello_project(self.speakers)
         #todo: can be surprised by hello?
-        self.sequences.append(self.get_new_sequence(project, 0, False))
+        self.sequences.append(self.get_new_sequence(hello_project, 0, False))
         while len(self.speakers[0].goals) > 0 or len(self.speakers[1].goals) > 0:
             #higher dominance gets to speak
 

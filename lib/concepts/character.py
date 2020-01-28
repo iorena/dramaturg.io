@@ -30,7 +30,7 @@ class Character:
         self.memory = []
         self.world_model = self.init_causal_relations()
         #todo: make this vary by personality
-        self.stress_capacity = 1
+        self.stress_capacity = 2
 
     def __str__(self):
         """
@@ -68,14 +68,19 @@ class Character:
     def set_goal(self, new_goal):
         #todo: arrange by weight?
         for goal in self.goals:
+            print("has goal", self.name, goal)
             #todo: refine checking goal conflict, now only works for inheritance object want goal
             if goal.verb == new_goal.verb and goal.subj != new_goal.subj and goal.obj == new_goal.obj:
                 self.goals.remove(goal)
                 print("removed conflicting goal", goal.subj, goal.verb, goal.obj)
-        self.goals.append(new_goal)
+        if new_goal not in self.goals:
+            self.goals.append(new_goal)
+            print("set new goal", self.name, new_goal.subj, new_goal.verb, new_goal.obj, new_goal.proj_type)
+        else:
+            print("already has goal")
 
     def set_relation(self, other):
-        self.relations[other.name] = Mood(self.random_personality())
+        self.relations[other.name] = Mood({"O": -1, "C": -1, "E": -1, "A": -1, "N": -1}) #self.random_personality())
 
     def init_causal_relations(self):
         """
@@ -88,11 +93,18 @@ class Character:
         return events
 
     def resolve_goal(self, goal):
-        if goal.proj_type not in ["expansion", "surprise"] and goal in self.goals:
+        if goal in self.goals:
+            print("removed goal", self.name, goal)
             self.goals.remove(goal)
+        else:
+            print("trying to remove goal not owned", self.name, goal)
 
     def resolve_stress(self, project):
-        self.set_goal(project)
+        #todo: alternatively change relationship
+        if project in self.goals:
+            self.resolve_goal(project)
+        else:
+            self.set_goal(project)
 
     def add_memory(self, memory):
         self.memory.append(memory)
@@ -106,8 +118,9 @@ class Character:
             self.methods.append(method)
 
     def add_stress(self, project):
-        self.stress += 1
-        print(self.stress)
-        if self.stress > self.stress_capacity:
-            self.resolve_stress(project)
-            self.stress = 0
+        if project.proj_type not in ["expansion", "surprise"]:
+            self.stress += 1
+            print(self.stress)
+            if self.stress > self.stress_capacity:
+                self.resolve_stress(project)
+                self.stress = 0

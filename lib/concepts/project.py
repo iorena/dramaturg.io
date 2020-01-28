@@ -20,7 +20,10 @@ class Project:
         self.score = score
 
     def __str__(self):
-        return (f"{self.subj} {self.verb} {self.obj} {self.proj_type}")
+        return (f"{self.subj} {self.verb} {self.obj} {self.proj_type} {self.time} {self.score}")
+
+    def __eq__(self, other):
+        return self.subj == other.subj and self.verb == other.verb and self.obj == other.obj and self.obj_type == other.obj_type and self.proj_type == other.proj_type
 
     def get_appraisal(self, character):
         if self.obj_type is "owner":
@@ -37,6 +40,7 @@ class Project:
             for speaker in speakers:
                 speaker.resolve_goal(self)
             return True
+        print("disagreement")
         return False
     """
         if self.verb == "olla":
@@ -61,8 +65,6 @@ class Project:
     def get_surprise(self, subject):
         if self.proj_type == "expansion":
             return False
-        for item in subject.memory:
-            print("##", item, ":", self)
         if self in subject.memory:
             return False
         subject.add_memory(self)

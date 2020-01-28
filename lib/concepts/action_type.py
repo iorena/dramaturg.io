@@ -59,4 +59,7 @@ class ActionType:
         if current_mood_diff < mood_diff_after_turn and project.proj_type not in ["expansion", "surprise"]:
             speaker.add_stress(project)
             return True
-        return False
+        if project.proj_type not in ["expansion", "surprise"]:
+            #else listener is affected
+            listener.add_stress(project)
+            return False

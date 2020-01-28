@@ -6,7 +6,7 @@ class Turn:
     """
     Todo: turns can have more than one sentence?
     """
-    def __init__(self, speaker, listeners, action_type, project, reverse):
+    def __init__(self, speaker, listeners, action_type, project, reverse, hesitation):
         self.speaker = speaker
         self.listeners = listeners
         self.action_type = action_type
@@ -14,6 +14,7 @@ class Turn:
         self.project = project
         self.speaker_mood = str(self.speaker.mood)
         self.reversed = reverse
+        self.hesitation = hesitation
         self.inflected = self.inflect()
         self.affect_mood()
 
@@ -22,8 +23,7 @@ class Turn:
         return f"{self.action_type.name}{space} {self.speaker.name}: {self.inflected}  |  Mood: {self.speaker_mood}"
 
     def inflect(self):
-        hesitation = self.action_type.get_hesitation(self.speaker, self.listeners[0], self.project)
-        sentence = Sentence(self.speaker, self.listeners, self.project, self.action_type, self.obj_type, self.reversed, hesitation)
+        sentence = Sentence(self.speaker, self.listeners, self.project, self.action_type, self.obj_type, self.reversed, self.hesitation)
         return sentence.styled
 
     def affect_mood(self):

@@ -61,6 +61,7 @@ class Sequence():
 
 
     def generate_expansion(self, position, parent, switch_speakers=False):
+        return None
         if self.second_pair_part is None:
             #return lisäkysymys: "onko kaikki hyvin", "soitinko huonoon aikaan?"
             return None
@@ -103,7 +104,7 @@ class Sequence():
     def generate_pair_part(self, speaker, action_name, reverse):
         if action_name == "TOI":
             if self.parent is None:
-                print(self.project.subj, self.project.verb, self.project.obj)
+                print("parent is none", self.project.subj, self.project.verb, self.project.obj)
             action_type = self.action_types[self.parent.action_type.name]
         else:
             #print("action name", action_name)
@@ -120,7 +121,10 @@ class Sequence():
         for char in self.speakers:
             if char.name is not speaker.name:
                 listeners.append(char)
-        return Turn(speaker, listeners, action_type, project, reverse)
+        hesitation = False
+        if speaker == self.speakers[self.speaker_i]:
+            hesitation = action_type.get_hesitation(speaker, self.speakers[self.reacter_i], self.project)
+        return Turn(speaker, listeners, action_type, project, reverse, hesitation)
 
     def find_best_action_type(self, speaker, pool):
         other_char = self.world_state.get_opposite(speaker)

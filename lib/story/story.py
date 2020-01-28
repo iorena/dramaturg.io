@@ -64,7 +64,6 @@ class Story:
         main_char = self.world_state.characters[0]
         other_char = self.world_state.characters[1]
         chars = [main_char, other_char]
-        chars_reversed = [other_char, main_char]
 
         #char1 calls char2
         #char1 finds out that relative is dead (before scene)
@@ -84,7 +83,7 @@ class Story:
         main_char.set_goal(inheritance_want_project_main)
         other_char.set_goal(inheritance_want_project_other)
 
-        situations.append(Situation(self.world_state, self.embeddings, chars_reversed, main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, self.embeddings, chars, main_char.attributes["location"]))
 
         return situations
 

@@ -223,7 +223,7 @@ class Sentence:
         if self.action_type.ques:
             turn_vp_into_question(vp)
         if self.verb is not None:
-            print(self.subj, self.verb, self.obj)
+            print("this be the verse", self.subj, self.verb, self.obj, self.project.proj_type)
             as_list = vp.to_string().split()
 
         #add "minulle" in reversed commands
