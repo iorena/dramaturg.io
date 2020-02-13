@@ -96,7 +96,7 @@ class Sequence():
                     else:
                         attribute = random.choices(attributes)[0]
 
-                    new_project = Project(target, "olla", attribute, "expansion", "present", 1)
+                    new_project = Project(target, "olla", attribute, "expansion", "present", 0.2)
 
             expansion = Sequence(speaker_i, new_project, new_seq_type, False, self.action_types, self.world_state, parent)
         return expansion
@@ -132,8 +132,9 @@ class Sequence():
         current_mood = speaker.perception.get_object_by_name(other_char.name).mood
         best = pool[0]
         smallest_mood_diff = 9001.0
+        mood_copy = copy.copy(current_mood)
         for act_type in pool:
-            mood_diff = norm(current_mood.affect_mood(act_type.effect) - target_mood)
+            mood_diff = norm(mood_copy.affect_mood(act_type.effect) - target_mood)
             if mood_diff < smallest_mood_diff:
                 smallest_mood_diff = mood_diff
                 best = act_type

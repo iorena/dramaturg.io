@@ -67,7 +67,7 @@ class Story:
 
         #char1 calls char2
         #char1 finds out that relative is dead (before scene)
-        relative_died_project = Project(self.world_state.dead_relative, "kuolla", (None, None),  "statement", "perf", 5)
+        relative_died_project = Project(self.world_state.dead_relative, "kuolla", (None, None),  "statement", "perf", 1)
         other_char.set_goal(relative_died_project)
 
         situations.append(Situation(self.world_state, self.embeddings, chars, main_char.attributes["location"]))
@@ -77,8 +77,8 @@ class Story:
             char.reset_mood()
 
         #char2 comes to get inheritance
-        inheritance_want_project_main = Project(main_char, "ottaa", ("object", self.world_state.inheritance_object), "proposal", "prees", 5)
-        inheritance_want_project_other = Project(other_char, "ottaa", ("object", self.world_state.inheritance_object), "proposal", "prees", 5)
+        inheritance_want_project_main = Project(main_char, "ottaa", ("object", self.world_state.inheritance_object), "proposal", "prees", 1)
+        inheritance_want_project_other = Project(other_char, "ottaa", ("object", self.world_state.inheritance_object), "proposal", "prees", 1)
 
         main_char.set_goal(inheritance_want_project_main)
         other_char.set_goal(inheritance_want_project_other)

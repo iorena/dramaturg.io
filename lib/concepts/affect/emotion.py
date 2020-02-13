@@ -19,6 +19,12 @@ class Emotion:
     def __str__(self):
         return self.name
 
+    def __mul__(self, other):
+        self.pleasure *= other
+        self.arousal *= other
+        self.dominance *= other
+        return self
+
     def identify_emotion(pleasure, arousal, dominance):
         pleasure = pleasure > 0
         arousal = arousal > 0

@@ -29,7 +29,8 @@ class Turn:
     def affect_mood(self):
         #todo: how do expansions affect mood? does this work as is? add importance coefficient?
         self.listeners[0].mood.affect_mood(self.action_type.effect)
-        #print(self.listeners[0].name, self.listeners[0].mood)
+        if self.project.proj_type in ["statement", "proposal"]:
+            self.listeners[0].mood.affect_mood(self.project.get_emotional_effect(self.listeners[0]))
 
     def to_json(self):
         return {

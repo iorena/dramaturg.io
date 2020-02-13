@@ -28,41 +28,6 @@ class Situation:
         self.sequences = []
         self.create_sequences()
 
-    def affect_emotions(self):
-        """
-        When an event happens to a character, characters react emotionally to it
-        NOT IN USE
-        """
-        for character in self.speakers:
-            relationship = character.relations[self.main_project.subj.name].liking["outgoing"] > 0.5
-            event_appraisal = self.main_project.get_appraisal(character).id > 92
-            if self.main_project.get_appraisal(character).id is 92:
-                #neutral event, nothing happens
-                return
-            is_self = character is self.main_project.subj
-            emotion = EMOTIONS[self.get_emotion(is_self, relationship, event_appraisal)]
-            old_mood = copy.copy(character.mood)
-            character.mood.affect_mood(emotion)
-            new_mood = copy.copy(character.mood)
-            change = None
-            if old_mood.get_character_description("pleasure") != new_mood.get_character_description("pleasure"):
-                if old_mood.pleasure < new_mood.pleasure:
-                    change = "ilahtuu"
-                else:
-                    change = "suuttuu"
-            if old_mood.get_character_description("arousal") != new_mood.get_character_description("arousal"):
-                if old_mood.arousal < new_mood.arousal:
-                    change = "ilahtuu"
-                else:
-                    change = "suuttuu"
-            if old_mood.get_character_description("dominance") != new_mood.get_character_description("dominance"):
-                if old_mood.dominance < new_mood.dominance:
-                    change = "ilahtuu"
-                else:
-                    change = "suuttuu"
-            if change is not None:
-                self.mood_change[character.name] = change
-
     def get_emotion(self, is_self, relationship, event):
         if is_self and event:
             return "joy"
