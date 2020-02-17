@@ -53,13 +53,15 @@ class ActionType:
         """
         Character hesitates if his goals make him use turns that he doesn't want to use (because of relationship)
         """
+        if project.proj_type in ["expansion", "surprise"]:
+            return False
         perceived_mood = speaker.perception.get_object_by_name(listener.name).mood
         current_mood_diff = perceived_mood - speaker.relations[listener.name]
         mood_diff_after_turn = perceived_mood.affect_mood(self.effect) - speaker.relations[listener.name]
-        if current_mood_diff < mood_diff_after_turn and project.proj_type not in ["expansion", "surprise"]:
+        if current_mood_diff < mood_diff_after_turn:
             speaker.add_stress(project)
             return True
-        if project.proj_type not in ["expansion", "surprise"]:
+        else:
             #else listener is affected
             listener.add_stress(project)
             return False

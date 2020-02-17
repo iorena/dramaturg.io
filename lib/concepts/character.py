@@ -124,3 +124,4 @@ class Character:
             if self.stress > self.stress_capacity:
                 self.resolve_stress(project)
                 self.stress = 0
+                return True

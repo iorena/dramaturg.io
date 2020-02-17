@@ -71,7 +71,7 @@ class Sequence():
             speaker_i = self.speaker_i
 
         expansion = None
-        rand = random.uniform(0, 1.4)
+        rand = random.uniform(0, 2)
         mood = self.speakers[speaker_i].mood.arousal
         if rand < mood:
             new_project = self.project.get_expansion_project()

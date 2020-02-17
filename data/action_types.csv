@@ -94,6 +94,6 @@ VYL++-	FALSE	FALSE	subject	project	object	None	INDV	perf	FALSE	valitettavasti en
 VYL+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	niinhän minä sanoin	None
 VYL-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuulit kyllä mitä sanoin	None
 VYL+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	näin se valitettavasti on.	None
-VYL-+-	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	olen pahoillani ,	viime viikolla
+VYL-+-	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	olen pahoillani	viime viikolla
 VYL--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuulit kyllä	None
 VYL---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	niin	None

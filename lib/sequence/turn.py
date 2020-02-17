@@ -20,7 +20,7 @@ class Turn:
 
     def __str__(self):
         space = "" if len(self.action_type.name) == 4 else " "
-        return f"{self.action_type.name}{space} {self.speaker.name}: {self.inflected}  |  Mood: {self.speaker_mood}"
+        return f"{self.action_type.name}{space} {self.speaker.name}: {self.inflected}  |  Mood: {self.speaker_mood} | Hesitation: {self.hesitation}"
 
     def inflect(self):
         sentence = Sentence(self.speaker, self.listeners, self.project, self.action_type, self.obj_type, self.reversed, self.hesitation)
