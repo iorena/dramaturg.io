@@ -4,10 +4,26 @@ from story.story import Story
 from language.embeddings import Embeddings
 
 
-def main(do_story, print_dev_data):
+def main(do_story, print_dev_data, personality):
+    personalities = [None, None]
+    if personality:
+        personality = input("Give 1st personality parameters (O C E A N)").split(" ")
+        if len(personality) != 5:
+            personality1 = None
+            print("invalid option, using random personality")
+        else:
+            personality1 = {"O": float(personality[0]), "C": float(personality[1]), "E": float(personality[2]), "A": float(personality[3]), "N": float(personality[4])}
+        personality = input("Give 2nd personality parameters (O C E A N)").split(" ")
+        if len(personality) != 5:
+            personality2 = None
+            print("invalid option, using random personality")
+        else:
+            personality2 = {"O": float(personality[0]), "C": float(personality[1]), "E": float(personality[2]), "A": float(personality[3]), "N": float(personality[4])}
+        personalities = [personality1, personality2]
+
     if do_story and print_dev_data:
         embeddings = Embeddings()
-        story = Story(embeddings)
+        story = Story(embeddings, personalities)
         print(story)
         for i, situation in enumerate(story.situations):
             print(f"Situation{i}: {situation.location}\n")
@@ -15,7 +31,7 @@ def main(do_story, print_dev_data):
                 print(f"Sequence{j}\n{sequence}\n\n")
     elif do_story:
         embeddings = Embeddings()
-        story = Story(embeddings)
+        story = Story(embeddings, personalities)
         for char in story.world_state.characters:
             keywords = ', '.join(list(filter(lambda x: x is not None, [char.mood.get_character_description('pleasure'), char.mood.get_character_description('arousal'), char.mood.get_character_description('dominance')])))
             print(f"{char.name}: {keywords}")
@@ -65,6 +81,7 @@ def parse_arguments():
     parser.add_argument("someargument", nargs="?", default=None)
     parser.add_argument("-s", "--story", help="Create a story!", action='store_true')
     parser.add_argument("-d", "--development", help="Show action type names and mood", action='store_true')
+    parser.add_argument("-p", "--personality", help="Set personality parameters", action='store_true')
 
     return parser.parse_args()
 
@@ -72,4 +89,4 @@ def parse_arguments():
 if __name__ == "__main__":
     args = parse_arguments()
     print(args)
-    main(args.story, args.development)
+    main(args.story, args.development, args.personality)

@@ -14,11 +14,11 @@ import json
 
 
 class Story:
-    def __init__(self, embeddings):
+    def __init__(self, embeddings, personalities):
         self.embeddings = embeddings
-        self.world_state = WorldState(self.embeddings)
+        self.world_state = WorldState(self.embeddings, personalities)
         for char in self.world_state.characters:
-            char.set_random_perceptions(WorldState(None, self.world_state))
+            char.set_random_perceptions(WorldState(None, None, self.world_state))
         self.action_types = load_action_types()
         self.grammar = CFG.fromstring(grammar)
         self.situations = self.create_situations()

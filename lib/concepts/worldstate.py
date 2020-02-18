@@ -12,9 +12,9 @@ WEATHER_TYPES = ["sunny", "cloudy", "rainy", "stormy"]
 
 
 class WorldState:
-    def __init__(self, embeddings, old=None):
+    def __init__(self, embeddings, personalities, old=None):
         if old is None:
-            self.initialize_story_world(embeddings)
+            self.initialize_story_world(embeddings, personalities)
         else:
             self.embeddings = embeddings
             self.appraisals = old.appraisals
@@ -24,12 +24,12 @@ class WorldState:
             self.weather = old.weather
             self.weather_types = old.weather_types
 
-    def initialize_story_world(self, embeddings):
+    def initialize_story_world(self, embeddings, personalities):
         self.embeddings = embeddings
         self.appraisals = [WorldObject("horrible", 90), WorldObject("bad", 91), WorldObject("okay", 92), WorldObject("good", 93), WorldObject("great", 94)]
         self.weather_types = [WorldObject("sunny", 95), WorldObject("cloudy", 96), WorldObject("rainy", 97), WorldObject("stormy", 98)]
         self.locations = [Location(), Location()]
-        self.characters = [Character(self.locations[0]), Character(self.locations[1]), Character(self.locations[0], self.embeddings.get_relative())]
+        self.characters = [Character(self.locations[0], personalities[0]), Character(self.locations[1], personalities[1]), Character(self.locations[0], None, self.embeddings.get_relative())]
         self.objects = [WorldObject(self.embeddings.get_inheritance_object())]
         self.inheritance_object = self.objects[0]
         self.dead_relative = self.characters[2]
@@ -38,8 +38,6 @@ class WorldState:
             obj.set_owner(owner)
             obj.set_location(owner.attributes["location"])
         self.weather = WorldObject("sää", 95)
-        #todo: are we using this?
-        #self.influence_methods = [Method("pyytäminen", 1), Method("neuvottelu", 2), Method("lahjonta", 5), Method("uhkailu", 8)]
         #set relationships
         for char in self.characters:
             for other in self.characters:

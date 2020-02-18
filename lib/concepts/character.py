@@ -12,7 +12,7 @@ class Character:
     id_counter = 0
     names = ["Pekka", "Ville", "Kalle", "Maija"]
 
-    def __init__(self, location, name=None):
+    def __init__(self, location, personality=None, name=None):
         self.id = Character.id_counter
         Character.id_counter += 1
         self.attributes = {"location": location, "vitality": alive}
@@ -25,7 +25,11 @@ class Character:
         self.perception = None
         self.relations = {}
         self.style = Style(random.random(), random.random(), random.random())
-        self.personality = self.random_personality()
+        if personality is None:
+            self.personality = self.random_personality()
+        else:
+            print(personality)
+            self.personality = personality
         self.mood = Mood(self.personality)
         self.memory = []
         self.world_model = self.init_causal_relations()
