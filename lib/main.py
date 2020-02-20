@@ -4,7 +4,7 @@ from story.story import Story
 from language.embeddings import Embeddings
 
 
-def main(do_story, print_dev_data, personality):
+def main(do_story, print_dev_data, personality, latex):
     personalities = [None, None]
     if personality:
         personality = input("Give 1st personality parameters (O C E A N)").split(" ")
@@ -29,6 +29,14 @@ def main(do_story, print_dev_data, personality):
             print(f"Situation{i}: {situation.location}\n")
             for j, sequence in enumerate(situation.sequences):
                 print(f"Sequence{j}\n{sequence}\n\n")
+    elif do_story and latex:
+        embeddings = Embeddings()
+        story = Story(embeddings, personalities)
+        for i, situation in enumerate(story.situations):
+            print(f" & Scene {i + 1} & \n")
+            for j, sequence in enumerate(situation.sequences):
+                print(f"{sequence.get_latex()}\n")
+
     elif do_story:
         embeddings = Embeddings()
         story = Story(embeddings, personalities)
@@ -82,6 +90,7 @@ def parse_arguments():
     parser.add_argument("-s", "--story", help="Create a story!", action='store_true')
     parser.add_argument("-d", "--development", help="Show action type names and mood", action='store_true')
     parser.add_argument("-p", "--personality", help="Set personality parameters", action='store_true')
+    parser.add_argument("-l", "--latex", help="Set personality parameters", action='store_true')
 
     return parser.parse_args()
 
@@ -89,4 +98,4 @@ def parse_arguments():
 if __name__ == "__main__":
     args = parse_arguments()
     print(args)
-    main(args.story, args.development, args.personality)
+    main(args.story, args.development, args.personality, args.latex)

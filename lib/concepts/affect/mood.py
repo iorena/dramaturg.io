@@ -9,7 +9,7 @@ class Mood:
         self.dominance = self.default_dominance
 
     def __str__(self):
-        return f"{self.pleasure:.2f}P {self.arousal:.2f}A {self.dominance:.2f}D {self.get_octant_name()}"
+        return f"{self.pleasure:.2f}P {self.arousal:.2f}A {self.dominance:.2f}D"
 
     def __sub__(self, other):
         return (abs(self.pleasure - other.pleasure), abs(self.arousal - other.arousal), abs(self.dominance - other.dominance))

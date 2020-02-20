@@ -22,6 +22,9 @@ class Turn:
         space = "" if len(self.action_type.name) == 4 else " "
         return f"{self.action_type.name}{space} {self.speaker.name}: {self.inflected}  |  Mood: {self.speaker_mood} | Hesitation: {self.hesitation}"
 
+    def get_latex(self):
+        return f"{self.speaker.mood} & {self.speaker.name} & {self.inflected} \\\\"
+
     def inflect(self):
         sentence = Sentence(self.speaker, self.listeners, self.project, self.action_type, self.obj_type, self.reversed, self.hesitation)
         return sentence.styled

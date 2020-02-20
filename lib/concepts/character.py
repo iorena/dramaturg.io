@@ -28,7 +28,6 @@ class Character:
         if personality is None:
             self.personality = self.random_personality()
         else:
-            print(personality)
             self.personality = personality
         self.mood = Mood(self.personality)
         self.memory = []

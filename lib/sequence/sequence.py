@@ -97,7 +97,6 @@ class Sequence():
                         attribute = random.choices(attributes)[0]
 
                     new_project = Project(target, "olla", attribute, "expansion", "present", 0.2)
-
             expansion = Sequence(speaker_i, new_project, new_seq_type, False, self.action_types, self.world_state, parent)
         return expansion
 
@@ -142,6 +141,20 @@ class Sequence():
 
     def print_sequence(self):
         print(self)
+
+    def get_latex(self):
+        ret = []
+        if self.pre_expansion is not None:
+            ret.append(str(self.pre_expansion))
+        ret.append(self.first_pair_part.get_latex())
+        if self.infix_expansion is not None:
+            ret.append(str(self.infix_expansion))
+        if self.second_pair_part:
+            ret.append(self.second_pair_part.get_latex())
+        if self.post_expansion is not None:
+            ret.append(str(self.post_expansion))
+        return "\n".join(ret)
+
 
     def __str__(self):
         ret = []
