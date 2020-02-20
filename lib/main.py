@@ -33,7 +33,7 @@ def main(do_story, print_dev_data, personality, latex):
         embeddings = Embeddings()
         story = Story(embeddings, personalities)
         for i, situation in enumerate(story.situations):
-            print(f" & Scene {i + 1} & \n")
+            print(f" Scene {i + 1} & & \\\\\n")
             for j, sequence in enumerate(situation.sequences):
                 print(f"{sequence.get_latex()}\n")
 

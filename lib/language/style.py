@@ -43,11 +43,11 @@ class Style:
         edited_sentence = [self.hesitation_particle]
         prev_dropped = False
         for word in sentence.split(" "):
-            if random.random() > 0.1 and len(word) > 0:
+            if random.random() < 0.2 and len(word) > 0:
                 edited_sentence.append(word[0] + "-" + word)
             else:
                 edited_sentence.append(word)
 
-            if random.random() > 0.2:
+            if random.random() < 0.3:
                 edited_sentence.append("...")
         return " ".join(edited_sentence)

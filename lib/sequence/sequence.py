@@ -154,7 +154,7 @@ class Sequence():
             ret.append(str(self.pre_expansion))
         ret.append(self.first_pair_part.get_latex())
         if self.infix_expansion is not None:
-            ret.append(str(self.infix_expansion))
+            ret.append(self.infix_expansion.get_latex())
         if self.second_pair_part:
             ret.append(self.second_pair_part.get_latex())
         if self.post_expansion is not None:
