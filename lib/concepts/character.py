@@ -73,7 +73,7 @@ class Character:
         for goal in self.goals:
             print("has goal", self.name, goal)
             #todo: refine checking goal conflict, now only works for inheritance object want goal
-            if goal.verb == new_goal.verb and goal.subj != new_goal.subj and goal.obj == new_goal.obj:
+            if goal.is_in_conflict_with(new_goal):
                 self.goals.remove(goal)
                 print("removed conflicting goal", goal.subj, goal.verb, goal.obj)
         if new_goal not in self.goals:
@@ -100,14 +100,14 @@ class Character:
             print("removed goal", self.name, goal)
             self.goals.remove(goal)
         else:
-            print("trying to remove goal not owned", self.name, goal)
+            for old_goal in self.goals:
+                if goal.is_in_conflict_with(old_goal):
+                    self.goals.remove(old_goal)
+                    return
 
     def resolve_stress(self, project):
         #todo: alternatively change relationship
-        if project in self.goals:
-            self.resolve_goal(project)
-        else:
-            self.set_goal(project)
+        self.resolve_goal(project)
 
     def add_memory(self, memory):
         self.memory.append(memory)

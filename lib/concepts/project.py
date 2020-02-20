@@ -62,15 +62,27 @@ class Project:
         print("weighted", weighted_emotion)
         return weighted_emotion
 
+    def is_in_conflict_with(self, other):
+        if self.verb == other.verb and self.subj != other.subj and self.obj == other.obj:
+            return True
+        return False
+
     def speakers_agree(self, speakers):
         if self.proj_type in ["surprise", "expansion"]:
             return True
-        if self in speakers[0].goals and self in speakers[1].goals:
-            for speaker in speakers:
-                speaker.resolve_goal(self)
-            return True
-        print("disagreement")
-        return False
+
+        agreement = True
+
+        for goal in speakers[0].goals:
+            if self.is_in_conflict_with(goal):
+                print("disagreement")
+                agreement = False
+        for goal in speakers[1].goals:
+            if self.is_in_conflict_with(goal):
+                print("disagreement")
+                agreement = False
+
+        return agreement
     """
         if self.verb == "olla":
             first_perception = speakers[0].perception.get_object(self.subj)

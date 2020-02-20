@@ -26,8 +26,9 @@ class Sequence():
         self.world_state = world_state
         agreement = self.project.speakers_agree(self.speakers)
         self.pair_types = POS_SEQUENCES if agreement else NEG_SEQUENCES
+        self.surprise = False
         if surprise:
-            self.pair_types = PASS_SEQUENCES
+            self.surprise = True
         reverse = False
         if seq_type in ["SKÄS"] and self.speakers[speaker_i].name == self.project.subj.name and project.verb != "olla":
             reverse = True
@@ -37,11 +38,7 @@ class Sequence():
         #also do this before second pair part is even determined?
         action_names = random.choice(self.pair_types[self.seq_type])
         self.first_pair_part = self.generate_pair_part(self.speakers[speaker_i], action_names[0], reverse)
-        if self.seq_type is not "STER" and surprise and not agreement:
-            #todo: empty second pair part should affect speaker: annoyance etc
-            self.second_pair_part = None
-        else:
-            self.second_pair_part = self.generate_pair_part(self.speakers[self.reacter_i], action_names[1], reverse)
+        self.second_pair_part = self.generate_pair_part(self.speakers[self.reacter_i], action_names[1], reverse)
         self.pre_expansion = self.generate_expansion("pre_expansions", None)
         self.infix_expansion = self.generate_expansion("infix_expansions", self.first_pair_part, True)
         self.post_expansion = self.generate_expansion("post_expansions", self.second_pair_part)
@@ -59,12 +56,21 @@ class Sequence():
             for turn in self.post_expansion.turns:
                 self.turns.append(turn)
 
+        if agreement and self.project.proj_type in ["proposal", "statement"]:
+            self.speakers[self.speaker_i].resolve_goal(self.project)
+
 
     def generate_expansion(self, position, parent, switch_speakers=False):
+        if position == "infix_expansions" and self.surprise:
+            surprise_project = self.project.get_surprise_project()
+            #todo: weight sequence type by mood?
+            #personal = "personal" if project.subj is Character else "impersonal"
+            sequence_type = "SYLL"
+            prev = self.parent
+            return Sequence(self.reacter_i, surprise_project, sequence_type, False, self.action_types, self.world_state, prev)
+
         return None
-        if self.second_pair_part is None:
-            #return lisäkysymys: "onko kaikki hyvin", "soitinko huonoon aikaan?"
-            return None
+
         if switch_speakers:
             speaker_i = 0 if self.speaker_i == 1 else 1
         else:

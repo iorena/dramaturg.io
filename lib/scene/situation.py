@@ -28,6 +28,7 @@ class Situation:
         self.sequences = []
         self.create_sequences()
 
+
     def get_emotion(self, is_self, relationship, event):
         if is_self and event:
             return "joy"
@@ -68,16 +69,6 @@ class Situation:
             if project.get_surprise(reacter):
                 surprise = True
             self.sequences.append(self.get_new_sequence(project, speaker_i, surprise))
-
-            if surprise:
-                surprise_project = project.get_surprise_project()
-                #todo: weight sequence type by mood?
-                #personal = "personal" if project.subj is Character else "impersonal"
-                sequence_type = SEQUENCE_TYPES["surprise"]
-                prev = None if len(self.sequences) is 0 else self.sequences[-1]
-                self.sequences.append(Sequence(reacter_i, surprise_project, sequence_type, False, self.action_types, self.world_state, prev))
-
-
 
     def get_new_sequence(self, project, speaker_i, surprise):
         #todo: expansions
