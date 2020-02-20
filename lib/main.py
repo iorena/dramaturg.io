@@ -2,6 +2,8 @@ import argparse
 
 from story.story import Story
 from language.embeddings import Embeddings
+from concepts.affect.mood import Mood
+from concepts.affect.emotion import Emotion
 
 
 def main(do_story, print_dev_data, personality, latex):
@@ -21,9 +23,24 @@ def main(do_story, print_dev_data, personality, latex):
             personality2 = {"O": float(personality[0]), "C": float(personality[1]), "E": float(personality[2]), "A": float(personality[3]), "N": float(personality[4])}
         personalities = [personality1, personality2]
 
+        relationship = input("Give relationship a->b parameters (P A D)").split(" ")
+        if len(relationship) != 3:
+            relationship1 = None
+            print("invalid option, using random relationship")
+        else:
+            relationship1 = Mood(Emotion(None, float(relationship[0]), float(relationship[1]), float(relationship[2])))
+        relationship = input("Give relationship b->a parameters (P A D)").split(" ")
+        if len(relationship) != 3:
+            relationship2 = None
+            print("invalid option, using random relationship")
+        else:
+            relationship2 = Mood(Emotion(None, float(relationship[0]), float(relationship[1]), float(relationship[2])))
+
+        relationships = [relationship1, relationship2]
+
     if do_story and print_dev_data:
         embeddings = Embeddings()
-        story = Story(embeddings, personalities)
+        story = Story(embeddings, personalities, relationships)
         print(story)
         for i, situation in enumerate(story.situations):
             print(f"Situation{i}: {situation.location}\n")
@@ -31,7 +48,7 @@ def main(do_story, print_dev_data, personality, latex):
                 print(f"Sequence{j}\n{sequence}\n\n")
     elif do_story and latex:
         embeddings = Embeddings()
-        story = Story(embeddings, personalities)
+        story = Story(embeddings, personalities, relationships)
         for i, situation in enumerate(story.situations):
             print(f" Scene {i + 1} & & \\\\\n")
             for j, sequence in enumerate(situation.sequences):
@@ -39,7 +56,7 @@ def main(do_story, print_dev_data, personality, latex):
 
     elif do_story:
         embeddings = Embeddings()
-        story = Story(embeddings, personalities)
+        story = Story(embeddings, personalities, relationships)
         for char in story.world_state.characters:
             keywords = ', '.join(list(filter(lambda x: x is not None, [char.mood.get_character_description('pleasure'), char.mood.get_character_description('arousal'), char.mood.get_character_description('dominance')])))
             print(f"{char.name}: {keywords}")

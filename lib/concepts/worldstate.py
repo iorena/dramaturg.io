@@ -12,9 +12,9 @@ WEATHER_TYPES = ["sunny", "cloudy", "rainy", "stormy"]
 
 
 class WorldState:
-    def __init__(self, embeddings, personalities, old=None):
+    def __init__(self, embeddings, personalities, relationships, old=None):
         if old is None:
-            self.initialize_story_world(embeddings, personalities)
+            self.initialize_story_world(embeddings, personalities, relationships)
         else:
             self.embeddings = embeddings
             self.appraisals = old.appraisals
@@ -24,7 +24,7 @@ class WorldState:
             self.weather = old.weather
             self.weather_types = old.weather_types
 
-    def initialize_story_world(self, embeddings, personalities):
+    def initialize_story_world(self, embeddings, personalities, relationships):
         self.embeddings = embeddings
         self.appraisals = [WorldObject("horrible", 90), WorldObject("bad", 91), WorldObject("okay", 92), WorldObject("good", 93), WorldObject("great", 94)]
         self.weather_types = [WorldObject("sunny", 95), WorldObject("cloudy", 96), WorldObject("rainy", 97), WorldObject("stormy", 98)]
@@ -40,11 +40,15 @@ class WorldState:
         self.weather = WorldObject("sää", 95)
         #set relationships
         for char in self.characters:
-            for other in self.characters:
-                if char is other:
-                    pass
-                else:
-                    char.set_relation(other)
+            if char is self.characters[0]:
+                pass
+            else:
+                self.characters[0].set_relation(char, relationships[0])
+        for char in self.characters:
+            if char is self.characters[1]:
+                pass
+            else:
+                self.characters[1].set_relation(char, relationships[1])
 
     def __str__(self):
         return f"Locations: {', '.join(map(str, self.locations))}\nCharacters: {', '.join(map(str, self.characters))}"

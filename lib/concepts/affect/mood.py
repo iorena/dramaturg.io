@@ -3,7 +3,12 @@ from numpy import array
 
 class Mood:
     def __init__(self, personality):
-        self.default_pleasure, self.default_arousal, self.default_dominance = self.default_mood(personality)
+        if type(personality) is dict:
+            self.default_pleasure, self.default_arousal, self.default_dominance = self.default_mood(personality)
+        else:
+            self.default_pleasure = personality.pleasure
+            self.default_arousal = personality.arousal
+            self.default_dominance = personality.dominance
         self.pleasure = self.default_pleasure
         self.arousal = self.default_arousal
         self.dominance = self.default_dominance

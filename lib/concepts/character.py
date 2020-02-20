@@ -31,7 +31,6 @@ class Character:
             self.personality = personality
         self.mood = Mood(self.personality)
         self.memory = []
-        self.world_model = self.init_causal_relations()
         #todo: make this vary by personality
         self.stress_capacity = 2
 
@@ -82,18 +81,11 @@ class Character:
         else:
             print("already has goal")
 
-    def set_relation(self, other):
-        self.relations[other.name] = Mood({"O": -1, "C": -1, "E": -1, "A": -1, "N": -1}) #self.random_personality())
-
-    def init_causal_relations(self):
-        """
-        Causal requirements for events. Determines whether a character is surprised by an event
-        NOT IN USE, replaced by get_surprise_project
-        """
-        events = {
-            "kuolla": [Project("someone", "tappaa", "self", None, None, 1)]
-            }
-        return events
+    def set_relation(self, other, relation):
+        if relation is None:
+            self.relations[other.name] = Mood(self.random_personality())
+        else:
+            self.relations[other.name] = relation
 
     def resolve_goal(self, goal):
         if goal in self.goals:

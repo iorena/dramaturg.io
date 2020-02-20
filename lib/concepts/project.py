@@ -112,24 +112,6 @@ class Project:
             subject.add_memory(self)
         return True
 
-    """
-    this stuff should be used for generating surprise projects, no?
-        if not self.verb in subject.world_model:
-            return True
-        causes = subject.world_model[self.verb]
-        for cause in causes:
-            for event in subject.memory:
-                surprise = False
-                if self.verb != event.verb:
-                    surprise = True
-                if self.subj == "self" and event.subj != subject:
-                    surprise = True
-                #todo: more conditional clauses?
-                if not surprise:
-                    return False
-        return True
-    """
-
     def get_surprise_project(self):
         #todo: happy surprise or sad surprise?
         if self.verb == "kuolla":

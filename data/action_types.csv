@@ -17,7 +17,7 @@ TTS+--	TRUE	FALSE	subject	project	object	None	COND	prees	FALSE	None	None
 TTS-+-	FALSE	FALSE	subject	project	object	haluta	INDV	prees	FALSE	älä vain sano että	None
 TTS--+	TRUE	FALSE	subject	project	None	None	INDV	prees	FALSE	None	None
 TTS---	FALSE	FALSE	None	None	object	None	INDV	prees	FALSE	Ei ! Ei	None
-TOP+++	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	nyt on niin, nyt on sillä tavalla	None
+TOP+++	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	nyt on niin että, nyt on sillä tavalla että	None
 TOP++-	FALSE	FALSE	subject	project	object	None	COND	prees	FALSE	jos et pane pahaksesi, jos sopii	None
 TOP+-+	FALSE	TRUE	subject	project	object	voida, haluta	COND	prees	FALSE	None	None
 TOP-++	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None,ja sinulla ei ole siihen mitään sanomista
