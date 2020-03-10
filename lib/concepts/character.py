@@ -31,8 +31,11 @@ class Character:
             self.personality = personality
         self.mood = Mood(self.personality)
         self.memory = []
-        #todo: make this vary by personality
         self.stress_capacity = 2
+        if self.personality["N"] < -0.5:
+            self.stress_capacity = 1
+        elif self.personality["N"] > 0.5:
+            self.stress_capacity = 3
 
     def __str__(self):
         """
@@ -114,6 +117,7 @@ class Character:
 
     def add_stress(self, project):
         if project.proj_type not in ["expansion", "surprise"]:
+            print(project.proj_type)
             self.stress += 1
             print(self.stress)
             if self.stress > self.stress_capacity:

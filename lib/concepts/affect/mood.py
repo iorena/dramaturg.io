@@ -101,6 +101,9 @@ class Mood:
 
         return True
 
+    def get_magnitude(self):
+        return self.pleasure#+ self.arousal + self.dominance
+
     def get_default_pleasure(personality):
         return 0.21 * personality["E"] + 0.59 * personality["A"] + 0.19 * personality["N"]
 
@@ -109,5 +112,3 @@ class Mood:
 
     def get_default_dominance(personality):
         return 0.25 * personality["O"] + 0.17 * personality["C"] + 0.6 * personality["E"] - 0.32 * personality["A"]
-
-

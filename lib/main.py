@@ -4,23 +4,31 @@ from story.story import Story
 from language.embeddings import Embeddings
 from concepts.affect.mood import Mood
 from concepts.affect.emotion import Emotion
+from graph import draw_graph
 
 
-def main(do_story, print_dev_data, personality, latex):
+def main(print_dev_data, personality, latex, graph):
     personalities = [None, None]
+    relationships = [None, None]
     if personality:
-        personality = input("Give 1st personality parameters (O C E A N)").split(" ")
-        if len(personality) != 5:
-            personality1 = None
-            print("invalid option, using random personality")
-        else:
-            personality1 = {"O": float(personality[0]), "C": float(personality[1]), "E": float(personality[2]), "A": float(personality[3]), "N": float(personality[4])}
-        personality = input("Give 2nd personality parameters (O C E A N)").split(" ")
-        if len(personality) != 5:
-            personality2 = None
-            print("invalid option, using random personality")
-        else:
-            personality2 = {"O": float(personality[0]), "C": float(personality[1]), "E": float(personality[2]), "A": float(personality[3]), "N": float(personality[4])}
+        ready = False
+        while not ready:
+            personality = input("Give 1st personality parameters (O C E A N)").split(" ")
+            if len(personality) != 5:
+                personality1 = None
+                print("invalid option, using random personality")
+            else:
+                personality1 = {"O": float(personality[0]), "C": float(personality[1]), "E": float(personality[2]), "A": float(personality[3]), "N": float(personality[4])}
+            personality = input("Give 2nd personality parameters (O C E A N)").split(" ")
+            if len(personality) != 5:
+                personality2 = None
+                print("invalid option, using random personality")
+            else:
+                personality2 = {"O": float(personality[0]), "C": float(personality[1]), "E": float(personality[2]), "A": float(personality[3]), "N": float(personality[4])}
+            is_ready = input(f"default moods are {Mood(personality1)} and {Mood(personality2)}, is this ok? (y/n)")
+            if is_ready != "n":
+                ready = True
+
         personalities = [personality1, personality2]
 
         relationship = input("Give relationship a->b parameters (P A D)").split(" ")
@@ -38,7 +46,14 @@ def main(do_story, print_dev_data, personality, latex):
 
         relationships = [relationship1, relationship2]
 
-    if do_story and print_dev_data:
+    if graph:
+        embeddings = Embeddings()
+        story = Story(embeddings, personalities, relationships)
+
+        draw_graph(story)
+
+
+    elif print_dev_data:
         embeddings = Embeddings()
         story = Story(embeddings, personalities, relationships)
         print(story)
@@ -46,15 +61,14 @@ def main(do_story, print_dev_data, personality, latex):
             print(f"Situation{i}: {situation.location}\n")
             for j, sequence in enumerate(situation.sequences):
                 print(f"Sequence{j}\n{sequence}\n\n")
-    elif do_story and latex:
+    elif latex:
         embeddings = Embeddings()
         story = Story(embeddings, personalities, relationships)
         for i, situation in enumerate(story.situations):
             print(f" Scene {i + 1} & & \\\\\n")
             for j, sequence in enumerate(situation.sequences):
                 print(f"{sequence.get_latex()}\n")
-
-    elif do_story:
+    else:
         embeddings = Embeddings()
         story = Story(embeddings, personalities, relationships)
         for char in story.world_state.characters:
@@ -97,17 +111,17 @@ def main(do_story, print_dev_data, personality, latex):
                     line = line[0:-2] + line[-1]
                 line += ". " if line[-1] != "?" else " "
                 print(f"\t{turn.speaker.name}\n{line}")
-    else:
-        print("Did nothing!")
+
+
 
 
 def parse_arguments():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("someargument", nargs="?", default=None)
-    parser.add_argument("-s", "--story", help="Create a story!", action='store_true')
     parser.add_argument("-d", "--development", help="Show action type names and mood", action='store_true')
     parser.add_argument("-p", "--personality", help="Set personality parameters", action='store_true')
     parser.add_argument("-l", "--latex", help="Set personality parameters", action='store_true')
+    parser.add_argument("-g", "--graph", help="Draw graph", action='store_true')
 
     return parser.parse_args()
 
@@ -115,4 +129,4 @@ def parse_arguments():
 if __name__ == "__main__":
     args = parse_arguments()
     print(args)
-    main(args.story, args.development, args.personality, args.latex)
+    main(args.development, args.personality, args.latex, args.graph)

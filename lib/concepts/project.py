@@ -45,16 +45,21 @@ class Project:
                     emotion = Emotion(None, 0.4, 0.2, 0.1) #joy
                 else:
                     emotion = Emotion(None, 0.3, -0.2, 0.4) #satisfaction
-            else:
+            elif self.get_appraisal(character).id < 92:
                 if self.get_surprise(character, True):
                     emotion = Emotion(None, -0.4, -0.2, -0.5) #distress
                 else:
                     emotion = Emotion(None, -0.5, -0.3, -0.7) #fears-confirmed
+            else:
+                emotion = Emotion(None, 0, 0, 0) #neutral
+
         elif self.proj_type == "proposal":
             if self.get_appraisal(character).id > 92:
                 emotion = Emotion(None, 0.4, 0.2, -0.3) #gratitude
-            else:
+            elif self.get_appraisal(character).id < 92:
                 emotion = Emotion(None, -0.51, 0.59, 0.25) #anger
+            else:
+                emotion = Emotion(None, 0, 0, 0) #neutral
         else:
             print("emotional evaluation shouldn't be done on", self.proj_type)
 
@@ -154,5 +159,5 @@ class Project:
             return Project(speakers[0], "tehdä", ("location", speakers[0].attributes["location"]), "statement", "present", 0.2)
         #different place -> phone call
         else:
-            return Project(speakers[0], "soittaa", ("character", speakers[1]),  "statement", "past", 0.4)
+            return Project(speakers[0], "soittaa", ("character", speakers[1]),  "statement", "past", 0.2)
 

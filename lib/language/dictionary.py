@@ -24,8 +24,15 @@ verb_dictionary = {
     "puhua": [("puhua", "PAR")],
     "höpsiä": [("höpsiä", "NONE")],
     "syntyä": [("syntyä", "NONE")],
-    "nimetä": [("nimetä", "GEN")]
+    "nimetä": [("nimetä", "GEN")],
+    "kadottaa": [("kadottaa", "GEN")],
+    "etsiä": [("etsiä", "GEN")],
+    "rikkoa": [("rikkoa", "GEN")],
+    "siivota": [("siivota", "GEN")],
+    "myydä": [("myydä", "GEN")],
+    "tehdä": [("tehdä", "NONE")]
 }
+
 noun_dictionary = {
     "disappointment": ["surullinen", "pettynyt"],
     "gratification": ["tyytyväinen"],

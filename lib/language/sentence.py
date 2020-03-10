@@ -27,7 +27,10 @@ class Sentence:
         elif action_type.subj == "subject":
             self.subj = project.subj.name
         elif action_type.subj == "object":
-            self.subj = project.obj.name
+            if project.obj is not None:
+                self.subj = project.obj.name
+            else:
+                self.subj = Sentence.embeddings.get_noun_from_verb(project.verb)
         elif action_type.subj == "Listener":
             self.subj = listeners[0].name
         elif action_type.subj == "Speaker":
@@ -152,6 +155,8 @@ class Sentence:
         #check person
         if self.speaker.name == self.subj:
             person = "1"
+            #cannot command self
+            mood = "INDV"
             vp.components["subject"] = create_personal_pronoun_phrase()
         elif self.subj in [listener.name for listener in self.listeners]:
             person = "2"

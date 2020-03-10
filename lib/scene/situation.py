@@ -53,7 +53,7 @@ class Situation:
         while len(self.speakers[0].goals) > 0 or len(self.speakers[1].goals) > 0:
             #higher dominance gets to speak
 
-            if len(self.speakers[0].goals) == 0 or (len(self.speakers[1].goals) > 0 and self.speakers[0].mood.dominance + random.uniform(0, 0.5) < self.speakers[1].mood.dominance):
+            if len(self.speakers[0].goals) == 0 or (len(self.speakers[1].goals) > 0 and self.speakers[0].mood.dominance < self.speakers[1].mood.dominance):
                 speaker_i = 1
                 reacter_i = 0
             else:
