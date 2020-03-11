@@ -31,23 +31,31 @@ class Mood:
 
     #todo: add personality effect on how emotions affect mood
     def affect_mood(self, emotion):
-        #print("affecting with", emotion.dominance)
+        old_pleasure = self.pleasure
+        old_arousal = self.arousal
+        old_dominance = self.dominance
+
         self.pleasure = self.pleasure + emotion.pleasure
         if self.pleasure > 1:
             self.pleasure = 1
         if self.pleasure < -1:
             self.pleasure = -1
+        pleasure_change = abs(old_pleasure - self.pleasure)
         self.arousal = self.arousal + emotion.arousal
         if self.arousal > 1:
             self.arousal = 1
         if self.arousal < -1:
             self.arousal = -1
+        arousal_change = abs(old_arousal - self.arousal)
         self.dominance = self.dominance + emotion.dominance
         if self.dominance > 1:
             self.dominance = 1
         if self.dominance < -1:
             self.dominance = -1
-        return self
+        dominance_change = abs(old_dominance - self.dominance)
+        total_change = pleasure_change + arousal_change + dominance_change
+
+        return self, total_change
 
     def get_octant_name(self):
         if self.pleasure > 0:
@@ -100,9 +108,6 @@ class Mood:
             return False
 
         return True
-
-    def get_magnitude(self):
-        return self.pleasure#+ self.arousal + self.dominance
 
     def get_default_pleasure(personality):
         return 0.21 * personality["E"] + 0.59 * personality["A"] + 0.19 * personality["N"]

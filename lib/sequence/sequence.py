@@ -139,7 +139,7 @@ class Sequence():
         smallest_mood_diff = 9001.0
         mood_copy = copy.copy(current_mood)
         for act_type in pool:
-            mood_diff = norm(mood_copy.affect_mood(act_type.effect) - target_mood)
+            mood_diff = norm(mood_copy.affect_mood(act_type.effect)[0] - target_mood)
             if mood_diff < smallest_mood_diff:
                 smallest_mood_diff = mood_diff
                 best = act_type

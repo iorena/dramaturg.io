@@ -15,6 +15,7 @@ class Turn:
         self.project = project
         self.speaker_mood = copy.copy(self.speaker.mood)
         self.listener_mood = copy.copy(self.listeners[0].mood)
+        self.change = 0
         self.reversed = reverse
         self.hesitation = hesitation
         self.inflected = self.inflect()
@@ -33,9 +34,9 @@ class Turn:
 
     def affect_mood(self):
         #todo: how do expansions affect mood? does this work as is? add importance coefficient?
-        self.listeners[0].mood.affect_mood(self.action_type.effect)
+        self.change = self.listeners[0].mood.affect_mood(self.action_type.effect)[1]
         if self.project.proj_type in ["statement", "proposal"]:
-            self.listeners[0].mood.affect_mood(self.project.get_emotional_effect(self.listeners[0]))
+            self.change += self.listeners[0].mood.affect_mood(self.project.get_emotional_effect(self.listeners[0]))[1]
 
     def to_json(self):
         return {

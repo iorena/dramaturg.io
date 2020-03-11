@@ -7,7 +7,7 @@ from concepts.affect.emotion import Emotion
 from graph import draw_graph
 
 
-def main(print_dev_data, personality, latex, graph):
+def main(print_dev_data, personality, latex, graph, content):
     personalities = [None, None]
     relationships = [None, None]
     if personality:
@@ -46,31 +46,24 @@ def main(print_dev_data, personality, latex, graph):
 
         relationships = [relationship1, relationship2]
 
-    if graph:
-        embeddings = Embeddings()
-        story = Story(embeddings, personalities, relationships)
+    embeddings = Embeddings()
+    story = Story(embeddings, personalities, relationships)
 
+    if graph:
         draw_graph(story)
 
-
     elif print_dev_data:
-        embeddings = Embeddings()
-        story = Story(embeddings, personalities, relationships)
         print(story)
         for i, situation in enumerate(story.situations):
             print(f"Situation{i}: {situation.location}\n")
             for j, sequence in enumerate(situation.sequences):
                 print(f"Sequence{j}\n{sequence}\n\n")
     elif latex:
-        embeddings = Embeddings()
-        story = Story(embeddings, personalities, relationships)
         for i, situation in enumerate(story.situations):
             print(f" Scene {i + 1} & & \\\\\n")
             for j, sequence in enumerate(situation.sequences):
                 print(f"{sequence.get_latex()}\n")
     else:
-        embeddings = Embeddings()
-        story = Story(embeddings, personalities, relationships)
         for char in story.world_state.characters:
             keywords = ', '.join(list(filter(lambda x: x is not None, [char.mood.get_character_description('pleasure'), char.mood.get_character_description('arousal'), char.mood.get_character_description('dominance')])))
             print(f"{char.name}: {keywords}")
@@ -122,6 +115,7 @@ def parse_arguments():
     parser.add_argument("-p", "--personality", help="Set personality parameters", action='store_true')
     parser.add_argument("-l", "--latex", help="Set personality parameters", action='store_true')
     parser.add_argument("-g", "--graph", help="Draw graph", action='store_true')
+    parser.add_argument("-c", "--content", help="Choose content", action='store_true')
 
     return parser.parse_args()
 
@@ -129,4 +123,4 @@ def parse_arguments():
 if __name__ == "__main__":
     args = parse_arguments()
     print(args)
-    main(args.development, args.personality, args.latex, args.graph)
+    main(args.development, args.personality, args.latex, args.graph, args.content)

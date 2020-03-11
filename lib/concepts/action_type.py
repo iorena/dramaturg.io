@@ -57,7 +57,7 @@ class ActionType:
             return False
         perceived_mood = speaker.perception.get_object_by_name(listener.name).mood
         current_mood_diff = perceived_mood - speaker.relations[listener.name]
-        mood_diff_after_turn = perceived_mood.affect_mood(self.effect) - speaker.relations[listener.name]
+        mood_diff_after_turn = perceived_mood.affect_mood(self.effect)[0] - speaker.relations[listener.name]
         if current_mood_diff < mood_diff_after_turn:
             speaker.add_stress(project)
             return True
