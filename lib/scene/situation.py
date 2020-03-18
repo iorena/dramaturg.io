@@ -3,7 +3,6 @@ from language.action_types import ActionType
 from language.sentence import Sentence
 from concepts.project import Project
 from concepts.character import Character
-from language.dictionary import pivot_dictionary
 
 from loaders import load_emotions, load_action_types, load_pad_values
 

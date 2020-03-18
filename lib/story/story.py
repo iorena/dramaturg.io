@@ -3,10 +3,7 @@ from loaders import load_action_types, load_topics
 from scene.situation import Situation
 from concepts.project import Project
 from story.transition import Transition
-
-from nltk.parse.generate import generate
-from nltk import CFG
-from scene.situation_grammar import grammar
+from language.dictionary import Dictionary
 
 import random
 import copy
@@ -14,14 +11,18 @@ import json
 
 
 class Story:
-    def __init__(self, embeddings, personalities, relationships):
+    def __init__(self, embeddings, personalities, relationships, first_verb, second_verb):
         self.embeddings = embeddings
         self.world_state = WorldState(self.embeddings, personalities, relationships)
         for char in self.world_state.characters:
             char.set_random_perceptions(WorldState(None, None, None, self.world_state))
         self.action_types = load_action_types()
-        self.grammar = CFG.fromstring(grammar)
-        self.situations = self.create_situations()
+        #todo: get actual cases for verbs, and synonyms
+        if first_verb not in Dictionary.verb_dictionary:
+            Dictionary.verb_dictionary[first_verb] = [(first_verb, "NOM")]
+        if second_verb not in Dictionary.verb_dictionary:
+            Dictionary.verb_dictionary[second_verb] = [(second_verb, "NOM")]
+        self.situations = self.create_situations(first_verb, second_verb)
 
     def __str__(self):
         return f"{self.world_state}"
@@ -53,7 +54,7 @@ class Story:
 
         return goal
 
-    def create_situations(self):
+    def create_situations(self, first_verb, second_verb):
         """
         A list of things that have to be handled within the story. World state (including characters) must be introduced,
         and plot must be furthered
@@ -67,7 +68,7 @@ class Story:
 
         #char1 calls char2
         #char1 finds out that relative is dead (before scene)
-        relative_died_project = Project(self.world_state.dead_relative, "kuolla", (None, None),  "statement", "perf", 1)
+        relative_died_project = Project(self.world_state.dead_relative, first_verb, (None, None),  "statement", "perf", 1)
         other_char.set_goal(relative_died_project)
         #set memory for character so isn't surprised by own news
         other_char.add_memory(relative_died_project)
@@ -79,7 +80,7 @@ class Story:
             char.reset_mood()
 
         #char2 comes to get inheritance
-        inheritance_want_project_main = Project(main_char, "ottaa", ("object", self.world_state.inheritance_object), "proposal", "prees", 1)
+        inheritance_want_project_main = Project(main_char, second_verb, ("object", self.world_state.inheritance_object), "proposal", "prees", 1)
         inheritance_want_project_other = Project(other_char, "ottaa", ("object", self.world_state.inheritance_object), "proposal", "prees", 1)
 
         main_char.set_goal(inheritance_want_project_main)

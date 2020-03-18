@@ -3,7 +3,7 @@ from syntaxmaker.syntax_maker import (create_verb_pharse, create_personal_pronou
                                       add_advlp_to_vp, set_vp_mood_and_tense, turn_vp_into_prefect,
                                       negate_verb_pharse, turn_vp_into_passive)
 from syntaxmaker.inflector import inflect
-from language.dictionary import verb_dictionary, noun_dictionary, reversed_verb_dictionary, evaluations_dictionary, explicatives_dictionary
+from language.dictionary import Dictionary
 from concepts.character import Character
 from language.embeddings import Embeddings
 import random
@@ -13,7 +13,7 @@ from numpy.linalg import norm
 
 
 class Sentence:
-    embeddings = Embeddings()
+    embeddings = Embeddings("isoäiti", "maljakko")
 
     def __init__(self, speaker, listeners, project, action_type, obj_type, reverse, hesitation):
         self.speaker = speaker
@@ -180,7 +180,7 @@ class Sentence:
             obj_case = "GEN"
         #for some reason syntaxmaker doesn't accept objects for thes "hommata" and "saada", so must workaround
         #this also causes problems when using imperative forms because object case isn't altered accordingly
-        elif self.verb in list(map(lambda x: x[0], verb_dictionary["hankkia"])):
+        elif self.verb in list(map(lambda x: x[0], Dictionary.verb_dictionary["hankkia"])):
             obj_case = "GEN"
             if mood == "IMPV":
                 obj_case = "NOM"
@@ -287,15 +287,15 @@ class Sentence:
             appraisal = self.project.get_appraisal(self.speaker)
             #if not self.speakers_agree:
             #    appraisal = self.project.get_appraisal(self.listeners[0])
-            options = evaluations_dictionary[appraisal.name]
+            options = Dictionary.evaluations_dictionary[appraisal.name]
             return random.choices(options)[0]
-        if word in noun_dictionary:
-            return random.choices(noun_dictionary[word])[0]
-        if word in verb_dictionary:
-            options = verb_dictionary[word]
+        if word in Dictionary.noun_dictionary:
+            return random.choices(Dictionary.noun_dictionary[word])[0]
+        if word in Dictionary.verb_dictionary:
+            options = Dictionary.verb_dictionary[word]
             return random.choices(options)[0]
-        if self.reversed and word in reversed_verb_dictionary:
-            options = reversed_verb_dictionary[word]
+        if self.reversed and word in Dictionary.reversed_verb_dictionary:
+            options = Dictionary.reversed_verb_dictionary[word]
             return random.choices(options)[0]
         return word
 
@@ -349,8 +349,8 @@ class Sentence:
 
     def get_explicative(self, mood):
         valence = "pos" if not self.action_type.neg else "neg"
-        distances = list(map(lambda x: norm(array(mood) - x), explicatives_dictionary[valence].values()))
-        return random.choices(list(explicatives_dictionary[valence].keys()), distances)[0]
+        distances = list(map(lambda x: norm(array(mood) - x), Dictionary.explicatives_dictionary[valence].values()))
+        return random.choices(list(Dictionary.explicatives_dictionary[valence].keys()), distances)[0]
 
     def get_styled_sentence(self):
         if self.inflected is None:

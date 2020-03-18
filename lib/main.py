@@ -46,8 +46,17 @@ def main(print_dev_data, personality, latex, graph, content):
 
         relationships = [relationship1, relationship2]
 
-    embeddings = Embeddings()
-    story = Story(embeddings, personalities, relationships)
+    if content:
+        character = input("Give third character")
+        character_verb = input("Give verb related to character")
+        inheritance_object = input("Give object")
+        object_verb = input("Give verb related to object")
+
+        embeddings = Embeddings(character, inheritance_object)
+        story = Story(embeddings, personalities, relationships, character_verb, object_verb)
+    else:
+        embeddings = Embeddings("isoäiti", "maljakko")
+        story = Story(embeddings, personalities, relationships, "kuolla", "ottaa")
 
     if graph:
         draw_graph(story)

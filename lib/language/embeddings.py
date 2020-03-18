@@ -33,21 +33,23 @@ import random
 #import StringIO
 
 class Embeddings:
-    def __init__(self):
+    def __init__(self, character, inheritance_object):
         self.wordforms = WV.load("../data/finnish_s24_skgram.bin",10000,500000)
         self.lemmas = WV.load("../data/finnish_s24_skgram_lemmas.bin", 10000, 500000)
+        self.character = character
+        self.inheritance_object = inheritance_object
         self.get_noun_from_adjective_vector = self.lemmas.w_to_normv("kuumuus") - self.lemmas.w_to_normv("kuuma")
         self.get_noun_from_verb_vector = self.lemmas.w_to_normv("puhe") - self.lemmas.w_to_normv("puhua")
         self.get_location_vector = self.wordforms.w_to_normv("kaupassa") - self.wordforms.w_to_normv("kauppa")
 
     def get_inheritance_object(self):
         random_idx = random.randint(0, 5)
-        similar = self.lemmas.nearest("maljakko", 6)
+        similar = self.lemmas.nearest(self.inheritance_object, 6)
         return similar[random_idx][1]
 
     def get_relative(self):
         random_idx = random.randint(0, 5)
-        similar = self.wordforms.nearest("isoäiti", 8)
+        similar = self.wordforms.nearest(self.character, 8)
         return similar[random_idx][1]
 
     def get_similar(self, word):
