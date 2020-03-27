@@ -72,17 +72,13 @@ class Project:
             return True
         return False
 
-    def speakers_agree(self, speakers):
+    def listener_agrees(self, speakers, speaker_i, listener_i):
         if self.proj_type in ["surprise", "expansion"]:
             return True
 
         agreement = True
 
-        for goal in speakers[0].goals:
-            if self.is_in_conflict_with(goal):
-                print("disagreement")
-                agreement = False
-        for goal in speakers[1].goals:
+        for goal in speakers[listener_i].goals:
             if self.is_in_conflict_with(goal):
                 print("disagreement")
                 agreement = False

@@ -24,7 +24,7 @@ class Sequence():
         self.action_types = action_types
         self.parent = parent
         self.world_state = world_state
-        agreement = self.project.speakers_agree(self.speakers)
+        agreement = self.project.listener_agrees(self.speakers, self.speaker_i, self.reacter_i)
         self.pair_types = POS_SEQUENCES if agreement else NEG_SEQUENCES
         self.surprise = False
         if surprise:
@@ -69,6 +69,7 @@ class Sequence():
             prev = self.parent
             return Sequence(self.reacter_i, surprise_project, sequence_type, False, self.action_types, self.world_state, prev)
 
+        #toggle expansions (other than surprise) on or off
         return None
 
         if switch_speakers:

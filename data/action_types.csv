@@ -7,7 +7,7 @@ TTN+-+	FALSE	FALSE	subject	project	None	None	IMPV	prees	FALSE	None	ihmeessä,tok
 TTN-++	FALSE	FALSE	subject	project	None	None	IMPV	prees	FALSE	None,no	sitten jos se on niin tärkeä sinulle
 TTN+--	FALSE	FALSE	None	None	None	None	IMPV	None	FALSE	ole hyvä	None
 TTN-+-	FALSE	FALSE	Speaker	arvata	None	None	INDV	imperf	FALSE	None	että tässä käy näin
-TTN--+	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	siitä vaan	None
+TTN--+	FALSE	FALSE	None	project	None	None	INF	prees	FALSE	siitä vaan, ei muuta kun	None
 TTN---	FALSE	FALSE	subject	project	None	None	IMPV	prees	FALSE	no	None,sitten
 TTS+++	FALSE	FALSE	subject	project	object	None	COND	prees	FALSE	hah!	? et voi olla tosissasi
 TTS++-	FALSE	FALSE	subject	project	object	None	COND	prees	FALSE	None	? ei kai nyt sentään ?

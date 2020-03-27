@@ -285,7 +285,7 @@ class Sentence:
     def get_synonym(self, word):
         if word == "EVAL":
             appraisal = self.project.get_appraisal(self.speaker)
-            #if not self.speakers_agree:
+            #if not self.listener_agrees:
             #    appraisal = self.project.get_appraisal(self.listeners[0])
             options = Dictionary.evaluations_dictionary[appraisal.name]
             return random.choices(options)[0]
