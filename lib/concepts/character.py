@@ -32,9 +32,9 @@ class Character:
         self.mood = Mood(self.personality)
         self.memory = []
         self.stress_capacity = 2
-        if self.personality["N"] < -0.5:
+        if self.personality["N"] > 0.5:
             self.stress_capacity = 1
-        elif self.personality["N"] > 0.5:
+        elif self.personality["N"] < -0.5:
             self.stress_capacity = 3
 
     def __str__(self):
