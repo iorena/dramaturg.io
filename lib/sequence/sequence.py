@@ -114,7 +114,7 @@ class Sequence():
             action_type = self.action_types[self.parent.action_type.name]
         else:
             #print("action name", action_name)
-            action_types_pool = [act_name for act_name in self.action_types.values() if act_name.class_name == action_name and act_name.can_use(self.speakers[0].mood)]
+            action_types_pool = [act_name for act_name in self.action_types.values() if act_name.class_name == action_name and act_name.can_use(self.speakers[self.speaker_i].mood)]
             if len(action_types_pool) == 0:
                 print("no available turn types!", action_name)
                 return None
