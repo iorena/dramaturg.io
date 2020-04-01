@@ -45,15 +45,6 @@ class Story:
         similar = self.embeddings.get_similar(strip_punc)
         return similar
 
-    def create_goal(self, character):
-        """
-        Find a transition object whose end state represents the change the character wants to see in the world state
-        """
-        pool = list(filter(lambda x: x.get_person() is character, self.possible_transitions))
-        goal = random.choices(pool)[0]
-
-        return goal
-
     def create_situations(self, first_verb, second_verb):
         """
         A list of things that have to be handled within the story. World state (including characters) must be introduced,

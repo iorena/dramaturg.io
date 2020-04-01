@@ -37,8 +37,9 @@ class Sequence():
         #todo: add emotional weights
         #also do this before second pair part is even determined?
         action_names = random.choice(self.pair_types[self.seq_type])
-        self.first_pair_part = self.generate_pair_part(self.speakers[speaker_i], action_names[0], reverse)
-        self.second_pair_part = self.generate_pair_part(self.speakers[self.reacter_i], action_names[1], reverse)
+        assert len(self.pair_types[self.seq_type]) == 1, "too many pair types"
+        self.first_pair_part = self.generate_pair_part(speaker_i, action_names[0], reverse)
+        self.second_pair_part = self.generate_pair_part(self.reacter_i, action_names[1], reverse)
         self.pre_expansion = self.generate_expansion("pre_expansions", None)
         self.infix_expansion = self.generate_expansion("infix_expansions", self.first_pair_part, True)
         self.post_expansion = self.generate_expansion("post_expansions", self.second_pair_part)
@@ -107,35 +108,38 @@ class Sequence():
             expansion = Sequence(speaker_i, new_project, new_seq_type, False, self.action_types, self.world_state, parent)
         return expansion
 
-    def generate_pair_part(self, speaker, action_name, reverse):
+    def generate_pair_part(self, speaker_i, action_name, reverse):
+        reacter_i = 0 if speaker_i == 1 else 1
         if action_name == "TOI":
             if self.parent is None:
                 print("parent is none", self.project.subj, self.project.verb, self.project.obj)
             action_type = self.action_types[self.parent.action_type.name]
         else:
             #print("action name", action_name)
-            action_types_pool = [act_name for act_name in self.action_types.values() if act_name.class_name == action_name and act_name.can_use(self.speakers[self.speaker_i].mood)]
+            action_types_pool = [act_name for act_name in self.action_types.values() if act_name.class_name == action_name and act_name.can_use(self.speakers[speaker_i].mood)]
             if len(action_types_pool) == 0:
                 print("no available turn types!", action_name)
                 return None
-            action_type = self.find_best_action_type(speaker, action_types_pool)
+            action_type = self.find_best_action_type(speaker_i, action_types_pool)
         project = self.project
         if action_name == "SEL":
             project = Project.get_new_project(self.speakers, self.project, self.world_state)
 
         listeners = []
         for char in self.speakers:
-            if char.name is not speaker.name:
+            if char.name is not self.speakers[speaker_i].name:
                 listeners.append(char)
-        hesitation = False
-        if speaker == self.speakers[self.speaker_i]:
-            hesitation = action_type.get_hesitation(speaker, self.speakers[self.reacter_i], self.project)
-        return Turn(speaker, listeners, action_type, project, reverse, hesitation)
 
-    def find_best_action_type(self, speaker, pool):
-        other_char = self.world_state.get_opposite(speaker)
-        target_mood = speaker.relations[other_char.name]
-        current_mood = speaker.perception.get_object_by_name(other_char.name).mood
+        hesitation = False
+        if self.speaker_i == speaker_i:
+            hesitation = action_type.get_hesitation(self.speakers[speaker_i], self.speakers[reacter_i], self.project)
+        return Turn(self.speakers[speaker_i], listeners, action_type, project, reverse, hesitation)
+
+    def find_best_action_type(self, speaker_i, pool):
+        reacter_i = 0 if speaker_i == 1 else 1
+        other_char = self.speakers[reacter_i]
+        target_mood = self.speakers[speaker_i].relations[other_char.name]
+        current_mood = self.speakers[speaker_i].perception.get_object_by_name(other_char.name).mood
         best = pool[0]
         smallest_mood_diff = 9001.0
         mood_copy = copy.copy(current_mood)

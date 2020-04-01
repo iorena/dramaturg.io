@@ -8,7 +8,6 @@ from loaders import load_emotions, load_action_types, load_pad_values
 
 EMOTIONS = load_emotions()
 
-import random, copy
 from numpy import array
 from numpy.linalg import norm
 
