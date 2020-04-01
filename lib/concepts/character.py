@@ -10,7 +10,7 @@ alive = WorldObject("alive", 100)
 
 class Character:
     id_counter = 0
-    names = ["Pekka", "Ville", "Kalle", "Maija"]
+    names = ["Pekka", "Kalle"]
 
     def __init__(self, location, personality=None, name=None):
         self.id = Character.id_counter
@@ -19,7 +19,7 @@ class Character:
         self.goals = []
         self.stress = 0
         if name is None:
-            self.name = self.random_name()
+            self.name = Character.names[self.id]
         else:
             self.name = name
         self.perception = None
@@ -31,6 +31,7 @@ class Character:
             self.personality = personality
         self.mood = Mood(self.personality)
         self.memory = []
+        self.beliefs = []
         self.stress_capacity = 2
         if self.personality["N"] > 0.5:
             self.stress_capacity = 1
@@ -63,7 +64,7 @@ class Character:
         world_state = copy.deepcopy(world_state)
         #todo: should we check and change only objects that don't have an appraisal yet?
         for obj in world_state.objects:
-            obj.attributes["appraisal"] = random.choices(world_state.appraisals)[0]
+            obj.attributes["appraisal"] = world_state.appraisals[0]
         for obj in world_state.weather_types:
             obj.attributes["appraisal"] = random.choices(world_state.appraisals)[0]
         for obj in world_state.locations:
@@ -106,6 +107,9 @@ class Character:
 
     def add_memory(self, memory):
         self.memory.append(memory)
+
+    def add_belief(self, belief):
+        self.beliefs.append(belief)
 
     def reset_mood(self):
         self.mood = Mood(self.personality)

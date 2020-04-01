@@ -78,10 +78,15 @@ class Project:
 
         agreement = True
 
-        for goal in speakers[listener_i].goals:
-            if self.is_in_conflict_with(goal):
-                print("disagreement")
+        if self.proj_type == "proposal":
+            for goal in speakers[listener_i].goals:
+                if self.is_in_conflict_with(goal):
+                    print("disagreement")
+                    agreement = False
+        elif self.proj_type == "statement":
+            if self not in speakers[listener_i].beliefs:
                 agreement = False
+                speakers[listener_i].add_belief(self)
 
         return agreement
     """

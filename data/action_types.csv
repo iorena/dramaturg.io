@@ -45,13 +45,13 @@ TIAB-	FALSE	FALSE	None	None	object	None	INDV	prees	FALSE	None	None
 TIÄ	TRUE	FALSE	Speaker	tietää	object	None	INDV	prees	FALSE	None	None
 TOR	FALSE	FALSE	Listener	luulla	interrogative	None	INDV	prees	FALSE	None	None
 TORB	TRUE	FALSE	None	None	None	None	INVD	prees	FALSE	ei kuulu sinulle	None
-VÄI+++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
-VÄI++-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
-VÄI+-+	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
-VÄI-++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
-VÄI+--	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
-VÄI-+-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
-VÄI--+	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
+VÄI+++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Minulla on kerrottavaa.	None
+VÄI++-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	En halua häiritä mutta minun pitäisi kertoa sinulle että	None
+VÄI+-+	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Kuule	None
+VÄI-++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Minulla on huonoja uutisia.	None
+VÄI+--	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Hei	None
+VÄI-+-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Et varmaan usko tätä mutta	Mitä me nyt tehdään
+VÄI--+	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Kuule	None
 VÄI---	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
 VÄIB	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	mutta kun	None
 SAM-KAN	FALSE	FALSE	subject	project	object	None,taitaa	INDV	prees	FALSE	kyllä	None
@@ -70,7 +70,7 @@ MYÖ-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	se tästä vielä puuttu
 MYÖ--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	senkin pahanilmanlintu	None
 MYÖ---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	EVAL	None
 KII+++	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	sinun täytyy olla erehtynyt	None
-KII++-	TRUE	FALSE	subject	project	object	voida	INDV	perf	FALSE	None	None
+KII++-	TRUE	FALSE	subject	project	object	voida	INDV	project	FALSE	None	None
 KII+-+	FALSE	FALSE	Listener	höpsiä	None	None	IMPV	prees	FALSE	älä	None
 KII-++	FALSE	FALSE	Listener	puhua	paska	None	IMPV	prees	FALSE	älä	None
 KII+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	höpö höpö	None
@@ -83,8 +83,8 @@ EST	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	älä viitsi	None
 MYÖB	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	niinpä	None
 YLL+++	FALSE	FALSE	Speaker	kuulla	demonstrative	None	INDV	prees	FALSE	niinkö ? Miksi	vasta nyt
 YLL++-	FALSE	TRUE	subject	project	object	None	INDV	perf	FALSE	mitä ?	None
-YLL+-+	FALSE	TRUE	Listener	olla	None	None	INDV	prees	FALSE	None	tosissasi
-YLL-++	FALSE	FALSE	subject	project	object	None	INDV	perf	FALSE	mikset ole kertonut minulle että	?
+YLL+-+	FALSE	TRUE	Listener	olla	None	None	INDV	prees	FALSE	häh ?	tosissasi
+YLL-++	FALSE	FALSE	subject	project	object	None	INDV	perf	FALSE	täh ? mikset ole kertonut minulle että	?
 YLL+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ihanko totta ?	None
 YLL-+-	FALSE	FALSE	subject	project	object	None	INDV	perf	FALSE	en tiennyt että	None
 YLL--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mitä sinä selität ?	None
