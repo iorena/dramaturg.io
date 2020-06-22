@@ -1,34 +1,42 @@
 from language.sentence import Sentence
-from concepts.affect.emotion import Emotion
 
 import random
+import copy
 
 class Turn:
     """
     Todo: turns can have more than one sentence?
     """
-    def __init__(self, speaker, listeners, action_type, project, reverse):
+    def __init__(self, speaker, listeners, action_type, project, reverse, hesitation):
         self.speaker = speaker
-        #todo: where to do this??
-        if project.obj_type is "affect" and self.speaker.name is project.subj:
-            self.speaker.mood.affect_mood(project.obj)
-        else:
-            self.speaker.mood.degrade_mood()
         self.listeners = listeners
         self.action_type = action_type
         self.obj_type = project.obj_type
         self.project = project
-        self.speaker_mood = str(self.speaker.mood)
+        self.speaker_mood = copy.copy(self.speaker.mood)
+        self.listener_mood = copy.copy(self.listeners[0].mood)
+        self.change = 0
         self.reversed = reverse
+        self.hesitation = hesitation
         self.inflected = self.inflect()
+        self.affect_mood()
 
     def __str__(self):
         space = "" if len(self.action_type.name) == 4 else " "
-        return f"{self.action_type.name}{space} {self.speaker.name}: {self.inflected}  |  Mood: {self.speaker_mood}"
+        return f"{self.action_type.name}{space} {self.speaker.name}: {self.inflected} | Mood: {str(self.speaker_mood)} | Hesitation: {self.hesitation}"
+
+    def get_latex(self):
+        return f"{str(self.speaker_mood)} & {self.speaker.name} & {self.inflected} \\\\"
 
     def inflect(self):
-        sentence = Sentence(self.speaker, self.listeners, self.project, self.action_type, self.obj_type, self.reversed)
+        sentence = Sentence(self.speaker, self.listeners, self.project, self.action_type, self.obj_type, self.reversed, self.hesitation)
         return sentence.styled
+
+    def affect_mood(self):
+        #todo: how do expansions affect mood? does this work as is? add importance coefficient?
+        self.change = self.listeners[0].mood.affect_mood(self.action_type.effect)[1]
+        if self.project.proj_type in ["statement", "proposal"]:
+            self.change += self.listeners[0].mood.affect_mood(self.project.get_emotional_effect(self.listeners[0]))[1]
 
     def to_json(self):
         return {

@@ -1,8 +1,8 @@
 from concepts.character import Character
 from concepts.location import Location
 from concepts.worldobject import WorldObject
-from concepts.affect.relationship import Relationship
 from concepts.affect.emotion import Emotion
+from concepts.method import Method
 
 import random
 import copy
@@ -12,10 +12,11 @@ WEATHER_TYPES = ["sunny", "cloudy", "rainy", "stormy"]
 
 
 class WorldState:
-    def __init__(self, old=None):
+    def __init__(self, embeddings, personalities, relationships, old=None):
         if old is None:
-            self.initialize_story_world()
+            self.initialize_story_world(embeddings, personalities, relationships)
         else:
+            self.embeddings = embeddings
             self.appraisals = old.appraisals
             self.locations = old.locations
             self.characters = old.characters
@@ -23,30 +24,31 @@ class WorldState:
             self.weather = old.weather
             self.weather_types = old.weather_types
 
-    def initialize_story_world(self):
-        self.appraisals = [WorldObject(90, "horrible"), WorldObject(91, "bad"), WorldObject(92, "okay"), WorldObject(93, "good"), WorldObject(94, "great")]
-        self.weather_types = [WorldObject(95, "sunny"), WorldObject(96, "cloudy"), WorldObject(97, "rainy"), WorldObject(98, "stormy")]
+    def initialize_story_world(self, embeddings, personalities, relationships):
+        self.embeddings = embeddings
+        self.appraisals = [WorldObject("horrible", 90), WorldObject("bad", 91), WorldObject("okay", 92), WorldObject("good", 93), WorldObject("great", 94)]
+        self.weather_types = [WorldObject("sunny", 95), WorldObject("cloudy", 96), WorldObject("rainy", 97), WorldObject("stormy", 98)]
         self.locations = [Location(), Location()]
-        self.characters = [Character(self.locations[0]), Character(self.locations[0])]
-        self.objects = [WorldObject()]
+        self.characters = [Character(self.locations[0], personalities[0]), Character(self.locations[1], personalities[1]), Character(self.locations[0], None, self.embeddings.get_relative())]
+        self.objects = [WorldObject(self.embeddings.get_inheritance_object())]
+        self.inheritance_object = self.objects[0]
+        self.dead_relative = self.characters[2]
         for obj in self.objects:
-            owner = random.choices(self.characters)[0]
+            owner = self.characters[2]
             obj.set_owner(owner)
             obj.set_location(owner.attributes["location"])
-        self.weather = WorldObject(95, "sää")
+        self.weather = WorldObject("sää", 95)
         #set relationships
-        char = self.characters[0]
-        for other in self.characters:
-            if char is other:
+        for char in self.characters:
+            if char is self.characters[0]:
                 pass
             else:
-                liking_out = random.random()
-                liking_in = random.random()
-                dominance = random.random()
-                char.set_relation(other.name, Relationship(other, liking_out, liking_in, dominance))
-                other.set_relation(char.name, Relationship(char, liking_in, liking_out, 1 - dominance))
-            other.set_relation(other.name, Relationship(other, 1, 1, 0.5))
-
+                self.characters[0].set_relation(char, relationships[0])
+        for char in self.characters:
+            if char is self.characters[1]:
+                pass
+            else:
+                self.characters[1].set_relation(char, relationships[1])
 
     def __str__(self):
         return f"Locations: {', '.join(map(str, self.locations))}\nCharacters: {', '.join(map(str, self.characters))}"
@@ -72,8 +74,10 @@ class WorldState:
         objs = [obj.name for obj in self.objects]
         if name in objs:
             return self.objects[objs.index(name)]
+        chars = [char.name for char in self.characters]
+        if name in chars:
+            return self.characters[chars.index(name)]
         raise Exception("asked for object named", name)
-
 
     def get_object(self, obj):
         """
@@ -110,65 +114,18 @@ class WorldState:
         if type(obj) is Emotion:
             opposite = Emotion(None, 1 - obj.pleasure, 1 - obj.arousal, 1 - obj.dominance)
         else:
-            opposite = random.choices(choices)[0]
+            opposite = random.choice(choices)
         return opposite
 
     def get_opposite_attribute(self, attribute):
         if attribute in self.appraisals:
             value = attribute.id
             if value < 92:
-                return WorldObject(value + 2, APPRAISALS[value - 88])
+                return WorldObject(APPRAISALS[value - 88], value + 2)
             if value > 92:
-                return WorldObject(value - 2, APPRAISALS[value - 92])
+                return WorldObject(APPRAISALS[value - 92], value - 2)
             if value == 92 and random.random() > 0.5:
-                return WorldObject(94, "great")
-            return WorldObject(90, "horrible")
+                return WorldObject("great", 94)
+            return WorldObject("horrible", 90)
         return self.get_opposite(attribute)
 
-
-    """
-    Functions for executing story points that change the world state
-    Goals are Transitions objects, except boolean in IE
-    """
-    def change(self, fe_type, subject, goal, success):
-        if fe_type is "G":
-            pass
-            #self.goal(subject, goal)
-        elif fe_type is "A":
-            self.action(subject, goal, success)
-        elif fe_type is "P":
-            self.perception(subject, goal, success)
-        elif fe_type is "IE":
-            #mood change is handled in Turn?
-            #self.internal(subject, emotion)
-            pass
-
-    def goal(self, subject, goal):
-        state = copy.deepcopy(self)
-        state.characters[subject.id].attributes.update(goal)
-        self.characters[subject.id].goals.append(state)
-
-    def action(self, subject, action, success):
-        if success:
-            if type(action.obj) is Character:
-                self.characters[action.obj.id].attributes[action.attribute_name] = action.end_value
-                print("updated", action.attribute_name, action.end_value)
-            else:
-                self.objects[action.obj.id].attributes[action.attribute_name] = action.end_value
-
-    def perception(self, subject, perception, success):
-        if not success:
-            return
-        world_state = copy.deepcopy(subject.perception)
-        if perception.obj in self.objects:
-            world_state.objects[perception.obj.id].attributes[perception.attribute_name] = perception.end_value
-        elif perception.obj in self.characters:
-            world_state.characters[perception.obj.id].attributes[perception.attribute_name] = perception.end_value
-        elif perception.obj in self.locations:
-            world_state.locations[perception.obj.id].attributes[perception.attribute_name] = perception.end_value
-        else:
-            raise Exception("warning, this shouldn't happen", perception.obj)
-        subject.perception = world_state
-
-    def internal(self, subject, emotion):
-        self.characters[subject.id].mood.affect(emotion)

@@ -1,14 +1,23 @@
+from numpy import array
 
 
 class Mood:
     def __init__(self, personality):
-        self.default_pleasure, self.default_arousal, self.default_dominance = self.default_mood(personality)
+        if type(personality) is dict:
+            self.default_pleasure, self.default_arousal, self.default_dominance = self.default_mood(personality)
+        else:
+            self.default_pleasure = personality.pleasure
+            self.default_arousal = personality.arousal
+            self.default_dominance = personality.dominance
         self.pleasure = self.default_pleasure
         self.arousal = self.default_arousal
         self.dominance = self.default_dominance
 
     def __str__(self):
-        return f"{self.pleasure:.2f}P {self.arousal:.2f}A {self.dominance:.2f}D {self.get_octant_name()}"
+        return f"{self.pleasure:.2f}P {self.arousal:.2f}A {self.dominance:.2f}D"
+
+    def __sub__(self, other):
+        return (abs(self.pleasure - other.pleasure), abs(self.arousal - other.arousal), abs(self.dominance - other.dominance))
 
     #formulas from Gebhard (2005)
     def default_mood(self, personality):
@@ -22,16 +31,31 @@ class Mood:
 
     #todo: add personality effect on how emotions affect mood
     def affect_mood(self, emotion):
-        first = self.pleasure
+        old_pleasure = self.pleasure
+        old_arousal = self.arousal
+        old_dominance = self.dominance
+
         self.pleasure = self.pleasure + emotion.pleasure
         if self.pleasure > 1:
             self.pleasure = 1
+        if self.pleasure < -1:
+            self.pleasure = -1
+        pleasure_change = abs(old_pleasure - self.pleasure)
         self.arousal = self.arousal + emotion.arousal
         if self.arousal > 1:
             self.arousal = 1
+        if self.arousal < -1:
+            self.arousal = -1
+        arousal_change = abs(old_arousal - self.arousal)
         self.dominance = self.dominance + emotion.dominance
         if self.dominance > 1:
             self.dominance = 1
+        if self.dominance < -1:
+            self.dominance = -1
+        dominance_change = abs(old_dominance - self.dominance)
+        total_change = pleasure_change + arousal_change + dominance_change
+
+        return self, total_change
 
     def get_octant_name(self):
         if self.pleasure > 0:
@@ -70,6 +94,21 @@ class Mood:
                 return "alistuva"
             return None
 
+    def as_array(self):
+        return array((self.pleasure, self.arousal, self.dominance))
+
+    def in_bounds(self, bounds):
+        lower_bound = bounds[0]
+        upper_bound = bounds[1]
+        if self.pleasure < lower_bound[0] or self.pleasure > upper_bound[0]:
+            return False
+        if self.arousal < lower_bound[1] or self.arousal > upper_bound[1]:
+            return False
+        if self.dominance < lower_bound[2] or self.dominance > upper_bound[2]:
+            return False
+
+        return True
+
     def get_default_pleasure(personality):
         return 0.21 * personality["E"] + 0.59 * personality["A"] + 0.19 * personality["N"]
 
@@ -78,5 +117,3 @@ class Mood:
 
     def get_default_dominance(personality):
         return 0.25 * personality["O"] + 0.17 * personality["C"] + 0.6 * personality["E"] - 0.32 * personality["A"]
-
-

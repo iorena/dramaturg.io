@@ -11,10 +11,10 @@ def load_topics(world_state, path="../data/opposing_topics.csv"):
         for row in csv_reader:
             #subject
             if row[2] not in ["PERSON", "PASSIVE"]:
-                objects.append(WorldObject(None, row[2]))
+                objects.append(WorldObject(row[2]))
             #object
             if row[5] not in ["PERSON", "PASSIVE"] and row[5] not in [obj.name for obj in objects]:
-                objects.append(WorldObject(None, row[5]))
+                objects.append(WorldObject(row[5]))
     world_state.objects += objects
 
     pos_topics = []

@@ -3,10 +3,7 @@ from loaders import load_action_types, load_topics
 from scene.situation import Situation
 from concepts.project import Project
 from story.transition import Transition
-
-from nltk.parse.generate import generate
-from nltk import CFG
-from scene.situation_grammar import grammar
+from language.dictionary import Dictionary
 
 import random
 import copy
@@ -14,49 +11,29 @@ import json
 
 
 class Story:
-    def __init__(self, embeddings):
+    def __init__(self, embeddings, personalities, relationships, first_verb, second_verb):
         self.embeddings = embeddings
-        self.world_state = WorldState()
-        self.pos_topics, self.neg_topics = load_topics(self.world_state)
-        self.pos_topics.sort(key=lambda x: x.score)
-        self.neg_topics.sort(key=lambda x: x.score)
-        self.possible_transitions = self.init_possible_transitions()
+        self.world_state = WorldState(self.embeddings, personalities, relationships)
         for char in self.world_state.characters:
-            char.set_random_perceptions(WorldState(self.world_state))
-            char.set_goal(self.create_goal(char))
+            char.set_random_perceptions(WorldState(None, None, None, self.world_state))
         self.action_types = load_action_types()
-        self.grammar = CFG.fromstring(grammar)
-        self.situations = self.create_situations()
+        #todo: get actual cases for verbs, and synonyms
+        if first_verb not in Dictionary.verb_dictionary:
+            Dictionary.verb_dictionary[first_verb] = [(first_verb, "NOM")]
+        if second_verb not in Dictionary.verb_dictionary:
+            Dictionary.verb_dictionary[second_verb] = [(second_verb, "NOM")]
+        self.situations = self.create_situations(first_verb, second_verb)
 
     def __str__(self):
-        transitions = "\n".join(map(lambda x: f'{x.start_value} -> {x.end_value}', self.possible_transitions))
-        return f"{self.world_state}\nPossible transitions: ({len(self.possible_transitions)})" #"\n{transitions}"
-
-    def init_possible_transitions(self):
-        """
-        Creates a list of tuples representing all possible transitions, keeping each transition at random
-        """
-        transition_space = []
-        for loc in self.world_state.locations:
-            for loc2 in self.world_state.locations:
-                if loc != loc2:
-                    if random.random() > 0.5:
-                        for char in self.world_state.characters:
-                            transition_space.append(Transition(char, "location", loc, loc2))
-        for obj in self.world_state.objects:
-            for char in self.world_state.characters:
-                for char2 in self.world_state.characters:
-                    if char != char2:
-                        transition_space.append(Transition(obj, "owner", char, char2))
-        if len(transition_space) is 0:
-            return self.init_possible_transitions()
-        return transition_space
+        return f"{self.world_state}"
 
     def get_title(self):
         bow = {}
         for sit in self.situations:
             for seq in sit.sequences:
                 for turn in seq.turns:
+                    if turn is None:
+                        continue
                     for word in turn.inflected.split(" "):
                         if word in bow:
                             bow[word] = bow[word] + 1
@@ -68,16 +45,7 @@ class Story:
         similar = self.embeddings.get_similar(strip_punc)
         return similar
 
-    def create_goal(self, character):
-        """
-        Find a transition object whose end state represents the change the character wants to see in the world state
-        """
-        pool = list(filter(lambda x: x.get_person() is character, self.possible_transitions))
-        goal = random.choices(pool)[0]
-
-        return goal
-
-    def create_situations(self):
+    def create_situations(self, first_verb, second_verb):
         """
         A list of things that have to be handled within the story. World state (including characters) must be introduced,
         and plot must be furthered
@@ -85,55 +53,31 @@ class Story:
         """
         situations = []
         added = []
-        main_char = random.choices(self.world_state.characters)[0]
-        other_char = self.world_state.characters[0] if main_char.id == 1 else self.world_state.characters[1]
+        main_char = self.world_state.characters[0]
+        other_char = self.world_state.characters[1]
         chars = [main_char, other_char]
-        chars_reversed = copy.copy(chars)
-        chars_reversed.reverse()
 
+        #char1 calls char2
+        #char1 finds out that relative is dead (before scene)
+        relative_died_project = Project(self.world_state.dead_relative, first_verb, (None, None),  "statement", "perf", 1)
+        other_char.set_goal(relative_died_project)
+        #set memory for character so isn't surprised by own news
+        other_char.add_memory(relative_died_project)
 
-        #add topics that introduce the starting state of the story, alkutilanne
-        for attribute in main_char.attributes.items():
-            situations.append(Situation(self.world_state, self.embeddings, "in", chars, Project(main_char, "olla", attribute, "present", 1), None, main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, self.embeddings, chars, main_char.attributes["location"]))
 
-        cabin = self.world_state.get_opposite(main_char.attributes["location"])
-        #let's go to the cabin
-        #make sure second character doesn't want to go to the cabin
-        chars[0].perception.locations[cabin.id].attributes["appraisal"] = self.world_state.appraisals[4]
-        chars[1].perception.locations[cabin.id].attributes["appraisal"] = self.world_state.appraisals[1]
+        #reset moods
+        for char in chars:
+            char.reset_mood()
 
-        for sit in generate(self.grammar, n=1):
-            i = 0
-            for situation in sit:
-                if i == 0 or i == len(sit):
-                    project = Project(main_char, "mennä", ("location", cabin), "present", 5)
-                    characters = chars
-                elif situation == "in":
-                    project = situations[-2].main_project
-                    characters = chars
-                elif situation == "out":
-                    #pick project from ordered list
-                    if i % 2 == 0:
-                        pool = self.pos_topics
-                        characters = chars
-                    else:
-                        pool = self.neg_topics
-                        characters = chars_reversed
-                    project = random.choices(pool)[0]
-                    for proj in pool:
-                        pool.remove(proj)
-                        if proj == project:
-                            break
-                elif situation == "meta":
-                    project = situations[-1].main_project
-                    characters = chars
-                situations.append(Situation(self.world_state, self.embeddings, situation, characters, project, situations[i-1].main_project, main_char.attributes["location"]))
-                i += 1
+        #char2 comes to get inheritance
+        inheritance_want_project_main = Project(main_char, second_verb, ("object", self.world_state.inheritance_object), "proposal", "prees", 1)
+        inheritance_want_project_other = Project(other_char, "ottaa", ("object", self.world_state.inheritance_object), "proposal", "prees", 1)
 
-        situations.append(Situation(self.world_state, self.embeddings, "in", chars, Project(main_char, "mennä", ("location", cabin), "present", 5), situations[-1].main_project, main_char.attributes["location"]))
+        main_char.set_goal(inheritance_want_project_main)
+        other_char.set_goal(inheritance_want_project_other)
 
-        #reprise main question
-        situations.append(Situation(self.world_state, self.embeddings, "in", self.world_state.characters, Project(main_char, "mennä", ("location", self.world_state.get_opposite(main_char.attributes["location"])), "present", 5), Project(main_char, "mennä", ("location", cabin), "present", 5), main_char.attributes["location"]))
+        situations.append(Situation(self.world_state, self.embeddings, chars, main_char.attributes["location"]))
 
         return situations
 
