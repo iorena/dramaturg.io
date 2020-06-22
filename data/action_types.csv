@@ -20,7 +20,7 @@ TTS---	FALSE	FALSE	None	None	object	None	INDV	prees	FALSE	Ei ! Ei	None
 TOP+++	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	nyt on niin että, nyt on sillä tavalla että	None
 TOP++-	FALSE	FALSE	subject	project	object	None	COND	prees	FALSE	jos et pane pahaksesi, jos sopii	None
 TOP+-+	FALSE	TRUE	subject	project	object	voida, haluta	COND	prees	FALSE	None	None
-TOP-++	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None,ja sinulla ei ole siihen mitään sanomista
+TOP-++	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	ja sinulla ei ole siihen mitään sanomista
 TOP+--	FALSE	FALSE	subject	project	object	None	COND	prees	FALSE	sopisiko sinulle mitenkään että	None
 TOP-+-	FALSE	FALSE	subject	project	object	täytyä	COND	prees	FALSE	None	None
 TOP--+	FALSE	FALSE	object	kuulua	subject	None	INDV	prees	FALSE	None	None
@@ -48,7 +48,7 @@ TORB	TRUE	FALSE	None	None	None	None	INVD	prees	FALSE	ei kuulu sinulle	None
 VÄI+++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Minulla on kerrottavaa.	None
 VÄI++-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	En halua häiritä mutta minun pitäisi kertoa sinulle että	None
 VÄI+-+	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Kuule	None
-VÄI-++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Minulla on huonoja uutisia.	None
+VÄI-++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Minulla on huonoja uutisia	None
 VÄI+--	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Hei	None
 VÄI-+-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Et varmaan usko tätä mutta	Mitä me nyt tehdään
 VÄI--+	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Kuule	None
@@ -97,3 +97,27 @@ VYL+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	näin se valitettavasti o
 VYL-+-	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	olen pahoillani	viime viikolla
 VYL--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuulit kyllä	None
 VYL---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	niin	None
+KYS+++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	kerrohan onko totta että	None
+KYS++-	FALSE	TRUE	subject	project	object	None	INDV	project	FALSE	anteeksi voisitko kertoa	None
+KYS+-+	FALSE	TRUE	subject	project	object	None	INDV	project	FALSE	kuule	None
+KYS-++	FALSE	TRUE	subject	project	object	None	INDV	project	FALSE	nyt kerrot minulle	None
+KYS+--	FALSE	TRUE	subject	project	object	None	INDV	project	FALSE	hei	None
+KYS-+-	FALSE	TRUE	subject	project	object	None	INDV	project	FALSE	None	vai mitä ihmettä
+KYS--+	FALSE	TRUE	subject	project	object	None	INDV	project	FALSE	None	häh
+KYS---	FALSE	TRUE	subject	project	object	None	INDV	project	FALSE	None	None
+VASM+++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	juuri niin	None
+VASM++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kyllä, asia on juuri näin	None
+VASM+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	jep, näin on	None
+VASM-++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	etkö tiennyt? Kyllä,	None
+VASM+--	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	joo	None
+VASM-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	joo. Mistä tiesit?	None
+VASM--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kyllä	None
+VASM---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	joo	None
+VASK+++	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	ei suinkaan,	None
+VASK++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei ainakaan minun tietääkseni	None
+VASK+-+	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	älä huoli,	None
+VASK-++	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	no	, mitä oikein kuvittelet ?
+VASK+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei onneksi !	None
+VASK-+-	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	None	. tai jos on, niin minulle ei ole kerrottu
+VASK--+	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	no	None
+VASK---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei	None

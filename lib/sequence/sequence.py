@@ -37,7 +37,7 @@ class Sequence():
         #todo: add emotional weights
         #also do this before second pair part is even determined?
         action_names = random.choice(self.pair_types[self.seq_type])
-        assert len(self.pair_types[self.seq_type]) == 1, "too many pair types"
+        # assert len(self.pair_types[self.seq_type]) == 1, "too many pair types"
         self.first_pair_part = self.generate_pair_part(speaker_i, action_names[0], reverse)
         self.second_pair_part = self.generate_pair_part(self.reacter_i, action_names[1], reverse)
         self.pre_expansion = self.generate_expansion("pre_expansions", None)
@@ -71,7 +71,7 @@ class Sequence():
             return Sequence(self.reacter_i, surprise_project, sequence_type, False, self.action_types, self.world_state, prev)
 
         #toggle expansions (other than surprise) on or off
-        return None
+        # return None
 
         if switch_speakers:
             speaker_i = 0 if self.speaker_i == 1 else 1

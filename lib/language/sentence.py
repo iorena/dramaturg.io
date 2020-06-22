@@ -61,7 +61,6 @@ class Sentence:
         elif action_type.obj == "subject":
             self.obj = project.subj.name
         elif action_type.obj == "attribute":
-            print(project.obj)
             self.obj = project.obj.name
             self.attribute = True
         elif action_type.obj == "Speaker":
@@ -228,7 +227,6 @@ class Sentence:
         if self.action_type.ques:
             turn_vp_into_question(vp)
         if self.verb is not None:
-            print("this be the verse", self.subj, self.verb, self.obj, self.project.proj_type)
             as_list = vp.to_string().split()
 
         #add "minulle" in reversed commands
@@ -346,6 +344,10 @@ class Sentence:
         elif case == "ELA":
             return "tästä"
         return "tämä"
+
+    def get_isolated_verb(self):
+        #todo: implement function that returns "on" or "ole" (negated) for "äiti on kuollut" project
+        return ""
 
     def get_explicative(self, mood):
         valence = "pos" if not self.action_type.neg else "neg"

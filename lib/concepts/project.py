@@ -13,8 +13,6 @@ class Project:
         self.obj = obj[1]
         self.verb = verb
         self.proj_type = proj_type
-        if self.obj is None:
-            print("none", self.subj, self.obj_type, self.verb)
         if self.obj_type is "quality":
             time = "present"
         self.time = time
@@ -28,7 +26,6 @@ class Project:
 
     def get_appraisal(self, character):
         if self.verb == "kuolla":
-            print("death is not nice")
             return WorldObject(APPRAISALS[0], 90)
         if self.obj_type is "owner":
             #todo: shouldn't this be the appraisal of the object owned?
@@ -64,7 +61,6 @@ class Project:
             print("emotional evaluation shouldn't be done on", self.proj_type)
 
         weighted_emotion = emotion * self.weight
-        print("weighted", weighted_emotion)
         return weighted_emotion
 
     def is_in_conflict_with(self, other):
@@ -81,7 +77,6 @@ class Project:
         if self.proj_type == "proposal":
             for goal in speakers[listener_i].goals:
                 if self.is_in_conflict_with(goal):
-                    print("disagreement")
                     agreement = False
         elif self.proj_type == "statement":
             if self not in speakers[listener_i].beliefs:
