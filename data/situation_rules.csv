@@ -1,0 +1,8 @@
+lecture	SVÄI	none	none	none	main_project	none
+are_bored_by	SVÄI	none	none	none	prev_project	boredom_project
+look_up_to	SVÄI	SVÄI	none	none	main_project	main_project
+complain	SVÄI	SVÄI	none	none	main_project	main_project
+are_indoctrinated_by	SVÄI	SVÄI	none	none	main_project	main_project
+lie_for	SVÄI	SVÄI	none	none	main_project	main_project
+are_dismissed_by	SVÄI	SVÄI	none	none	none	dismissal_project
+are_rewarded_by	SVÄI	SVÄI	none	none	none	reward_project

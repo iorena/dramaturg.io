@@ -55,7 +55,7 @@ def main(print_dev_data, personality, latex, graph, content):
         embeddings = Embeddings(character, inheritance_object)
         story = Story(embeddings, personalities, relationships, character_verb, object_verb)
     else:
-        embeddings = Embeddings("isoäiti", "maljakko")
+        embeddings = Embeddings("isoäiti", "peruna")
         story = Story(embeddings, personalities, relationships, "kuolla", "ottaa")
 
     if graph:

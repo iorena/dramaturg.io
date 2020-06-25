@@ -4,3 +4,4 @@ from loaders.sequence_types_loader import load_sequence_types
 from loaders.emotions_loader import load_emotions
 from loaders.pad_loader import load_pad_values
 from loaders.topics_loader import load_topics
+from loaders.situation_loader import load_situations

@@ -77,7 +77,11 @@ class WorldState:
         chars = [char.name for char in self.characters]
         if name in chars:
             return self.characters[chars.index(name)]
-        raise Exception("asked for object named", name)
+        #no object found, creating new
+        new_object = WorldObject(name)
+        self.objects.append(new_object)
+        print("length of objects", len(self.objects))
+        return new_object
 
     def get_object(self, obj):
         """
@@ -92,6 +96,7 @@ class WorldState:
         if obj in self.appraisals:
             return obj
         elif type(obj) is WorldObject:
+            print(obj, obj.id)
             return self.objects[obj.id]
         return obj
 

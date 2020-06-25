@@ -15,11 +15,13 @@ SEQUENCE_TYPES = {"proposal": "STOP", "statement": "SVÄI", "surprise": "SYLL"}
 
 
 class Situation:
-    def __init__(self, world_state, embeddings, speakers, location):
+    def __init__(self, world_state, embeddings, speakers, rules, location):
         self.world_state = world_state
+        print("length:", len(self.world_state.objects))
         self.embeddings = embeddings
         self.speakers = speakers
         self.location = location
+        self.rules = rules
         self.action_types = load_pad_values(load_action_types())
         self.mood_change = {}
         self.main_sequence_id = 0

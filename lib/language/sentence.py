@@ -177,6 +177,8 @@ class Sentence:
         #todo: fork syntaxmaker to allow copula sentence of type "x has y"?
         elif self.project.verb is "olla" and self.obj_type is "owner":
             obj_case = "GEN"
+        if self.obj_type == "static":
+            obj_case = "NOM"
         #for some reason syntaxmaker doesn't accept objects for thes "hommata" and "saada", so must workaround
         #this also causes problems when using imperative forms because object case isn't altered accordingly
         elif self.verb in list(map(lambda x: x[0], Dictionary.verb_dictionary["hankkia"])):
