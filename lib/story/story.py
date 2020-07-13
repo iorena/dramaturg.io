@@ -19,7 +19,6 @@ class Story:
         self.create_objects()
         for char in self.world_state.characters:
             char.set_random_perceptions(WorldState(None, None, None, self.world_state))
-        self.action_types = load_action_types()
         #todo: get actual cases for verbs, and synonyms
         if first_verb not in Dictionary.verb_dictionary:
             Dictionary.verb_dictionary[first_verb] = [(first_verb, "NOM")]

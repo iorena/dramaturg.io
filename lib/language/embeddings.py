@@ -45,7 +45,7 @@ class Embeddings:
     def get_inheritance_object(self):
         random_idx = random.randint(0, 5)
         similar = self.lemmas.nearest(self.inheritance_object, 6)
-        return similar[random_idx][1]
+        return similar[random_idx][1].replace("#", "")
 
     def get_relative(self):
         random_idx = random.randint(0, 5)

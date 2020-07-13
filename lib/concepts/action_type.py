@@ -30,11 +30,11 @@ class ActionType:
         if pre_add == "None":
             self.pre_add = None
         else:
-            self.pre_add = pre_add.split(",")
+            self.pre_add = pre_add.split(";")
         if post_add == "None":
             self.post_add = None
         else:
-            self.post_add = post_add.split(",")
+            self.post_add = post_add.split(";")
 
     def add_pad_data(self, effect_p, effect_a, effect_d, lower_bound_p, lower_bound_a, lower_bound_d, upper_bound_p, upper_bound_a, upper_bound_d):
         self.effect = Emotion(None, effect_p, effect_a, effect_d)
