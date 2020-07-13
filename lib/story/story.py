@@ -81,8 +81,8 @@ class Story:
             "prev_project": a_project,
             "boredom_project": Project(other_char, "olla", ("static", "kyllästynyt"), "statement", "prees", 1),
             "dismissal_project": Project(main_char, "mennä", ("static", "pois"), "proposal", "prees", 1),
-            "look_up_to_project": main_project.get_look_up_to_project(),
-            "complain_project": main_project.get_complain_project(),
+            "look_up_to_project": main_project.get_look_up_to_project(main_char),
+            "complain_project": main_project.get_complain_project(main_char),
             "reward_project": Project(other_char, "olla", ("static", "kiitollinen"), "statement", "prees", 1)
         }
 

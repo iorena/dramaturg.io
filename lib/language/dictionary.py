@@ -22,7 +22,6 @@ class Dictionary:
         "kuulua": [("kuulua", "ALL")],
         "kuulla": [("kuulla", "PAR")],
         "arvata": [("arvata", "NONE")],
-        "puhua": [("puhua", "PAR")],
         "sanoa": [("sanoa", "GEN")],
         "höpsiä": [("höpsiä", "NONE")],
         "syntyä": [("syntyä", "NONE")],

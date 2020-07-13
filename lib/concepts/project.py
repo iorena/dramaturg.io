@@ -152,19 +152,19 @@ class Project:
 
     def get_action_word(self, proj_type):
         words = {
-            "statement": "sanoa",
+            "statement": "puhua",
             "proposal": "ehdottaa",
             "question": "kysyä"
         }
         return words[proj_type]
 
 
-    def get_complain_project(self):
-        return Project("Listener", self.get_action_word(self.proj_type), ("obj", self.subj), "question", "present", 1)
+    def get_complain_project(self, character):
+        return Project(character, self.get_action_word(self.proj_type), ("obj", self.subj), "question", "present", 1)
 
 
-    def get_look_up_to_project(self):
-        return Project("Listener", "tietää", ("static", "niin paljon"), "statement", "present", 1)
+    def get_look_up_to_project(self, character):
+        return Project(character, "tietää", ("static", "niin paljon"), "statement", "present", 1)
 
 
     def get_hello_project(speakers):

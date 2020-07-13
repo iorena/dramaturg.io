@@ -72,7 +72,7 @@ MYÖ---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	EVAL	None
 KII+++	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	sinun täytyy olla erehtynyt	None
 KII++-	TRUE	FALSE	subject	project	object	voida	INDV	project	FALSE	None	None
 KII+-+	FALSE	FALSE	Listener	höpsiä	None	None	IMPV	prees	FALSE	älä	None
-KII-++	FALSE	FALSE	Listener	puhua	paska	None	IMPV	prees	FALSE	älä	None
+KII-++	FALSE	FALSE	Listener	puhua	None	None	IMPV	prees	FALSE	älä	paskaa
 KII+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	höpö höpö	None
 KII-+-	FALSE	FALSE	None	None	None	None	INDV	project	FALSE	ei muuten pidä paikkaansa	None
 KII--+	FALSE	FALSE	Listener	olla	None	None	INDV	prees	FALSE	None	väärässä
