@@ -24,15 +24,21 @@ class Sentence:
         #subject
         if project.subj is None:
             self.subj = None
+        elif action_type.subj == "Listener" or type(project.subj) is str and project.subj == "Listener":
+            self.subj = speaker.name
         elif action_type.subj == "subject":
-            self.subj = project.subj.name
+            if type(project.subj) is str:
+                self.subj = project.subj
+            else:
+                self.subj = project.subj.name
         elif action_type.subj == "object":
             if project.obj is not None:
-                self.subj = project.obj.name
+                if type(project.obj) is str:
+                    self.subj = project.obj
+                else:
+                    self.subj = project.obj.name
             else:
                 self.subj = Sentence.embeddings.get_noun_from_verb(project.verb)
-        elif action_type.subj == "Listener":
-            self.subj = listeners[0].name
         elif action_type.subj == "Speaker":
             self.subj = speaker.name
         elif action_type.subj == "parent":
@@ -56,10 +62,11 @@ class Sentence:
         #"object"
         if project.obj is None:
             self.obj = None
-        elif action_type.obj == "object":
-            self.obj = project.obj.name
-        elif action_type.obj == "subject":
-            self.obj = project.subj.name
+        elif action_type.obj == "object" or action_type.obj == "subject":
+            if self.project.obj_type == "static":
+                self.obj = project.obj
+            else:
+                self.obj = project.obj.name
         elif action_type.obj == "attribute":
             self.obj = project.obj.name
             self.attribute = True
@@ -283,20 +290,21 @@ class Sentence:
         return as_list
 
     def get_synonym(self, word):
+        print(word)
         if word == "EVAL":
             appraisal = self.project.get_appraisal(self.speaker)
             #if not self.listener_agrees:
             #    appraisal = self.project.get_appraisal(self.listeners[0])
             options = Dictionary.evaluations_dictionary[appraisal.name]
-            return random.choices(options)[0]
+            return random.choice(options)
         if word in Dictionary.noun_dictionary:
-            return random.choices(Dictionary.noun_dictionary[word])[0]
+            return random.choice(Dictionary.noun_dictionary[word])
         if word in Dictionary.verb_dictionary:
             options = Dictionary.verb_dictionary[word]
-            return random.choices(options)[0]
+            return random.choice(options)
         if self.reversed and word in Dictionary.reversed_verb_dictionary:
             options = Dictionary.reversed_verb_dictionary[word]
-            return random.choices(options)[0]
+            return random.choice(options)
         return word
 
     def get_interrogative(self, case):

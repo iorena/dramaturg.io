@@ -23,6 +23,7 @@ class Dictionary:
         "kuulla": [("kuulla", "PAR")],
         "arvata": [("arvata", "NONE")],
         "puhua": [("puhua", "PAR")],
+        "sanoa": [("sanoa", "GEN")],
         "höpsiä": [("höpsiä", "NONE")],
         "syntyä": [("syntyä", "NONE")],
         "nimetä": [("nimetä", "GEN")],
@@ -31,7 +32,10 @@ class Dictionary:
         "rikkoa": [("rikkoa", "GEN")],
         "siivota": [("siivota", "GEN")],
         "myydä": [("myydä", "GEN")],
-        "tehdä": [("tehdä", "NONE")]
+        "tehdä": [("tehdä", "NONE")],
+        "tietää": [("tietää", "GEN")],
+        "ehdottaa": [("ehdottaa", "NOM")],
+        "kysyä": [("kysyä", "GEN")]
     }
 
     noun_dictionary = {

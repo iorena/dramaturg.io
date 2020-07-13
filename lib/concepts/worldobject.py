@@ -19,6 +19,8 @@ class WorldObject:
         return self.name
 
     def __eq__(self, other):
+        if type(other) is str:
+            return False
         return self.id == other.id
 
     def __hash__(self):

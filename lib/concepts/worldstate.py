@@ -29,26 +29,23 @@ class WorldState:
         self.appraisals = [WorldObject("horrible", 90), WorldObject("bad", 91), WorldObject("okay", 92), WorldObject("good", 93), WorldObject("great", 94)]
         self.weather_types = [WorldObject("sunny", 95), WorldObject("cloudy", 96), WorldObject("rainy", 97), WorldObject("stormy", 98)]
         self.locations = [Location(), Location()]
-        self.characters = [Character(self.locations[0], personalities[0]), Character(self.locations[1], personalities[1]), Character(self.locations[0], None, self.embeddings.get_relative())]
+        self.characters = [Character(self.locations[0], personalities[0]), Character(self.locations[1], personalities[1]), Character(self.locations[1], None), Character(self.locations[0], None, self.embeddings.get_relative())]
         self.objects = [WorldObject(self.embeddings.get_inheritance_object())]
         self.inheritance_object = self.objects[0]
-        self.dead_relative = self.characters[2]
+        self.dead_relative = self.characters[3]
         for obj in self.objects:
-            owner = self.characters[2]
+            owner = self.characters[3]
             obj.set_owner(owner)
             obj.set_location(owner.attributes["location"])
         self.weather = WorldObject("sää", 95)
         #set relationships
         for char in self.characters:
-            if char is self.characters[0]:
-                pass
-            else:
-                self.characters[0].set_relation(char, relationships[0])
-        for char in self.characters:
-            if char is self.characters[1]:
-                pass
-            else:
-                self.characters[1].set_relation(char, relationships[1])
+            for other_char in self.characters:
+                if char == other_char:
+                    pass
+                char.set_relation(other_char, None)
+        self.characters[0].set_relation(self.characters[1], relationships[0])
+        self.characters[1].set_relation(self.characters[0], relationships[1])
 
     def __str__(self):
         return f"Locations: {', '.join(map(str, self.locations))}\nCharacters: {', '.join(map(str, self.characters))}"

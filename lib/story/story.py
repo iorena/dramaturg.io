@@ -62,12 +62,13 @@ class Story:
         and plot must be furthered
         Todo: not all introductions must be done before any plot points are handled
         """
-        situation_list = SituationGrammar().create_situations()
+        self.situation_list = SituationGrammar().create_situations()
         situations = []
         main_char = self.world_state.characters[0]
         other_char = self.world_state.characters[1]
+        third_char = self.world_state.characters[2]
         chars = [main_char, other_char]
-        print(situation_list)
+        print(self.situation_list)
 
         main_project = Project(self.world_state.inheritance_object, "olla", ("obj", self.world_state.get_object_by_name("juures")), "statement", "prees", 1)
 
@@ -78,14 +79,14 @@ class Story:
             "none": None,
             "main_project": main_project,
             "prev_project": a_project,
-            "boredom_project": Project(main_char, "olla", ("static", self.world_state.get_object_by_name("kyllästynyt")), "statement", "prees", 1),
-            "dismissal_project": Project(other_char, "mennä", ("static", self.world_state.get_object_by_name("pois")), "proposal", "prees", 1),
-            "reward_project": Project(other_char, "olla", ("static", self.world_state.get_object_by_name("kiitollinen")), "statement", "prees", 1)
+            "boredom_project": Project(other_char, "olla", ("static", "kyllästynyt"), "statement", "prees", 1),
+            "dismissal_project": Project(main_char, "mennä", ("static", "pois"), "proposal", "prees", 1),
+            "look_up_to_project": main_project.get_look_up_to_project(),
+            "complain_project": main_project.get_complain_project(),
+            "reward_project": Project(other_char, "olla", ("static", "kiitollinen"), "statement", "prees", 1)
         }
 
-        for sit in situation_list:
-
-            relative_died_project = Project(self.world_state.dead_relative, first_verb, (None, None),  "statement", "perf", 1)
+        for sit in self.situation_list:
 
             projects["prev_project"] = a_project
             a_project = projects[self.situation_rules[sit]["a_project"]]
@@ -96,6 +97,11 @@ class Story:
                 main_char.set_goal(a_project)
             if b_project is not None:
                 other_char.set_goal(b_project)
+
+            if sit == "lie_for":
+                chars = [main_char, third_char]
+            else:
+                chars = [main_char, other_char]
 
             #todo: set memories?
 

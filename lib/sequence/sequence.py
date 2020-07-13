@@ -15,8 +15,9 @@ EXPANSIONS = load_expansion_types()
 
 
 class Sequence():
-    def __init__(self, speaker_i, project, seq_type, surprise, action_types, world_state, parent=None):
-        self.speakers = world_state.characters[:2]
+    def __init__(self, speakers, speaker_i, project, seq_type, surprise, action_types, world_state, parent=None):
+        #todo: fix
+        self.speakers = speakers
         self.speaker_i = speaker_i
         self.reacter_i = 0 if speaker_i == 1 else 1
         self.project = project
@@ -68,7 +69,7 @@ class Sequence():
             #personal = "personal" if project.subj is Character else "impersonal"
             sequence_type = "SYLL"
             prev = self.parent
-            return Sequence(self.reacter_i, surprise_project, sequence_type, False, self.action_types, self.world_state, prev)
+            return Sequence(self.speakers, self.reacter_i, surprise_project, sequence_type, False, self.action_types, self.world_state, prev)
 
         #toggle expansions (other than surprise) on or off
         # return None
@@ -98,6 +99,8 @@ class Sequence():
                 if self.project.obj:
                     target = self.project.obj
                     # todo: how to handle emotions? asking "mikä surullinen?" doesn')t really make sense, does it?
+                    if type(target) is str:
+                        return None
                     attributes = list(target.attributes.items())
                     if len(attributes) is 0:
                         return None
@@ -105,7 +108,7 @@ class Sequence():
                         attribute = random.choices(attributes)[0]
 
                     new_project = Project(target, "olla", attribute, "expansion", "present", 0.2)
-            expansion = Sequence(speaker_i, new_project, new_seq_type, False, self.action_types, self.world_state, parent)
+            expansion = Sequence(self.speakers, speaker_i, new_project, new_seq_type, False, self.action_types, self.world_state, parent)
         return expansion
 
     def generate_pair_part(self, speaker_i, action_name, reverse):
@@ -113,6 +116,7 @@ class Sequence():
         if action_name == "TOI":
             if self.parent is None:
                 print("parent is none", self.project.subj, self.project.verb, self.project.obj)
+            print(self.action_types)
             action_type = self.action_types[self.parent.action_type.name]
         else:
             #print("action name", action_name)
@@ -139,6 +143,7 @@ class Sequence():
         reacter_i = 0 if speaker_i == 1 else 1
         other_char = self.speakers[reacter_i]
         target_mood = self.speakers[speaker_i].relations[other_char.name]
+        print(other_char.name)
         current_mood = self.speakers[speaker_i].perception.get_object_by_name(other_char.name).mood
         best = pool[0]
         smallest_mood_diff = 9001.0

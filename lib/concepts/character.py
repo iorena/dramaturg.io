@@ -10,7 +10,7 @@ alive = WorldObject("alive", 100)
 
 class Character:
     id_counter = 0
-    names = ["Pekka", "Kalle"]
+    names = ["Pekka", "Kalle", "Maija"]
 
     def __init__(self, location, personality=None, name=None):
         self.id = Character.id_counter

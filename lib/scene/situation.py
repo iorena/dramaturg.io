@@ -11,13 +11,12 @@ EMOTIONS = load_emotions()
 from numpy import array
 from numpy.linalg import norm
 
-SEQUENCE_TYPES = {"proposal": "STOP", "statement": "SVÄI", "surprise": "SYLL"}
+SEQUENCE_TYPES = {"proposal": "STOP", "statement": "SVÄI", "surprise": "SYLL", "question": "SKYS"}
 
 
 class Situation:
     def __init__(self, world_state, embeddings, speakers, rules, location):
         self.world_state = world_state
-        print("length:", len(self.world_state.objects))
         self.embeddings = embeddings
         self.speakers = speakers
         self.location = location
@@ -72,13 +71,13 @@ class Situation:
 
     def get_new_sequence(self, project, speaker_i, surprise):
         #todo: expansions
-        speaker = self.world_state.characters[speaker_i]
+        speaker = self.speakers[speaker_i]
         personal = "personal" if project.subj is Character else "impersonal"
         sequence_type = SEQUENCE_TYPES[project.proj_type]
         if len(self.sequences) == 0:
             sequence_type = "STER"
         prev = None if len(self.sequences) is 0 else self.sequences[-1]
-        return Sequence(speaker_i, project, sequence_type, surprise, self.action_types, self.world_state, prev)
+        return Sequence(self.speakers, speaker_i, project, sequence_type, surprise, self.action_types, self.world_state, prev)
 
     def to_json(self):
         return self.sequences

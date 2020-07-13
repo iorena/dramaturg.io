@@ -149,6 +149,24 @@ class Project:
 
         return project
 
+
+    def get_action_word(self, proj_type):
+        words = {
+            "statement": "sanoa",
+            "proposal": "ehdottaa",
+            "question": "kysyä"
+        }
+        return words[proj_type]
+
+
+    def get_complain_project(self):
+        return Project("Listener", self.get_action_word(self.proj_type), ("obj", self.subj), "question", "present", 1)
+
+
+    def get_look_up_to_project(self):
+        return Project("Listener", "tietää", ("static", "niin paljon"), "statement", "present", 1)
+
+
     def get_hello_project(speakers):
         #same place
         if speakers[0].attributes["location"] == speakers[1].attributes["location"]:
@@ -156,4 +174,3 @@ class Project:
         #different place -> phone call
         else:
             return Project(speakers[0], "soittaa", ("character", speakers[1]),  "statement", "past", 0.2)
-
