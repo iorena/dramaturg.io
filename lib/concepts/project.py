@@ -73,7 +73,6 @@ class Project:
             return True
 
         agreement = True
-
         if self.proj_type == "proposal":
             for goal in speakers[listener_i].goals:
                 if self.is_in_conflict_with(goal):
@@ -115,9 +114,10 @@ class Project:
 
     def get_surprise_project(self):
         #todo: happy surprise or sad surprise?
+        #todo: make more surprise projects for new verbs
         if self.verb == "kuolla":
             verb = "sairastua"
-        elif self.verb == "ottaa":
+        elif self.verb == "ottaa" or self.verb == "mennä":
             verb = "haluta"
         else:
             verb = self.verb

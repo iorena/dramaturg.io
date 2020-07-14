@@ -69,6 +69,15 @@ class Dictionary:
         "horrible": ["ei helvetti", "perkele", "ei voi olla totta"]
     }
 
+    valence_dictionary = {
+        "NEWS": ["minulla on huonoja uutisia", "minulla on hyviä uutisia"],
+        "INSULT": ["senkin pahanilmanlintu", "hyvä kuulla"],
+        "SORRY": ["olen pahoillani", "eikö olekin hienoa ?"],
+        "WORRY": ["älä huoli", "pelkään pahoin, että"],
+        "LUCK": ["onneksi", "valitettavasti"],
+        "FEAR": ["pelkäsinkin jotain tällaista", "toivoinkin, että näin kävisi"]
+    }
+
     explicatives_dictionary = {
         "pos": {
             "tosi": [1, 1, 0],

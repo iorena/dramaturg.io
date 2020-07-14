@@ -48,7 +48,7 @@ TORB	TRUE	FALSE	None	None	None	None	INVD	prees	FALSE	ei kuulu sinulle	None
 VÄI+++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Minulla on kerrottavaa.	None
 VÄI++-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	En halua häiritä, mutta minun pitäisi kertoa sinulle että	None
 VÄI+-+	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Kuule	None
-VÄI-++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Minulla on huonoja uutisia	None
+VÄI-++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	NEWS	None
 VÄI+--	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Hei	None
 VÄI-+-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Et varmaan usko tätä mutta	Mitä me nyt tehdään
 VÄI--+	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Kuule	None
@@ -63,11 +63,11 @@ KOB	FALSE	TRUE	subject	None	None	None	INDV	prees	FALSE	interrogative	None
 KOBV	FALSE	FALSE	subject	None	attribute	None	INDV	prees	FALSE	None	None
 MYÖ+++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	hyvä on	None
 MYÖ++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kiitos kun kerroit minulle	None
-MYÖ+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	aavistinkin jotain tällaista	None
+MYÖ+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	FEAR	None
 MYÖ-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	miksi kerrot tästä vasta nyt ?	None
 MYÖ+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	jep	None
 MYÖ-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	se tästä vielä puuttuikin	None
-MYÖ--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	senkin pahanilmanlintu	None
+MYÖ--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	INSULT	None
 MYÖ---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	EVAL	None
 KII+++	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	sinun täytyy olla erehtynyt	None
 KII++-	TRUE	FALSE	subject	project	object	voida	INDV	project	FALSE	None	None
@@ -94,7 +94,7 @@ VYL++-	FALSE	FALSE	subject	project	object	None	INDV	perf	FALSE	valitettavasti en
 VYL+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	niinhän minä sanoin	None
 VYL-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuulit kyllä mitä sanoin	None
 VYL+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	näin se valitettavasti on.	None
-VYL-+-	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	olen pahoillani	viime viikolla
+VYL-+-	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	SORRY	viime viikolla
 VYL--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuulit kyllä	None
 VYL---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	niin	None
 KYS+++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	kerrohan onko totta että	None
@@ -115,9 +115,9 @@ VASM--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kyllä	None
 VASM---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	joo	None
 VASK+++	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	ei suinkaan,	None
 VASK++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei ainakaan minun tietääkseni	None
-VASK+-+	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	älä huoli	None
+VASK+-+	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	WORRY	None
 VASK-++	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	no	, mitä oikein kuvittelet ?
-VASK+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei onneksi !	None
+VASK+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei	LUCK
 VASK-+-	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	None	. tai jos on, niin minulle ei ole kerrottu
 VASK--+	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	no	None
 VASK---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei	None
