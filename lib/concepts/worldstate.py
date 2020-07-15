@@ -26,6 +26,7 @@ class WorldState:
 
     def initialize_story_world(self, embeddings, personalities, relationships):
         self.embeddings = embeddings
+        self.alive = WorldObject("alive", 100)
         self.appraisals = [WorldObject("horrible", 90), WorldObject("bad", 91), WorldObject("okay", 92), WorldObject("good", 93), WorldObject("great", 94)]
         self.weather_types = [WorldObject("sunny", 95), WorldObject("cloudy", 96), WorldObject("rainy", 97), WorldObject("stormy", 98)]
         self.locations = [Location(), Location()]
@@ -92,7 +93,7 @@ class WorldState:
             return self.weather_types[obj.id - 95]
         if obj in self.appraisals:
             return obj
-        elif type(obj) is WorldObject:
+        if type(obj) is WorldObject:
             print(obj, obj.id)
             return self.objects[obj.id]
         return obj

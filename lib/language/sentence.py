@@ -21,6 +21,7 @@ class Sentence:
         self.attribute = False
         self.project = project
         self.hesitation = hesitation
+        self.add_add = None
         #subject
         if project.subj is None:
             self.subj = None
@@ -53,6 +54,7 @@ class Sentence:
             self.verb = project.verb
         else:
             self.verb = action_type.verb
+
         self.verb_realization = None
         if action_type.tempus == "project":
             self.tempus = project.time
@@ -77,6 +79,7 @@ class Sentence:
         else:
             self.obj = action_type.obj
 
+        ### exceptions ###
         #you can't command yourself, so instead you command the other person to do the action for you
         self.reversed = reverse
         if self.reversed and self.subj == speaker.name:
@@ -88,6 +91,17 @@ class Sentence:
         self.action_type = action_type
         self.inflected = self.get_inflected_sentence()
         self.styled = self.get_styled_sentence()
+
+        #can't be surprised by own want -> change to other's want of something done by self
+        #doesn't work, dunno why
+        if self.action_type.name[:3] == "YLL" and self.verb == "haluta":
+            self.add_add = self.obj
+            self.subj = self.listeners[0].name
+            self.obj = self.speaker.name
+        elif self.action_type.name[:3] == "VYL" and self.verb == "haluta":
+            self.add_add = self.obj
+            self.subj = self.speaker.name
+            self.obj = self.listeners[0].name
 
     def get_inflected_sentence(self):
         #if there is no verb, skip creating a verb "pharse" with syntaxmaker and just pile words in a list
@@ -135,6 +149,9 @@ class Sentence:
                 obj = as_list.pop()
                 obj_i = inflect(obj, "N", {"PERS": "3", "CASE": obj_case, "NUM": "SG"})
                 as_list.append(obj_i)
+
+            if self.add_add is not None:
+                as_list.append(self.add_add)
 
             if self.action_type.post_add is not None:
                 post_add = random.choices(self.action_type.post_add)[0]
@@ -283,6 +300,11 @@ class Sentence:
         #remove null subject
         if "null" in as_list:
             as_list.remove("null")
+
+        #remove "lienyt", thanks syntaxmaker
+        if "lienyt" in as_list:
+            as_list.insert(as_list.index("lienyt"), "ollut")
+            as_list.remove("lienyt")
 
         if self.action_type.ques:
             as_list.append("?")

@@ -116,6 +116,7 @@ class Sequence():
         if action_name == "TOI":
             if self.parent is None:
                 print("parent is none", self.project.subj, self.project.verb, self.project.obj)
+                return None
             print(self.action_types)
             action_type = self.action_types[self.parent.action_type.name]
         else:
