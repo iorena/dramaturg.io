@@ -105,19 +105,19 @@ KYS+--	FALSE	TRUE	subject	project	object	None	INDV	project	FALSE	hei	None
 KYS-+-	FALSE	TRUE	subject	project	object	None	INDV	project	FALSE	None	vai mitä ihmettä
 KYS--+	FALSE	TRUE	subject	project	object	None	INDV	project	FALSE	None	häh
 KYS---	FALSE	TRUE	subject	project	object	None	INDV	project	FALSE	None	None
-VASM+++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	juuri niin	None
-VASM++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kyllä, asia on juuri näin	None
-VASM+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	jep, näin on	None
-VASM-++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	etkö tiennyt? Kyllä,	None
-VASM+--	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	joo	None
-VASM-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	joo. Mistä tiesit?	None
-VASM--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kyllä	None
-VASM---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	joo	None
-VASK+++	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	ei suinkaan,	None
-VASK++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei ainakaan minun tietääkseni	None
-VASK+-+	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	WORRY	None
-VASK-++	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	no	, mitä oikein kuvittelet ?
-VASK+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei	LUCK
-VASK-+-	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	None	. tai jos on, niin minulle ei ole kerrottu
-VASK--+	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	no	None
-VASK---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei	None
+VSM+++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	juuri niin	None
+VSM++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kyllä, asia on juuri näin	None
+VSM+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	jep, näin on	None
+VSM-++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	etkö tiennyt? Kyllä,	None
+VSM+--	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	joo	None
+VSM-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	joo. Mistä tiesit?	None
+VSM--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kyllä	None
+VSM---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	joo	None
+VSK+++	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	ei suinkaan,	None
+VSK++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei ainakaan minun tietääkseni	None
+VSK+-+	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	WORRY	None
+VSK-++	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	no	, mitä oikein kuvittelet ?
+VSK+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei	LUCK
+VSK-+-	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	None	. tai jos on, niin minulle ei ole kerrottu
+VSK--+	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	no	None
+VSK---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei	None
