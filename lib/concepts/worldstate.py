@@ -93,6 +93,8 @@ class WorldState:
             return self.weather_types[obj.id - 95]
         if obj in self.appraisals:
             return obj
+        if obj.id == 100:
+            return self.alive
         if type(obj) is WorldObject:
             print(obj, obj.id)
             return self.objects[obj.id]
