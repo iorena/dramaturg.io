@@ -32,10 +32,10 @@ class Story:
 
     #must create all worldobjects before giving characters unique perceptions
     def create_objects(self):
-        self.world_state.get_object_by_name("kyllästynyt")
-        self.world_state.get_object_by_name("kiitollinen")
-        self.world_state.get_object_by_name("juures")
-        self.world_state.get_object_by_name("pois")
+        self.world_state.create_object("kyllästynyt", 0)
+        self.world_state.create_object("kiitollinen", 4)
+        self.world_state.create_object("juures", 4)
+        self.world_state.create_object("pois", 0)
 
     def get_title(self):
         bow = {}

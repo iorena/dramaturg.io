@@ -17,6 +17,7 @@ class WorldState:
             self.initialize_story_world(embeddings, personalities, relationships)
         else:
             self.embeddings = embeddings
+            self.alive = old.alive
             self.appraisals = old.appraisals
             self.locations = old.locations
             self.characters = old.characters
@@ -64,6 +65,12 @@ class WorldState:
             if other.characters[i].attributes != self.characters[i].attributes:
                 return False
         return True
+
+    def create_object(self, name, appraisal):
+        new_object = WorldObject(name)
+        new_object.set_appraisal(self.appraisals[appraisal])
+        self.objects.append(new_object)
+
 
     def get_object_by_name(self, name):
         locs = [loc.name for loc in self.locations]

@@ -62,9 +62,14 @@ class Character:
 
     def set_random_perceptions(self, world_state):
         world_state = copy.deepcopy(world_state)
-        #todo: should we check and change only objects that don't have an appraisal yet?
+
         for obj in world_state.objects:
-            obj.attributes["appraisal"] = world_state.appraisals[0]
+            #some objects have static appraisals
+            if "appraisal" not in obj.attributes:
+                obj.attributes["appraisal"] = world_state.appraisals[0]
+                print("changed", obj)
+            else:
+                print("not changed", obj)
         for obj in world_state.weather_types:
             obj.attributes["appraisal"] = random.choices(world_state.appraisals)[0]
         for obj in world_state.locations:

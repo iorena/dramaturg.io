@@ -29,5 +29,8 @@ class WorldObject:
     def set_owner(self, owner):
         self.attributes["owner"] = owner
 
+    def set_appraisal(self, appraisal):
+        self.attributes["appraisal"] = appraisal
+
     def set_location(self, location):
         self.attributes["location"] = location

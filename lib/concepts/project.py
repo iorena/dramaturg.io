@@ -25,13 +25,16 @@ class Project:
         return self.subj == other.subj and self.verb == other.verb and self.obj == other.obj and self.obj_type == other.obj_type and self.proj_type == other.proj_type
 
     def get_appraisal(self, character):
+        #death is always bad
         if self.verb == "kuolla":
             return WorldObject(APPRAISALS[0], 90)
         if self.obj_type is "owner":
             #todo: shouldn't this be the appraisal of the object owned?
             return WorldObject(APPRAISALS[3], 93)
-        elif type(self.obj) in [WorldObject, Location]:
+        if type(self.obj) in [WorldObject, Location]:
             return character.perception.get_object(self.obj).attributes["appraisal"]
+        if type(self.obj) is str:
+            return character.perception.get_object_by_name(self.obj).attributes["appraisal"]
         return WorldObject(APPRAISALS[2], 92)
 
     def get_emotional_effect(self, character):
