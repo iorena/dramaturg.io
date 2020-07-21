@@ -23,8 +23,8 @@ TOP+-+	FALSE	TRUE	subject	project	object	voida, haluta	COND	prees	FALSE	None	Non
 TOP-++	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	ja sinulla ei ole siihen mitään sanomista
 TOP+--	FALSE	FALSE	subject	project	object	None	COND	prees	FALSE	sopisiko sinulle mitenkään, että	None
 TOP-+-	FALSE	FALSE	subject	project	object	täytyä	COND	prees	FALSE	None	None
-TOP--+	FALSE	FALSE	object	kuulua	subject	None	INDV	prees	FALSE	None	None
-TOP---	FALSE	FALSE	object	None	None	None	INDV	None	FALSE	None	tänne
+TOP--+	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
+TOP---	FALSE	FALSE	object	None	None	None	INDV	None	FALSE	None	None
 TOPB	FALSE	TRUE	subject	project	object	haluta	COND	prees	FALSE	None	None
 TOE	FALSE	FALSE	subject	project	object	voida,haluta	COND	prees	FALSE	None	None
 TOEB	FALSE	FALSE	subject	project	object	None	COND	prees	FALSE	None	None;nyt
@@ -109,15 +109,15 @@ VSM+++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	juuri niin	Non
 VSM++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kyllä, asia on juuri näin	None
 VSM+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	jep, näin on	None
 VSM-++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	etkö tiennyt? Kyllä,	None
-VSM+--	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	joo	None
+VSM+--	FALSE	FALSE	subject	isolated	object	None	INDV	None	FALSE	joo,	None
 VSM-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	joo. Mistä tiesit?	None
 VSM--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kyllä	None
 VSM---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	joo	None
 VSK+++	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	ei suinkaan,	None
 VSK++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei ainakaan minun tietääkseni	None
-VSK+-+	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	WORRY	None
-VSK-++	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	no	, mitä oikein kuvittelet ?
+VSK+-+	FALSE	FALSE	subject	isolated	object	None	INDV	None	FALSE	WORRY	None
+VSK-++	FALSE	FALSE	subject	isolated	object	None	INDV	None	FALSE	no	, mitä oikein kuvittelet ?
 VSK+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei	LUCK
-VSK-+-	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	None	. tai jos on, niin minulle ei ole kerrottu
-VSK--+	FALSE	FALSE	None	isolated	None	None	INDV	None	FALSE	no	None
+VSK-+-	FALSE	FALSE	subject	isolated	object	None	INDV	None	FALSE	None	. tai jos on, niin minulle ei ole kerrottu
+VSK--+	FALSE	FALSE	subject	isolated	object	None	INDV	None	FALSE	no	None
 VSK---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei	None

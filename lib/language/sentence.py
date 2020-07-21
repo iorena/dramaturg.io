@@ -50,12 +50,13 @@ class Sentence:
             self.subj = action_type.subj
 
         #verb
-        if action_type.verb == "project":
+        if action_type.verb == "project" or action_type.verb == "isolated":
             self.verb = project.verb
         else:
             self.verb = action_type.verb
 
         self.verb_realization = None
+
         if action_type.tempus == "project":
             self.tempus = project.time
         else:
@@ -104,6 +105,7 @@ class Sentence:
             self.obj = self.listeners[0].name
 
     def get_inflected_sentence(self):
+
         #if there is no verb, skip creating a verb "pharse" with syntaxmaker and just pile words in a list
         if self.verb is None:
             if self.subj is None:
@@ -133,14 +135,7 @@ class Sentence:
                 obj = self.get_synonym(self.obj)
                 as_list.insert(0, obj)
 
-            if self.action_type.pre_add is not None:
-                pre_add = random.choices(self.action_type.pre_add)[0]
-                if pre_add == "interrogative":
-                    add = self.get_interrogative("NOM")
-                else:
-                    add = self.get_synonym(pre_add)
-                if add != "None":
-                    as_list.insert(0, add)
+            as_list = self.add_pre_add(as_list)
 
             if len(as_list) > 0 and self.action_type.name in ["TIAB+", "TIAB-"]:
                 obj_case = self.get_synonym(self.project.verb)[1]
@@ -153,14 +148,7 @@ class Sentence:
             if self.add_add is not None:
                 as_list.append(self.add_add)
 
-            if self.action_type.post_add is not None:
-                post_add = random.choices(self.action_type.post_add)[0]
-                if post_add == "interrogative":
-                    add = self.get_interrogative("NOM")
-                else:
-                    add = self.get_synonym(post_add)
-                if add != "None":
-                    as_list.append(add)
+            as_list = self.add_post_add(as_list)
 
             if self.action_type.ques:
                 as_list.append("?")
@@ -171,6 +159,7 @@ class Sentence:
             vp = create_copula_phrase()
         else:
             self.verb_realization = self.get_synonym(self.verb)
+
             vp = create_verb_pharse(self.verb_realization[0])
 
         mood = self.action_type.modus
@@ -189,6 +178,10 @@ class Sentence:
         else:
             person = "3"
             vp.components["subject"] = create_phrase("NP", self.get_synonym(self.subj))
+
+        #if verb is isolated, return just that (+ adds)
+        if self.action_type.verb == "isolated":
+            return self.get_isolated_verb(vp)
 
         obj_case = "NOM"
         #check "object"
@@ -281,21 +274,8 @@ class Sentence:
         if self.obj == "demonstrative":
             as_list.insert(0, self.get_demonstrative(obj_case))
 
-        if self.action_type.pre_add is not None:
-            pre_add = random.choices(self.action_type.pre_add)[0]
-            if pre_add == "interrogative":
-                add = self.get_interrogative("NOM")
-            else:
-                add = self.get_synonym(pre_add)
-            if add != "None":
-                as_list.insert(0, add)
-            if self.action_type.name in ["TOTN", "TIA+", "SAM-KAN", "MYÖ", "KII"] and self.speaker.mood.arousal < random.uniform(-0.5, 0.5):
-                as_list = [add]
-        if self.action_type.post_add is not None:
-            post_add = random.choices(self.action_type.post_add)[0]
-            add = self.get_synonym(post_add)
-            if add != "None":
-                as_list.append(add)
+        as_list = self.add_pre_add(as_list)
+        as_list = self.add_post_add(as_list)
 
         #remove null subject
         if "null" in as_list:
@@ -382,9 +362,36 @@ class Sentence:
             return "tästä"
         return "tämä"
 
-    def get_isolated_verb(self):
-        #todo: implement function that returns "on" or "ole" (negated) for "äiti on kuollut" project
-        return ""
+    def add_pre_add(self, as_list):
+        if self.action_type.pre_add is not None:
+            pre_add = random.choices(self.action_type.pre_add)[0]
+            if pre_add == "interrogative":
+                add = self.get_interrogative("NOM")
+            else:
+                add = self.get_synonym(pre_add)
+            if add != "None":
+                as_list.insert(0, add)
+            if self.action_type.name in ["TOTN", "TIA+", "SAM-KAN", "MYÖ", "KII"] and self.speaker.mood.arousal < random.uniform(-0.5, 0.5):
+                as_list = [add]
+        return as_list
+
+    def add_post_add(self, as_list):
+        if self.action_type.post_add is not None:
+            post_add = random.choices(self.action_type.post_add)[0]
+            if post_add == "interrogative":
+                add = self.get_interrogative("NOM")
+            else:
+                add = self.get_synonym(post_add)
+            if add != "None":
+                as_list.append(add)
+        return as_list
+
+
+    def get_isolated_verb(self, vp):
+        # returns verb inflected but without subject or object
+        as_list = vp.to_string().split()
+        del as_list[0]
+        return self.add_post_add(self.add_pre_add(as_list))
 
     def get_explicative(self, mood):
         valence = "pos" if not self.action_type.neg else "neg"

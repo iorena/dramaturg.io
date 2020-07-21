@@ -66,7 +66,7 @@ class Dictionary:
         "good": ["hyvä", "hienoa", "jee"],
         "okay": ["okei", "selvä", "jep"],
         "bad": ["pahus", "hitto", "eikä"],
-        "horrible": ["ei helvetti", "perkele", "ei voi olla totta"]
+        "horrible": ["ei helvetti", "perkele"]
     }
 
     valence_dictionary = {
