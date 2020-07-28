@@ -121,3 +121,35 @@ VSK+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei	LUCK
 VSK-+-	FALSE	FALSE	subject	isolated	object	None	INDV	None	FALSE	None	. tai jos on, niin minulle ei ole kerrottu
 VSK--+	FALSE	FALSE	subject	isolated	object	None	INDV	None	FALSE	no	None
 VSK---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei	None
+MMU+++	FALSE	FALSE	subject	isolated	object	None	INDV	project	FALSE	nyt	- sehän on aivan selvää
+MMU++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	taidat sittenkin olla oikeassa	None
+MMU+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	olet oikeassa, kiitos	None
+MMU-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kyllä, kyllä, ei tarvitse jankata	None
+MMU+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	niinkös se olikin	None
+MMU-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ei hitto, olet oikeassa	None
+MMU--+	FALSE	FALSE	subject	isolated	object	None	INDV	project	FALSE	aivan,	None
+MMU---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	niin kai sitten	None
+MMK+++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	olen iloinen, että arvostat sitä	None
+MMK++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	jep! Olen niin helpottunut, että olet samaa mieltä	None
+MMK+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mahtavaa, että ymmärrät	None
+MMK-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	no niin, tajusithan sinä vihdoin	None
+MMK+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	hienoa, vai mitä?	None
+MMK-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	sitähän minä olen yrittänyt sanoa	None
+MMK--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	vihdoin ymmärsit	None
+MMK---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	niimpä	None
+PVT+++	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	, minulla olisi asiaa
+PVT++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	hei, minulla olisi asiaa, jos viitsit kuunnella	None
+PVT+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	hei, arvaa mitä	None
+PVT-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuuntelepa nyt hetki	None
+PVT+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuuntelisitko hetken?	None
+PVT-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	minulla olisi yksi juttu	None
+PVT--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuulepas nyt	None
+PVT---	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	hei,	None
+PVK+++	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	ihmeessä, haluan kuulla tämän
+PVK++-	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	, kuuntelen mielelläni
+PVK+-+	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	toki
+PVK-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	no mitä nyt taas?	None
+PVK+--	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	vaan
+PVK-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	toivottavasti ei mitään pahaa	None
+PVK--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	no?	None
+PVK---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mitä?	None

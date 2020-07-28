@@ -25,8 +25,8 @@ class Sequence():
         self.action_types = action_types
         self.parent = parent
         self.world_state = world_state
-        agreement = self.project.listener_agrees(self.speakers, self.speaker_i, self.reacter_i)
-        self.pair_types = POS_SEQUENCES if agreement else NEG_SEQUENCES
+        self.agreement = self.project.listener_agrees(self.speakers, self.speaker_i, self.reacter_i)
+        self.pair_types = POS_SEQUENCES if self.agreement else NEG_SEQUENCES
         self.surprise = False
         if surprise:
             self.surprise = True
@@ -58,20 +58,32 @@ class Sequence():
             for turn in self.post_expansion.turns:
                 self.turns.append(turn)
 
-        if agreement and self.project.proj_type in ["proposal", "statement"]:
+        if self.agreement and self.project.proj_type in ["proposal", "statement"]:
             self.speakers[self.speaker_i].resolve_goal(self.project)
 
 
     def generate_expansion(self, position, parent, switch_speakers=False):
+        ### fixed expansions
+        # surprise
         if position == "infix_expansions" and self.surprise:
             surprise_project = self.project.get_surprise_project()
             #todo: weight sequence type by mood?
             #personal = "personal" if project.subj is Character else "impersonal"
             sequence_type = "SYLL"
-            prev = self.parent
-            return Sequence(self.speakers, self.reacter_i, surprise_project, sequence_type, False, self.action_types, self.world_state, prev)
+            return Sequence(self.speakers, self.reacter_i, surprise_project, sequence_type, False, self.action_types, self.world_state, self)
+        # change of opinion
+        elif position == "infix_expansions" and self.project.proj_type in ["statement", "proposal"] and self.agreement and self.parent and not self.parent.agreement:
+            change_project = Project.get_change_project(self.speakers[self.speaker_i])
+            sequence_type = "SMMU"
+            return Sequence(self.speakers, self.reacter_i, change_project, sequence_type, False, self.action_types, self.world_state, self)
+        # topic pivot
+        elif position == "pre_expansions" and self.parent is None and self.project.proj_type not in ["hello"]:
+            pivot_project = Project.get_pivot_project(self.speakers[self.reacter_i])
+            sequence_type = "SPVT"
+            return Sequence(self.speakers, self.speaker_i, pivot_project, sequence_type, False, self.action_types, self.world_state, self)
 
-        #toggle expansions (other than surprise) on or off
+        ### other expansions
+        #toggle other expansions on or off
         # return None
 
         if switch_speakers:
@@ -108,7 +120,7 @@ class Sequence():
                         attribute = random.choices(attributes)[0]
 
                     new_project = Project(target, "olla", attribute, "expansion", "present", 0.2)
-            expansion = Sequence(self.speakers, speaker_i, new_project, new_seq_type, False, self.action_types, self.world_state, parent)
+            expansion = Sequence(self.speakers, speaker_i, new_project, new_seq_type, False, self.action_types, self.world_state, self.parent)
         return expansion
 
     def generate_pair_part(self, speaker_i, action_name, reverse):
@@ -118,7 +130,7 @@ class Sequence():
                 print("parent is none", self.project.subj, self.project.verb, self.project.obj)
                 return None
             print(self.action_types)
-            action_type = self.action_types[self.parent.action_type.name]
+            action_type = self.action_types[self.parent.first_pair_part.action_type.name]
         else:
             #print("action name", action_name)
             action_types_pool = [act_name for act_name in self.action_types.values() if act_name.class_name == action_name and act_name.can_use(self.speakers[speaker_i].mood)]

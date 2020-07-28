@@ -76,7 +76,7 @@ class Project:
         return False
 
     def listener_agrees(self, speakers, speaker_i, listener_i):
-        if self.proj_type in ["surprise", "expansion"]:
+        if self.proj_type in ["surprise", "expansion", "pivot", "hello", "change"]:
             return True
 
         agreement = True
@@ -177,7 +177,13 @@ class Project:
     def get_hello_project(speakers):
         #same place
         if speakers[0].attributes["location"] == speakers[1].attributes["location"]:
-            return Project(speakers[0], "tehdä", ("location", speakers[0].attributes["location"]), "statement", "present", 0.2)
+            return Project(speakers[0], "tehdä", ("location", speakers[0].attributes["location"]), "hello", "present", 0.2)
         #different place -> phone call
         else:
-            return Project(speakers[0], "soittaa", ("character", speakers[1]),  "statement", "past", 0.2)
+            return Project(speakers[0], "soittaa", ("character", speakers[1]),  "hello", "past", 0.2)
+
+    def get_change_project(speaker):
+        return Project(speaker, "ymmärtää", (None, None), "change", "present", 0.1)
+
+    def get_pivot_project(listener):
+        return Project(listener, "kuunnella", (None, None), "pivot", "present", 0.1)

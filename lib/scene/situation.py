@@ -11,7 +11,7 @@ EMOTIONS = load_emotions()
 from numpy import array
 from numpy.linalg import norm
 
-SEQUENCE_TYPES = {"proposal": "STOP", "statement": "SVÄI", "surprise": "SYLL", "question": "SKYS"}
+SEQUENCE_TYPES = {"proposal": "STOP", "statement": "SVÄI", "surprise": "SYLL", "question": "SKYS", "pivot": "SPVT", "change": "SMMU", "hello": "STER"}
 
 
 class Situation:
@@ -46,9 +46,6 @@ class Situation:
         """
         Generates sequences for each project
         """
-        hello_project = Project.get_hello_project(self.speakers)
-        #todo: can be surprised by hello?
-        self.sequences.append(self.get_new_sequence(hello_project, 0, False))
         while len(self.speakers[0].goals) > 0 or len(self.speakers[1].goals) > 0:
             #higher dominance gets to speak
 
@@ -68,15 +65,17 @@ class Situation:
             if project.get_surprise(reacter):
                 surprise = True
             self.sequences.append(self.get_new_sequence(project, speaker_i, surprise))
+        # add hello sequence
+        hello_project = Project.get_hello_project(self.speakers)
+        #todo: can be surprised by hello?
+        self.sequences.insert(0, self.get_new_sequence(hello_project, 0, False))
 
     def get_new_sequence(self, project, speaker_i, surprise):
         #todo: expansions
         speaker = self.speakers[speaker_i]
         personal = "personal" if project.subj is Character else "impersonal"
         sequence_type = SEQUENCE_TYPES[project.proj_type]
-        if len(self.sequences) == 0:
-            sequence_type = "STER"
-        prev = None if len(self.sequences) is 0 else self.sequences[-1]
+        prev = None if len(self.sequences) is 0 or project.proj_type == "hello" else self.sequences[-1]
         return Sequence(self.speakers, speaker_i, project, sequence_type, surprise, self.action_types, self.world_state, prev)
 
     def to_json(self):

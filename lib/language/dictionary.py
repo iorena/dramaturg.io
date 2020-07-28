@@ -34,7 +34,9 @@ class Dictionary:
         "tehdä": [("tehdä", "NONE")],
         "tietää": [("tietää", "GEN")],
         "ehdottaa": [("ehdottaa", "NOM")],
-        "kysyä": [("kysyä", "GEN")]
+        "kysyä": [("kysyä", "GEN")],
+        "ymmärtää": [("ymmärtää", "NONE")],
+        "kuunnella": [("kuunnella", "NONE")]
     }
 
     noun_dictionary = {
@@ -75,7 +77,7 @@ class Dictionary:
         "SORRY": ["olen pahoillani", "eikö olekin hienoa ?"],
         "WORRY": ["älä huoli", "pelkään pahoin, että"],
         "LUCK": ["onneksi", "valitettavasti"],
-        "FEAR": ["pelkäsinkin jotain tällaista", "toivoinkin, että näin kävisi"]
+        "FEAR": ["pelkäsinkin jotain tällaista", "toivoinkin, että näin olisi"]
     }
 
     explicatives_dictionary = {
