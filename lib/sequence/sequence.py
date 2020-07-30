@@ -73,7 +73,7 @@ class Sequence():
             return Sequence(self.speakers, self.reacter_i, surprise_project, sequence_type, False, self.action_types, self.world_state, self)
         # change of opinion
         elif position == "infix_expansions" and self.project.proj_type in ["statement", "proposal"] and self.agreement and self.parent and not self.parent.agreement:
-            change_project = Project.get_change_project(self.speakers[self.speaker_i])
+            change_project = Project.get_change_project(self.speakers[self.reacter_i])
             sequence_type = "SMMU"
             return Sequence(self.speakers, self.reacter_i, change_project, sequence_type, False, self.action_types, self.world_state, self)
         # topic pivot
@@ -129,7 +129,6 @@ class Sequence():
             if self.parent is None:
                 print("parent is none", self.project.subj, self.project.verb, self.project.obj)
                 return None
-            print(self.action_types)
             action_type = self.action_types[self.parent.first_pair_part.action_type.name]
         else:
             #print("action name", action_name)
@@ -156,7 +155,6 @@ class Sequence():
         reacter_i = 0 if speaker_i == 1 else 1
         other_char = self.speakers[reacter_i]
         target_mood = self.speakers[speaker_i].relations[other_char.name]
-        print(other_char.name)
         current_mood = self.speakers[speaker_i].perception.get_object_by_name(other_char.name).mood
         best = pool[0]
         smallest_mood_diff = 9001.0

@@ -28,9 +28,15 @@ class Project:
         #death is always bad
         if self.verb == "kuolla":
             return WorldObject(APPRAISALS[0], 90)
+        if self.proj_type == "change":
+            return WorldObject(APPRAISALS[3], 93)
         if self.obj_type is "owner":
             #todo: shouldn't this be the appraisal of the object owned?
             return WorldObject(APPRAISALS[3], 93)
+        if self.obj_type is "static":
+            attributes = character.perception.get_object_by_name(self.obj).attributes
+            if "appraisal" in attributes:
+                return attributes["appraisal"]
         if type(self.obj) in [WorldObject, Location]:
             attributes = character.perception.get_object(self.obj).attributes
             if "appraisal" in attributes:
@@ -78,6 +84,10 @@ class Project:
     def listener_agrees(self, speakers, speaker_i, listener_i):
         if self.proj_type in ["surprise", "expansion", "pivot", "hello", "change"]:
             return True
+        if self.subj == speakers[listener_i] and self.verb == "tietää":
+            return True
+        if self.obj == "kiitollinen":
+            return True
 
         agreement = True
         if self.proj_type == "proposal":
@@ -111,7 +121,10 @@ class Project:
     """
 
     def get_surprise(self, subject, just_checking=False):
-        if self.proj_type == "expansion":
+        if self.proj_type in ["expansion"]:
+            return False
+        # cannot be surprised by statements about self (such as "you know so much")
+        if self.subj == subject:
             return False
         if self in subject.memory:
             return False
@@ -182,8 +195,8 @@ class Project:
         else:
             return Project(speakers[0], "soittaa", ("character", speakers[1]),  "hello", "past", 0.2)
 
-    def get_change_project(speaker):
-        return Project(speaker, "ymmärtää", (None, None), "change", "present", 0.1)
+    def get_change_project(listener):
+        return Project(listener, "ymmärtää", (None, None), "change", "present", 0.1)
 
     def get_pivot_project(listener):
         return Project(listener, "kuunnella", (None, None), "pivot", "present", 0.1)

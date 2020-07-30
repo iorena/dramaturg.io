@@ -85,7 +85,6 @@ class WorldState:
         #no object found, creating new
         new_object = WorldObject(name)
         self.objects.append(new_object)
-        print("length of objects", len(self.objects))
         return new_object
 
     def get_object(self, obj):
@@ -103,7 +102,6 @@ class WorldState:
         if obj.id == 100:
             return self.alive
         if type(obj) is WorldObject:
-            print(obj, obj.id)
             return self.objects[obj.id]
         return obj
 

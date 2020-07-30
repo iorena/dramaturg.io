@@ -77,7 +77,9 @@ class Dictionary:
         "SORRY": ["olen pahoillani", "eikö olekin hienoa ?"],
         "WORRY": ["älä huoli", "pelkään pahoin, että"],
         "LUCK": ["onneksi", "valitettavasti"],
-        "FEAR": ["pelkäsinkin jotain tällaista", "toivoinkin, että näin olisi"]
+        "FEAR": ["pelkäsinkin jotain tällaista", "toivoinkin, että näin olisi"],
+        "SERIOUS": ["oletko tosissasi ?", "ihanko totta ?"],
+        "TELL": ["miksi kerrot tästä vasta nyt ?", "kyllä minä sen tiesin"]
     }
 
     explicatives_dictionary = {
@@ -95,12 +97,3 @@ class Dictionary:
             "kovin": [0, 0.5, 0]
         }
     }
-
-    pivot_dictionary = [
-        "muuten, ",
-        "tiesitkö, että ",
-        "olen miettinyt, että ",
-        "tiedätkös, ",
-        "kuule, ",
-        "tulikin mieleen, että "
-    ]

@@ -1,4 +1,4 @@
-toimintotyyppi	kieltomuoto?	verbi kysymysmuodossa	subjekti	verbi	“objekti”	apuverbi	modus	aikamuoto	passiivi	Pre-vp	Post-vp
+JTK	kieltomuoto?	verbi kysymysmuodossa	subjekti	verbi	“objekti”	apuverbi	modus	aikamuoto	passiivi	Pre-vp	Post-vp
 TER	FALSE	FALSE	None	None	None	None	None	None	FALSE	moi	None
 KÄS	FALSE	FALSE	subject	project	object	None	IMPV	prees	FALSE	None	None
 TTN+++	FALSE	FALSE	subject	project	object	None	INDV	prees	FALSE	hyvä on	None
@@ -64,7 +64,7 @@ KOBV	FALSE	FALSE	subject	None	attribute	None	INDV	prees	FALSE	None	None
 MYÖ+++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	hyvä on	None
 MYÖ++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kiitos kun kerroit minulle	None
 MYÖ+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	FEAR	None
-MYÖ-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	miksi kerrot tästä vasta nyt ?	None
+MYÖ-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	TELL	None
 MYÖ+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	jep	None
 MYÖ-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	se tästä vielä puuttuikin	None
 MYÖ--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	INSULT	None
@@ -83,7 +83,7 @@ EST	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	älä viitsi	None
 MYÖB	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	niinpä	None
 YLL+++	FALSE	FALSE	Speaker	kuulla	demonstrative	None	INDV	prees	FALSE	niinkö ? Miksi	vasta nyt
 YLL++-	FALSE	TRUE	subject	project	object	None	INDV	perf	FALSE	mitä ?	None
-YLL+-+	FALSE	TRUE	Listener	olla	None	None	INDV	prees	FALSE	häh ?	tosissasi
+YLL+-+	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	häh ?	SERIOUS
 YLL-++	FALSE	FALSE	subject	project	object	None	INDV	perf	FALSE	täh ? mikset ole kertonut minulle että	?
 YLL+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ihanko totta ?	None
 YLL-+-	FALSE	FALSE	subject	project	object	None	INDV	perf	FALSE	en tiennyt että	None
@@ -146,7 +146,7 @@ PVT-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	minulla olisi yksi juttu	
 PVT--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuulepas nyt	None
 PVT---	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	hei,	None
 PVK+++	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	ihmeessä, haluan kuulla tämän
-PVK++-	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	, kuuntelen mielelläni
+PVK++-	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	mielelläni
 PVK+-+	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	toki
 PVK-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	no mitä nyt taas?	None
 PVK+--	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	vaan

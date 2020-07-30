@@ -294,9 +294,11 @@ class Sentence:
     def get_synonym(self, word):
         print(word)
         appraisal = self.project.get_appraisal(self.speaker)
+        print(self.project.subj, self.project.verb, "### appraised as ", appraisal.id)
         if word in Dictionary.valence_dictionary:
             index = 0
             if appraisal.id > 92:
+                print("### positive")
                 index = 1
             return Dictionary.valence_dictionary[word][index]
         if word == "EVAL":

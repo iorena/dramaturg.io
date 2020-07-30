@@ -67,7 +67,6 @@ class Story:
         other_char = self.world_state.characters[1]
         third_char = self.world_state.characters[2]
         chars = [main_char, other_char]
-        print(self.situation_list)
 
         main_project = Project(self.world_state.inheritance_object, "olla", ("obj", self.world_state.get_object_by_name("juures")), "statement", "prees", 1)
 
