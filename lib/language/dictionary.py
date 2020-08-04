@@ -13,7 +13,7 @@ class Dictionary:
         "tuijottaa": [("tuijottaa", "AKK")],
         "mennä": [("mennä", "ALL")],
         "vastata": [("vastata", "ALL")],
-        "puhua": [("puhua", "ELA")],
+        "puhua": [("puhua", "ELA"), ("kertoa", "ELA")],
         "soittaa": [("soittaa", "ALL")],
         "ottaa": [("ottaa", "GEN")],
         "haluta": [("haluta", "GEN")],

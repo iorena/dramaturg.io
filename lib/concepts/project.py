@@ -170,7 +170,7 @@ class Project:
         return project
 
 
-    def get_action_word(self, proj_type):
+    def get_action_word(proj_type):
         words = {
             "statement": "puhua",
             "proposal": "ehdottaa",
@@ -179,12 +179,27 @@ class Project:
         return words[proj_type]
 
 
-    def get_complain_project(self, character):
-        return Project(character, self.get_action_word(self.proj_type), ("obj", self.subj), "question", "present", 1)
+    def get_complain_project(character, prev_proj, main_proj):
+        if prev_proj is None:
+            return Project(character, Project.get_action_word("statement"), ("obj", main_proj.subj), "question", "present", 1)
+        return Project(character, Project.get_action_word(prev_proj.proj_type), ("obj", prev_proj.subj), "question", "present", 1)
 
+    def get_boredom_project(other_char):
+        return Project(other_char, "olla", ("static", "kyllästynyt"), "statement", "prees", 1)
 
-    def get_look_up_to_project(self, character):
+    def get_dismissal_project(main_char):
+        return Project(main_char, "mennä", ("static", "pois"), "proposal", "prees", 1)
+
+    def get_look_up_to_project(character):
         return Project(character, "tietää", ("static", "niin paljon"), "statement", "present", 1)
+
+    def get_reward_project(other_char):
+        return Project(other_char, "olla", ("static", "kiitollinen"), "statement", "prees", 1)
+
+    def get_refer_back_project(prev_project, main_project):
+        if prev_project is None:
+            return Project("Listener", Project.get_action_word(main_project.proj_type), ("obj", main_project.subj), "question", "imperf", 0.5)
+        return Project("Listener", Project.get_action_word(prev_project.proj_type), ("obj", prev_project.subj), "question", "imperf", 0.5)
 
 
     def get_hello_project(speakers):

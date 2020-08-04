@@ -9,8 +9,8 @@ def load_situations(path="../data/situation_rules.csv"):
             characters = row[1].split(",")
             a_expansions = row[2].split(",") if row[2] != "none" else None
             b_expansions = row[3].split(",") if row[3] != "none" else None
-            a_project = row[4] if row[4] != "none" else "none"
-            b_project = row[5] if row[5] != "none" else "none"
+            a_project = row[4].split(",") if row[4] != "none" else []
+            b_project = row[5].split(",") if row[5] != "none" else []
             situations[row[0]] = {"characters": characters,
                                 "a_expansions": a_expansions,
                                 "b_expansions": b_expansions,

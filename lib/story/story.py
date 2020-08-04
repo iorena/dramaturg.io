@@ -73,28 +73,39 @@ class Story:
         a_project = None
         b_project = None
 
+        prev_project = None
+
         projects = {
-            "none": None,
-            "main_project": main_project,
-            "prev_project": a_project,
-            "boredom_project": Project(other_char, "olla", ("static", "kyllästynyt"), "statement", "prees", 1),
-            "dismissal_project": Project(main_char, "mennä", ("static", "pois"), "proposal", "prees", 1),
-            "look_up_to_project": main_project.get_look_up_to_project(main_char),
-            "complain_project": main_project.get_complain_project(main_char),
-            "reward_project": Project(other_char, "olla", ("static", "kiitollinen"), "statement", "prees", 1)
+            "none": (lambda x: None, []),
+            "main_project": (lambda x: x, [main_project]),
+            "prev_project": (lambda: prev_project, []),
+            "boredom_project": (Project.get_boredom_project, [other_char]),
+            "dismissal_project": (Project.get_dismissal_project, [main_char]),
+            "look_up_to_project": (Project.get_look_up_to_project, [main_char]),
+            "complain_project": (Project.get_complain_project, [main_char, prev_project, main_project]),
+            "reward_project": (Project.get_reward_project, [other_char]),
+            "refer_back_project": (Project.get_refer_back_project, [prev_project, main_project])
         }
 
         for sit in self.situation_list:
 
-            projects["prev_project"] = a_project
-            a_project = projects[self.situation_rules[sit]["a_project"]]
-            projects["prev_project"] = b_project
-            b_project = projects[self.situation_rules[sit]["b_project"]]
+            for entry in self.situation_rules[sit]["a_project"]:
+                project = projects[entry][0]
+                parameters = projects[entry][1]
+                a_project = project(*parameters)
+                print("%", project)
+                if a_project is not None:
+                    main_char.set_goal(a_project)
+                    prev_project = a_project
 
-            if a_project is not None:
-                main_char.set_goal(a_project)
-            if b_project is not None:
-                other_char.set_goal(b_project)
+            for entry in self.situation_rules[sit]["b_project"]:
+                project = projects[entry][0]
+                parameters = projects[entry][1]
+                b_project = project(*parameters)
+                print("#", b_project)
+                if b_project is not None:
+                    other_char.set_goal(b_project)
+                    prev_project = b_project
 
             if sit == "lie_for":
                 chars = [main_char, third_char]

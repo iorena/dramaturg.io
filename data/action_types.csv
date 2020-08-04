@@ -141,15 +141,15 @@ PVT+++	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	, minulla
 PVT++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	hei, minulla olisi asiaa, jos viitsit kuunnella	None
 PVT+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	hei, arvaa mitä	None
 PVT-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuuntelepa nyt hetki	None
-PVT+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuuntelisitko hetken?	None
+PVT+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuuntelisitko hetken ?	None
 PVT-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	minulla olisi yksi juttu	None
 PVT--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuulepas nyt	None
 PVT---	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	hei,	None
 PVK+++	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	ihmeessä, haluan kuulla tämän
 PVK++-	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	mielelläni
 PVK+-+	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	toki
-PVK-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	no mitä nyt taas?	None
+PVK-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	no mitä nyt taas ?	None
 PVK+--	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	vaan
 PVK-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	toivottavasti ei mitään pahaa	None
 PVK--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	no?	None
-PVK---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mitä?	None
+PVK---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mitä ?	None

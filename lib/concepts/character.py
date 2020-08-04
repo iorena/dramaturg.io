@@ -67,9 +67,6 @@ class Character:
             #some objects have static appraisals
             if "appraisal" not in obj.attributes:
                 obj.attributes["appraisal"] = world_state.appraisals[0]
-                print("changed", obj)
-            else:
-                print("not changed", obj)
         for obj in world_state.weather_types:
             obj.attributes["appraisal"] = random.choices(world_state.appraisals)[0]
         for obj in world_state.locations:
@@ -79,13 +76,13 @@ class Character:
     def set_goal(self, new_goal):
         #todo: arrange by weight?
         for goal in self.goals:
-            print("has goal", self.name, goal)
             #todo: refine checking goal conflict, now only works for inheritance object want goal
             if goal.is_in_conflict_with(new_goal):
                 self.goals.remove(goal)
                 print("removed conflicting goal", goal.subj, goal.verb, goal.obj)
         if new_goal not in self.goals:
             self.goals.append(new_goal)
+            print(new_goal)
             print("set new goal", self.name, new_goal.subj, new_goal.verb, new_goal.obj, new_goal.proj_type)
         else:
             print("already has goal")
@@ -126,9 +123,7 @@ class Character:
 
     def add_stress(self, project):
         if project.proj_type not in ["expansion", "surprise"]:
-            print(project.proj_type)
             self.stress += 1
-            print(self.stress)
             if self.stress > self.stress_capacity:
                 self.resolve_stress(project)
                 self.stress = 0
