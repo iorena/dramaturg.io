@@ -9,8 +9,17 @@ APPRAISALS = ["horrible", "bad", "okay", "good", "great"]
 class Project:
     def __init__(self, subj, verb, obj, proj_type, time, weight):
         self.subj = subj
-        self.obj_type = obj[0]
-        self.obj = obj[1]
+        self.second_obj_type = None
+        self.second_obj = None
+        if type(obj) is tuple:
+            self.obj_type = obj[0]
+            self.obj = obj[1]
+        else:
+            self.obj_type = obj[0][0]
+            self.obj = obj[0][1]
+            self.second_obj_type = obj[1][0]
+            self.second_obj = obj[1][1]
+
         self.verb = verb
         self.proj_type = proj_type
         if self.obj_type is "quality":
@@ -198,8 +207,8 @@ class Project:
 
     def get_refer_back_project(prev_project, main_project):
         if prev_project is None:
-            return Project("Listener", Project.get_action_word(main_project.proj_type), ("obj", main_project.subj), "question", "imperf", 0.5)
-        return Project("Listener", Project.get_action_word(prev_project.proj_type), ("obj", prev_project.subj), "question", "imperf", 0.5)
+            return Project("Listener", Project.get_action_word(main_project.proj_type), [("obj", main_project.subj), ("obj", "Maija")], "question", "imperf", 0.5)
+        return Project("Listener", Project.get_action_word(prev_project.proj_type), [("obj", prev_project.subj), ("obj", "Maija")], "question", "imperf", 0.5)
 
 
     def get_hello_project(speakers):

@@ -274,6 +274,16 @@ class Sentence:
         if self.obj == "demonstrative":
             as_list.insert(0, self.get_demonstrative(obj_case))
 
+        # "second" object
+        if self.project.second_obj is not None:
+            s_obj_case = Dictionary.second_obj_case_dictionary[self.project.verb]
+            if self.project.second_obj_type == "static":
+                s_obj_case = "NOM"
+            s_obj = inflect(self.project.second_obj, "N", {"PERS": "3", "CASE": s_obj_case, "NUM": "SG"})
+            as_list.append(s_obj)
+
+
+
         as_list = self.add_pre_add(as_list)
         as_list = self.add_post_add(as_list)
 

@@ -106,6 +106,9 @@ def main(print_dev_data, personality, latex, graph, content):
             for turn in turns[1:]:
                 if turn is None:
                     continue
+                if len(turn.inflected) < 1:
+                    print("empty turn")
+                    continue
                 line = ""
                 uppercased = turn.inflected[0].upper()
                 line += uppercased + turn.inflected[1:]

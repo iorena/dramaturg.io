@@ -39,6 +39,11 @@ class Dictionary:
         "kuunnella": [("kuunnella", "NONE")]
     }
 
+    second_obj_case_dictionary = {
+        "puhua": "ALL",
+        "kertoa": "ALL"
+    }
+
     noun_dictionary = {
         "disappointment": ["surullinen", "pettynyt"],
         "gratification": ["tyytyväinen"],
