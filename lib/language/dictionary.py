@@ -61,7 +61,8 @@ class Dictionary:
         "sunny": ["aurinkoinen"],
         "cloudy": ["pilvinen"],
         "rainy": ["sateinen"],
-        "stormy": ["myrskyinen"]
+        "stormy": ["myrskyinen"],
+        "alive": ["elossa"]
     }
     reversed_verb_dictionary = {
         "siirtyä": [("viedä", "ILL"), ("kuljettaa", "ILL")],
