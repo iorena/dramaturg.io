@@ -38,6 +38,30 @@ class Turn:
         if self.project.proj_type in ["statement", "proposal"]:
             self.change += self.listeners[0].mood.affect_mood(self.project.get_emotional_effect(self.listeners[0]))[1]
 
+    def get_sentence_type(self):
+        names = {
+            "TER": "tervehdys",
+            "KYS": "kysymys",
+            "TOP": "toimintapyyntö",
+            "TTN": "myöntyminen (toimintapyyntöön)",
+            "TTS": "kieltäytyminen (toimintapyyntöön)",
+            "VÄI": "väite",
+            "MYÖ": "myöntyminen (väitteeseen)",
+            "KII": "kiistäminen (väitteen)",
+            "YLL": "yllätys",
+            "VYL": "yllätyksen kuittaus",
+            "VSM": "myönteinen vastaus kysymykseen",
+            "VSK": "kielteinen vastaus kysymykseen",
+            "MMU": "mielen muutos",
+            "MMK": "mielenmuutoksen kuittaus",
+            "PVT": "aiheen vaihto/pohjustus",
+            "PVK": "aiheen vaihdon kuittaus"
+        }
+        name = self.action_type.name[:3]
+        if name in names:
+            return names[name]
+        return "muu"
+
     def to_json(self):
         return {
             **self.__dict__,

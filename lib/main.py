@@ -7,7 +7,7 @@ from concepts.affect.emotion import Emotion
 from graph import draw_graph
 
 
-def main(print_dev_data, personality, latex, graph, content):
+def main(print_dev_data, personality, latex, graph, content, types):
     personalities = [None, None]
     relationships = [None, None]
     if personality:
@@ -107,7 +107,6 @@ def main(print_dev_data, personality, latex, graph, content):
                 if turn is None:
                     continue
                 if len(turn.inflected) < 1:
-                    print("empty turn")
                     continue
                 line = ""
                 uppercased = turn.inflected[0].upper()
@@ -115,7 +114,11 @@ def main(print_dev_data, personality, latex, graph, content):
                 if line [-1] == "?":
                     line = line[0:-2] + line[-1]
                 line += ". " if line[-1] != "?" else " "
-                print(f"\t{turn.speaker.name}\n{line}")
+                sentence_type = turn.get_sentence_type()
+                if types:
+                    print(f"\t{turn.speaker.name}  {sentence_type}\n{line}")
+                else:
+                    print(f"\t{turn.speaker.name}\n{line}")
 
 
 
@@ -128,6 +131,7 @@ def parse_arguments():
     parser.add_argument("-l", "--latex", help="Set personality parameters", action='store_true')
     parser.add_argument("-g", "--graph", help="Draw graph", action='store_true')
     parser.add_argument("-c", "--content", help="Choose content", action='store_true')
+    parser.add_argument("-t", "--types", help="Print human-friendly names of sentence types", action="store_true")
 
     return parser.parse_args()
 
@@ -135,4 +139,4 @@ def parse_arguments():
 if __name__ == "__main__":
     args = parse_arguments()
     print(args)
-    main(args.development, args.personality, args.latex, args.graph, args.content)
+    main(args.development, args.personality, args.latex, args.graph, args.content, args.types)

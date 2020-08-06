@@ -25,7 +25,7 @@ class Sentence:
         #subject
         if project.subj is None:
             self.subj = None
-        elif action_type.subj == "Listener" or type(project.subj) is str and project.subj == "Listener":
+        elif action_type.subj == "Listener" or (type(project.subj) is str and project.subj == "Listener"):
             self.subj = self.listeners[0].name
         elif action_type.subj == "subject":
             if type(project.subj) is str:
