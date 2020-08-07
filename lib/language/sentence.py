@@ -12,6 +12,9 @@ from numpy import array
 from numpy.linalg import norm
 
 
+FIRST_PAIR_PARTS = ["TOP", "VÄI", "YLL", "KYS", "MMU", "PVT"]
+
+
 class Sentence:
     embeddings = Embeddings("isoäiti", "maljakko")
 
@@ -25,8 +28,13 @@ class Sentence:
         #subject
         if project.subj is None:
             self.subj = None
-        elif action_type.subj == "Listener" or (type(project.subj) is str and project.subj == "Listener"):
+        elif action_type.subj == "Listener":
             self.subj = self.listeners[0].name
+        elif type(project.subj) is str and project.subj == "Listener":
+            if action_type.name[:3] in FIRST_PAIR_PARTS:
+                self.subj = self.listeners[0].name
+            else:
+                self.subj = self.speaker.name
         elif action_type.subj == "subject":
             if type(project.subj) is str:
                 self.subj = project.subj
