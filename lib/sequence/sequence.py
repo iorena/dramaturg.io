@@ -58,7 +58,7 @@ class Sequence():
             for turn in self.post_expansion.turns:
                 self.turns.append(turn)
 
-        if self.agreement and self.project.proj_type in ["proposal", "statement"]:
+        if self.agreement and self.project.proj_type in ["proposal", "statement", "pivot", "change"]:
             self.speakers[self.speaker_i].resolve_goal(self.project)
 
 

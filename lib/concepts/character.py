@@ -30,7 +30,10 @@ class Character:
         else:
             self.personality = personality
         self.mood = Mood(self.personality)
-        self.memory = []
+        self.event_memory = []
+        # for recognizing repetition
+        self.said_memory = []
+        self.heard_memory = []
         self.beliefs = []
         self.stress_capacity = 2
         if self.personality["N"] > 0.5:
@@ -73,7 +76,7 @@ class Character:
             obj.attributes["appraisal"] = random.choices(world_state.appraisals)[0]
         self.perception = world_state
 
-    def set_goal(self, new_goal):
+    def set_goal(self, new_goal, priority=False):
         #todo: arrange by weight?
         for goal in self.goals:
             #todo: refine checking goal conflict, now only works for inheritance object want goal
@@ -81,7 +84,10 @@ class Character:
                 self.goals.remove(goal)
                 print("removed conflicting goal", goal.subj, goal.verb, goal.obj)
         if new_goal not in self.goals:
-            self.goals.append(new_goal)
+            if priority:
+                self.goals.insert(0, new_goal)
+            else:
+                self.goals.append(new_goal)
             print(new_goal)
             print("set new goal", self.name, new_goal.subj, new_goal.verb, new_goal.obj, new_goal.proj_type)
         else:
@@ -107,8 +113,28 @@ class Character:
         #todo: alternatively change relationship
         self.resolve_goal(project)
 
+
+    def add_said_memory(self, turn):
+        self.said_memory.append(turn)
+
+    def add_heard_memory(self, turn):
+        self.heard_memory.append(turn)
+        # check repetition
+        if len(self.heard_memory) > 2 and self.heard_memory[-1] == self.heard_memory[-2] and self.heard_memory[-2] == self.heard_memory[-3]:
+            self.set_goal(Project.get_repetition_project(), True)
+            self.heard_memory = []
+
+    def reset_turn_memory(self):
+        self.heard_memory = []
+        self.said_mamory = []
+
     def add_memory(self, memory):
-        self.memory.append(memory)
+        self.event_memory.append(memory)
+
+    def has_memory(self, memory):
+        if memory in self.event_memory:
+            return True
+        return False
 
     def add_belief(self, belief):
         self.beliefs.append(belief)

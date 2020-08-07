@@ -135,7 +135,7 @@ class Project:
         # cannot be surprised by statements about self (such as "you know so much")
         if self.subj == subject:
             return False
-        if self in subject.memory:
+        if subject.has_memory(self):
             return False
         if not just_checking:
             subject.add_memory(self)
@@ -224,3 +224,6 @@ class Project:
 
     def get_pivot_project(listener):
         return Project(listener, "kuunnella", (None, None), "pivot", "present", 0.1)
+
+    def get_repetition_project():
+        return Project("Listener", "hokea", ("static", "tuota"), "why", "present", 0.1)

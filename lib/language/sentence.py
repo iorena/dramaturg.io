@@ -12,7 +12,7 @@ from numpy import array
 from numpy.linalg import norm
 
 
-FIRST_PAIR_PARTS = ["TOP", "VÄI", "YLL", "KYS", "MMU", "PVT"]
+FIRST_PAIR_PARTS = ["TOP", "VÄI", "YLL", "KYS", "MMU", "PVT", "TPB"]
 
 
 class Sentence:

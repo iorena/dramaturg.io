@@ -20,6 +20,7 @@ class Turn:
         self.hesitation = hesitation
         self.inflected = self.inflect()
         self.affect_mood()
+        self.add_turn_memories()
 
     def __str__(self):
         space = "" if len(self.action_type.name) == 4 else " "
@@ -38,6 +39,11 @@ class Turn:
         if self.project.proj_type in ["statement", "proposal"]:
             self.change += self.listeners[0].mood.affect_mood(self.project.get_emotional_effect(self.listeners[0]))[1]
 
+    def add_turn_memories(self):
+        self.speaker.add_said_memory(self.action_type.name)
+        for listener in self.listeners:
+            listener.add_heard_memory(self.action_type.name)
+
     def get_sentence_type(self):
         names = {
             "TER": "tervehdys",
@@ -55,7 +61,9 @@ class Turn:
             "MMU": "mielen muutos",
             "MMK": "mielenmuutoksen kuittaus",
             "PVT": "aiheen vaihto/pohjustus",
-            "PVK": "aiheen vaihdon kuittaus"
+            "PVK": "aiheen vaihdon kuittaus",
+            "TPB": "kysymys (miksi)",
+            "TOR": "kysymyksen torjunta"
         }
         name = self.action_type.name[:3]
         if name in names:

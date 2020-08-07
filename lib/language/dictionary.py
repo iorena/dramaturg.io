@@ -36,7 +36,8 @@ class Dictionary:
         "ehdottaa": [("ehdottaa", "NOM")],
         "kysyä": [("kysyä", "GEN")],
         "ymmärtää": [("ymmärtää", "NONE")],
-        "kuunnella": [("kuunnella", "NONE")]
+        "kuunnella": [("kuunnella", "NONE")],
+        "hokea": [("hokea", "PAR")]
     }
 
     second_obj_case_dictionary = {

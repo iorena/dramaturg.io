@@ -11,7 +11,7 @@ EMOTIONS = load_emotions()
 from numpy import array
 from numpy.linalg import norm
 
-SEQUENCE_TYPES = {"proposal": "STOP", "statement": "SVÄI", "surprise": "SYLL", "question": "SKYS", "pivot": "SPVT", "change": "SMMU", "hello": "STER"}
+SEQUENCE_TYPES = {"proposal": "STOP", "statement": "SVÄI", "surprise": "SYLL", "question": "SKYS", "pivot": "SPVT", "change": "SMMU", "hello": "STER", "why": "STPB"}
 
 
 class Situation:
@@ -19,6 +19,8 @@ class Situation:
         self.world_state = world_state
         self.embeddings = embeddings
         self.speakers = speakers
+        for char in self.speakers:
+            char.reset_turn_memory()
         self.location = location
         self.rules = rules
         self.action_types = load_pad_values(load_action_types())
