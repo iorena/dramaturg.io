@@ -35,6 +35,8 @@ class Story:
         self.world_state.create_object("kyllästynyt", 0)
         self.world_state.create_object("kiitollinen", 4)
         self.world_state.create_object("rakennettava", 4)
+        self.world_state.create_object("kulttuuri", 4)
+        self.world_state.create_object("tärkeää", 4)
         self.world_state.create_object("pois", 0)
 
     def get_title(self):
