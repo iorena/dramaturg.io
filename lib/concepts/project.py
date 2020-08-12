@@ -8,7 +8,12 @@ APPRAISALS = ["horrible", "bad", "okay", "good", "great"]
 
 class Project:
     def __init__(self, subj, verb, obj, proj_type, time, weight):
-        self.subj = subj
+        if type(subj) is tuple:
+            self.subj = subj[1]
+            self.subj_modifier = subj[0]
+        else:
+            self.subj = subj
+            self.subj_modifier = None
         self.second_obj_type = None
         self.second_obj = None
         if type(obj) is tuple:
@@ -210,6 +215,8 @@ class Project:
             return Project("Listener", Project.get_action_word(main_project.proj_type), [("obj", main_project.subj), ("obj", "Maija")], "question", "imperf", 0.5)
         return Project("Listener", Project.get_action_word(prev_project.proj_type), [("obj", prev_project.subj), ("obj", "Maija")], "question", "imperf", 0.5)
 
+    def get_indoctrination_project(main_project):
+        return Project(main_project.subj, main_project.verb, (main_project.obj_type, main_project.obj), "indoctrination", "prees", 0.5)
 
     def get_hello_project(speakers):
         #same place

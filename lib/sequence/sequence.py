@@ -84,7 +84,7 @@ class Sequence():
 
         ### other expansions
         #toggle other expansions on or off
-        # return None
+        return None
 
         if switch_speakers:
             speaker_i = 0 if self.speaker_i == 1 else 1

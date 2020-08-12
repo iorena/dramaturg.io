@@ -34,7 +34,7 @@ class Story:
     def create_objects(self):
         self.world_state.create_object("kyllästynyt", 0)
         self.world_state.create_object("kiitollinen", 4)
-        self.world_state.create_object("juures", 4)
+        self.world_state.create_object("rakennettava", 4)
         self.world_state.create_object("pois", 0)
 
     def get_title(self):
@@ -68,7 +68,10 @@ class Story:
         third_char = self.world_state.characters[2]
         chars = [main_char, other_char]
 
-        main_project = Project(self.world_state.inheritance_object, "olla", ("obj", self.world_state.get_object_by_name("juures")), "statement", "prees", 1)
+        main_project = Project(("uusi", self.world_state.inheritance_object), "olla", ("obj", self.world_state.get_object_by_name("rakennettava")), "statement", "prees", 1)
+        pre_project = Project(self.world_state.get_object_by_name("kulttuuri"), "olla", ("static", "tärkeää"), "statement", "prees", 1)
+
+        main_char.add_belief(main_project)
 
         a_project = None
         b_project = None
@@ -84,7 +87,9 @@ class Story:
             "look_up_to_project": (Project.get_look_up_to_project, [main_char]),
             "complain_project": (Project.get_complain_project, [main_char, prev_project, main_project]),
             "reward_project": (Project.get_reward_project, [other_char]),
-            "refer_back_project": (Project.get_refer_back_project, [prev_project, main_project])
+            "refer_back_project": (Project.get_refer_back_project, [prev_project, main_project]),
+            "indoctrination_project": (Project.get_indoctrination_project, [main_project]),
+            "pre_project": (lambda x: x, [pre_project])
         }
 
         for sit in self.situation_list:

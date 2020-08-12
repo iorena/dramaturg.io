@@ -1,14 +1,21 @@
-import csv
+import csv, random
 
 
 class Emotion:
     def __init__(self, name, pleasure, arousal, dominance):
         self.name = name
-        if name is None:
-            self.name = Emotion.identify_emotion(pleasure, arousal, dominance)
         self.pleasure = pleasure
+        if pleasure is None:
+            self.pleasure = random.random()
         self.arousal = arousal
+        if arousal is None:
+            self.arousal = random.random()
         self.dominance = dominance
+        if dominance is None:
+            self.dominance = random.random()
+
+        if name is None:
+            self.name = Emotion.identify_emotion(self.pleasure, self.arousal, self.dominance)
         #todo: add attributes??
         self.attributes = {}
         self.id = None

@@ -1,8 +1,8 @@
-lecture	A,B	none	none	main_project	none
+lecture	A,B	none	none	pre_project	none
 are_bored_by	A,B	none	none	prev_project	boredom_project
 look_up_to	A,B	none	none	none	look_up_to_project
 complain	A,B	none	none	none	complain_project
-are_indoctrinated_by	A,B	none	none	none	main_project
-lie_for	A,C	none	none	main_project	none
+are_indoctrinated_by	A,B	none	none	main_project	none
+lie_for	B,C	none	none	main_project	none
 are_dismissed_by	A,B	none	none	none	dismissal_project
-are_rewarded_by	A,B	none	none	none	refer_back_project,reward_project
+are_rewarded_by	A,B	none	none	refer_back_project,reward_project	none

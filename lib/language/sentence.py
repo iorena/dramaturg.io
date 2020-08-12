@@ -12,7 +12,7 @@ from numpy import array
 from numpy.linalg import norm
 
 
-FIRST_PAIR_PARTS = ["TOP", "VÄI", "YLL", "KYS", "MMU", "PVT", "TPB"]
+FIRST_PAIR_PARTS = ["TOP", "VÄI", "YLL", "KYS", "MMU", "PVT", "TPB", "IND"]
 
 
 class Sentence:
@@ -56,6 +56,7 @@ class Sentence:
             self.subj = "null"
         else:
             self.subj = action_type.subj
+        self.subj_modifier = project.subj_modifier
 
         #verb
         if action_type.verb == "project" or action_type.verb == "isolated":
@@ -185,7 +186,11 @@ class Sentence:
             vp.components["subject"] = create_personal_pronoun_phrase("2", "SG", prodrop)
         else:
             person = "3"
-            vp.components["subject"] = create_phrase("NP", self.get_synonym(self.subj))
+            np = create_phrase("NP", self.get_synonym(self.subj))
+            if self.subj_modifier is not None:
+                ap = create_phrase("AP", self.subj_modifier)
+                np.components["attribute"] = ap
+            vp.components["subject"] = np
 
         #if verb is isolated, return just that (+ adds)
         if self.action_type.verb == "isolated":

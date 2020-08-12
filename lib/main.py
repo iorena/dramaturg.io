@@ -8,8 +8,8 @@ from graph import draw_graph
 
 
 def main(print_dev_data, personality, latex, graph, content, types):
-    personalities = [None, None]
-    relationships = [None, None]
+    personalities = [{"O": 0.5, "C": 0, "E": 0.5, "A": 0, "N": -0.5}, None]
+    relationships = [Mood(Emotion(None, None, None, -0.5)), None]
     if personality:
         ready = False
         while not ready:
@@ -55,7 +55,7 @@ def main(print_dev_data, personality, latex, graph, content, types):
         embeddings = Embeddings(character, inheritance_object)
         story = Story(embeddings, personalities, relationships, character_verb, object_verb)
     else:
-        embeddings = Embeddings("isoäiti", "peruna")
+        embeddings = Embeddings("isoäiti", "museo")
         story = Story(embeddings, personalities, relationships, "kuolla", "ottaa")
 
     if graph:

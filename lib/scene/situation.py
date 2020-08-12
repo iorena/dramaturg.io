@@ -11,7 +11,7 @@ EMOTIONS = load_emotions()
 from numpy import array
 from numpy.linalg import norm
 
-SEQUENCE_TYPES = {"proposal": "STOP", "statement": "SVÄI", "surprise": "SYLL", "question": "SKYS", "pivot": "SPVT", "change": "SMMU", "hello": "STER", "why": "STPB"}
+SEQUENCE_TYPES = {"proposal": "STOP", "statement": "SVÄI", "surprise": "SYLL", "question": "SKYS", "pivot": "SPVT", "change": "SMMU", "hello": "STER", "why": "STPB", "stop": "SLOP", "indoctrination": "SIND"}
 
 
 class Situation:
