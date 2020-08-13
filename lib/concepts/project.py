@@ -194,7 +194,7 @@ class Project:
 
 
     def get_complain_project(character, prev_proj, main_proj, listener):
-        return Project(listener, "kuunnella", None, "question", "present", 1)
+        return Project(listener, "kuunnella", (None, None), "question", "present", 1)
 
     def get_boredom_project(other_char, listener):
         return Project(other_char, "olla", ("static", "kyllästynyt"), "statement", "prees", 1)
@@ -233,3 +233,6 @@ class Project:
     def get_repetition_project(char):
         other_char = char.perception.get_opposite(char)
         return Project(other_char, "hokea", ("static", "tuota"), "why", "present", 0.1)
+
+    def get_argument_project(listener):
+        return Project()
