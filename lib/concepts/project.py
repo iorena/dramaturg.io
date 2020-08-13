@@ -95,25 +95,20 @@ class Project:
             return True
         return False
 
-    def listener_agrees(self, speakers, speaker_i, listener_i):
+    # returns project that is in conflict, or None
+    def get_listener_conflicting_project(self, speakers, speaker_i, listener_i):
         if self.proj_type in ["surprise", "expansion", "pivot", "hello", "change"]:
-            return True
+            return None
         if self.subj == speakers[listener_i] and self.verb == "tietää":
-            return True
+            return None
         if self.obj == "kiitollinen":
-            return True
+            return None
 
-        agreement = True
-        if self.proj_type == "proposal":
-            for goal in speakers[listener_i].goals:
-                if self.is_in_conflict_with(goal):
-                    agreement = False
-        elif self.proj_type == "statement":
-            if self not in speakers[listener_i].beliefs:
-                agreement = False
-                speakers[listener_i].add_belief(self)
+        for goal in speakers[listener_i].goals:
+            if self.is_in_conflict_with(goal):
+                return goal
 
-        return agreement
+        return None
     """
         if self.verb == "olla":
             first_perception = speakers[0].perception.get_object(self.subj)

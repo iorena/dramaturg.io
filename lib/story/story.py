@@ -38,6 +38,7 @@ class Story:
         self.world_state.create_object("kulttuuri", 4)
         self.world_state.create_object("tärkeää", 4)
         self.world_state.create_object("pois", 0)
+        self.world_state.create_object("vaarallinen", 0)
         self.world_state.create_object("niin paljon", 4)
 
     def get_title(self):
@@ -72,9 +73,12 @@ class Story:
         chars = [main_char, other_char]
 
         main_project = Project(("uusi", self.world_state.inheritance_object), "olla", ("obj", self.world_state.get_object_by_name("rakennettava")), "statement", "prees", 1)
+        # Maija has a contradicting belief about museums that necessitates lying to convince her
+        contrary_project = Project(self.world_state.inheritance_object, "olla", ("obj", self.world_state.get_object_by_name("vaarallinen")), "statement", "prees", 1)
         pre_project = Project(self.world_state.get_object_by_name("kulttuuri"), "olla", ("static", "tärkeää"), "statement", "prees", 1)
 
         main_char.add_belief(main_project)
+        third_char.add_belief(contrary_project)
 
         a_project = None
         b_project = None

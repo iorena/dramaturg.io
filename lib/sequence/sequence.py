@@ -25,8 +25,8 @@ class Sequence():
         self.action_types = action_types
         self.parent = parent
         self.world_state = world_state
-        self.agreement = self.project.listener_agrees(self.speakers, self.speaker_i, self.reacter_i)
-        self.pair_types = POS_SEQUENCES if self.agreement else NEG_SEQUENCES
+        self.conflicting_project = self.project.get_listener_conflicting_project(self.speakers, self.speaker_i, self.reacter_i)
+        self.pair_types = POS_SEQUENCES if self.conflicting_project is None else NEG_SEQUENCES
         self.surprise = False
         if surprise:
             self.surprise = True
@@ -58,7 +58,7 @@ class Sequence():
             for turn in self.post_expansion.turns:
                 self.turns.append(turn)
 
-        if self.agreement and self.project.proj_type in ["proposal", "statement", "pivot", "change"]:
+        if self.conflicting_project is not None and self.project.proj_type in ["proposal", "statement", "pivot", "change"]:
             self.speakers[self.speaker_i].resolve_goal(self.project)
 
 
@@ -72,7 +72,7 @@ class Sequence():
             sequence_type = "SYLL"
             return Sequence(self.speakers, self.reacter_i, surprise_project, sequence_type, False, self.action_types, self.world_state, self)
         # change of opinion
-        elif position == "infix_expansions" and self.project.proj_type in ["statement", "proposal"] and self.agreement and self.parent and not self.parent.agreement:
+        elif position == "infix_expansions" and self.project.proj_type in ["statement", "proposal"] and self.conflicting_project is not None and self.parent and not self.parent.conflicting_project is not None:
             change_project = Project.get_change_project(self.speakers[self.reacter_i])
             sequence_type = "SMMU"
             return Sequence(self.speakers, self.reacter_i, change_project, sequence_type, False, self.action_types, self.world_state, self)
