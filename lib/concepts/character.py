@@ -121,7 +121,7 @@ class Character:
         self.heard_memory.append(turn)
         # check repetition
         if len(self.heard_memory) > 2 and self.heard_memory[-1] == self.heard_memory[-2] and self.heard_memory[-2] == self.heard_memory[-3]:
-            self.set_goal(Project.get_repetition_project(), True)
+            self.set_goal(Project.get_repetition_project(self), True)
             self.heard_memory = []
 
     def reset_turn_memory(self):

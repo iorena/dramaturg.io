@@ -109,6 +109,7 @@ class WorldState:
         if type(obj) is Character:
             choices = copy.deepcopy(self.characters)
             choices.pop(obj.id)
+            choices.pop()
         if type(obj) is Location:
             choices = copy.deepcopy(self.locations)
             choices.pop(obj.id)

@@ -15,7 +15,8 @@ SEQUENCE_TYPES = {"proposal": "STOP", "statement": "SVÄI", "surprise": "SYLL", 
 
 
 class Situation:
-    def __init__(self, world_state, embeddings, speakers, rules, location):
+    def __init__(self, name, world_state, embeddings, speakers, rules, location):
+        self.name = name
         self.world_state = world_state
         self.embeddings = embeddings
         self.speakers = speakers
@@ -68,9 +69,10 @@ class Situation:
                 surprise = True
             self.sequences.append(self.get_new_sequence(project, speaker_i, surprise))
         # add hello sequence
-        hello_project = Project.get_hello_project(self.speakers)
-        #todo: can be surprised by hello?
-        self.sequences.insert(0, self.get_new_sequence(hello_project, 0, False))
+        if self.name in ["lie_for", "are_rewarded_by"]:
+            hello_project = Project.get_hello_project(self.speakers)
+            #todo: can be surprised by hello?
+            self.sequences.insert(0, self.get_new_sequence(hello_project, 0, False))
 
     def get_new_sequence(self, project, speaker_i, surprise):
         #todo: expansions

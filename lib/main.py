@@ -103,7 +103,7 @@ def main(print_dev_data, personality, latex, graph, content, types):
                 line = line[0:-2] + line[-1]
             line += ". " if line[-1] != "?" else " "
             last_turn = turns[0]
-            for turn in turns[1:]:
+            for turn in turns:
                 if turn is None:
                     continue
                 if len(turn.inflected) < 1:

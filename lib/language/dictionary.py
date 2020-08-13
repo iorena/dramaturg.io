@@ -86,7 +86,8 @@ class Dictionary:
         "LUCK": ["onneksi", "valitettavasti"],
         "FEAR": ["pelkäsinkin jotain tällaista", "toivoinkin, että näin olisi"],
         "SERIOUS": ["oletko tosissasi ?", "ihanko totta ?"],
-        "TELL": ["miksi kerrot tästä vasta nyt ?", "kyllä minä sen tiesin"]
+        "TELL": ["miksi kerrot tästä vasta nyt ?", "kyllä minä sen tiesin"],
+        "FRUSTRATION": ["se tästä vielä puuttuikin", "olisit heti sanonut"]
     }
 
     explicatives_dictionary = {

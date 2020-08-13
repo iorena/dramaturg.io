@@ -138,7 +138,7 @@ class Project:
         if self.proj_type in ["expansion"]:
             return False
         # cannot be surprised by statements about self (such as "you know so much")
-        if self.subj == subject:
+        if self.subj == subject or self.subj == "Listener":
             return False
         if subject.has_memory(self):
             return False
@@ -193,29 +193,27 @@ class Project:
         return words[proj_type]
 
 
-    def get_complain_project(character, prev_proj, main_proj):
-        if prev_proj is None:
-            return Project(character, Project.get_action_word("statement"), ("obj", main_proj.subj), "question", "present", 1)
-        return Project(character, Project.get_action_word(prev_proj.proj_type), ("obj", prev_proj.subj), "question", "present", 1)
+    def get_complain_project(character, prev_proj, main_proj, listener):
+        return Project(listener, "kuunnella", None, "question", "present", 1)
 
-    def get_boredom_project(other_char):
+    def get_boredom_project(other_char, listener):
         return Project(other_char, "olla", ("static", "kyllästynyt"), "statement", "prees", 1)
 
-    def get_dismissal_project(main_char):
+    def get_dismissal_project(main_char, listener):
         return Project(main_char, "mennä", ("static", "pois"), "proposal", "prees", 1)
 
-    def get_look_up_to_project(character):
+    def get_look_up_to_project(character, listener):
         return Project(character, "tietää", ("static", "niin paljon"), "statement", "present", 1)
 
-    def get_reward_project(other_char):
-        return Project(other_char, "olla", ("static", "kiitollinen"), "statement", "prees", 1)
+    def get_reward_project(speaker, listener):
+        return Project(speaker, "olla", ("static", "kiitollinen"), "statement", "prees", 1)
 
-    def get_refer_back_project(prev_project, main_project):
+    def get_refer_back_project(prev_project, main_project, listener):
         if prev_project is None:
-            return Project("Listener", Project.get_action_word(main_project.proj_type), [("obj", main_project.subj), ("obj", "Maija")], "question", "imperf", 0.5)
-        return Project("Listener", Project.get_action_word(prev_project.proj_type), [("obj", prev_project.subj), ("obj", "Maija")], "question", "imperf", 0.5)
+            return Project(listener, Project.get_action_word(main_project.proj_type), [("obj", main_project.subj), ("obj", "Maija")], "question", "imperf", 0.5)
+        return Project(listener, Project.get_action_word(prev_project.proj_type), [("obj", prev_project.subj), ("obj", "Maija")], "question", "imperf", 0.5)
 
-    def get_indoctrination_project(main_project):
+    def get_indoctrination_project(main_project, listener):
         return Project(main_project.subj, main_project.verb, (main_project.obj_type, main_project.obj), "indoctrination", "prees", 0.5)
 
     def get_hello_project(speakers):
@@ -232,5 +230,6 @@ class Project:
     def get_pivot_project(listener):
         return Project(listener, "kuunnella", (None, None), "pivot", "present", 0.1)
 
-    def get_repetition_project():
-        return Project("Listener", "hokea", ("static", "tuota"), "why", "present", 0.1)
+    def get_repetition_project(char):
+        other_char = char.perception.get_opposite(char)
+        return Project(other_char, "hokea", ("static", "tuota"), "why", "present", 0.1)

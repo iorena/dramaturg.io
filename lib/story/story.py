@@ -38,6 +38,7 @@ class Story:
         self.world_state.create_object("kulttuuri", 4)
         self.world_state.create_object("tärkeää", 4)
         self.world_state.create_object("pois", 0)
+        self.world_state.create_object("niin paljon", 4)
 
     def get_title(self):
         bow = {}
@@ -82,16 +83,16 @@ class Story:
 
         projects = {
             "none": (lambda x: None, []),
-            "main_project": (lambda x: x, [main_project]),
-            "prev_project": (lambda: prev_project, []),
+            "main_project": (lambda x, y: x, [main_project]),
+            "prev_project": (lambda x: prev_project, []),
             "boredom_project": (Project.get_boredom_project, [other_char]),
             "dismissal_project": (Project.get_dismissal_project, [main_char]),
             "look_up_to_project": (Project.get_look_up_to_project, [main_char]),
             "complain_project": (Project.get_complain_project, [main_char, prev_project, main_project]),
-            "reward_project": (Project.get_reward_project, [other_char]),
+            "reward_project": (Project.get_reward_project, [main_char]),
             "refer_back_project": (Project.get_refer_back_project, [prev_project, main_project]),
             "indoctrination_project": (Project.get_indoctrination_project, [main_project]),
-            "pre_project": (lambda x: x, [pre_project])
+            "pre_project": (lambda x, y: x, [pre_project])
         }
 
         for sit in self.situation_list:
@@ -99,7 +100,7 @@ class Story:
             for entry in self.situation_rules[sit]["a_project"]:
                 project = projects[entry][0]
                 parameters = projects[entry][1]
-                a_project = project(*parameters)
+                a_project = project(*parameters, other_char)
                 print("%", project)
                 if a_project is not None:
                     main_char.set_goal(a_project)
@@ -108,7 +109,7 @@ class Story:
             for entry in self.situation_rules[sit]["b_project"]:
                 project = projects[entry][0]
                 parameters = projects[entry][1]
-                b_project = project(*parameters)
+                b_project = project(*parameters, main_char)
                 print("#", b_project)
                 if b_project is not None:
                     other_char.set_goal(b_project)
@@ -121,7 +122,7 @@ class Story:
 
             #todo: set memories?
 
-            situations.append(Situation(self.world_state, self.embeddings, chars, self.situation_rules[sit], main_char.attributes["location"]))
+            situations.append(Situation(sit, self.world_state, self.embeddings, chars, self.situation_rules[sit], main_char.attributes["location"]))
 
             #reset moods
             for char in chars:

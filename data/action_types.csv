@@ -66,7 +66,7 @@ MYÖ++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kiitos kun kerroit minul
 MYÖ+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	FEAR	None
 MYÖ-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	TELL	None
 MYÖ+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	jep	None
-MYÖ-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	se tästä vielä puuttuikin	None
+MYÖ-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	FRUSTRATION	None
 MYÖ--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	INSULT	None
 MYÖ---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	EVAL	None
 KII+++	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	sinun täytyy olla erehtynyt	None
@@ -110,7 +110,7 @@ VSM++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kyllä, asia on juuri nä
 VSM+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	jep, näin on	None
 VSM-++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	etkö tiennyt? Kyllä,	None
 VSM+--	FALSE	FALSE	subject	isolated	object	None	INDV	None	FALSE	joo,	None
-VSM-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	joo. Mistä tiesit?	None
+VSM-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	joo. Mistä tiesit ?	None
 VSM--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kyllä	None
 VSM---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	joo	None
 VSK+++	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	ei suinkaan,	None
@@ -156,3 +156,11 @@ PVK---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mitä ?	None
 TPB	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	miksi	None
 IND	FALSE	FALSE	subject	project	object	None	INDV	proejct	FALSE	nyt ymmärrän, että	. kaikkien täytyy tietää tästä !
 IDK	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	juuri niin	None
+TUN+++											
+TUN++-											
+TUN+-+											
+TUN-++											
+TUN+--											
+TUN-+-											
+TUN--+											
+TUN---											
