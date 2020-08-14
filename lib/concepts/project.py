@@ -54,6 +54,7 @@ class Project:
         if type(self.obj) in [WorldObject, Location]:
             attributes = character.perception.get_object(self.obj).attributes
             if "appraisal" in attributes:
+                print("appraised", self.obj, attributes["appraisal"])
                 return attributes["appraisal"]
         if type(self.obj) is str:
             attributes = character.perception.get_object_by_name(self.obj).attributes

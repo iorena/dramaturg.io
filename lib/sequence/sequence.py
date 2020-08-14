@@ -58,7 +58,7 @@ class Sequence():
             for turn in self.post_expansion.turns:
                 self.turns.append(turn)
 
-        if self.conflicting_project is not None and self.project.proj_type in ["proposal", "statement", "pivot", "change"]:
+        if self.conflicting_project is None and self.project.proj_type in ["proposal", "statement", "question", "pivot", "change", "why"]:
             self.speakers[self.speaker_i].resolve_goal(self.project)
 
 
