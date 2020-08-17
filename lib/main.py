@@ -7,7 +7,7 @@ from concepts.affect.emotion import Emotion
 from graph import draw_graph
 
 
-def main(print_dev_data, personality, latex, graph, content, types):
+def main(print_dev_data, personality, latex, graph, content, types, noprint):
     personalities = [{"O": 0.5, "C": 0, "E": 0.5, "A": 0, "N": -0.5}, None]
     relationships = [Mood(Emotion(None, None, None, -0.5)), None]
     if personality:
@@ -61,18 +61,18 @@ def main(print_dev_data, personality, latex, graph, content, types):
     if graph:
         draw_graph(story)
 
-    elif print_dev_data:
+    elif print_dev_data and not noprint:
         print(story)
         for i, situation in enumerate(story.situations):
             print(f"Situation{i}: {situation.location} {story.situation_list[i]}\n")
             for j, sequence in enumerate(situation.sequences):
                 print(f"Sequence{j}\n{sequence}\n\n")
-    elif latex:
+    elif latex and not noprint:
         for i, situation in enumerate(story.situations):
             print(f" Scene {i + 1} & & \\\\\n")
             for j, sequence in enumerate(situation.sequences):
                 print(f"{sequence.get_latex()}\n")
-    else:
+    elif not noprint:
         for char in story.world_state.characters:
             keywords = ', '.join(list(filter(lambda x: x is not None, [char.mood.get_character_description('pleasure'), char.mood.get_character_description('arousal'), char.mood.get_character_description('dominance')])))
             print(f"{char.name}: {keywords}")
@@ -132,6 +132,7 @@ def parse_arguments():
     parser.add_argument("-g", "--graph", help="Draw graph", action='store_true')
     parser.add_argument("-c", "--content", help="Choose content", action='store_true')
     parser.add_argument("-t", "--types", help="Print human-friendly names of sentence types", action="store_true")
+    parser.add_argument("-n", "--noprint", help="Don't print story, just debug log", action="store_true")
 
     return parser.parse_args()
 
@@ -139,4 +140,4 @@ def parse_arguments():
 if __name__ == "__main__":
     args = parse_arguments()
     print(args)
-    main(args.development, args.personality, args.latex, args.graph, args.content, args.types)
+    main(args.development, args.personality, args.latex, args.graph, args.content, args.types, args.noprint)
