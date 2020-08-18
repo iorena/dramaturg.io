@@ -80,6 +80,7 @@ class Story:
         pre_project = Project(self.world_state.get_object_by_name("kulttuuri"), "olla", ("static", "tärkeää"), "statement", "prees", 1)
 
         main_char.add_belief(main_project)
+        main_char.add_belief(pre_project)
         third_char.add_belief(contrary_project)
 
         a_project = None

@@ -53,7 +53,7 @@ class ActionType:
         """
         Character hesitates if his goals make him use turns that he doesn't want to use (because of relationship)
         """
-        if project.proj_type in ["expansion", "surprise"]:
+        if project.proj_type not in ["statement", "proposal"]:
             return False
         perceived_mood = speaker.perception.get_object_by_name(listener.name).mood
         current_mood_diff = perceived_mood - speaker.relations[listener.name]

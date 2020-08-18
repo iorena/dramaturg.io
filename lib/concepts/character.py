@@ -82,15 +82,11 @@ class Character:
             #todo: refine checking goal conflict, now only works for inheritance object want goal
             if goal.is_in_conflict_with(new_goal):
                 self.goals.remove(goal)
-                print("removed conflicting goal", goal.subj, goal.verb, goal.obj)
         if new_goal not in self.goals:
             if priority:
                 self.goals.insert(0, new_goal)
             else:
                 self.goals.append(new_goal)
-            #print("set new goal", self.name, new_goal.subj, new_goal.verb, new_goal.obj, new_goal.proj_type)
-        #else:
-            #print("already has goal")
 
     def set_relation(self, other, relation):
         if relation is None:
@@ -100,10 +96,8 @@ class Character:
 
     def resolve_goal(self, goal):
         if goal in self.goals:
-            print("removed goal", self.name, goal.subj, goal.verb, goal.obj, goal.proj_type)
             self.goals.remove(goal)
         else:
-            print("tried to remove goal but didn't?", goal.subj, goal.verb, goal.obj, goal.proj_type)
             for old_goal in self.goals:
                 if goal.is_in_conflict_with(old_goal):
                     self.goals.remove(old_goal)
@@ -152,7 +146,7 @@ class Character:
             self.methods.append(method)
 
     def add_stress(self, project):
-        if project.proj_type not in ["expansion", "surprise"]:
+        if project.proj_type in ["statement", "proposal"]:
             self.stress += 1
             if self.stress > self.stress_capacity:
                 self.resolve_stress(project)
