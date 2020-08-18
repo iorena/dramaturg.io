@@ -25,7 +25,7 @@ class Sequence():
         self.action_types = action_types
         self.parent = parent
         self.world_state = world_state
-        self.conflicting_project = self.project.get_listener_conflicting_project(self.speakers, self.speaker_i, self.reacter_i)
+        self.listener_agrees, self.conflicting_project = self.project.get_listener_conflicting_project(self.speakers, self.speaker_i, self.reacter_i)
         self.pair_types = POS_SEQUENCES if self.conflicting_project is None else NEG_SEQUENCES
         self.surprise = False
         if surprise:
@@ -58,7 +58,7 @@ class Sequence():
             for turn in self.post_expansion.turns:
                 self.turns.append(turn)
 
-        if self.conflicting_project is None and self.project.proj_type in ["proposal", "statement", "question", "pivot", "change", "why"]:
+        if self.listener_agrees and self.project.proj_type in ["proposal", "statement", "question"]:
             self.speakers[self.speaker_i].resolve_goal(self.project)
 
 
@@ -71,11 +71,20 @@ class Sequence():
             #personal = "personal" if project.subj is Character else "impersonal"
             sequence_type = "SYLL"
             return Sequence(self.speakers, self.reacter_i, surprise_project, sequence_type, False, self.action_types, self.world_state, self)
+
+        # argues against
+        elif position == "infix_expansions" and self.project.proj_type in ["statement", "proposal"] and self.conflicting_project is not None:
+            sequence_type = "SVVA"
+            print("vastaväite")
+            return Sequence(self.speakers, self.reacter_i, self.conflicting_project, sequence_type, False, self.action_types, self.world_state, self)
+
         # change of opinion
-        elif position == "infix_expansions" and self.project.proj_type in ["statement", "proposal"] and self.conflicting_project is not None and self.parent and not self.parent.conflicting_project is not None:
+        elif position == "infix_expansions" and not self.listener_agrees and self.conflicting_project is None and self.parent is None:
             change_project = Project.get_change_project(self.speakers[self.reacter_i])
+            print("mielenmuutos")
             sequence_type = "SMMU"
             return Sequence(self.speakers, self.reacter_i, change_project, sequence_type, False, self.action_types, self.world_state, self)
+
         # topic pivot
         elif position == "pre_expansions" and self.parent is None and self.project.proj_type not in ["hello"]:
             pivot_project = Project.get_pivot_project(self.speakers[self.reacter_i])

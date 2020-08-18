@@ -88,10 +88,9 @@ class Character:
                 self.goals.insert(0, new_goal)
             else:
                 self.goals.append(new_goal)
-            print(new_goal)
-            print("set new goal", self.name, new_goal.subj, new_goal.verb, new_goal.obj, new_goal.proj_type)
-        else:
-            print("already has goal")
+            #print("set new goal", self.name, new_goal.subj, new_goal.verb, new_goal.obj, new_goal.proj_type)
+        #else:
+            #print("already has goal")
 
     def set_relation(self, other, relation):
         if relation is None:
@@ -101,9 +100,10 @@ class Character:
 
     def resolve_goal(self, goal):
         if goal in self.goals:
-            print("removed goal", self.name, goal)
+            print("removed goal", self.name, goal.subj, goal.verb, goal.obj, goal.proj_type)
             self.goals.remove(goal)
         else:
+            print("tried to remove goal but didn't?", goal.subj, goal.verb, goal.obj, goal.proj_type)
             for old_goal in self.goals:
                 if goal.is_in_conflict_with(old_goal):
                     self.goals.remove(old_goal)
@@ -117,11 +117,11 @@ class Character:
     def add_said_memory(self, turn):
         self.said_memory.append(turn)
 
-    def add_heard_memory(self, turn):
+    def add_heard_memory(self, turn, listener):
         self.heard_memory.append(turn)
         # check repetition
         if len(self.heard_memory) > 2 and self.heard_memory[-1] == self.heard_memory[-2] and self.heard_memory[-2] == self.heard_memory[-3]:
-            self.set_goal(Project.get_repetition_project(self), True)
+            #self.set_goal(Project.get_repetition_project(self, listener), True)
             self.heard_memory = []
 
     def reset_turn_memory(self):
@@ -138,6 +138,10 @@ class Character:
 
     def add_belief(self, belief):
         self.beliefs.append(belief)
+
+    def remove_belief(self, belief):
+        if belief in self.beliefs:
+            self.beliefs.remove(belief)
 
     def reset_mood(self):
         self.mood = Mood(self.personality)

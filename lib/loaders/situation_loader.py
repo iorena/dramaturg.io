@@ -16,6 +16,4 @@ def load_situations(path="../data/situation_rules.csv"):
                                 "b_expansions": b_expansions,
                                 "a_project": a_project,
                                 "b_project": b_project}
-    for i in situations:
-        print(i, situations[i])
     return situations

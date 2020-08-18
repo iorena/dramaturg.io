@@ -43,7 +43,7 @@ TIA-	TRUE	FALSE	subject	project	object	None	INDV	prees	FALSE	None	None
 TIAB+	FALSE	FALSE	None	None	object	None	INDV	prees	FALSE	None	None
 TIAB-	FALSE	FALSE	None	None	object	None	INDV	prees	FALSE	None	None
 TIÄ	TRUE	FALSE	Speaker	tietää	object	None	INDV	prees	FALSE	None	None
-TOR	FALSE	FALSE	Listener	luulla	interrogative	None	INDV	prees	FALSE	None	None
+TOR	FALSE	FALSE	Listener	luulla	None	None	INDV	prees	FALSE	mitä	None
 TORB	TRUE	FALSE	None	None	None	None	INVD	prees	FALSE	ei kuulu sinulle	None
 VÄI+++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	Minulla on kerrottavaa.	None
 VÄI++-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	En halua häiritä, mutta minun pitäisi kertoa sinulle että	None
@@ -133,7 +133,7 @@ MMK+++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	olen iloinen, että arvos
 MMK++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	jep! Olen niin helpottunut, että olet samaa mieltä	None
 MMK+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mahtavaa, että ymmärrät	None
 MMK-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	no niin, tajusithan sinä vihdoin	None
-MMK+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	hienoa, vai mitä?	None
+MMK+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	hienoa, vai mitä ?	None
 MMK-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	sitähän minä olen yrittänyt sanoa	None
 MMK--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	vihdoin ymmärsit	None
 MMK---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	niimpä	None
@@ -156,11 +156,5 @@ PVK---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mitä ?	None
 TPB	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	miksi	None
 IND	FALSE	FALSE	subject	project	object	None	INDV	proejct	FALSE	nyt ymmärrän, että	. kaikkien täytyy tietää tästä !
 IDK	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	juuri niin	None
-TUN+++											
-TUN++-											
-TUN+-+											
-TUN-++											
-TUN+--											
-TUN-+-											
-TUN--+											
-TUN---											
+VAV	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	ei voi olla .	None
+VKI	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None

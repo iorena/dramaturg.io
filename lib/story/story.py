@@ -73,8 +73,10 @@ class Story:
         chars = [main_char, other_char]
 
         main_project = Project(("uusi", self.world_state.inheritance_object), "olla", ("obj", self.world_state.get_object_by_name("rakennettava")), "statement", "prees", 1)
+
         # Maija has a contradicting belief about museums that necessitates lying to convince her
         contrary_project = Project(self.world_state.inheritance_object, "olla", ("obj", self.world_state.get_object_by_name("vaarallinen")), "statement", "prees", 1)
+
         pre_project = Project(self.world_state.get_object_by_name("kulttuuri"), "olla", ("static", "tärkeää"), "statement", "prees", 1)
 
         main_char.add_belief(main_project)
@@ -101,28 +103,27 @@ class Story:
 
         for sit in self.situation_list:
 
+            if sit == "lie_for":
+                chars = [other_char, third_char]
+            else:
+                chars = [main_char, other_char]
+
             for entry in self.situation_rules[sit]["a_project"]:
                 project = projects[entry][0]
                 parameters = projects[entry][1]
-                a_project = project(*parameters, other_char)
-                print("%", project)
+                a_project = project(*parameters, chars[1])
                 if a_project is not None:
-                    main_char.set_goal(a_project)
+                    chars[0].set_goal(a_project)
                     prev_project = a_project
 
             for entry in self.situation_rules[sit]["b_project"]:
                 project = projects[entry][0]
                 parameters = projects[entry][1]
-                b_project = project(*parameters, main_char)
-                print("#", b_project)
+                b_project = project(*parameters, chars[0])
                 if b_project is not None:
-                    other_char.set_goal(b_project)
+                    chars[1].set_goal(b_project)
                     prev_project = b_project
 
-            if sit == "lie_for":
-                chars = [main_char, third_char]
-            else:
-                chars = [main_char, other_char]
 
             #todo: set memories?
 

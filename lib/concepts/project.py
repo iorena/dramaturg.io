@@ -36,7 +36,7 @@ class Project:
         return (f"{self.subj} {self.verb} {self.obj} {self.proj_type} {self.time} {self.weight}")
 
     def __eq__(self, other):
-        return self.subj == other.subj and self.verb == other.verb and self.obj == other.obj and self.obj_type == other.obj_type and self.proj_type == other.proj_type
+        return self.subj.name == other.subj.name and self.verb == other.verb and self.obj == other.obj and self.obj_type == other.obj_type and self.proj_type == other.proj_type
 
     def get_appraisal(self, character):
         #death is always bad
@@ -54,7 +54,6 @@ class Project:
         if type(self.obj) in [WorldObject, Location]:
             attributes = character.perception.get_object(self.obj).attributes
             if "appraisal" in attributes:
-                print("appraised", self.obj, attributes["appraisal"])
                 return attributes["appraisal"]
         if type(self.obj) is str:
             attributes = character.perception.get_object_by_name(self.obj).attributes
@@ -94,22 +93,34 @@ class Project:
     def is_in_conflict_with(self, other):
         if self.verb == other.verb and self.subj != other.subj and self.obj == other.obj:
             return True
+        if self.verb == other.verb and self.subj == other.subj and self.obj != other.obj:
+            return True
         return False
 
-    # returns project that is in conflict, or None
+    # returns tuple (boolean agreement, <project that is in conflict>, or None)
     def get_listener_conflicting_project(self, speakers, speaker_i, listener_i):
-        if self.proj_type in ["surprise", "expansion", "pivot", "hello", "change"]:
-            return None
+        agreement = False
+        if self in speakers[listener_i].beliefs:
+            agreement = True
+        if self.proj_type in ["question", "surprise", "hello", "expansion", "pivot", "change", "why"]:
+            return (True, None)
         if self.subj == speakers[listener_i] and self.verb == "tietää":
-            return None
+            return (True, None)
         if self.obj == "kiitollinen":
-            return None
+            return (agreement, None)
 
+        # if character has conflicting belief, we assume they don't have the same belief
+        # maybe this could be added in future development
         for goal in speakers[listener_i].goals:
             if self.is_in_conflict_with(goal):
-                return goal
+                return (False, goal)
 
-        return None
+        for belief in speakers[listener_i].beliefs:
+            if self.is_in_conflict_with(belief):
+                speakers[listener_i].remove_belief(belief)
+                return (False, belief)
+
+        return (agreement, None)
     """
         if self.verb == "olla":
             first_perception = speakers[0].perception.get_object(self.subj)
@@ -226,9 +237,8 @@ class Project:
     def get_pivot_project(listener):
         return Project(listener, "kuunnella", (None, None), "pivot", "present", 0.1)
 
-    def get_repetition_project(char):
-        other_char = char.perception.get_opposite(char)
-        return Project(other_char, "hokea", ("static", "tuota"), "why", "present", 0.1)
+    def get_repetition_project(char, listener):
+        return Project(listener, "hokea", ("static", "tuota"), "why", "present", 0.1)
 
     def get_argument_project(listener):
         return Project()

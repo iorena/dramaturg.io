@@ -42,7 +42,7 @@ class Turn:
     def add_turn_memories(self):
         self.speaker.add_said_memory(self.action_type.name)
         for listener in self.listeners:
-            listener.add_heard_memory(self.action_type.name)
+            listener.add_heard_memory(self.action_type.name, self.speaker)
 
     def get_sentence_type(self):
         names = {
