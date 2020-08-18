@@ -89,12 +89,12 @@ YLL+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ihanko totta ?	None
 YLL-+-	FALSE	FALSE	subject	project	object	None	INDV	perf	FALSE	en tiennyt että	None
 YLL--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mitä sinä selität ?	None
 YLL---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mitä hittoa	?
-VYL+++	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	niin.	viime viikolla
+VYL+++	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	niin.	jo jonkin aikaa;jo kauan
 VYL++-	FALSE	FALSE	subject	project	object	None	INDV	perf	FALSE	valitettavasti en ehtinyt ilmoittaa sinulle että	None
 VYL+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	niinhän minä sanoin	None
 VYL-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuulit kyllä mitä sanoin	None
 VYL+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	näin se valitettavasti on.	None
-VYL-+-	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	SORRY	viime viikolla
+VYL-+-	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	SORRY	jo kauan;jo jonkin aikaa
 VYL--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuulit kyllä	None
 VYL---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	niin	None
 KYS+++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	kerrohan onko totta että	None
