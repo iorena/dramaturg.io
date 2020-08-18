@@ -109,7 +109,6 @@ class WorldState:
         if type(obj) is Character:
             choices = copy.deepcopy(self.characters)
             choices.pop(obj.id)
-            choices.pop()
         if type(obj) is Location:
             choices = copy.deepcopy(self.locations)
             choices.pop(obj.id)
@@ -122,6 +121,8 @@ class WorldState:
         elif type(obj) is WorldObject:
             choices = copy.deepcopy(self.objects)
             choices.pop(obj.id)
+        else:
+            print("type is", type(obj))
         if type(obj) is Emotion:
             opposite = Emotion(None, 1 - obj.pleasure, 1 - obj.arousal, 1 - obj.dominance)
         else:

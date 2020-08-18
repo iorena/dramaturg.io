@@ -107,7 +107,7 @@ class Project:
         if self.subj == speakers[listener_i] and self.verb == "tietää":
             return (True, None)
         if self.obj == "kiitollinen":
-            return (agreement, None)
+            return (True, None)
 
         # if character has conflicting belief, we assume they don't have the same belief
         # maybe this could be added in future development
@@ -169,21 +169,21 @@ class Project:
     def get_new_project(speakers, main_project, world_state):
         #random topic: weather etc
         rand = random.random()
-        if rand > 0.7:
+        if rand >= 0:
             subj = world_state.weather
             obj = ("weather", speakers[0].attributes["location"].attributes["weather"])
             #todo: can weather be something else besides statement?
             project = Project(subj, "olla", obj, "statement", main_project.time, 0.1)
         #opposite topic
         elif rand > 0.3 and main_project.verb is "olla":
-            obj = (main_project.obj_type, world_state.get_opposite(main_project.obj))
+            obj = (main_project.obj_type, world_state.get_opposite(world_state.get_object_by_name(main_project.obj)))
             project = Project(main_project.subj, "olla", obj, "statement",  main_project.time, main_project.weight)
         #relationship between characters
         else:
             subj = speakers[0]
             obj = ("relationship", speakers[1])
             verb = "pitää"
-            if subj.relations[speakers[1].name].liking["outgoing"] < 0.5:
+            if subj.relations[speakers[1].name].pleasure < 0:
                 verb = "vihata"
             project = Project(subj, verb, obj, "statement", "present", 0.8)
 
@@ -203,8 +203,8 @@ class Project:
         # todo ???
         return Project(listener, "kuunnella", (None, None), "question", "present", 1)
 
-    def get_boredom_project(other_char, listener):
-        return Project(other_char, "olla", ("static", "kyllästynyt"), "statement", "prees", 1)
+    def get_boredom_project(speakers, main_project, char, listener):
+        return Project.get_new_project(speakers, main_project, char.perception)
 
     def get_dismissal_project(main_char, listener):
         return Project(main_char, "mennä", ("static", "pois"), "proposal", "prees", 1)
