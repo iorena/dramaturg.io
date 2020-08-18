@@ -96,9 +96,12 @@ class Character:
 
     def resolve_goal(self, goal):
         if goal in self.goals:
+            print("removed goal", self.name, goal.subj, goal.verb, goal.obj, goal.proj_type)
             self.goals.remove(goal)
         else:
+            print("tried to remove goal but didn't?", self.name, goal.subj, goal.verb, goal.obj, goal.proj_type)
             for old_goal in self.goals:
+                print("has goal", old_goal.subj, old_goal.verb, old_goal.obj, old_goal.proj_type)
                 if goal.is_in_conflict_with(old_goal):
                     self.goals.remove(old_goal)
                     return

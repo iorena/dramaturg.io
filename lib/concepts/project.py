@@ -117,7 +117,6 @@ class Project:
 
         for belief in speakers[listener_i].beliefs:
             if self.is_in_conflict_with(belief):
-                speakers[listener_i].remove_belief(belief)
                 return (False, belief)
 
         return (agreement, None)
@@ -201,6 +200,7 @@ class Project:
 
 
     def get_complain_project(character, prev_proj, main_proj, listener):
+        # todo ???
         return Project(listener, "kuunnella", (None, None), "question", "present", 1)
 
     def get_boredom_project(other_char, listener):
@@ -239,6 +239,3 @@ class Project:
 
     def get_repetition_project(char, listener):
         return Project(listener, "hokea", ("static", "tuota"), "why", "present", 0.1)
-
-    def get_argument_project(listener):
-        return Project()

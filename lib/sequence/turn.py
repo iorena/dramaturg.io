@@ -63,7 +63,9 @@ class Turn:
             "PVT": "aiheen vaihto/pohjustus",
             "PVK": "aiheen vaihdon kuittaus",
             "TPB": "kysymys (miksi)",
-            "TOR": "kysymyksen torjunta"
+            "TOR": "kysymyksen torjunta",
+            "VVA": "vastaväite",
+            "VVK": "vastaväitteen kiistäminen"
         }
         name = self.action_type.name[:3]
         if name in names:
