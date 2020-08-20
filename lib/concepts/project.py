@@ -47,16 +47,12 @@ class Project:
         if self.obj_type is "owner":
             #todo: shouldn't this be the appraisal of the object owned?
             return WorldObject(APPRAISALS[3], 93)
-        if self.obj_type is "static":
+        if self.obj_type is "static" or type(self.obj) is str:
             attributes = character.perception.get_object_by_name(self.obj).attributes
             if "appraisal" in attributes:
                 return attributes["appraisal"]
         if type(self.obj) in [WorldObject, Location]:
             attributes = character.perception.get_object(self.obj).attributes
-            if "appraisal" in attributes:
-                return attributes["appraisal"]
-        if type(self.obj) is str:
-            attributes = character.perception.get_object_by_name(self.obj).attributes
             if "appraisal" in attributes:
                 return attributes["appraisal"]
         return WorldObject(APPRAISALS[2], 92)

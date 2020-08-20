@@ -30,6 +30,13 @@ class WorldState:
         self.alive = WorldObject("alive", 100)
         self.appraisals = [WorldObject("horrible", 90), WorldObject("bad", 91), WorldObject("okay", 92), WorldObject("good", 93), WorldObject("great", 94)]
         self.weather_types = [WorldObject("sunny", 95), WorldObject("cloudy", 96), WorldObject("rainy", 97), WorldObject("stormy", 98)]
+
+        # set appraisals for weather types
+        self.weather_types[0].set_appraisal(self.appraisals[4])
+        self.weather_types[1].set_appraisal(self.appraisals[2])
+        self.weather_types[2].set_appraisal(self.appraisals[1])
+        self.weather_types[3].set_appraisal(self.appraisals[0])
+
         self.locations = [Location(), Location()]
         self.characters = [Character(self.locations[0], personalities[0]), Character(self.locations[1], personalities[1]), Character(self.locations[1], None), Character(self.locations[0], None, self.embeddings.get_relative())]
         self.objects = [WorldObject(self.embeddings.get_inheritance_object())]
