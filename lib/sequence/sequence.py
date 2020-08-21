@@ -76,7 +76,7 @@ class Sequence():
             return Sequence(self.speakers, self.reacter_i, surprise_project, sequence_type, False, self.action_types, self.world_state, self)
 
         # argues against
-        elif position == "infix_expansions" and self.project.proj_type in ["statement", "proposal"] and self.conflicting_project is not None:
+        elif position == "infix_expansions" and self.project.proj_type in ["statement", "proposal"] and self.conflicting_project is not None and self.seq_type != "SVVA":
             sequence_type = "SVVA"
             print("vastaväite")
             # not robust, just a hack to make sure argument only happens once
