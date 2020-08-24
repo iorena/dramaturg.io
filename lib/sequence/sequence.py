@@ -59,6 +59,7 @@ class Sequence():
                 self.turns.append(turn)
 
         if self.listener_agrees and self.project.proj_type in ["proposal", "statement", "question"]:
+            print("resolving")
             self.speakers[self.speaker_i].resolve_goal(self.project)
         if not self.conflicting_project and self.project.proj_type in ["proposal", "statement"]:
             self.speakers[self.reacter_i].add_belief(self.project)
@@ -84,10 +85,14 @@ class Sequence():
             return Sequence(self.speakers, self.reacter_i, self.conflicting_project, sequence_type, False, self.action_types, self.world_state, self)
 
         # change of opinion
-        elif position == "infix_expansions" and not self.listener_agrees and self.conflicting_project is None and self.parent is None:
+        elif position == "infix_expansions" and not self.listener_agrees and self.conflicting_project is None:
             change_project = Project.get_change_project(self.speakers[self.reacter_i])
             print("mielenmuutos")
             sequence_type = "SMMU"
+            # don't repeat agreement after mind change sequence
+            self.second_pair_part = None
+            # resolve project
+            self.speakers[self.speaker_i].resolve_goal(self.project)
             return Sequence(self.speakers, self.reacter_i, change_project, sequence_type, False, self.action_types, self.world_state, self)
 
         # topic pivot

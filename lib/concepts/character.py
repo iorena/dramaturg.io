@@ -35,7 +35,7 @@ class Character:
         self.said_memory = []
         self.heard_memory = []
         self.beliefs = []
-        self.stress_capacity = 2
+        self.stress_capacity = 3
         if self.personality["N"] > 0.5:
             self.stress_capacity = 1
         elif self.personality["N"] < -0.5:
@@ -96,12 +96,12 @@ class Character:
 
     def resolve_goal(self, goal):
         if goal in self.goals:
-            print("removed goal", self.name, goal.subj, goal.verb, goal.obj, goal.proj_type)
+            #print("removed goal", self.name, goal.subj, goal.verb, goal.obj, goal.proj_type)
             self.goals.remove(goal)
         else:
-            print("tried to remove goal but didn't?", self.name, goal.subj, goal.verb, goal.obj, goal.proj_type)
+            #print("tried to remove goal but didn't?", self.name, goal.subj, goal.verb, goal.obj, goal.proj_type)
             for old_goal in self.goals:
-                print("has goal", old_goal.subj, old_goal.verb, old_goal.obj, old_goal.proj_type)
+                #print("has goal", old_goal.subj, old_goal.verb, old_goal.obj, old_goal.proj_type)
                 if goal.is_in_conflict_with(old_goal):
                     self.goals.remove(old_goal)
                     return
