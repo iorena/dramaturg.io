@@ -1,14 +1,15 @@
 from concepts.worldstate import WorldState
+from concepts.project import Project
+from concepts.affect.emotion import Emotion
+from language.dictionary import Dictionary
 from loaders import load_action_types, load_topics, load_situations
 from scene.situation import Situation
-from concepts.project import Project
-from story.transition import Transition
-from language.dictionary import Dictionary
 from scene.situation_grammar import SituationGrammar
+from story.transition import Transition
 
-import random
 import copy
 import json
+import random
 
 
 class Story:
@@ -109,6 +110,16 @@ class Story:
             else:
                 chars = [main_char, other_char]
 
+            #todo: collect situations into scenes
+            #reset moods
+            if sit in ["lecture", "lie_for", "are_rewarded_by"]:
+                for char in chars:
+                    char.reset_mood()
+
+            # todo: other emotional effects for other situations?
+            if sit == "are_bored_by":
+                other_char.mood.affect_mood(Emotion(None, -2, -2, -2))
+
             for entry in self.situation_rules[sit]["a_project"]:
                 project = projects[entry][0]
                 parameters = projects[entry][1]
@@ -130,9 +141,6 @@ class Story:
 
             situations.append(Situation(sit, self.world_state, self.embeddings, chars, self.situation_rules[sit], main_char.attributes["location"]))
 
-            #reset moods
-            for char in chars:
-                char.reset_mood()
 
         return situations
 

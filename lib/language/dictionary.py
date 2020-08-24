@@ -38,7 +38,8 @@ class Dictionary:
         "ymmärtää": [("ymmärtää", "NONE")],
         "kuunnella": [("kuunnella", "NONE")],
         "hokea": [("hokea", "PAR")],
-        "kiinnostaa": [("kiinnostaa", "PAR")]
+        "kiinnostaa": [("kiinnostaa", "PAR")],
+        "ärsyttää": [("ärsyttää", "PAR")]
     }
 
     second_obj_case_dictionary = {

@@ -91,6 +91,8 @@ class Project:
             return True
         if self.verb == other.verb and self.subj == other.subj and self.obj != other.obj:
             return True
+        if self.subj == other.subj and self.proj_type == "complain":
+            return True
         return False
 
     # returns tuple (boolean agreement, <project that is in conflict>, or None)
@@ -155,6 +157,8 @@ class Project:
             verb = "sairastua"
         elif self.verb == "ottaa" or self.verb == "mennä":
             verb = "haluta"
+        elif self.verb == "kiinnostaa":
+            verb = "ärsyttää"
         else:
             verb = self.verb
         return Project(self.subj, verb, (self.obj_type, self.obj), "surprise", self.time, self.weight/1.5)
