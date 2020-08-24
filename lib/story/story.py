@@ -86,16 +86,16 @@ class Story:
         a_project = None
         b_project = None
 
-        prev_project = None
+        prev_project = pre_project
 
         projects = {
             "none": (lambda x: None, []),
             "main_project": (lambda x, y: x, [main_project]),
             "prev_project": (lambda x: prev_project, []),
             "boredom_project": (Project.get_boredom_project, [[main_char, other_char], pre_project, other_char]),
-            "dismissal_project": (Project.get_dismissal_project, [main_char]),
+            "dismissal_project": (Project.get_dismissal_project, [other_char]),
             "look_up_to_project": (Project.get_look_up_to_project, [main_char]),
-            "complain_project": (Project.get_complain_project, [main_char, prev_project, main_project]),
+            "complain_project": (Project.get_complain_project, [other_char, prev_project, main_project]),
             "reward_project": (Project.get_reward_project, [main_char]),
             "refer_back_project": (Project.get_refer_back_project, [prev_project, main_project]),
             "indoctrination_project": (Project.get_indoctrination_project, [main_project]),

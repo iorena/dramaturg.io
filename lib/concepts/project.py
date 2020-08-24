@@ -98,7 +98,7 @@ class Project:
         agreement = False
         if self in speakers[listener_i].beliefs:
             agreement = True
-        if self.proj_type in ["question", "surprise", "hello", "expansion", "pivot", "change", "why"]:
+        if self.proj_type in ["question", "surprise", "hello", "expansion", "pivot", "change", "why", "complain"]:
             return (True, None)
         if self.subj == speakers[listener_i] and self.verb == "tietää":
             return (True, None)
@@ -196,8 +196,7 @@ class Project:
 
 
     def get_complain_project(character, prev_proj, main_proj, listener):
-        # todo ???
-        return Project(listener, "kuunnella", (None, None), "question", "present", 1)
+        return Project(prev_proj.subj, "kiinnostaa", ("obj", character), "complain", "present", 1)
 
     def get_boredom_project(speakers, main_project, char, listener):
         return Project.get_new_project(speakers, main_project, char.perception)

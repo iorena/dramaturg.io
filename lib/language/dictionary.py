@@ -37,7 +37,8 @@ class Dictionary:
         "kysyä": [("kysyä", "GEN")],
         "ymmärtää": [("ymmärtää", "NONE")],
         "kuunnella": [("kuunnella", "NONE")],
-        "hokea": [("hokea", "PAR")]
+        "hokea": [("hokea", "PAR")],
+        "kiinnostaa": [("kiinnostaa", "PAR")]
     }
 
     second_obj_case_dictionary = {
@@ -57,6 +58,7 @@ class Dictionary:
         "bad": ["huono", "onneton", "kurja"],
         "horrible": ["surkea", "hirveä"],
         "pahus": ["pahus", "harmi", "sääli"],
+        "disappointment": ["aha", "vai niin", "just"],
         "hienoa": ["mainiota", "hienoa", "hyvä"],
         "moi": ["terve", "moi", "hei"],
         "sunny": ["aurinkoinen"],

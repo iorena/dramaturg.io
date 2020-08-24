@@ -58,12 +58,11 @@ class Sequence():
             for turn in self.post_expansion.turns:
                 self.turns.append(turn)
 
-        if self.listener_agrees and self.project.proj_type in ["proposal", "statement", "question"]:
+        if self.listener_agrees and self.project.proj_type in ["proposal", "statement", "question", "complain"]:
             print("resolving")
             self.speakers[self.speaker_i].resolve_goal(self.project)
         if not self.conflicting_project and self.project.proj_type in ["proposal", "statement"]:
             self.speakers[self.reacter_i].add_belief(self.project)
-
 
 
     def generate_expansion(self, position, parent, switch_speakers=False):

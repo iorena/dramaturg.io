@@ -158,3 +158,5 @@ IND	FALSE	FALSE	subject	project	object	None	INDV	proejct	FALSE	nyt ymmärrän, e
 IDK	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	juuri niin	None
 VVA	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	ei voi olla .	None
 VVK	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
+VAL	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
+VLK	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	disappointment	None
