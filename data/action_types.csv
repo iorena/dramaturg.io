@@ -82,19 +82,19 @@ JTK	FALSE	TRUE	None	None	None	None	INDV	prees	FALSE	niinkö	None
 EST	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	älä viitsi	None
 MYÖB	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	niinpä	None
 YLL+++	FALSE	FALSE	Speaker	kuulla	demonstrative	None	INDV	prees	FALSE	niinkö ? Miksi	vasta nyt
-YLL++-	FALSE	TRUE	subject	project	object	None	INDV	perf	FALSE	mitä ?	None
+YLL++-	FALSE	TRUE	subject	project	object	None	INDV	project	FALSE	mitä ?	None
 YLL+-+	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	häh ?	SERIOUS
-YLL-++	FALSE	FALSE	subject	project	object	None	INDV	perf	FALSE	täh ? mikset ole kertonut minulle että	?
+YLL-++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	täh ? mikset ole kertonut minulle että	?
 YLL+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ihanko totta ?	None
-YLL-+-	FALSE	FALSE	subject	project	object	None	INDV	perf	FALSE	en tiennyt että	None
+YLL-+-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	en tiennyt että	None
 YLL--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mitä sinä selität ?	None
 YLL---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mitä hittoa	?
-VYL+++	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	niin.	jo jonkin aikaa;jo kauan
-VYL++-	FALSE	FALSE	subject	project	object	None	INDV	perf	FALSE	valitettavasti en ehtinyt ilmoittaa sinulle että	None
+VYL+++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	niin.	jo jonkin aikaa;jo kauan
+VYL++-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	valitettavasti en ehtinyt ilmoittaa sinulle että	None
 VYL+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	niinhän minä sanoin	None
 VYL-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuulit kyllä mitä sanoin	None
 VYL+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	näin se valitettavasti on.	None
-VYL-+-	FALSE	FALSE	subject	project	object	None	INDV	imperf	FALSE	SORRY	jo kauan;jo jonkin aikaa
+VYL-+-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	SORRY	jo kauan;jo jonkin aikaa
 VYL--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuulit kyllä	None
 VYL---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	niin	None
 KYS+++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	kerrohan onko totta että	None

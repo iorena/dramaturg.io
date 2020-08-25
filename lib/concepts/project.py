@@ -29,6 +29,7 @@ class Project:
         self.proj_type = proj_type
         if self.obj_type is "quality":
             time = "present"
+        # "prees", "imperf", "perf"
         self.time = time
         self.weight = weight
 
@@ -151,17 +152,20 @@ class Project:
         return True
 
     def get_surprise_project(self):
+        time = self.time
         #todo: happy surprise or sad surprise?
         #todo: make more surprise projects for new verbs
         if self.verb == "kuolla":
             verb = "sairastua"
         elif self.verb == "ottaa" or self.verb == "mennä":
             verb = "haluta"
+            time = "perf"
         elif self.verb == "kiinnostaa":
             verb = "ärsyttää"
+            time = "prees"
         else:
             verb = self.verb
-        return Project(self.subj, verb, (self.obj_type, self.obj), "surprise", self.time, self.weight/1.5)
+        return Project(self.subj, verb, (self.obj_type, self.obj), "surprise", time, self.weight/1.5)
 
     def get_expansion_project(self):
         return Project(self.subj, self.verb, (self.obj_type, self.obj), "expansion", self.time, self.weight/2)
