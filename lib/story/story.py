@@ -104,7 +104,7 @@ class Story:
         }
 
         sit = self.situation_grammar.get_next_situation(other_char, None)
-        situation_names = [sit]
+        situation_names = []
 
         while sit is not None:
 
