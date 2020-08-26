@@ -9,9 +9,9 @@ class Mood:
             self.default_pleasure = personality.pleasure
             self.default_arousal = personality.arousal
             self.default_dominance = personality.dominance
-        self.pleasure = self.default_pleasure
-        self.arousal = self.default_arousal
-        self.dominance = self.default_dominance
+        self.pleasure = round(self.default_pleasure, 2)
+        self.arousal = round(self.default_arousal, 2)
+        self.dominance = round(self.default_dominance, 2)
 
     def __str__(self):
         return f"{self.pleasure:.2f}P {self.arousal:.2f}A {self.dominance:.2f}D"
@@ -97,17 +97,18 @@ class Mood:
     def as_array(self):
         return array((self.pleasure, self.arousal, self.dominance))
 
-    def in_bounds(self, bounds):
-        lower_bound = bounds[0]
-        upper_bound = bounds[1]
-        if self.pleasure < lower_bound[0] or self.pleasure > upper_bound[0]:
-            return False
-        if self.arousal < lower_bound[1] or self.arousal > upper_bound[1]:
-            return False
-        if self.dominance < lower_bound[2] or self.dominance > upper_bound[2]:
-            return False
+    def in_upper_half(self, axis):
+        if axis == "pleasure":
+            if self.pleasure > 0:
+                return True
+        if axis == "arousal":
+            if self.arousal > 0:
+                return True
+        if axis == "dominance":
+            if self.dominance > 0:
+                return True
 
-        return True
+        return False
 
     def get_default_pleasure(personality):
         return 0.21 * personality["E"] + 0.59 * personality["A"] + 0.19 * personality["N"]

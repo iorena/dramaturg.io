@@ -25,7 +25,8 @@ class Story:
             Dictionary.verb_dictionary[first_verb] = [(first_verb, "NOM")]
         if second_verb not in Dictionary.verb_dictionary:
             Dictionary.verb_dictionary[second_verb] = [(second_verb, "NOM")]
-        self.situations = self.create_situations(first_verb, second_verb)
+        self.situation_grammar = SituationGrammar()
+        self.situations, self.situation_names  = self.create_situations(first_verb, second_verb)
 
     def __str__(self):
         return f"{self.world_state}"
@@ -66,7 +67,6 @@ class Story:
         and plot must be furthered
         Todo: not all introductions must be done before any plot points are handled
         """
-        self.situation_list = SituationGrammar().create_situations()
         situations = []
         main_char = self.world_state.characters[0]
         other_char = self.world_state.characters[1]
@@ -103,7 +103,10 @@ class Story:
             "pre_project": (lambda x, y: x, [pre_project])
         }
 
-        for sit in self.situation_list:
+        sit = self.situation_grammar.get_next_situation(other_char, None)
+        situation_names = [sit]
+
+        while sit is not None:
 
             if sit == "lie_for":
                 chars = [other_char, third_char]
@@ -141,8 +144,15 @@ class Story:
 
             situations.append(Situation(sit, self.world_state, self.embeddings, chars, self.situation_rules[sit], main_char.attributes["location"]))
 
+            situation_names.append(sit)
 
-        return situations
+            # sometimes next situation depends on main char's mood, sometimes on other character's
+            if sit in ["complain"]:
+                sit = self.situation_grammar.get_next_situation(main_char, sit)
+            else:
+                sit = self.situation_grammar.get_next_situation(other_char, sit)
+
+        return situations, situation_names
 
     def to_json(self):
         return str(self)

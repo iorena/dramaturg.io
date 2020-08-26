@@ -6,13 +6,13 @@ class Emotion:
         self.name = name
         self.pleasure = pleasure
         if pleasure is None:
-            self.pleasure = random.random()
+            self.pleasure = round(random.random(), 2)
         self.arousal = arousal
         if arousal is None:
-            self.arousal = random.random()
+            self.arousal = round(random.random(), 2)
         self.dominance = dominance
         if dominance is None:
-            self.dominance = random.random()
+            self.dominance = round(random.random(), 2)
 
         if name is None:
             self.name = Emotion.identify_emotion(self.pleasure, self.arousal, self.dominance)
@@ -27,9 +27,9 @@ class Emotion:
         return self.name
 
     def __mul__(self, other):
-        self.pleasure *= other
-        self.arousal *= other
-        self.dominance *= other
+        self.pleasure = round(self.pleasure * other, 2)
+        self.arousal = round(self.arousal * other, 2)
+        self.dominance = round(self.dominance * other, 2)
         return self
 
     def identify_emotion(pleasure, arousal, dominance):
