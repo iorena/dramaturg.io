@@ -89,7 +89,7 @@ YLL+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	ihanko totta ?	None
 YLL-+-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	en tiennyt että	None
 YLL--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mitä sinä selität ?	None
 YLL---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mitä hittoa	?
-VYL+++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	niin.	jo jonkin aikaa;jo kauan
+VYL+++	FALSE	FALSE	subject	project	object	None	INDV	perf	FALSE	niin.	jo jonkin aikaa;jo kauan
 VYL++-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	valitettavasti en ehtinyt ilmoittaa sinulle että	None
 VYL+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	niinhän minä sanoin	None
 VYL-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuulit kyllä mitä sanoin	None
@@ -137,19 +137,19 @@ MMK+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	hienoa, vai mitä ?	None
 MMK-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	sitähän minä olen yrittänyt sanoa	None
 MMK--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	vihdoin ymmärsit	None
 MMK---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	niimpä	None
-PVT+++	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	, minulla olisi asiaa
+PVT+++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuule	, minulla olisi asiaa
 PVT++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	hei, minulla olisi asiaa, jos viitsit kuunnella	None
 PVT+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	hei, arvaa mitä	None
 PVT-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuuntelepa nyt hetki	None
 PVT+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuuntelisitko hetken ?	None
 PVT-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	minulla olisi yksi juttu	None
 PVT--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kuulepas nyt	None
-PVT---	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	hei,	None
-PVK+++	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	ihmeessä, haluan kuulla tämän
-PVK++-	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	mielelläni
-PVK+-+	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	toki
+PVT---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	hei, kuule	None
+PVK+++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	None	kerro ihmeessä, haluan kuulla tämän
+PVK++-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	None	kerro, kuuntelen mielelläni
+PVK+-+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	None	kerrohan toki
 PVK-++	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	no mitä nyt taas ?	None
-PVK+--	FALSE	FALSE	subject	project	object	None	IMPV	project	FALSE	None	vaan
+PVK+--	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	kerro vaan	None
 PVK-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	toivottavasti ei mitään pahaa	None
 PVK--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	no ?	None
 PVK---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mitä ?	None
