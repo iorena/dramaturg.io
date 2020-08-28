@@ -27,6 +27,8 @@ class Sequence():
         self.world_state = world_state
         self.listener_agrees, self.conflicting_project = self.project.get_listener_conflicting_project(self.speakers, self.speaker_i, self.reacter_i)
         self.pair_types = POS_SEQUENCES if self.listener_agrees else NEG_SEQUENCES
+        if self.conflicting_project is not None:
+            self.pair_types = PASS_SEQUENCES
         self.surprise = False
         if surprise:
             self.surprise = True
@@ -59,7 +61,6 @@ class Sequence():
                 self.turns.append(turn)
 
         if self.listener_agrees and self.project.proj_type in ["proposal", "statement", "question", "complain"]:
-            print("resolving")
             self.speakers[self.speaker_i].resolve_goal(self.project)
         if not self.conflicting_project and self.project.proj_type in ["proposal", "statement"]:
             self.speakers[self.reacter_i].add_belief(self.project)
@@ -76,7 +77,7 @@ class Sequence():
             return Sequence(self.speakers, self.reacter_i, surprise_project, sequence_type, False, self.action_types, self.world_state, self)
 
         # argues against
-        elif position == "infix_expansions" and self.project.proj_type in ["statement", "proposal"] and self.conflicting_project is not None and self.seq_type != "SVVA":
+        elif position == "infix_expansions" and self.project.proj_type in ["statement", "proposal"] and self.conflicting_project is not None and self.conflicting_project.proj_type is not "complain" and self.seq_type != "SVVA":
             sequence_type = "SVVA"
             print("vastaväite")
             # not robust, just a hack to make sure argument only happens once
@@ -143,6 +144,8 @@ class Sequence():
 
     def generate_pair_part(self, speaker_i, action_name, reverse):
         reacter_i = 0 if speaker_i == 1 else 1
+        if action_name is None:
+            return None
         if action_name == "TOI":
             if self.parent is None:
                 print("parent is none", self.project.subj, self.project.verb, self.project.obj)

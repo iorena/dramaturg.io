@@ -79,9 +79,11 @@ class Character:
     def set_goal(self, new_goal, priority=False):
         #todo: arrange by weight?
         for goal in self.goals:
-            #todo: refine checking goal conflict, now only works for inheritance object want goal
             if goal.is_in_conflict_with(new_goal):
                 self.goals.remove(goal)
+        for belief in self.beliefs:
+            if belief.is_in_conflict_with(new_goal):
+                self.beliefs.remove(belief)
         if new_goal not in self.goals:
             if priority:
                 self.goals.insert(0, new_goal)
