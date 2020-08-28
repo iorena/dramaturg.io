@@ -85,7 +85,7 @@ class Sequence():
             return Sequence(self.speakers, self.reacter_i, self.conflicting_project, sequence_type, False, self.action_types, self.world_state, self)
 
         # change of opinion
-        elif position == "infix_expansions" and not self.listener_agrees and self.conflicting_project is None:
+        elif position == "infix_expansions" and not self.listener_agrees and self.conflicting_project is None and self.project.proj_type != "proposal":
             change_project = Project.get_change_project(self.speakers[self.reacter_i])
             print("mielenmuutos")
             sequence_type = "SMMU"
@@ -96,7 +96,7 @@ class Sequence():
             return Sequence(self.speakers, self.reacter_i, change_project, sequence_type, False, self.action_types, self.world_state, self)
 
         # topic pivot
-        elif position == "pre_expansions" and self.parent is None and self.project.proj_type not in ["hello"]:
+        elif position == "pre_expansions" and self.parent is None and self.project.proj_type not in ["hello"] and self.speakers[self.speaker_i].mood.dominance < 0:
             pivot_project = Project.get_pivot_project(self.speakers[self.reacter_i])
             sequence_type = "SPVT"
             return Sequence(self.speakers, self.speaker_i, pivot_project, sequence_type, False, self.action_types, self.world_state, self)
