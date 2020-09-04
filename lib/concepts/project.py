@@ -221,9 +221,7 @@ class Project:
         return Project(speaker, "olla", ("static", "kiitollinen"), "statement", "prees", 1)
 
     def get_refer_back_project(prev_project, main_project, listener):
-        if prev_project is None:
-            return Project(listener, Project.get_action_word(main_project.proj_type), [("obj", main_project.subj), ("obj", "Maija")], "question", "imperf", 0.5)
-        return Project(listener, Project.get_action_word(prev_project.proj_type), [("obj", prev_project.subj), ("obj", "Maija")], "question", "imperf", 0.5)
+        return Project(listener, Project.get_action_word(main_project.proj_type), [("obj", main_project.subj), ("obj", "Maija")], "question", "imperf", 0.5)
 
     def get_indoctrination_project(main_project, listener):
         return Project(main_project.subj, main_project.verb, (main_project.obj_type, main_project.obj), "indoctrination", "prees", 0.5)
