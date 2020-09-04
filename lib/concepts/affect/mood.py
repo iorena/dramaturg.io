@@ -1,4 +1,5 @@
 from numpy import array
+import copy
 
 
 class Mood:
@@ -17,7 +18,29 @@ class Mood:
         return f"{self.pleasure:.2f}P {self.arousal:.2f}A {self.dominance:.2f}D"
 
     def __sub__(self, other):
-        return (abs(self.pleasure - other.pleasure), abs(self.arousal - other.arousal), abs(self.dominance - other.dominance))
+        result = copy.copy(self)
+        result.pleasure = abs(self.pleasure - other.pleasure)
+        result.arousal = abs(self.arousal - other.arousal)
+        result.dominance = abs(self.dominance - other.dominance)
+        return result
+
+
+    def __add__(self, other):
+        result = copy.copy(self)
+        result.pleasure = self.pleasure + other.pleasure
+        result.arousal = self.arousal + other.arousal
+        result.dominance = self.dominance + other.dominance
+        return result
+
+    def __truediv__(self, number):
+        result = copy.copy(self)
+        result.pleasure = round(self.pleasure / 2, 2)
+        result.arousal = round(self.arousal / 2, 2)
+        result.dominance = round(self.dominance / 2, 2)
+        return result
+
+    def get_vector(self):
+        return (self.pleasure, self.arousal, self.dominance)
 
     #formulas from Gebhard (2005)
     def default_mood(self, personality):

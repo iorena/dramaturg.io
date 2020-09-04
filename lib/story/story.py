@@ -128,7 +128,7 @@ class Story:
                 parameters = projects[entry][1]
                 a_project = project(*parameters, chars[1])
                 if a_project is not None:
-                    chars[0].set_goal(a_project)
+                    chars[0].set_goal(a_project, True)
                     prev_project = a_project
 
             for entry in self.situation_rules[sit]["b_project"]:
@@ -136,7 +136,7 @@ class Story:
                 parameters = projects[entry][1]
                 b_project = project(*parameters, chars[0])
                 if b_project is not None:
-                    chars[1].set_goal(b_project)
+                    chars[1].set_goal(b_project, True)
                     prev_project = b_project
 
 

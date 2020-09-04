@@ -60,11 +60,6 @@ class Sequence():
             for turn in self.post_expansion.turns:
                 self.turns.append(turn)
 
-        if self.listener_agrees and self.project.proj_type in ["proposal", "statement", "question", "complain"]:
-            self.speakers[self.speaker_i].resolve_goal(self.project)
-        if not self.conflicting_project and self.project.proj_type in ["proposal", "statement"]:
-            self.speakers[self.reacter_i].add_belief(self.project)
-
 
     def generate_expansion(self, position, parent, switch_speakers=False):
         ### fixed expansions
@@ -145,6 +140,8 @@ class Sequence():
     def generate_pair_part(self, speaker_i, action_name, reverse):
         reacter_i = 0 if speaker_i == 1 else 1
         if action_name is None:
+            # action name None means that this is a passive refusal
+            self.speakers[reacter_i].resolve_goal(project)
             return None
         if action_name == "TOI":
             if self.parent is None:
@@ -152,7 +149,6 @@ class Sequence():
                 return None
             action_type = self.action_types[self.parent.first_pair_part.action_type.name]
         else:
-            #print("action name", action_name)
             action_types_pool = [act_name for act_name in self.action_types.values() if act_name.class_name == action_name and act_name.can_use(self.speakers[speaker_i].mood)]
             if len(action_types_pool) == 0:
                 print("no available turn types!", action_name)
@@ -167,9 +163,14 @@ class Sequence():
             if char.name is not self.speakers[speaker_i].name:
                 listeners.append(char)
 
+        # handle turn effect
         hesitation = False
+        # if this is a first pair part of a sequence
         if self.speaker_i == speaker_i:
-            hesitation = action_type.get_hesitation(self.speakers[speaker_i], self.speakers[reacter_i], self.project)
+            hesitation = action_type.get_hesitation(self.speakers[speaker_i], self.speakers[reacter_i], project)
+        # if this is an accepting second pair part, resolve project, no need to go on
+        elif action_type.is_accepting() or action_type.name == "EST":
+            self.speakers[reacter_i].resolve_goal(project)
         return Turn(self.speakers[speaker_i], listeners, action_type, project, reverse, hesitation)
 
     def find_best_action_type(self, speaker_i, pool):
@@ -181,7 +182,7 @@ class Sequence():
         smallest_mood_diff = 9001.0
         mood_copy = copy.copy(current_mood)
         for act_type in pool:
-            mood_diff = norm(mood_copy.affect_mood(act_type.effect)[0] - target_mood)
+            mood_diff = norm((mood_copy.affect_mood(act_type.effect)[0] - target_mood).get_vector())
             if mood_diff < smallest_mood_diff:
                 smallest_mood_diff = mood_diff
                 best = act_type

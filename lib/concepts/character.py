@@ -96,21 +96,41 @@ class Character:
         else:
             self.relations[other.name] = relation
 
+    # resolve stress-inducing goal either by abandoning it or a goal conflicting with it
     def resolve_goal(self, goal):
+        to_remove = []
         if goal in self.goals:
-            #print("removed goal", self.name, goal.subj, goal.verb, goal.obj, goal.proj_type)
-            self.goals.remove(goal)
+            to_remove.append(goal)
         else:
-            #print("tried to remove goal but didn't?", self.name, goal.subj, goal.verb, goal.obj, goal.proj_type)
             for old_goal in self.goals:
-                #print("has goal", old_goal.subj, old_goal.verb, old_goal.obj, old_goal.proj_type)
                 if goal.is_in_conflict_with(old_goal):
-                    self.goals.remove(old_goal)
-                    return
+                    to_remove.append(old_goal)
+        if len(to_remove) == 0:
+            self.add_belief(goal)
+        else:
+            for removable in to_remove:
+                self.goals.remove(removable)
 
-    def resolve_stress(self, project):
-        #todo: alternatively change relationship
-        self.resolve_goal(project)
+
+    def resolve_stress(self, project, other_char, mood):
+        # character wants to conform to other character's goals, but cannot if
+        # he has a blocking belief
+        blocking_belief = None
+        for belief in self.goals:
+            if project.is_in_conflict_with(belief):
+                blocking_belief = belief
+                continue
+        if blocking_belief is None:
+            self.resolve_goal(project)
+        else:
+            if mood is None:
+                mood = Mood(self.personality)
+            #change relationship
+            if other_char.name in self.relations:
+                new_relationship = (self.relations[other_char.name] + mood) / 2
+                self.relations[other_char.name] = new_relationship
+            else:
+                print(self.name, "doesn't have relationship to", other_char.name)
 
 
     def add_said_memory(self, turn):
@@ -150,10 +170,14 @@ class Character:
         for method in methods:
             self.methods.append(method)
 
-    def add_stress(self, project):
-        if project.proj_type in ["statement", "proposal"]:
+    def add_stress(self, project, character, mood):
+        if project.proj_type in ["statement", "proposal", "complain"]:
             self.stress += 1
+            if project.proj_type == "complain":
+                self.stress = self.stress_capacity + 1
             if self.stress > self.stress_capacity:
-                self.resolve_stress(project)
+                self.resolve_stress(project, character, mood)
                 self.stress = 0
                 return True
+        else:
+            print("tried to add stress on project", project)

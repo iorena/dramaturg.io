@@ -42,6 +42,11 @@ class ActionType:
         self.upper_bound = Emotion(None, upper_bound_p, upper_bound_a, upper_bound_d)
         return self
 
+    def is_accepting(self):
+        if self.name[:3] in ["TTN", "MYÖ", "VSM", "VYL", "MMK", "PVK", "VLK"]:
+            return True
+        return False
+
     def can_use(self, emotion):
         if self.upper_bound.pleasure >= emotion.pleasure and emotion.pleasure >= self.lower_bound.pleasure:
             if self.upper_bound.arousal >= emotion.arousal and emotion.arousal >= self.lower_bound.arousal:
@@ -53,15 +58,16 @@ class ActionType:
         """
         Character hesitates if his goals make him use turns that he doesn't want to use (because of relationship)
         """
-        if project.proj_type not in ["statement", "proposal"]:
+        if project.proj_type not in ["statement", "proposal", "complain"]:
             return False
         perceived_mood = speaker.perception.get_object_by_name(listener.name).mood
+        mood_after_turn = perceived_mood.affect_mood(self.effect)[0]
         current_mood_diff = perceived_mood - speaker.relations[listener.name]
-        mood_diff_after_turn = perceived_mood.affect_mood(self.effect)[0] - speaker.relations[listener.name]
-        if current_mood_diff < mood_diff_after_turn:
-            speaker.add_stress(project)
+        mood_diff_after_turn = mood_after_turn - speaker.relations[listener.name]
+        if current_mood_diff.get_vector() < mood_diff_after_turn.get_vector():
+            speaker.add_stress(project, listener, mood_after_turn)
             return True
         else:
             #else listener is affected
-            listener.add_stress(project)
+            listener.add_stress(project, speaker, None)
             return False

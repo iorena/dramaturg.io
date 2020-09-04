@@ -34,7 +34,9 @@ class Project:
         self.weight = weight
 
     def __str__(self):
-        return (f"{self.subj} {self.verb} {self.obj} {self.proj_type} {self.time} {self.weight}")
+        subj = self.subj.name if hasattr(self.subj, "name") else self.subj
+        obj = self.obj.name if hasattr(self.obj, "name") else self.obj
+        return (f"{subj} {self.verb} {obj} {self.proj_type} {self.time}")
 
     def __eq__(self, other):
         return self.subj.name == other.subj.name and self.verb == other.verb and self.obj == other.obj and self.obj_type == other.obj_type and self.proj_type == other.proj_type
@@ -92,18 +94,17 @@ class Project:
             return True
         if self.verb == other.verb and self.subj == other.subj and self.obj != other.obj:
             return True
-        if other.proj_type == "complain" or self.proj_type == "complain":
+        if self.subj == other.subj and other.proj_type == "complain" or self.proj_type == "complain":
             return True
         return False
 
     # returns tuple (boolean agreement, <project that is in conflict>, or None)
     def get_listener_conflicting_project(self, speakers, speaker_i, listener_i):
         agreement = False
-        if self in speakers[listener_i].beliefs:
-            print(speakers[speaker_i], self.subj, self.verb, self.obj)
-            agreement = True
         if self.proj_type in ["question", "surprise", "hello", "expansion", "pivot", "change", "why", "complain"]:
             return (True, None)
+        if self in speakers[listener_i].beliefs:
+            agreement = True
         if self.subj == speakers[listener_i] and self.verb == "tietää":
             return (True, None)
         if self.obj == "kiitollinen":
@@ -113,15 +114,12 @@ class Project:
         # maybe this could be added in future development
         for goal in speakers[listener_i].goals:
             if self.is_in_conflict_with(goal):
-                print(speakers[speaker_i], self.subj, self.verb, self.obj)
                 return (False, goal)
 
         for belief in speakers[listener_i].beliefs:
             if self.is_in_conflict_with(belief):
-                print(speakers[speaker_i], self.subj, self.verb, self.obj)
                 return (False, belief)
 
-        print(speakers[speaker_i], self.subj, self.verb, self.obj)
         return (agreement, None)
     """
         if self.verb == "olla":

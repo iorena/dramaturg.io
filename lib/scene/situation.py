@@ -74,6 +74,10 @@ class Situation:
             #todo: can be surprised by hello?
             self.sequences.insert(0, self.get_new_sequence(hello_project, 0, False))
 
+        for sp in self.speakers:
+            for goal in sp.goals:
+                print("leftover goal", goal)
+
     def get_new_sequence(self, project, speaker_i, surprise):
         #todo: expansions
         speaker = self.speakers[speaker_i]
