@@ -5,4 +5,4 @@ complain	A,B	none	none	pre_project	complain_project
 are_indoctrinated_by	A,B	none	none	main_project	none
 lie_for	B,C	none	none	main_project	none
 are_dismissed_by	A,B	none	none	dismissal_project	none
-are_rewarded_by	A,B	none	none	refer_back_project,reward_project	none
+are_rewarded_by	A,B	none	none	reward_project,refer_back_project	none
