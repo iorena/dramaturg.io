@@ -122,13 +122,15 @@ class Mood:
 
     def in_upper_half(self, axis):
         if axis == "pleasure":
-            if self.pleasure > 0:
+            # 0.75 seems to be close to the average pleasure value at this point in the story
+            if self.pleasure > 0.75:
                 return True
         if axis == "arousal":
             if self.arousal > 0:
                 return True
         if axis == "dominance":
-            if self.dominance > 0:
+            if self.dominance > 0.6:
+                print(self.dominance)
                 return True
 
         return False
