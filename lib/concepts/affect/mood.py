@@ -130,7 +130,6 @@ class Mood:
                 return True
         if axis == "dominance":
             if self.dominance > 0.6:
-                print(self.dominance)
                 return True
 
         return False

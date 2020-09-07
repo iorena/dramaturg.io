@@ -1,4 +1,4 @@
-import argparse
+import argparse, random
 
 from story.story import Story
 from language.embeddings import Embeddings
@@ -7,8 +7,9 @@ from concepts.affect.emotion import Emotion
 from graph import draw_graph
 
 
+
 def main(print_dev_data, personality, latex, graph, content, types, noprint):
-    personalities = [{"O": 0.5, "C": 0, "E": 0.5, "A": 0, "N": -0.5}, None]
+    personalities = [{"O": random.random(), "C": random.random(), "E": random.random(), "A": random.random(), "N": random.uniform(-1, 0)}, None]
     relationships = [Mood(Emotion(None, None, None, -0.5)), None]
     if personality:
         ready = False
