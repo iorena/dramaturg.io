@@ -118,6 +118,7 @@ class Project:
 
         for belief in speakers[listener_i].beliefs:
             if self.is_in_conflict_with(belief):
+                speakers[listener_i].set_goal(belief)
                 return (False, belief)
 
         return (agreement, None)

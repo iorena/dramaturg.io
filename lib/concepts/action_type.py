@@ -43,7 +43,7 @@ class ActionType:
         return self
 
     def is_accepting(self):
-        if self.name[:3] in ["TTN", "MYÖ", "VSM", "VYL", "MMK", "PVK", "VLK"]:
+        if self.name[:3] in ["TTN", "MYÖ", "VSM", "VYL", "MMK", "PVK", "VLK", "VVK"]:
             return True
         return False
 

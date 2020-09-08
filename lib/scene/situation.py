@@ -49,9 +49,9 @@ class Situation:
         """
         Generates sequences for each project
         """
-        while len(self.speakers[0].goals) > 0 or len(self.speakers[1].goals) > 0:
-            #higher dominance gets to speak
+        while True:
 
+            #higher dominance gets to speak
             if len(self.speakers[0].goals) == 0 or (len(self.speakers[1].goals) > 0 and self.speakers[0].mood.dominance < self.speakers[1].mood.dominance):
                 speaker_i = 1
                 reacter_i = 0
@@ -68,11 +68,16 @@ class Situation:
             if project.get_surprise(reacter):
                 surprise = True
             self.sequences.append(self.get_new_sequence(project, speaker_i, surprise))
+
+            if len(self.speakers[0].goals) == 0 and len(self.speakers[1].goals) == 0:
+                break
+
         # add hello sequence
         if self.name in ["lie_for", "are_rewarded_by"]:
             hello_project = Project.get_hello_project(self.speakers)
             #todo: can be surprised by hello?
             self.sequences.insert(0, self.get_new_sequence(hello_project, 0, False))
+
 
         for sp in self.speakers:
             for goal in sp.goals:

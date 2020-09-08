@@ -141,7 +141,7 @@ class Sequence():
         reacter_i = 0 if speaker_i == 1 else 1
         if action_name is None:
             # action name None means that this is a passive refusal
-            self.speakers[reacter_i].resolve_goal(project)
+            self.speakers[reacter_i].resolve_goal(self.project)
             return None
         if action_name == "TOI":
             if self.parent is None:
@@ -169,7 +169,7 @@ class Sequence():
         if self.speaker_i == speaker_i:
             hesitation = action_type.get_hesitation(self.speakers[speaker_i], self.speakers[reacter_i], project)
         # if this is an accepting second pair part, resolve project, no need to go on
-        elif action_type.is_accepting() or action_type.name == "EST":
+        elif action_type.is_accepting(): # or action_type.name == "EST":
             self.speakers[reacter_i].resolve_goal(project)
         return Turn(self.speakers[speaker_i], listeners, action_type, project, reverse, hesitation)
 

@@ -76,7 +76,7 @@ class Story:
         main_project = Project(("uusi", self.world_state.inheritance_object), "olla", ("obj", self.world_state.get_object_by_name("rakennettava")), "statement", "prees", 1)
 
         # Maija has a contradicting belief about museums that necessitates lying to convince her
-        contrary_project = Project(self.world_state.inheritance_object, "olla", ("obj", self.world_state.get_object_by_name("kallis")), "statement", "prees", 1)
+        contrary_project = Project(self.world_state.inheritance_object, "olla", ("obj", self.world_state.get_object_by_name("kallis")), "argument", "prees", 1)
 
         pre_project = Project(self.world_state.get_object_by_name("kulttuuri"), "olla", ("static", "tärkeää"), "statement", "prees", 1)
 
