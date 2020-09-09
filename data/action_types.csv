@@ -79,7 +79,14 @@ KII--+	FALSE	FALSE	Listener	olla	None	None	INDV	prees	FALSE	None	väärässä
 KII---	TRUE	FALSE	null	olla	None	None	INDV	prees	FALSE	None	totta
 EVA	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	EVAL	None
 JTK	FALSE	TRUE	None	None	None	None	INDV	prees	FALSE	niinkö	None
-EST	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	älä viitsi	None
+EST+++	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	keksisit jotain muuta puhuttavaa.	None
+EST++-	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	eikö voitaisi puhua jostain muusta?	None
+EST+-+	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	niimpä niin	None
+EST-++	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	et voi olla tosissasi	None
+EST+--	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	joopa joo	None
+EST-+-	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	onko minun pakko kuunnella tätä?	None
+EST--+	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	älä viitsi	None
+EST---	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	no ei kai…	None
 MYÖB	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	niinpä	None
 YLL+++	FALSE	FALSE	Speaker	kuulla	demonstrative	None	INDV	prees	FALSE	niinkö ? Miksi	vasta nyt
 YLL++-	FALSE	TRUE	subject	project	object	None	INDV	project	FALSE	mitä ?	None
