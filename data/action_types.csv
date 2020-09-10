@@ -87,7 +87,6 @@ EST+--	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	joopa joo	None
 EST-+-	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	onko minun pakko kuunnella tätä?	None
 EST--+	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	älä viitsi	None
 EST---	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	no ei kai…	None
-MYÖB	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	niinpä	None
 YLL+++	FALSE	FALSE	Speaker	kuulla	demonstrative	None	INDV	prees	FALSE	niinkö ? Miksi	vasta nyt
 YLL++-	FALSE	TRUE	subject	project	object	None	INDV	project	FALSE	mitä ?	None
 YLL+-+	FALSE	FALSE	None	None	None	None	INDV	prees	FALSE	häh ?	SERIOUS
@@ -161,9 +160,23 @@ PVK-+-	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	toivottavasti ei mitään
 PVK--+	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	no ?	None
 PVK---	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	mitä ?	None
 TPB	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	miksi	None
-IND	FALSE	FALSE	subject	project	object	None	INDV	proejct	FALSE	nyt ymmärrän, että	. kaikkien täytyy tietää tästä !
+IND	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	nyt ymmärrän, että	. kaikkien täytyy tietää tästä !
 IDK	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	juuri niin	None
-VVA	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	ei voi olla .	None
-VVK	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
 VAL	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	None	None
 VLK	FALSE	FALSE	None	None	None	None	INDV	None	FALSE	disappointment	None
+VVA+++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	kaunis ajatus, mutta oletko ottanut huomioon, että	None
+VVA++-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	muuten olisin samaa mieltä, mutta kun	None
+VVA+-+	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	ymmärrän pointtisi, mutta	None
+VVA-++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	tuossa ei ole mitään järkeä.	None
+VVA+--	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	joo, paitsi että	None
+VVA-+-	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	niin varmaan, jos unohdetaan, että	None
+VVA--+	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	ei voi olla.	None
+VVA---	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	mutta kun	None
+VVK+++	FALSE	FALSE	subject	project	opposite	None	INDV	project	FALSE	itse asiassa tuo ei pidä paikkaansa.	None
+VVK++-	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	hienoa että otat tuollaisen huomioon, mutta oikeastaan	None
+VVK+-+	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	hyvä huomio, paitsi että	None
+VVK-++	FALSE	FALSE	subject	project	object	None	INDV	project	FALSE	älä viitsi. Millä perusteella muka	?
+VVK+--	FALSE	FALSE	subject	project	object	None	COND	project	FALSE	miksi	?
+VVK-+-	TRUE	FALSE	subject	project	object	None	INDV	project	FALSE	ei,	, mistä sinä tuon keksit ?
+VVK--+	FALSE	FALSE	None	None	None	None	INDV	project	FALSE	olet väärässä	None
+VVK---	FALSE	FALSE	None	None	None	None	INDV	project	FALSE	ei ole	None

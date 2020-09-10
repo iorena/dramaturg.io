@@ -81,6 +81,10 @@ class Dictionary:
         "horrible": ["ei helvetti", "perkele"]
     }
 
+    opposites_dictionary = {
+        "kallis": "edullinen"
+    }
+
     valence_dictionary = {
         "NEWS": ["minulla on huonoja uutisia", "minulla on hyviä uutisia"],
         "INSULT": ["senkin pahanilmanlintu", "hyvä kuulla"],

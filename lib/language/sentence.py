@@ -86,6 +86,11 @@ class Sentence:
             self.obj = speaker.name
         elif action_type.obj == "noun":
             self.obj = "noun"
+        elif action_type.obj == "opposite":
+            if self.project.obj_type == "static":
+                self.obj = Dictionary.opposites_dictionary[project.obj]
+            else:
+                self.obj = Dictionary.opposites_dictionary[project.obj.name]
         else:
             self.obj = action_type.obj
 
