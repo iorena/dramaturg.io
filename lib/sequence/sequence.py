@@ -26,12 +26,12 @@ class Sequence():
         self.parent = parent
         self.world_state = world_state
         self.listener_agrees, self.conflicting_project = self.project.get_listener_conflicting_project(self.speakers, self.speaker_i, self.reacter_i)
-        self.pair_types = POS_SEQUENCES if self.listener_agrees else NEG_SEQUENCES
-        if self.conflicting_project is not None:
-            self.pair_types = PASS_SEQUENCES
         self.surprise = False
         if surprise:
             self.surprise = True
+        self.pair_types = POS_SEQUENCES if self.listener_agrees else NEG_SEQUENCES
+        if self.conflicting_project is not None and self.surprise is False:
+            self.pair_types = PASS_SEQUENCES
         reverse = False
         if seq_type in ["SKÄS"] and self.speakers[speaker_i].name == self.project.subj.name and project.verb != "olla":
             reverse = True
