@@ -62,10 +62,10 @@ def main(print_dev_data, personality, latex, graph, content, types, noprint):
     if graph:
         draw_graph(story)
 
-    elif print_dev_data and not noprint:
+    elif (print_dev_data or types) and not noprint:
         print(story)
         for i, situation in enumerate(story.situations):
-            print(f"Situation{i}: {situation.location} {story.situation_names[i]}\n")
+            print(f"Tilanne {i+1}: | {story.situation_names[i]}\n")
             for j, sequence in enumerate(situation.sequences):
                 print(f"Sequence{j}\n{sequence}\n\n")
     elif latex and not noprint:
@@ -83,7 +83,7 @@ def main(print_dev_data, personality, latex, graph, content, types, noprint):
         print(f"\n\n{title[0].upper() + title[1:]}\n")
 
         for i, situation in enumerate(story.situations):
-            print(f"\nKohtaus {i+1}: {situation.location} | {story.situation_names[i]}\n")
+            print(f"\nTilanne {i+1}\n")
             turns = []
             for seq in situation.sequences:
                 for turn in seq.turns:
