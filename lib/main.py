@@ -70,7 +70,7 @@ def main(print_dev_data, personality, latex, graph, content, types, noprint):
                 print(f"Sequence{j}\n{sequence}\n\n")
     elif latex and not noprint:
         for i, situation in enumerate(story.situations):
-            print(f" Scene {i + 1} & & \\\\\n")
+            print(f" Situation {i + 1} & & \\\\\n")
             for j, sequence in enumerate(situation.sequences):
                 print(f"{sequence.get_latex()}\n")
     elif not noprint:
