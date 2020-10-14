@@ -2,7 +2,6 @@ from concepts.character import Character
 from concepts.location import Location
 from concepts.worldobject import WorldObject
 from concepts.affect.emotion import Emotion
-from concepts.method import Method
 
 import random
 import copy

@@ -16,6 +16,7 @@ class Turn:
         self.speaker_mood = copy.copy(self.speaker.mood)
         self.listener_mood = copy.copy(self.listeners[0].mood)
         self.change = 0
+        self.verbalized_change = {}
         self.reversed = reverse
         self.hesitation = hesitation
         self.inflected = self.inflect()
@@ -35,9 +36,31 @@ class Turn:
 
     def affect_mood(self):
         #todo: how do expansions affect mood? does this work as is? add importance coefficient?
-        self.change = self.listeners[0].mood.affect_mood(self.action_type.effect)[1]
+        character = self.listeners[0]
+        old_mood = copy.copy(character.mood)
+        self.change = character.mood.affect_mood(self.action_type.effect)[1]
         if self.project.proj_type in ["statement", "proposal"]:
-            self.change += self.listeners[0].mood.affect_mood(self.project.get_emotional_effect(self.listeners[0]))[1]
+            self.change += character.mood.affect_mood(self.project.get_emotional_effect(character))[1]
+        new_mood = copy.copy(character.mood)
+        change = None
+        if old_mood.get_character_description("pleasure") != new_mood.get_character_description("pleasure"):
+            if old_mood.pleasure < new_mood.pleasure:
+                change = "ilahtuu"
+            else:
+                change = "suuttuu"
+        if old_mood.get_character_description("arousal") != new_mood.get_character_description("arousal"):
+            if old_mood.arousal < new_mood.arousal:
+                change = "ilahtuu"
+            else:
+                change = "suuttuu"
+        if old_mood.get_character_description("dominance") != new_mood.get_character_description("dominance"):
+            if old_mood.dominance < new_mood.dominance:
+                change = "ilahtuu"
+            else:
+                change = "suuttuu"
+        if change is not None:
+            self.verbalized_change[character.name] = change
+
 
     def add_turn_memories(self):
         self.speaker.add_said_memory(self.action_type.name)

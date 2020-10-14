@@ -4,7 +4,6 @@ from story.story import Story
 from language.embeddings import Embeddings
 from concepts.affect.mood import Mood
 from concepts.affect.emotion import Emotion
-from graph import draw_graph
 
 
 
@@ -87,39 +86,30 @@ def main(print_dev_data, personality, latex, graph, content, types, noprint):
             turns = []
             for seq in situation.sequences:
                 for turn in seq.turns:
-                    turns.append(turn)
-            first = situation.speakers[0].name
-            second = situation.speakers[1].name
-            if any(situation.mood_change) and situation is not story.situations[-1]:
-                mood_changes = []
-                if first in situation.mood_change:
-                    mood_changes.append(f"{first} {situation.mood_change[first]}")
-                if second in situation.mood_change:
-                    mood_changes.append(f"{second} {situation.mood_change[second]}")
-                turns.append("(" + ", ".join(mood_changes) + ")")
+                    if any(turn.verbalized_change):
+                        mood_changes = []
+                        first = situation.speakers[0].name
+                        second = situation.speakers[1].name
+                        if first in turn.verbalized_change:
+                            mood_changes.append(f"{first} {turn.verbalized_change[first]}")
+                        if second in turn.verbalized_change:
+                            mood_changes.append(f"{second} {turn.verbalized_change[second]}")
+                        turns.append("(" + ", ".join(mood_changes) + ")")
 
-            uppercased = turns[0].inflected[0].upper()
-            line = uppercased + turns[0].inflected[1:]
-            if line [-1] == "?":
-                line = line[0:-2] + line[-1]
-            line += ". " if line[-1] != "?" else " "
-            last_turn = turns[0]
+                    uppercased = turn.inflected[0].upper()
+                    line = uppercased + turn.inflected[1:]
+                    if line [-1] == "?":
+                        line = line[0:-2] + line[-1]
+                    line += ". " if line[-1] != "?" else " "
+                    sentence_type = turn.get_sentence_type()
+                    if types:
+                        turns.append(f"\t{turn.speaker.name}  {sentence_type}\n{line}")
+                    else:
+                        turns.append(f"\t{turn.speaker.name}\n{line}")
+
             for turn in turns:
-                if turn is None:
-                    continue
-                if len(turn.inflected) < 1:
-                    continue
-                line = ""
-                uppercased = turn.inflected[0].upper()
-                line += uppercased + turn.inflected[1:]
-                if line [-1] == "?":
-                    line = line[0:-2] + line[-1]
-                line += ". " if line[-1] != "?" else " "
-                sentence_type = turn.get_sentence_type()
-                if types:
-                    print(f"\t{turn.speaker.name}  {sentence_type}\n{line}")
-                else:
-                    print(f"\t{turn.speaker.name}\n{line}")
+                print(turn)
+
 
 
 
