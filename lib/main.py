@@ -86,16 +86,6 @@ def main(print_dev_data, personality, latex, graph, content, types, noprint):
             turns = []
             for seq in situation.sequences:
                 for turn in seq.turns:
-                    if any(turn.verbalized_change):
-                        mood_changes = []
-                        first = situation.speakers[0].name
-                        second = situation.speakers[1].name
-                        if first in turn.verbalized_change:
-                            mood_changes.append(f"{first} {turn.verbalized_change[first]}")
-                        if second in turn.verbalized_change:
-                            mood_changes.append(f"{second} {turn.verbalized_change[second]}")
-                        turns.append("(" + ", ".join(mood_changes) + ")")
-
                     uppercased = turn.inflected[0].upper()
                     line = uppercased + turn.inflected[1:]
                     if line [-1] == "?":
@@ -106,6 +96,16 @@ def main(print_dev_data, personality, latex, graph, content, types, noprint):
                         turns.append(f"\t{turn.speaker.name}  {sentence_type}\n{line}")
                     else:
                         turns.append(f"\t{turn.speaker.name}\n{line}")
+
+                    if any(turn.verbalized_change):
+                        mood_changes = []
+                        first = situation.speakers[0].name
+                        second = situation.speakers[1].name
+                        if first in turn.verbalized_change:
+                            mood_changes.append(f"{first} {turn.verbalized_change[first]}")
+                        if second in turn.verbalized_change:
+                            mood_changes.append(f"{second} {turn.verbalized_change[second]}")
+                        turns.append("(" + ", ".join(mood_changes) + ")")
 
             for turn in turns:
                 print(turn)

@@ -50,14 +50,14 @@ class Turn:
                 change = "suuttuu"
         if old_mood.get_character_description("arousal") != new_mood.get_character_description("arousal"):
             if old_mood.arousal < new_mood.arousal:
-                change = "ilahtuu"
+                change = "piristyy"
             else:
-                change = "suuttuu"
+                change = "passivoituu"
         if old_mood.get_character_description("dominance") != new_mood.get_character_description("dominance"):
             if old_mood.dominance < new_mood.dominance:
-                change = "ilahtuu"
+                change = "muuttuu hallitsevaksi"
             else:
-                change = "suuttuu"
+                change = "alistuu"
         if change is not None:
             self.verbalized_change[character.name] = change
 
