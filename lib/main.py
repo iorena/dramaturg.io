@@ -1,13 +1,15 @@
 import argparse, random
+from bs4 import BeautifulSoup
 
 from story.story import Story
+from utils.textparser import TextParser
 from language.embeddings import Embeddings
 from concepts.affect.mood import Mood
 from concepts.affect.emotion import Emotion
 
 
 
-def main(print_dev_data, personality, latex, graph, content, types, noprint):
+def main(input_file, print_dev_data, personality, latex, graph, content, types, noprint, text_input):
     personalities = [{"O": random.random(), "C": random.random(), "E": random.random(), "A": random.random(), "N": random.uniform(-1, 0)}, None]
     relationships = [Mood(Emotion(None, None, None, -0.5)), None]
     if personality:
@@ -60,9 +62,28 @@ def main(print_dev_data, personality, latex, graph, content, types, noprint):
         # embeddings disaled for now, edit to add randomness
         embeddings = Embeddings([pre_subject, main_subject, counter_subject], [pre_object, main_object, counter_object], False)
         story = Story(embeddings, personalities, relationships, [pre_verb, main_verb, counter_verb])
+    elif text_input:
+        lines = None
+        with open(input_file) as f:
+            lines = ''.join(f.readlines())
+            f.close()
+
+        soup = BeautifulSoup(lines, 'html.parser')
+
+        parags = []
+        for paragraph in soup.find_all('p', class_='yle__article__paragraph'):
+            parags.append(paragraph.text)
+
+        text = ''.join(parags)
+        parser = TextParser()
+        subjects, verbs, objects = parser.parse(text)
+
+        embeddings = Embeddings(subjects, objects, False)
+        story = Story(embeddings, personalities, relationships, verbs)
     else:
         embeddings = Embeddings(["kirkko", "museo", "museo"], ["valmis", "rakennettava", "kallis"], False)
         story = Story(embeddings, personalities, relationships, ["olla", "olla", "olla"])
+
 
     if graph:
         draw_graph(story)
@@ -122,7 +143,7 @@ def main(print_dev_data, personality, latex, graph, content, types, noprint):
 
 def parse_arguments():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("someargument", nargs="?", default=None)
+    parser.add_argument("input_file", nargs="?", default=None)
     parser.add_argument("-d", "--development", help="Show action type names and mood", action='store_true')
     parser.add_argument("-p", "--personality", help="Set personality parameters", action='store_true')
     parser.add_argument("-l", "--latex", help="Set personality parameters", action='store_true')
@@ -130,6 +151,7 @@ def parse_arguments():
     parser.add_argument("-c", "--content", help="Choose content", action='store_true')
     parser.add_argument("-t", "--types", help="Print human-friendly names of sentence types", action="store_true")
     parser.add_argument("-n", "--noprint", help="Don't print story, just debug log", action="store_true")
+    parser.add_argument("-i", "--text_input", help="Read txt file to pick words from", action="store_true")
 
     return parser.parse_args()
 
@@ -137,4 +159,4 @@ def parse_arguments():
 if __name__ == "__main__":
     args = parse_arguments()
     print(args)
-    main(args.development, args.personality, args.latex, args.graph, args.content, args.types, args.noprint)
+    main(args.input_file, args.development, args.personality, args.latex, args.graph, args.content, args.types, args.noprint, args.text_input)

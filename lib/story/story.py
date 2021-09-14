@@ -84,6 +84,9 @@ class Story:
         main_char.add_belief(main_project)
         #main_char.add_belief(pre_project)
         third_char.add_belief(counter_project)
+        print("main_project: ", main_project)
+        print("pre_project: ", pre_project)
+        print("counter_project: ", counter_project)
 
         a_project = None
         b_project = None
