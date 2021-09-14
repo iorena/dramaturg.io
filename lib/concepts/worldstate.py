@@ -37,12 +37,12 @@ class WorldState:
         self.weather_types[3].set_appraisal(self.appraisals[0])
 
         self.locations = [Location(), Location()]
-        self.characters = [Character(self.locations[0], personalities[0]), Character(self.locations[1], personalities[1]), Character(self.locations[1], None), Character(self.locations[0], None, self.embeddings.get_relative())]
-        self.objects = [WorldObject(self.embeddings.get_inheritance_object())]
-        self.inheritance_object = self.objects[0]
-        self.dead_relative = self.characters[3]
+        self.characters = [Character(self.locations[0], personalities[0]), Character(self.locations[1], personalities[1]), Character(self.locations[1], None)]
+        self.subjects = [WorldObject(self.embeddings.pre_subject), WorldObject(self.embeddings.main_subject), WorldObject(self.embeddings.counter_subject)]
+        self.objects = [WorldObject(self.embeddings.pre_object), WorldObject(self.embeddings.main_object), WorldObject(self.embeddings.counter_object)]
+        #todo: ????????
         for obj in self.objects:
-            owner = self.characters[3]
+            owner = self.characters[2]
             obj.set_owner(owner)
             obj.set_location(owner.attributes["location"])
         self.weather = WorldObject("sää", 95)

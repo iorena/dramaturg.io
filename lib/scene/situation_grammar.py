@@ -25,7 +25,10 @@ class SituationGrammar:
             return next_sit[0]
         # story can branch in two, but not more options
         print("mood is ", character.mood)
-        if character.mood.in_upper_half(next_sit[1]):
-            return next_sit[0][1]
-        else:
-            return next_sit[0][0]
+        rand = random.choice(next_sit[0])
+        return rand
+        # todo: balance branching by mood
+        #if character.mood.in_upper_half(next_sit[1]):
+        #    return next_sit[0][1]
+        #else:
+        #    return next_sit[0][0]

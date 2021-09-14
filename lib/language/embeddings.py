@@ -33,24 +33,33 @@ import random
 #import StringIO
 
 class Embeddings:
-    def __init__(self, character, inheritance_object):
-        self.wordforms = WV.load("../data/finnish_s24_skgram.bin",10000,500000)
-        self.lemmas = WV.load("../data/finnish_s24_skgram_lemmas.bin", 10000, 500000)
-        self.character = character
-        self.inheritance_object = inheritance_object
-        self.get_noun_from_adjective_vector = self.lemmas.w_to_normv("kuumuus") - self.lemmas.w_to_normv("kuuma")
-        self.get_noun_from_verb_vector = self.lemmas.w_to_normv("puhe") - self.lemmas.w_to_normv("puhua")
-        self.get_location_vector = self.wordforms.w_to_normv("kaupassa") - self.wordforms.w_to_normv("kauppa")
+    def __init__(self, subjects, objects, generate=True):
+        if generate:
+            self.wordforms = WV.load("../data/finnish_s24_skgram.bin",10000,500000)
+            self.lemmas = WV.load("../data/finnish_s24_skgram_lemmas.bin", 10000, 500000)
+            self.pre_subject = self.get_obfuscated_noun(subjects[0])
+            self.main_subject = self.get_obfuscated_noun(subjects[1])
+            self.counter_subject = self.get_obfuscated_noun(subjects[2])
+            self.pre_object = self.get_obfuscated_noun(objects[0])
+            self.main_object = self.get_obfuscated_noun(objects[1])
+            self.counter_object = self.get_obfuscated_noun(objects[2])
+            self.get_noun_from_adjective_vector = self.lemmas.w_to_normv("kuumuus") - self.lemmas.w_to_normv("kuuma")
+            self.get_noun_from_verb_vector = self.lemmas.w_to_normv("puhe") - self.lemmas.w_to_normv("puhua")
+            self.get_location_vector = self.wordforms.w_to_normv("kaupassa") - self.wordforms.w_to_normv("kauppa")
+        else:
+            self.pre_subject = subjects[0]
+            self.main_subject = subjects[1]
+            self.counter_subject = subjects[2]
+            self.pre_object = objects[0]
+            self.main_object = objects[1]
+            self.counter_object = objects[2]
 
-    def get_inheritance_object(self):
+    def get_obfuscated_noun(self, orig_object):
         random_idx = random.randint(0, 5)
-        similar = self.lemmas.nearest(self.inheritance_object, 6)
+        similar = self.lemmas.nearest(orig_object, 6)
+        if similar is None:
+            return orig_object
         return similar[random_idx][1].replace("#", "")
-
-    def get_relative(self):
-        random_idx = random.randint(0, 5)
-        similar = self.wordforms.nearest(self.character, 8)
-        return similar[random_idx][1]
 
     def get_similar(self, word):
         random_idx = random.randint(0, 4)

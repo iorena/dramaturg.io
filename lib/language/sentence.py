@@ -16,7 +16,7 @@ FIRST_PAIR_PARTS = ["TOP", "VÄI", "YLL", "KYS", "MMU", "PVT", "TPB", "IND"]
 
 
 class Sentence:
-    embeddings = Embeddings("isoäiti", "maljakko")
+    embeddings = Embeddings(["kulttuuri", "museo", "museo"], ["tärkeää", "rakennettava", "kallis"])
 
     def __init__(self, speaker, listeners, project, action_type, obj_type, reverse, hesitation):
         self.speaker = speaker
@@ -75,7 +75,7 @@ class Sentence:
         if project.obj is None:
             self.obj = None
         elif action_type.obj == "object" or action_type.obj == "subject":
-            if self.project.obj_type == "static":
+            if type(project.obj) is str:
                 self.obj = project.obj
             else:
                 self.obj = project.obj.name
@@ -119,7 +119,6 @@ class Sentence:
             self.obj = self.listeners[0].name
 
     def get_inflected_sentence(self):
-
         #if there is no verb, skip creating a verb "pharse" with syntaxmaker and just pile words in a list
         if self.verb is None:
             if self.subj is None:

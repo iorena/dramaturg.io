@@ -47,16 +47,22 @@ def main(print_dev_data, personality, latex, graph, content, types, noprint):
         relationships = [relationship1, relationship2]
 
     if content:
-        character = input("Give third character")
-        character_verb = input("Give verb related to character")
-        inheritance_object = input("Give object")
-        object_verb = input("Give verb related to object")
+        pre_subject = input("Give preproject subject ")
+        pre_verb = input("Give preproject verb ")
+        pre_object = input("Give preproject object ")
+        main_subject = input("Give main project subject ")
+        main_verb = input("Give main project verb ")
+        main_object = input("Give main project object ")
+        counter_subject = input("Give counterproject subject ")
+        counter_verb = input("Give counterproject verb ")
+        counter_object = input("Give counterproject object ")
 
-        embeddings = Embeddings(character, inheritance_object)
-        story = Story(embeddings, personalities, relationships, character_verb, object_verb)
+        # embeddings disaled for now, edit to add randomness
+        embeddings = Embeddings([pre_subject, main_subject, counter_subject], [pre_object, main_object, counter_object], False)
+        story = Story(embeddings, personalities, relationships, [pre_verb, main_verb, counter_verb])
     else:
-        embeddings = Embeddings("isoäiti", "museo")
-        story = Story(embeddings, personalities, relationships, "kuolla", "ottaa")
+        embeddings = Embeddings(["kirkko", "museo", "museo"], ["valmis", "rakennettava", "kallis"], False)
+        story = Story(embeddings, personalities, relationships, ["olla", "olla", "olla"])
 
     if graph:
         draw_graph(story)
@@ -77,7 +83,7 @@ def main(print_dev_data, personality, latex, graph, content, types, noprint):
             keywords = ', '.join(list(filter(lambda x: x is not None, [char.mood.get_character_description('pleasure'), char.mood.get_character_description('arousal'), char.mood.get_character_description('dominance')])))
             print(f"{char.name}: {keywords}")
 
-        title = story.get_title()
+        title = "Kuunnelma 1" #let's not use embeddings now. // story.get_title()
 
         print(f"\n\n{title[0].upper() + title[1:]}\n")
 

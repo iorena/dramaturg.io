@@ -13,7 +13,7 @@ import random
 
 
 class Story:
-    def __init__(self, embeddings, personalities, relationships, first_verb, second_verb):
+    def __init__(self, embeddings, personalities, relationships, verbs):
         self.embeddings = embeddings
         self.situation_rules = load_situations()
         self.world_state = WorldState(self.embeddings, personalities, relationships)
@@ -21,12 +21,11 @@ class Story:
         for char in self.world_state.characters:
             char.set_random_perceptions(WorldState(None, None, None, self.world_state))
         #todo: get actual cases for verbs, and synonyms
-        if first_verb not in Dictionary.verb_dictionary:
-            Dictionary.verb_dictionary[first_verb] = [(first_verb, "NOM")]
-        if second_verb not in Dictionary.verb_dictionary:
-            Dictionary.verb_dictionary[second_verb] = [(second_verb, "NOM")]
+        for verb in verbs:
+            if verb not in Dictionary.verb_dictionary:
+                Dictionary.verb_dictionary[verb] = [(verb, "NOM")]
         self.situation_grammar = SituationGrammar()
-        self.situations, self.situation_names  = self.create_situations(first_verb, second_verb)
+        self.situations, self.situation_names  = self.create_situations(verbs)
 
     def __str__(self):
         return f"{self.world_state}"
@@ -42,6 +41,8 @@ class Story:
         self.world_state.create_object("pois", 0)
         self.world_state.create_object("kallis", 0)
         self.world_state.create_object("niin paljon", 4)
+        self.world_state.create_object(self.embeddings.main_object, 4)
+        self.world_state.create_object(self.embeddings.pre_object, 4)
 
     def get_title(self):
         bow = {}
@@ -61,7 +62,7 @@ class Story:
         similar = self.embeddings.get_similar(strip_punc)
         return similar
 
-    def create_situations(self, first_verb, second_verb):
+    def create_situations(self, verbs):
         """
         A list of things that have to be handled within the story. World state (including characters) must be introduced,
         and plot must be furthered
@@ -73,21 +74,21 @@ class Story:
         third_char = self.world_state.characters[2]
         chars = [main_char, other_char]
 
-        main_project = Project(("uusi", self.world_state.inheritance_object), "olla", ("obj", self.world_state.get_object_by_name("rakennettava")), "statement", "prees", 1)
+        main_project = Project(self.world_state.subjects[1], verbs[1], ("obj", self.world_state.objects[1]), "statement", "prees", 1)
 
         # Maija has a contradicting belief about museums that necessitates lying to convince her
-        contrary_project = Project(self.world_state.inheritance_object, "olla", ("obj", self.world_state.get_object_by_name("kallis")), "argument", "prees", 1)
+        counter_project = Project(self.world_state.subjects[2], verbs[2], ("obj", self.world_state.objects[2]), "argument", "prees", 1)
 
-        pre_project = Project(self.world_state.get_object_by_name("kulttuuri"), "olla", ("static", "tärkeää"), "statement", "prees", 1)
+        pre_project = Project(self.world_state.subjects[0], verbs[0], ("static", self.world_state.objects[0]), "statement", "prees", 1)
 
         main_char.add_belief(main_project)
-        main_char.add_belief(pre_project)
-        third_char.add_belief(contrary_project)
+        #main_char.add_belief(pre_project)
+        third_char.add_belief(counter_project)
 
         a_project = None
         b_project = None
 
-        prev_project = pre_project
+        prev_project = main_project
 
         projects = {
             "none": (lambda x: None, []),
@@ -142,7 +143,7 @@ class Story:
 
             #todo: set memories?
 
-            situations.append(Situation(sit, self.world_state, self.embeddings, chars, self.situation_rules[sit], main_char.attributes["location"]))
+            situations.append(Situation(sit, self.world_state, chars, self.situation_rules[sit], main_char.attributes["location"]))
 
             situation_names.append(sit)
 

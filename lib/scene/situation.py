@@ -15,10 +15,9 @@ SEQUENCE_TYPES = {"proposal": "STOP", "statement": "SVÄI", "surprise": "SYLL", 
 
 
 class Situation:
-    def __init__(self, name, world_state, embeddings, speakers, rules, location):
+    def __init__(self, name, world_state, speakers, rules, location):
         self.name = name
         self.world_state = world_state
-        self.embeddings = embeddings
         self.speakers = speakers
         for char in self.speakers:
             char.reset_turn_memory()
