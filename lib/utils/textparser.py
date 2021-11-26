@@ -1,6 +1,4 @@
 from libvoikko import Voikko
-from omorfi import Omorfi
-
 
 class TextParser:
     def __init__(self):
@@ -90,13 +88,4 @@ class TextParser:
                     self.adjectives_bow[lemmatized] = self.adjectives_bow[lemmatized] + 1
                 else:
                     self.adjectives_bow[lemmatized] = 1
-
-    def parse_sentences(self, text):
-        for sentence in text.split("."):
-            print("#")
-            print(sentence)
-            analysis = self.omorfi.analyse(sentence)
-            print(analysis)
-
-
 
