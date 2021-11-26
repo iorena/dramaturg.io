@@ -12,6 +12,7 @@ mccabe==0.6.1
 networkx==2.3
 nltk==3.4.1
 numpy==1.16.3
+omorfi==0.0.2
 pkg-resources==0.0.0
 pycodestyle==2.5.0
 pylint==2.3.1

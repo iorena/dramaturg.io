@@ -76,7 +76,8 @@ def main(input_file, print_dev_data, personality, latex, graph, content, types, 
 
         text = ''.join(parags)
         parser = TextParser()
-        subjects, verbs, objects = parser.parse(text)
+        parser.parse_bow(text)
+        subjects, verbs, objects = parser.get_play_words()
 
         embeddings = Embeddings(subjects, objects, False)
         story = Story(embeddings, personalities, relationships, verbs)
