@@ -7,7 +7,6 @@ class TextParser:
         self.adjectives_bow = {}
         self.stopwords = self.initialize_stopwords()
         self.voikko = Voikko(u"fi")
-        self.omorfi = Omorfi()
         self.cases = self.get_cases()
 
     def get_cases(self):
