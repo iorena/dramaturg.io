@@ -38,7 +38,7 @@ for my $document (@documents) {
     ProjectWordsParser::parse_project_words($document, $_) for Document::get_sentences($document);
 }
 
-my @project_words = sort { $a->{'score'} <=> $b->{'score'} } map { Document::get_project_words($_) } @documents;
+my @project_words = reverse sort { $a->{'score'} <=> $b->{'score'} } map { Document::get_project_words($_) } @documents;
 
 Output::print_project_words(@project_words);
 
