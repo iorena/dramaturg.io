@@ -30,7 +30,7 @@ sub parse_word_line($word_line) {
 # Get parts from compound word.
 sub get_word_parts($word) { return split('#', lemma($word)); }
 
-# Get the "basic type" from universal syntactic relation.
+# Get the "basic type" or subtype from universal syntactic relation.
 sub baseform($x) { return $x =~ s/:.*//r; }
 sub subtype($x) { return $x =~ s/.*://r; }
 
