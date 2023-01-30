@@ -11,24 +11,24 @@ use lib dirname (__FILE__);
 
 package ActionType;
 
-our @action_type_field_names = (
-    'action_type_id',
-    'negative_form',
-    'interrogative_form',
-    'subject',
-    'verb',
-    'object',
-    'auxiliary_verb',
-    'modus',
-    'tense',
-    'passive_form',
-    'pre_vp',
-    'post_vp',
-    'object_case',
-    'score',
-    'global_score',
-    'source',
-    'text'
+our @action_type_field_names = qw(
+    action_type_id
+    negative_form
+    interrogative_form
+    subject
+    verb
+    object
+    auxiliary_verb
+    modus
+    tense
+    passive_form
+    pre_vp
+    post_vp
+    object_case
+    score
+    global_score
+    source
+    text
 );
 
 our @false_keys = ('negative_form', 'interrogative_form', 'passive_form');
