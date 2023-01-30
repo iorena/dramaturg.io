@@ -43,7 +43,7 @@ sub is_set($action_type, @keys) { return !grep { "$action_type->{$_}" eq default
 # Concatenate values with delimiter ';'.
 sub add_value($action_type, $key, $value) {
     my $curr_value = $action_type->{$key};
-    $action_type->{$key} = ("$curr_value" eq ActionType::default_value($key) ? $value : "$curr_value;$value");
+    $action_type->{$key} = ("$curr_value" eq default_value($key) ? $value : "$curr_value;$value");
 }
 
 1;
