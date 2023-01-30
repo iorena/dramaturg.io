@@ -57,6 +57,7 @@ sub parse_action_types($document, $sentence) {
 
         ActionTypeVerb::process_main_verb($action_type, \%graph, $id);
 
+        # Verb must not be linked to open clausal complement verbs.
         if (grep { Word::is_verb($_) && Word::is_xcomp($_) } Graph::get_radj(\%graph, $id)) {
             Output::log_msg("    Continue: open clausal complement verbs not allowed.\n");
             next;
