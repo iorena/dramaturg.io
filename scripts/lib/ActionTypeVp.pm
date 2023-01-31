@@ -63,7 +63,7 @@ sub process_vp($action_type, $graph, $clauses, $verb_id) {
     my @bad_ids = map { $_->@* } @sclauses;
     my (@pre_stuff, @post_stuff);
     for my $id ($clauses->{$verb_id}->@*) {
-        next if grep { /$id/ } @bad_ids;
+        next if grep { $id == $_ } @bad_ids;
         my $word = Graph::get_word($graph, $id);
         if (Word::is_adv($word) || Word::is_adp($word)) {
             if ($id < $verb_id) {
