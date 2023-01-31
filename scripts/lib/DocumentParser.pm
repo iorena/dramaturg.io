@@ -34,14 +34,14 @@ sub parse_text($document) {
         # Skip remaining comment lines until we reach the start of the word lines. Also skips multi-id lines.
         while (<$fh>) {
             die "$Output::execname: could not parse word lines" if /^# text =/; # Should not reach next 'text' without reading any word lines.
-            last if /^\d+\t/;
+            last if /^\d+\s/;
         }
         Sentence::add_word($sentence, Word::parse_word_line($_));
 
         # Parse remaining word lines.
         while (<$fh>) {
             last unless /^\d+/;
-            Sentence::add_word($sentence, Word::parse_word_line($_)) if /^\d+\t/;
+            Sentence::add_word($sentence, Word::parse_word_line($_)) if /^\d+\s/;
         }
 
         push $document->{'sentences'}->@*, $sentence;
