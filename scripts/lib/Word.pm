@@ -23,7 +23,7 @@ sub word($id, $form, $lemma, $upos, $feats, $head, $deprel) {
 
 # Parse fields from CoNLL-U word line.
 sub parse_word_line($word_line) {
-    my ($id, $form, $lemma, $upos, undef, $feats, $head, $deprel) = split('\s+', $word_line);
+    my ($id, $form, $lemma, $upos, undef, $feats, $head, $deprel) = split('\t', $word_line);
     return word($id, $form, $lemma, $upos, $feats, $head, $deprel);
 }
 
