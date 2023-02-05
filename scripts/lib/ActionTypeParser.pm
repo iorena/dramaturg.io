@@ -47,6 +47,11 @@ sub parse_action_types($document, $sentence) {
             next;
         }
 
+        if (Word::get_feat($word, "VerbForm") eq "Inf") {
+            Output::log_msg("    Continue: infinitive verb.\n");
+            next;
+        }
+
         unless (Participle::check_proper_participle($word)) {
             Output::log_msg("    Continue: Unaccepted participle form.\n");
             next;
