@@ -11,12 +11,12 @@ use lib dirname (__FILE__);
 
 package ProjectWords;
 
-our @project_words_field_names = (
-    'subject',
-    'verb',
-    'object',
-    'object_case',
-    'score'
+our @project_words_field_names = qw(
+    subject
+    verb
+    object
+    object_case
+    score
 );
 
 # Initialize blank project word. Note that 'subject', 'verb' and 'object' are word hashes.
