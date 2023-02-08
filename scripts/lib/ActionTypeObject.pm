@@ -28,16 +28,20 @@ sub process_object($action_type, $graph, $verb_id) {
         return 0;
     }
 
-    my $word = $matching_words[0];
-    my $id = Word::id($word);
+    my $object_word = $matching_words[0];
+    my $object_id = Word::id($object_word);
 
     # Get any nummods and/or determiners.
-    my @nummods = Graph::get_radj_ids_if($graph, $id, \&Word::is_nummod);
-    my @determiners = Graph::get_radj_ids_if($graph, $id, \&Word::is_det);
+    my @nummods = Graph::get_radj_ids_if($graph, $object_id, \&Word::is_nummod);
+    my @determiners = Graph::get_radj_ids_if($graph, $object_id, \&Word::is_det);
 
-    $action_type->{'object'} = join(' ', (map { Word::lemma(Graph::get_word($graph, $_)) } Utils::intsort (@nummods, @determiners, $id)));
-    $action_type->{'object_case'} = Word::get_feat($word, "Case");
-    $action_type->{'object_number'} = Word::get_feat($word, "Number");
+    if (@nummods || @determiners) {
+        $action_type->{'object'} = join(' ', (map { Word::form(Graph::get_word($graph, $_)) } Utils::intsort (@nummods, @determiners, $object_id)));
+    } else {
+        $action_type->{'object'} = Word::lemma($object_word);
+        $action_type->{'object_case'} = Word::get_feat($object_word, "Case");
+        $action_type->{'object_number'} = Word::get_feat($object_word, "Number");
+    }
 
     return 1;
 }
