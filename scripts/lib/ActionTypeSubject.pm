@@ -29,6 +29,15 @@ sub get_person($graph, $verb_id) {
     return $person;
 }
 
+# Convert directly to word's FORM unless handling nsubj which is a person.
+sub get_subject_form($word) {
+    if (Word::is_nsubj($word)) {
+        my $person = Word::get_feat($word, "Person");
+        return Convert::person($person) if $person && $person ne "3";
+    }
+    return Word::form($word);
+}
+
 sub process_subject($action_type, $graph, $verb_id) {
     my @matching_words = Graph::get_radj_if($graph, $verb_id, \&Word::is_nsubj);
 
@@ -51,14 +60,13 @@ sub process_subject($action_type, $graph, $verb_id) {
         return 0;
     }
 
-    my $word = $matching_words[0];
-    my $id = Word::id($word);
+    my $subject_id = Word::id($matching_words[0]);
 
     # Get any flat:names and/or determiners.
-    my @flatnames = Graph::get_radj_ids_if($graph, $id, \&Word::is_flat);
-    my @determiners = Graph::get_radj_ids_if($graph, $id, \&Word::is_det);
+    my @flatnames = Graph::get_radj_ids_if($graph, $subject_id, \&Word::is_flat);
+    my @determiners = Graph::get_radj_ids_if($graph, $subject_id, \&Word::is_det);
         
-    $action_type->{'subject'} = join(' ', (map { Word::form(Graph::get_word($graph, $_)) } Utils::intsort (@flatnames, @determiners, $id)));
+    $action_type->{'subject'} = join(' ', (map { get_subject_form(Graph::get_word($graph, $_)) } Utils::intsort (@flatnames, @determiners, $subject_id)));
 
     return 1;
 }
