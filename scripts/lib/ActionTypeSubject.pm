@@ -9,6 +9,7 @@ use feature qw(postderef signatures);
 use File::Basename;
 use lib dirname (__FILE__);
 
+use Convert;
 use Graph;
 use Utils;
 use Word;
@@ -40,7 +41,7 @@ sub process_subject($action_type, $graph, $verb_id) {
             return 0;
         }
 
-        $action_type->{'subject'} = "person_$person";
+        $action_type->{'subject'} = Convert::person($person);
 
         return 1;
     }
