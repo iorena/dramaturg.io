@@ -74,6 +74,8 @@ sub parse_action_types($document, $sentence) {
 
         ActionTypeVp::process_vp($action_type, \%graph, \%clauses, $id);
 
+        $action_type->{'has_vp'} = "TRUE" if ActionType::is_set($action_type, ("pre_vp", "post_vp"));
+
         my @clause_words = map { Graph::get_word(\%graph, $_) } $clauses{$id}->@*;
         $action_type->{'score'} = Utils::precision(Score::score_words($document->{'score_keeper'}, @clause_words), 3);
         $action_type->{'global_score'} = Utils::precision(Score::score_words($Score::global_score_keeper, @clause_words), 3);
