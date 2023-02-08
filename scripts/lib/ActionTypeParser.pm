@@ -23,6 +23,13 @@ use Utils;
 
 package ActionTypeParser;
 
+sub generalize_action_type($action_type) {
+    Output::log_msg("    Generalized action_type ($action_type->{'subject'}, $action_type->{'verb'}, $action_type->{'object'}).\n");
+    $action_type->{'subject'} = Convert::generalize_subject($action_type->{'subject'});
+    $action_type->{'verb'} = Convert::generalize_verb($action_type->{'verb'});
+    $action_type->{'object'} = Convert::generalize_object($action_type->{'object'});
+}
+
 sub parse_action_types($document, $sentence) {
     my %graph = Graph::graph($sentence);
     my %clauses = Clause::get_clauses(\%graph);
@@ -38,7 +45,7 @@ sub parse_action_types($document, $sentence) {
     # Go through clauses in order.
     for my $id (Utils::intsort keys %clauses) {
         my $clause_text = Utils::word_ids_to_text(\%graph, $clauses{$id}->@*);
-        Output::log_msg("    Processing clause: $clause_text.");
+        Output::log_msg("    Processing clause: $clause_text.\n");
 
         my $word = Graph::get_word(\%graph, $id);
 
@@ -75,6 +82,9 @@ sub parse_action_types($document, $sentence) {
         ActionTypeVp::process_vp($action_type, \%graph, \%clauses, $id);
 
         $action_type->{'has_vp'} = "TRUE" if ActionType::is_set($action_type, ("pre_vp", "post_vp"));
+
+        # Generalize action type if "pre_vp" or "post_vp" is set.
+        generalize_action_type($action_type) if ActionType::is_set($action_type, "has_vp");
 
         my @clause_words = map { Graph::get_word(\%graph, $_) } $clauses{$id}->@*;
         $action_type->{'score'} = Utils::precision(Score::score_words($document->{'score_keeper'}, @clause_words), 3);

@@ -34,4 +34,8 @@ sub tense($tense) { return exists $convert_tense{$tense} ? $convert_tense{$tense
 sub mood($mood) { return exists $convert_mood{$mood} ? $convert_mood{$mood} : $mood; }
 sub person($person) { return exists $convert_person{$person} ? $convert_person{$person} : $person; }
 
+sub generalize_subject($subject) { return scalar(grep { $subject eq $_ } values %convert_person) ? $subject : "subject"; }
+sub generalize_verb($verb) { return "project"; }
+sub generalize_object($object) { return scalar(grep { $object eq $_ } values %convert_person) ? $object : "object"; }
+
 1;
