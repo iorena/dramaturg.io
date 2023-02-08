@@ -81,7 +81,7 @@ sub parse_action_types($document, $sentence) {
 
         ActionTypeVp::process_vp($action_type, \%graph, \%clauses, $id);
 
-        $action_type->{'has_vp'} = "TRUE" if ActionType::is_set($action_type, ("pre_vp", "post_vp"));
+        $action_type->{'has_vp'} = "TRUE" if ActionType::is_set($action_type, "pre_vp") || ActionType::is_set($action_type, "post_vp");
 
         # Generalize action type if "pre_vp" or "post_vp" is set.
         generalize_action_type($action_type) if ActionType::is_set($action_type, "has_vp");
