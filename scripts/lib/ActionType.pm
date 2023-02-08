@@ -33,7 +33,12 @@ our @action_type_field_names = qw(
     text
 );
 
-our @false_keys = qw(negative_form interrogative_form passive_form has_vp);
+our @false_keys = qw(
+    negative_form
+    interrogative_form
+    passive_form
+    has_vp
+);
 
 # Initialize blank action type.
 sub action_type() { return {map { $_ => default_value($_) } @action_type_field_names}; }
