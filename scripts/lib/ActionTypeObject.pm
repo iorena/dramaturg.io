@@ -35,8 +35,9 @@ sub process_object($action_type, $graph, $verb_id) {
     my @nummods = Graph::get_radj_ids_if($graph, $id, \&Word::is_nummod);
     my @determiners = Graph::get_radj_ids_if($graph, $id, \&Word::is_det);
 
-    $action_type->{'object'} = join(' ', (map { Word::form(Graph::get_word($graph, $_)) } Utils::intsort (@nummods, @determiners, $id)));
+    $action_type->{'object'} = join(' ', (map { Word::lemma(Graph::get_word($graph, $_)) } Utils::intsort (@nummods, @determiners, $id)));
     $action_type->{'object_case'} = Word::get_feat($word, "Case");
+    $action_type->{'object_number'} = Word::get_feat($word, "Number");
 
     return 1;
 }

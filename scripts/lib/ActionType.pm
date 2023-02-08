@@ -26,6 +26,7 @@ our @action_type_field_names = qw(
     pre_vp
     post_vp
     object_case
+    object_number
     score
     global_score
     source
