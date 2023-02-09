@@ -47,8 +47,8 @@ sub combine_action_types(@action_types) {
         $action_type->{'post_vp'} = ActionType::add_value($action_type, 'post_vp', $_) for (sort keys {map { $_ => 1 } map { ActionType::get_values($_, 'post_vp') } @action_types}->%*);
     }
 
-    $action_type->{'score'} = Utils::average(map { $_->{'score'} } @action_types);
-    $action_type->{'global_score'} = Utils::average(map { $_->{'global_score'} } @action_types);
+    $action_type->{'score'} = Utils::precision(Utils::average(map { $_->{'score'} } @action_types), 3);
+    $action_type->{'global_score'} = Utils::precision(Utils::average(map { $_->{'global_score'} } @action_types), 3);
     ActionType::add_value($action_type, 'source', $_->{'action_type_id'}) for @action_types;
 
     return $action_type;
