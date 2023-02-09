@@ -14,6 +14,7 @@ BEGIN {
 use lib "$dirname/lib";
 
 use ActionTypeParser;
+use ActionTypePostProcessor;
 use Document;
 use DocumentParser;
 use Output;
@@ -38,11 +39,10 @@ for my $document (@documents) {
     ActionTypeParser::parse_action_types($document, $_) for Document::get_sentences($document);
 }
 
+my @action_types = ActionTypePostProcessor::post_process_action_types(@documents);
+
 Output::print_action_type_headers();
-Output::print_action_types(Document::get_action_types($_)) for @documents;
+Output::print_action_types($_) for @action_types;
 
-my $n_action_types = 0;
-$n_action_types += scalar(Document::get_action_types($_)) for @documents;
-
-Output::log_msg("Done. Parsed $n_action_types action types.");
+Output::log_msg("Done.");
 
