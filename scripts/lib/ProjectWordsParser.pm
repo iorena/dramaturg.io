@@ -75,7 +75,7 @@ sub parse_project_words($document, $sentence) {
         my $subject_word = get_radj_word(\%graph, $id, \&Word::is_nsubj, "subject");
         next unless $subject_word;
 
-        $project_words->{'subject'} = Utils::remove_hashtag(Word::form($subject_word));
+        $project_words->{'subject'} = Word::form($subject_word);
 
         my $object_word = get_radj_word(\%graph, $id, \&Word::is_obj, "object");
         next unless $object_word;
