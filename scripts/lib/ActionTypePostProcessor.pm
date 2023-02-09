@@ -50,7 +50,6 @@ sub combine_action_types(@action_types) {
     $action_type->{'score'} = Utils::average(map { $_->{'score'} } @action_types);
     $action_type->{'global_score'} = Utils::average(map { $_->{'global_score'} } @action_types);
     ActionType::add_value($action_type, 'source', $_->{'action_type_id'}) for @action_types;
-    $action_type->{'text'} = ActionType::add_value($action_type, 'text', $_) for (sort keys {map { $_ => 1 } map { $_->{'text'} } @action_types}->%*);
 
     return $action_type;
 }
@@ -61,7 +60,8 @@ sub post_process_action_types(@documents) {
 
     my @action_types;
 
-    my $i = 0;
+    my ($i, $n_combined_action_types) = (0) x 2;
+
     while ($i <= $#sorted_action_types) {
         my $action_type = $sorted_action_types[$i];
 
@@ -71,7 +71,7 @@ sub post_process_action_types(@documents) {
 
         if ($i != $j) {
             my $combined_action_type = combine_action_types(@sorted_action_types[$i..$j]);
-            $combined_action_type->{'action_type_id'} = sprintf("ATC%04d", scalar(@action_types) + 1);
+            $combined_action_type->{'action_type_id'} = sprintf("ATC%04d", ++$n_combined_action_types);
             Output::log_msg("New combined action type:");
             Output::log_action_type($combined_action_type);
             push @action_types, $combined_action_type;
