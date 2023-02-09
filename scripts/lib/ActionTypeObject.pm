@@ -9,6 +9,7 @@ use feature qw(postderef signatures);
 use File::Basename;
 use lib dirname (__FILE__);
 
+use Convert;
 use Graph;
 use Utils;
 use Word;
@@ -39,8 +40,8 @@ sub process_object($action_type, $graph, $verb_id) {
         $action_type->{'object'} = join(' ', (map { Word::form(Graph::get_word($graph, $_)) } Utils::intsort (@nummods, @determiners, $object_id)));
     } else {
         $action_type->{'object'} = Utils::remove_hashtag(Word::lemma($object_word));
-        $action_type->{'object_case'} = Word::get_feat($object_word, "Case");
-        $action_type->{'object_number'} = Word::get_feat($object_word, "Number");
+        $action_type->{'object_case'} = Convert::convert_case(Word::get_feat($object_word, "Case"));
+        $action_type->{'object_number'} = Convert::convert_number(Word::get_feat($object_word, "Number"));
     }
 
     return 1;
