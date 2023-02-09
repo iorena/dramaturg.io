@@ -42,7 +42,9 @@ for my $document (@documents) {
 my @action_types = ActionTypePostProcessor::post_process_action_types(@documents);
 
 Output::print_action_type_headers();
-Output::print_action_types($_) for @action_types;
+Output::print_action_types($_) for sort { $a->{'action_type_id'} cmp $b->{'action_type_id'} } @action_types;
+
+Output::log_msg("Output " . scalar(@action_types) . " action types.\n");
 
 Output::log_msg("Done.");
 
