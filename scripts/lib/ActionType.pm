@@ -55,7 +55,7 @@ sub add_value($action_type, $key, $value) {
     $action_type->{$key} = ("$curr_value" eq default_value($key) ? $value : $curr_value . $separator . $value);
 }
 
-# Get concatenated value(s) as a list.
-sub get_values($action_type, $key) { return split($separator, $action_type->{$key}); }
+# Get concatenated non-default value(s) as a list.
+sub get_values($action_type, $key) { return grep { $_ ne default_value($key) } split($separator, $action_type->{$key}); }
 
 1;
