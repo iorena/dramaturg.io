@@ -43,8 +43,8 @@ sub combine_action_types(@action_types) {
     $action_type->{$_} = $action_types[0]->{$_} for @sort_keys;
 
     if (ActionType::is_set($action_type, "has_vp")) {
-        $action_type->{'pre_vp'} = ActionType::add_value($action_type, 'pre_vp', $_) for (sort keys {map { $_ => 1 } map { split(';', $_->{'pre_vp'}) } @action_types}->%*);
-        $action_type->{'post_vp'} = ActionType::add_value($action_type, 'post_vp', $_) for (sort keys {map { $_ => 1 } map { split(';', $_->{'post_vp'}) } @action_types}->%*);
+        $action_type->{'pre_vp'} = ActionType::add_value($action_type, 'pre_vp', $_) for (sort keys {map { $_ => 1 } map { ActionType::get_values($_, 'pre_vp') } @action_types}->%*);
+        $action_type->{'post_vp'} = ActionType::add_value($action_type, 'post_vp', $_) for (sort keys {map { $_ => 1 } map { ActionType::get_values($_, 'post_vp') } @action_types}->%*);
     }
 
     $action_type->{'score'} = Utils::average(map { $_->{'score'} } @action_types);
@@ -71,7 +71,7 @@ sub post_process_action_types(@documents) {
 
         if ($i != $j) {
             my $combined_action_type = combine_action_types(@sorted_action_types[$i..$j]);
-            $combined_action_type->{'action_type_id'} = "ATC" . sprintf("%04d", scalar(@action_types) + 1);
+            $combined_action_type->{'action_type_id'} = sprintf("ATC%04d", scalar(@action_types) + 1);
             Output::log_msg("New combined action type:");
             Output::log_action_type($combined_action_type);
             push @action_types, $combined_action_type;

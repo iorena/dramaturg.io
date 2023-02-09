@@ -40,6 +40,8 @@ our @false_keys = qw(
     has_vp
 );
 
+our $separator = ';';
+
 # Initialize blank action type.
 sub action_type() { return {map { $_ => default_value($_) } @action_type_field_names}; }
 
@@ -50,7 +52,10 @@ sub is_set($action_type, @keys) { return !grep { "$action_type->{$_}" eq default
 # Concatenate values with delimiter ';'.
 sub add_value($action_type, $key, $value) {
     my $curr_value = $action_type->{$key};
-    $action_type->{$key} = ("$curr_value" eq default_value($key) ? $value : "$curr_value;$value");
+    $action_type->{$key} = ("$curr_value" eq default_value($key) ? $value : $curr_value . $separator . $value);
 }
+
+# Get concatenated value(s) as a list.
+sub get_values($action_type, $key) { return split($separator, $action_type->{$key}); }
 
 1;

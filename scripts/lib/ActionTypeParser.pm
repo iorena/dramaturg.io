@@ -92,7 +92,7 @@ sub parse_action_types($document, $sentence) {
 
         $action_type->{'text'} = $clause_text;
         $action_type->{'source'} = $document->{'filename'};
-        $action_type->{'action_type_id'} = "AT" . sprintf("%03d", $document->{'document_id'}) . '_' . sprintf("%04d", scalar($document->{'action_types'}->@*) + 1);
+        $action_type->{'action_type_id'} = sprintf("AT%03d_%04d", $document->{'document_id'}, scalar($document->{'action_types'}->@*) + 1);
 
         Output::log_msg("    New action type:");
         Output::log_action_type($action_type);
