@@ -36,7 +36,7 @@ sub add_word_counts($document, $score_keeper) {
 }
 
 # Compound words are treated as the average of their parts.
-sub score_word($score_keeper, $word) { return Utils::average(map { $score_keeper->{'word_counts'}->{$_} } word::get_word_parts($word)); }
+sub score_word($score_keeper, $word) { return Utils::average(map { $score_keeper->{'word_counts'}->{$_} } Word::get_word_parts($word)); }
 
 # Score a list of words such that only nouns and proper nouns count for the score.
 sub score_words($score_keeper, @words) { return Utils::average(map { score_word($score_keeper, $_) } grep { Word::is_noun($_) || Word::is_propn($_) } @words); }
