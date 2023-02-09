@@ -22,11 +22,11 @@ our @action_type_field_names = qw(
     modus
     tense
     passive_form
+    object_case
+    object_number
     has_vp
     pre_vp
     post_vp
-    object_case
-    object_number
     score
     global_score
     source

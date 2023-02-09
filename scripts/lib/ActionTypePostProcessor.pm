@@ -25,9 +25,9 @@ our @sort_keys = qw(
     modus
     tense
     passive_form
-    has_vp
     object_case
     object_number
+    has_vp
 );
 
 sub custom_sort($a, $b) {
