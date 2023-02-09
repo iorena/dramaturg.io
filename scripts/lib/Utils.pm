@@ -19,7 +19,8 @@ sub intsort(@values) { return sort { $a <=> $b } @values; }
 sub precision($x, $p) { return int($x * (10 ** $p) + 0.5) / (10 ** $p); }
 
 sub average(@vals) {
-    my ($avg, $n) = (0) x 2;
+    my $avg = 0;
+    my $n = scalar(@vals);
     $avg += $_ for @vals;
     return $n > 0 ? $avg / $n : 0;
 }
