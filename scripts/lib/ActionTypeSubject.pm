@@ -11,41 +11,20 @@ use lib dirname (__FILE__);
 
 use Convert;
 use Graph;
+use Person;
 use Utils;
 use Word;
 
 package ActionTypeSubject;
-
-sub get_person($graph, $verb_id) {
-    my $person = Word::get_feat(Graph::get_word($graph, $verb_id), "Person");
-    
-    if (!$person) {
-        # Check auxiliary verbs.
-        for (Graph::get_radj_if($graph, $verb_id, \&Word::is_aux)) {
-            $person = Word::get_feat($_, "Person") if !$person;
-        }
-    }
-
-    return $person;
-}
-
-# Convert directly to word's FORM unless handling nsubj which is a person.
-sub get_subject_form($word) {
-    if (Word::is_nsubj($word)) {
-        my $person = Word::get_feat($word, "Person");
-        return Convert::person($person) if $person && $person ne "3";
-    }
-    return Word::form($word);
-}
 
 sub process_subject($action_type, $graph, $verb_id) {
     my @matching_words = Graph::get_radj_if($graph, $verb_id, \&Word::is_nsubj);
 
     if (@matching_words == 0) {
         # Attempt to set (implicit) subject through the verb's "Person" feat.
-        my $person = get_person($graph, $verb_id);
+        my $person = Person::get_implicit_person_from_verb($graph, $verb_id);
 
-        unless ($person && $person ne "3") {
+        unless (Person::valid_person($person)) {
             Output::log_msg("    Continue: no subject word found.\n");
             return 0;
         }
@@ -66,7 +45,7 @@ sub process_subject($action_type, $graph, $verb_id) {
     my @flatnames = Graph::get_radj_ids_if($graph, $subject_id, \&Word::is_flat);
     my @determiners = Graph::get_radj_ids_if($graph, $subject_id, \&Word::is_det);
         
-    $action_type->{'subject'} = join(' ', (map { get_subject_form(Graph::get_word($graph, $_)) } Utils::intsort (@flatnames, @determiners, $subject_id)));
+    $action_type->{'subject'} = join(' ', (map { Person::form_or_person_if(Graph::get_word($graph, $_), \&Word::is_nsubj) } Utils::intsort (@flatnames, @determiners, $subject_id)));
 
     return 1;
 }

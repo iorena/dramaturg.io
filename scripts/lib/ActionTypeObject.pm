@@ -11,6 +11,7 @@ use lib dirname (__FILE__);
 
 use Convert;
 use Graph;
+use Person;
 use Utils;
 use Word;
 
@@ -37,9 +38,9 @@ sub process_object($action_type, $graph, $verb_id) {
     my @determiners = Graph::get_radj_ids_if($graph, $object_id, \&Word::is_det);
 
     if (@nummods || @determiners) {
-        $action_type->{'object'} = join(' ', (map { Word::form(Graph::get_word($graph, $_)) } Utils::intsort (@nummods, @determiners, $object_id)));
+        $action_type->{'object'} = join(' ', (map { Person::form_or_person_if(Graph::get_word($graph, $_), \&Word::is_obj) } Utils::intsort (@nummods, @determiners, $object_id)));
     } else {
-        $action_type->{'object'} = Utils::remove_hashtag(Word::lemma($object_word));
+        $action_type->{'object'} =  Person::lemma_or_person_if($object_word, \&Word::is_obj);
         $action_type->{'object_case'} = Convert::case(Word::get_feat($object_word, "Case"));
         $action_type->{'object_number'} = Convert::number(Word::get_feat($object_word, "Number"));
     }
