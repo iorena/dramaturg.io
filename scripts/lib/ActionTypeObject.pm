@@ -22,12 +22,12 @@ sub process_object($action_type, $graph, $verb_id) {
     my @matching_words = Graph::get_radj_if($graph, $verb_id, \&Word::is_obj);
 
     unless (@matching_words > 0) {
-        Log::log_msg("    Continue: no object word found.\n");
+        Log::message("    Continue: no object word found.\n");
         return 0;
     }
 
     unless (@matching_words == 1) {
-        Log::log_msg("    Continue: multiple object words found.\n");
+        Log::message("    Continue: multiple object words found.\n");
         return 0;
     }
 

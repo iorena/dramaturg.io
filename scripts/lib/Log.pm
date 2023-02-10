@@ -31,13 +31,13 @@ sub clear_log() {
     close($fh);
 }
 
-sub log_msg($str) {
+sub message($str) {
     my $fh = open_log();
     say $fh $str;
     close($fh);
 }
 
-sub log_sentence_structure($graph) {
+sub sentence_structure($graph) {
     my $fh = open_log();
 
     say $fh "    " . "-" x 80;
@@ -57,7 +57,7 @@ sub log_sentence_structure($graph) {
     close($fh);
 }
 
-sub log_clauses($graph, $clauses) {
+sub clauses($graph, $clauses) {
     my $fh = open_log();
     say $fh "    " . "-" x 80;
     say $fh "    " . Utils::word_ids_to_text($graph, Utils::intsort $clauses->{$_}->@*) for Utils::intsort keys %$clauses;
@@ -65,14 +65,14 @@ sub log_clauses($graph, $clauses) {
     close($fh);
 }
 
-sub log_action_type($action_type) {
+sub action_type($action_type) {
     my $fh = open_log();
     printf $fh "    %30s   %s\n", $_, $action_type->{$_} for @ActionType::action_type_field_names;
     say $fh "";
     close($fh);
 }
 
-sub log_project_words($project_words) {
+sub project_words($project_words) {
     my $fh = open_log();
     printf $fh "    %30s   %s\n", $_, $project_words->{$_} for @ProjectWords::project_words_field_names;
     say $fh "";

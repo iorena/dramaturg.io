@@ -26,7 +26,7 @@ sub process_subject($action_type, $graph, $verb_id) {
         my $person = Person::get_implicit_person_from_verb($graph, $verb_id);
 
         unless (Person::valid_person($person)) {
-            Log::log_msg("    Continue: no subject word found.\n");
+            Log::message("    Continue: no subject word found.\n");
             return 0;
         }
 
@@ -36,7 +36,7 @@ sub process_subject($action_type, $graph, $verb_id) {
     }
 
     unless (@matching_words == 1) {
-        Log::log_msg("    Continue: multiple subject words found.\n");
+        Log::message("    Continue: multiple subject words found.\n");
         return 0;
     }
 

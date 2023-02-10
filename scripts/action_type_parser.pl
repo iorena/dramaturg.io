@@ -35,7 +35,7 @@ my @documents = Document::prepare_documents(@ARGV);
 DocumentParser::parse_documents(@documents);
 
 for my $document (@documents) {
-    Log::log_msg("Processing document <" . $document->{'filename'} . ">\n");
+    Log::message("Processing document <" . $document->{'filename'} . ">\n");
 
     # Parse action types.
     ActionTypeParser::parse_action_types($document, $_) for Document::get_sentences($document);
@@ -46,7 +46,7 @@ my @action_types = ActionTypePostProcessor::post_process_action_types(@documents
 Output::print_action_type_headers();
 Output::print_action_types($_) for sort { $a->{'action_type_id'} cmp $b->{'action_type_id'} } @action_types;
 
-Log::log_msg("Output " . scalar(@action_types) . " action types.\n");
+Log::message("Output " . scalar(@action_types) . " action types.\n");
 
-Log::log_msg("Done.");
+Log::message("Done.");
 
