@@ -40,7 +40,7 @@ our @false_keys = qw(
     has_vp
 );
 
-our $separator = ';';
+our $action_type_separator = ';';
 
 # Initialize blank action type.
 sub action_type() { return {map { $_ => default_value($_) } @action_type_field_names}; }
@@ -52,10 +52,10 @@ sub is_set($action_type, @keys) { return !grep { "$action_type->{$_}" eq default
 # Concatenate values with delimiter ';'.
 sub add_value($action_type, $key, $value) {
     my $curr_value = $action_type->{$key};
-    $action_type->{$key} = ("$curr_value" eq default_value($key) ? $value : $curr_value . $separator . $value);
+    $action_type->{$key} = ("$curr_value" eq default_value($key) ? $value : $curr_value . $action_type_separator . $value);
 }
 
 # Get concatenated non-default value(s) as a list.
-sub get_values($action_type, $key) { return grep { $_ ne default_value($key) } split($separator, $action_type->{$key}); }
+sub get_values($action_type, $key) { return grep { $_ ne default_value($key) } split($action_type_separator, $action_type->{$key}); }
 
 1;
