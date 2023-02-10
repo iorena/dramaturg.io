@@ -14,14 +14,12 @@ use ActionType;
 package Output;
 
 our $execname = "";
-our $action_type_output_separator = '\t';
-our $project_words_output_separator = '\t';
 
-sub print_action_type_headers() { say join($action_type_output_separator, @ActionType::action_type_field_names); }
-sub print_action_type($action_type) { say join($action_type_output_separator, map { $action_type->{$_} } @ActionType::action_type_field_names); }
+sub print_action_type_headers() { say join('\t', @ActionType::action_type_field_names); }
+sub print_action_type($action_type) { say join('\t', map { $action_type->{$_} } @ActionType::action_type_field_names); }
 sub print_action_types(@action_types) { print_action_type($_) for @action_types; }
 
-sub print_project_word($project_words) { say join($project_words_output_separator, map { $project_words->{$_} } ('score', 'subject', 'verb', 'object', 'object_case')); }
+sub print_project_word($project_words) { say join(',', map { $project_words->{$_} } ('score', 'subject', 'verb', 'object', 'object_case')); }
 sub print_project_words(@project_words) { print_project_word($_) for @project_words; }
 
 1;
