@@ -11,6 +11,7 @@ use lib dirname (__FILE__);
 
 use Convert;
 use Graph;
+use Log;
 use Person;
 use Utils;
 use Word;
@@ -25,7 +26,7 @@ sub process_subject($action_type, $graph, $verb_id) {
         my $person = Person::get_implicit_person_from_verb($graph, $verb_id);
 
         unless (Person::valid_person($person)) {
-            Output::log_msg("    Continue: no subject word found.\n");
+            Log::log_msg("    Continue: no subject word found.\n");
             return 0;
         }
 
@@ -35,7 +36,7 @@ sub process_subject($action_type, $graph, $verb_id) {
     }
 
     unless (@matching_words == 1) {
-        Output::log_msg("    Continue: multiple subject words found.\n");
+        Log::log_msg("    Continue: multiple subject words found.\n");
         return 0;
     }
 

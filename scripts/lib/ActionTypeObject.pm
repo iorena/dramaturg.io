@@ -11,6 +11,7 @@ use lib dirname (__FILE__);
 
 use Convert;
 use Graph;
+use Log;
 use Person;
 use Utils;
 use Word;
@@ -21,12 +22,12 @@ sub process_object($action_type, $graph, $verb_id) {
     my @matching_words = Graph::get_radj_if($graph, $verb_id, \&Word::is_obj);
 
     unless (@matching_words > 0) {
-        Output::log_msg("    Continue: no object word found.\n");
+        Log::log_msg("    Continue: no object word found.\n");
         return 0;
     }
 
     unless (@matching_words == 1) {
-        Output::log_msg("    Continue: multiple object words found.\n");
+        Log::log_msg("    Continue: multiple object words found.\n");
         return 0;
     }
 
