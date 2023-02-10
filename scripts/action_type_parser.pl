@@ -17,15 +17,17 @@ use ActionTypeParser;
 use ActionTypePostProcessor;
 use Document;
 use DocumentParser;
+use Log;
 use Output;
 
 my $execname = "action_type_parser";
 die "$execname: no arguments provided.\n" unless @ARGV;
 
 # Set names for logging and clear log file.
+$Log::execname = $execname;
+$Log::logfile = "$dirname/$execname.log";
 $Output::execname = $execname;
-$Output::logfile = "$dirname/$execname.log";
-Output::clear_log();
+Log::clear_log();
 
 # Read document filepaths from command line arguments.
 my @documents = Document::prepare_documents(@ARGV);

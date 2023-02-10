@@ -14,7 +14,6 @@ use ActionType;
 package Output;
 
 our $execname = "";
-our $logfile = "";
 our $action_type_output_separator = '\t';
 our $project_words_output_separator = '\t';
 
