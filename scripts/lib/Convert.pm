@@ -29,7 +29,10 @@ our %convert_tense = (
 
 our %convert_person = (
     '1' => 'Speaker',
-    '2' => 'Listener'
+    '2' => 'Listener',
+    '3' => 'Character',
+    '4' => 'Me',
+    '5' => 'Te'
 );
 
 our %convert_case = (
