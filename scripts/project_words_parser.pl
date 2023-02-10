@@ -34,7 +34,7 @@ my @documents = Document::prepare_documents(@ARGV);
 DocumentParser::parse_documents(@documents);
 
 for my $document (@documents) {
-    Output::log_msg("Processing document <" . $document->{'filename'} . ">\n");
+    Log::log_msg("Processing document <" . $document->{'filename'} . ">\n");
 
     # Parse project words.
     ProjectWordsParser::parse_project_words($document, $_) for Document::get_sentences($document);
@@ -47,5 +47,5 @@ Output::print_project_words(@project_words);
 my $n_project_words = 0;
 $n_project_words += scalar(Document::get_project_words($_)) for @documents;
 
-Output::log_msg("Done. Parsed $n_project_words project words.");
+Log::log_msg("Done. Parsed $n_project_words project words.");
 
