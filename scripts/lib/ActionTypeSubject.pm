@@ -39,14 +39,13 @@ sub process_subject($action_type, $graph, $verb_id) {
         Log::message("    Continue: multiple subject words found.\n");
         return 0;
     }
-
     my $subject_id = Word::id($matching_words[0]);
 
     # Get any flat:names and/or determiners.
     my @flatnames = Graph::get_radj_ids_if($graph, $subject_id, \&Word::is_flat);
     my @determiners = Graph::get_radj_ids_if($graph, $subject_id, \&Word::is_det);
         
-    $action_type->{'subject'} = join(' ', (map { Person::form_or_person_if(Graph::get_word($graph, $_), \&Word::is_nsubj) } Utils::intsort (@flatnames, @determiners, $subject_id)));
+    $action_type->{'subject'} = join(" ", (map { Person::form_or_person_if(Graph::get_word($graph, $_), \&Word::is_nsubj) } Utils::intsort (@flatnames, @determiners, $subject_id)));
 
     return 1;
 }

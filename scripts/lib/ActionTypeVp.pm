@@ -51,7 +51,7 @@ sub get_sconj($word) { return Word::is_sconj($word) || Word::is_mark($word); }
 
 sub add_sclause_vp($action_type, $graph, $sclause, $verb_id) {
     my $vp = $sclause->[0] < $verb_id ? 'pre_vp' : 'post_vp';
-    ActionType::add_value($action_type, $vp, join(' ', map { Word::form($_) } grep { !Word::is_punct($_) } map { Graph::get_word($graph, $_) } Utils::intsort $_->@*));
+    ActionType::add_value($action_type, $vp, join(" ", map { Word::form($_) } grep { !Word::is_punct($_) } map { Graph::get_word($graph, $_) } Utils::intsort $_->@*));
 }
 
 sub process_vp($action_type, $graph, $clauses, $verb_id) {
@@ -74,10 +74,10 @@ sub process_vp($action_type, $graph, $clauses, $verb_id) {
         }
     }
     if (@pre_stuff) {
-        ActionType::add_value($action_type, 'pre_vp', join(' ', map { Word::lemma(Graph::get_word($graph, $_)); } Utils::intsort @pre_stuff));
+        ActionType::add_value($action_type, 'pre_vp', join(" ", map { Word::lemma(Graph::get_word($graph, $_)); } Utils::intsort @pre_stuff));
     }
     if (@post_stuff) {
-        ActionType::add_value($action_type, 'post_vp', join(' ', map { Word::lemma(Graph::get_word($graph, $_)); } Utils::intsort @post_stuff));
+        ActionType::add_value($action_type, 'post_vp', join(" ", map { Word::lemma(Graph::get_word($graph, $_)); } Utils::intsort @post_stuff));
     }
 
 }
