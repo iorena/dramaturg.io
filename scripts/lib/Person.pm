@@ -16,24 +16,23 @@ use Word;
 
 package Person;
 
-sub valid_person($person) { return $person && $person ne "6"; }
-
 # Encode singular forms as 1, 2 and 3, plural forms as 4, 5 and 6.
 sub get_person_number($person, $number) { return $person ? ($number eq "Plur" ? $person + 3 : $person) : undef; }
 
-# According to CoNLL-U rules, Reflex feat is only set when Reflex=Yes
-# and in such cases the PronType feat is not set (but is implied as PronType=Prs).
-# Thus, it would suffice to only check for the presence of PronType=Prs,
-# but for future-proofing reasons both are checked here.
+# Accept encoded persons 1-5.
+sub valid_person($person) { return $person && $person ne "6"; }
+
+# According to CoNLL-U rules, Reflex feat is only set when Reflex=Yes and in such cases the PronType feat is implicitly PronType=Prs.
+# Thus, it would suffice to only check for the presence of PronType=Prs, but for clarity/future-proofing both are checked here.
 sub is_nonreflexive_personal_pronoun($word) {
     return Word::is_pron($word)
         && Word::get_feat($word, "PronType") eq "Prs"
         && Word::get_feat($word, "Reflex") ne "Yes";
 }
 
-# Get person or person of possessor.
+# Get feats required to identify person. Person[psor] not used with current criteria.
 sub get_person($word) { return get_person_number(Word::get_feats($word, ("Person", "Number"))); }
-sub get_person_psor($word) { return get_person_number(Word::get_feats($word, ("Person[psor]", "Number[psor]"))); }
+# sub get_person_psor($word) { return get_person_number(Word::get_feats($word, ("Person[psor]", "Number[psor]"))); }
 
 # Attempt to get (implicit) person through the verb's "Person" feat.
 sub get_implicit_person_from_verb($graph, $verb_id) {
@@ -47,23 +46,21 @@ sub get_implicit_person_from_verb($graph, $verb_id) {
     return $person;
 }
 
-# These subroutines will convert pronouns 
-# Predicate will separate the checked word from others.
-
-# Fix these comments
-# Convert word to person form if word is a pron/person, otherwise return normal form.
+# Converts word to person form if it is nonreflexive personal pronoun and predicate returns true,
+# otherwise returns Word::form (proper nouns capitalized, lower case otherwise).
 sub form_or_person_if($word, $predicate) {
-    if (is_nonreflexive_personal_pronoun($word) && $predicate->($word)) {
-        my $person = get_person_psor($word);
+    if ($predicate->($word) && is_nonreflexive_personal_pronoun($word)) {
+        my $person = get_person($word);
         return Convert::person($person) if valid_person($person);
     }
-    return Word::form($word);
+    return Word::is_propn($word) ? Word::form($word) : Utils::lower_case(Word::form($word));
 }
 
-# Convert word to person form if word is a pronperson, otherwise return normal lemma.
+# Converts word to person form if it is nonreflexive personal pronoun and predicate returns true,
+# otherwise returns Word::lemma (with compound-word-indicating hashtags removed).
 sub lemma_or_person_if($word, $predicate) {
-    if (is_nonreflexive_personal_pronoun($word) && $predicate->($word)) {
-        my $person = get_person_psor($word);
+    if ($predicate->($word) && is_nonreflexive_personal_pronoun($word)) {
+        my $person = get_person($word);
         return Convert::person($person) if valid_person($person);
     }
     return Utils::remove_hashtag(Word::lemma($word));
