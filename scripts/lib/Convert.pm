@@ -31,8 +31,8 @@ our %convert_person = (
     '1' => 'Speaker',
     '2' => 'Listener',
     '3' => 'Character',
-    '4' => 'Me',
-    '5' => 'Te'
+    '4' => 'me',
+    '5' => 'te'
 );
 
 our %convert_case = (
