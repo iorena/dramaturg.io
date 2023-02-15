@@ -10,6 +10,7 @@ use File::Basename;
 use lib dirname (__FILE__);
 
 use Convert;
+use CoordinatingConjunction;
 use Graph;
 use Log;
 use Person;
@@ -35,6 +36,11 @@ sub process_object($action_type, $graph, $verb_id) {
 
     if (Word::is_intj($object_word)) {
         Log::message("    Continue: skip interjection objects.\n");
+        return 0;
+    }
+
+    if (scalar(CoordinatingConjunction::get_cc_parts($graph, $object_word))) {
+        Log::message("    Continue: coordinated elements.\n");
         return 0;
     }
 

@@ -39,7 +39,15 @@ sub process_subject($action_type, $graph, $verb_id) {
         Log::message("    Continue: multiple subject words found.\n");
         return 0;
     }
-    my $subject_id = Word::id($matching_words[0]);
+
+    my $subject_word = $matching_words[0];
+
+    if (scalar(CoordinatingConjunction::get_cc_parts($graph, $subject_word))) {
+        Log::message("    Continue: coordinated elements.\n");
+        return 0;
+    }
+
+    my $subject_id = Word::id($subject_word);
 
     # Mark subject as proper noun with private key in case word will be generalized later.
     $action_type->{'subject_is_propn'} = 1 if Word::is_propn($matching_words[0]);

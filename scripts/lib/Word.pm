@@ -67,6 +67,7 @@ sub is_ccomp($word) { return baseform(deprel($word)) eq "ccomp"; }
 sub is_xcomp($word) { return baseform(deprel($word)) eq "xcomp"; }
 sub is_compound($word) { return baseform(deprel($word)) eq "compound"; }
 sub is_flat($word) { return baseform(deprel($word)) eq "flat"; }
+sub is_acl($word) { return baseform(deprel($word)) eq "acl"; }
 sub is_advcl($word) { return baseform(deprel($word)) eq "advcl"; }
 sub is_nummod($word) { return deprel($word) eq "nummod"; }
 sub is_mod($word) { index(deprel($_), "mod") != -1; }
@@ -77,6 +78,8 @@ sub is_det($word) { return baseform(deprel($word)) eq "det"; }
 sub is_fixed($word) { return baseform(deprel($word)) eq "fixed"; }
 sub is_gobj($word) { return subtype(deprel($word)) eq "gobj"; }
 sub is_poss($word) { return subtype(deprel($word)) eq "poss"; }
+sub is_obl($word) { return baseform(deprel($word)) eq "obl"; }
+sub is_cc($word) { return baseform(deprel($word)) eq "cc"; }
 
 # Accessors for the CoNLL-U field FEATS (list of morphological features from the universal feature inventory).
 sub get_feat($word, $feat) { feats($word) =~ /$feat=(\w+)/; return $1 // ""; }
