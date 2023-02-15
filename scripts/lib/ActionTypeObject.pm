@@ -32,6 +32,12 @@ sub process_object($action_type, $graph, $verb_id) {
     }
 
     my $object_word = $matching_words[0];
+
+    if (Word::is_intj($object_word)) {
+        Log::message("    Continue: skip interjection objects.\n");
+        return 0;
+    }
+
     my $object_id = Word::id($object_word);
 
     # Get any nummods and/or determiners.
