@@ -43,7 +43,6 @@ sub process_object($action_type, $graph, $verb_id) {
     # Mark object as proper noun with private key in case word will be generalized later.
     $action_type->{'object_is_propn'} = 1 if Word::is_propn($object_word);
 
-
     # Get any nummods and/or determiners.
     my @nummods = Graph::get_radj_ids_if($graph, $object_id, \&Word::is_nummod);
     my @determiners = Graph::get_radj_ids_if($graph, $object_id, \&Word::is_det);
