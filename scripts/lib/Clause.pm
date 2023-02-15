@@ -15,13 +15,17 @@ use Word;
 package Clause;
 
 # Root/conjunction/parataxis words start new clauses.
-sub starts_new_clause($word) { return Word::is_root($word) || Word::is_conj($word) || Word::is_parataxis($word); }
+sub starts_new_clause($graph, $word) {
+    return 0 unless Word::is_root($word) || Word::is_conj($word) || Word::is_parataxis($word);
+    return 0 if !Word::is_verb($word) && scalar(Graph::get_radj_if($graph, Word::id($word), \&Word::is_cconj));
+    return 1;
+}
 
 # Find clauses by running a recursive search through the reverse dependency graph.
 sub find_clauses($graph, $graph_clauses, $node, $i) {
     for (Graph::get_radj($graph, $i)) {
         my $id = Word::id($_);
-        if (starts_new_clause($_)) {
+        if (starts_new_clause($graph, $_)) {
             $graph_clauses->{$id} = [$id];
             find_clauses($graph, $graph_clauses, $id, $id);
         } else {

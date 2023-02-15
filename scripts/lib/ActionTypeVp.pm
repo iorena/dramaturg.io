@@ -17,7 +17,7 @@ use Word;
 package ActionTypeVp;
 
 sub collect_subordinate_clause($sclause, $graph, $i, @stop) {
-    for my $id (map { Word::id($_) } grep { !Clause::starts_new_clause($_) } Graph::get_radj($graph, $i)) {
+    for my $id (map { Word::id($_) } grep { !Clause::starts_new_clause($graph, $_) } Graph::get_radj($graph, $i)) {
         if (!grep { /^$id$/ } @stop) {
             push @{$sclause}, $id;
             collect_subordinate_clause($sclause, $graph, $id, @stop);

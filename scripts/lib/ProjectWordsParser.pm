@@ -55,7 +55,7 @@ sub parse_project_words($document, $sentence) {
     Log::message("    Sentence structure:");
     Log::sentence_structure(\%graph);
     
-    my @words = grep { Word::is_verb($_) && Clause::starts_new_clause($_) && Participle::check_proper_participle($_) } Sentence::get_words($sentence);
+    my @words = grep { Word::is_verb($_) && Clause::starts_new_clause(\%graph, $_) && Participle::check_proper_participle($_) } Sentence::get_words($sentence);
 
     Log::message("    Continue: no proper verbs found.\n") unless @words;
 
