@@ -41,6 +41,9 @@ sub process_subject($action_type, $graph, $verb_id) {
     }
     my $subject_id = Word::id($matching_words[0]);
 
+    # Mark subject as proper noun with private key in case word will be generalized later.
+    $action_type->{'subject_is_propn'} = 1 if Word::is_propn($matching_words[0]);
+
     # Get any flat:names and/or determiners.
     my @flatnames = Graph::get_radj_ids_if($graph, $subject_id, \&Word::is_flat);
     my @determiners = Graph::get_radj_ids_if($graph, $subject_id, \&Word::is_det);

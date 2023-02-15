@@ -40,6 +40,11 @@ our @false_keys = qw(
     has_vp
 );
 
+our @private_keys = qw(
+    subject_is_propn
+    object_is_propn
+);
+
 our $separator = ';';
 
 # Initialize blank action type.
