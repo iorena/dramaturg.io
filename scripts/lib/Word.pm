@@ -54,6 +54,7 @@ sub is_adp($word) { return upos($word) eq "ADP"; }
 sub is_punct($word) { return upos($word) eq "PUNCT"; }
 sub is_sconj($word) { return upos($word) eq "SCONJ"; } # Not to be confused with the DEPREL "conj".
 sub is_cconj($word) { return upos($word) eq "CCONJ"; } # Not to be confused with the DEPREL "conj".
+sub is_intj($word) { return upos($word) eq "INTJ"; }
 
 # Queries about the CoNLL-U deprel field.
 sub is_aux($word) { return baseform(deprel($word)) eq "aux"; } # Not to be confused with the UPOS "AUX".
@@ -66,7 +67,7 @@ sub is_ccomp($word) { return baseform(deprel($word)) eq "ccomp"; }
 sub is_xcomp($word) { return baseform(deprel($word)) eq "xcomp"; }
 sub is_compound($word) { return baseform(deprel($word)) eq "compound"; }
 sub is_flat($word) { return baseform(deprel($word)) eq "flat"; }
-sub is_clause_modifier($word) { return 0 + (baseform(deprel($word)) =~ /acl|advcl/); }
+sub is_advcl($word) { return baseform(deprel($word)) eq "advcl"; }
 sub is_nummod($word) { return deprel($word) eq "nummod"; }
 sub is_mod($word) { index(deprel($_), "mod") != -1; }
 sub is_cop($word) { return baseform(deprel($word)) eq "cop"; }
