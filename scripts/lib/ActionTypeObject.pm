@@ -23,24 +23,24 @@ sub process_object($action_type, $graph, $verb_id) {
     my @matching_words = Graph::get_radj_if($graph, $verb_id, \&Word::is_obj);
 
     unless (@matching_words > 0) {
-        Log::message("    Continue: no object word found.\n");
+        Log::write_out("    Continue: no object word found.\n");
         return 0;
     }
 
     unless (@matching_words == 1) {
-        Log::message("    Continue: multiple object words found.\n");
+        Log::write_out("    Continue: multiple object words found.\n");
         return 0;
     }
 
     my $object_word = $matching_words[0];
 
     if (Word::is_intj($object_word)) {
-        Log::message("    Continue: skip interjection objects.\n");
+        Log::write_out("    Continue: skip interjection objects.\n");
         return 0;
     }
 
     if (scalar(CoordinatingConjunction::get_cc_parts($graph, $object_word))) {
-        Log::message("    Continue: coordinated elements.\n");
+        Log::write_out("    Continue: coordinated elements.\n");
         return 0;
     }
 

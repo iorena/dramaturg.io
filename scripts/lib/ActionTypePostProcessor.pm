@@ -61,7 +61,7 @@ sub combine_action_types(@action_types) {
 
 sub post_process_action_types(@documents) {
     my @sorted_action_types = sort { custom_sort($a, $b) } map { $_->{'action_types'}->@* } @documents;
-    Log::message("Post-processing " . scalar(@sorted_action_types) . " action types.\n");
+    Log::write_out("Post-processing " . scalar(@sorted_action_types) . " action types.\n");
 
     my @action_types;
 
@@ -77,7 +77,7 @@ sub post_process_action_types(@documents) {
         if ($i != $j) {
             my $combined_action_type = combine_action_types(@sorted_action_types[$i..$j]);
             $combined_action_type->{'action_type_id'} = sprintf("ATC%04d", ++$n_combined_action_types);
-            Log::message("New combined action type:");
+            Log::write_out("New combined action type:");
             Log::action_type($combined_action_type);
             push @action_types, $combined_action_type;
         } else {

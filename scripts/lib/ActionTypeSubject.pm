@@ -26,7 +26,7 @@ sub process_subject($action_type, $graph, $verb_id) {
         my $person = Person::get_implicit_person_from_verb($graph, $verb_id);
 
         unless (Person::valid_person($person)) {
-            Log::message("    Continue: no subject word found.\n");
+            Log::write_out("    Continue: no subject word found.\n");
             return 0;
         }
 
@@ -36,14 +36,14 @@ sub process_subject($action_type, $graph, $verb_id) {
     }
 
     unless (@matching_words == 1) {
-        Log::message("    Continue: multiple subject words found.\n");
+        Log::write_out("    Continue: multiple subject words found.\n");
         return 0;
     }
 
     my $subject_word = $matching_words[0];
 
     if (scalar(CoordinatingConjunction::get_cc_parts($graph, $subject_word))) {
-        Log::message("    Continue: coordinated elements.\n");
+        Log::write_out("    Continue: coordinated elements.\n");
         return 0;
     }
 
