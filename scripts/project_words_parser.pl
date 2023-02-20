@@ -24,7 +24,6 @@ die "$execname: no arguments provided.\n" unless @ARGV;
 
 # Set names for logging and clear log file.
 Log::open_and_clear_log($execname, "$dirname/$execname.log");
-$Output::execname = $execname;
 
 # Read document filepaths from command line arguments.
 my @documents = Document::prepare_documents(@ARGV);

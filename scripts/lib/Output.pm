@@ -13,8 +13,6 @@ use ActionType;
 
 package Output;
 
-our $execname = "";
-
 sub print_action_type_headers() { say join("\t", @ActionType::action_type_field_names); }
 sub print_action_type($action_type) { say join("\t", map { $action_type->{$_} } @ActionType::action_type_field_names); }
 sub print_action_types(@action_types) { print_action_type($_) for @action_types; }
