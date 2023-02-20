@@ -35,6 +35,8 @@ our %convert_person = (
     '5' => 'te'
 );
 
+sub is_converted_person($value) { return scalar(grep { $value eq $_ } values %convert_person); }
+
 our %convert_case = (
     'Nom' => 'NOM',
     'Acc' => 'AKK',
@@ -64,8 +66,8 @@ sub person($person) { return exists $convert_person{$person} ? $convert_person{$
 sub case($case) { return exists $convert_case{$case} ? $convert_case{$case} : $case; }
 sub number($number) { return exists $convert_number{$number} ? $convert_number{$number} : $number; }
 
-sub generalize_subject($subject) { return scalar(grep { $subject eq $_ } values %convert_person) ? $subject : "subject"; }
+sub generalize_subject($subject) { return is_converted_person($subject) ? $subject : "subject"; }
 sub generalize_verb($verb) { return "project"; }
-sub generalize_object($object) { return scalar(grep { $object eq $_ } values %convert_person) ? $object : "object"; }
+sub generalize_object($object) { return is_converted_person($object) ? $object : "object"; }
 
 1;
