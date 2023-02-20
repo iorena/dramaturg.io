@@ -35,7 +35,9 @@ our %convert_person = (
     '5' => 'te'
 );
 
-sub is_converted_person($value) { return scalar(grep { $_ eq $value } values %convert_person); }
+our %convert_person_values = reverse %convert_person;
+
+sub is_converted_person($value) { return exists $convert_person_values{$value}; }
 
 our %convert_case = (
     'Nom' => 'NOM',
