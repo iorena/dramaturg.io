@@ -20,7 +20,7 @@ sub get_cc_parts($graph, $word) {
         my @ccs = Graph::get_radj_if($graph, Word::id($conj), \&Word::is_cc);
         push @cc_parts, ($conj, @ccs) if @ccs;
     }
-    return @cc_parts;
+    return sort { Word::id($a) <=> Word::id($b) } @cc_parts;
 }
 
 sub get_cc_parts_as_ids($graph, $word) { return map { Word::id($_) } get_cc_parts($graph, $word); }
