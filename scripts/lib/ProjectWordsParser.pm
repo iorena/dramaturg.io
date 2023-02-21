@@ -20,16 +20,16 @@ use Utils;
 package ProjectWordsParser;
 
 # Get word (reverse) adjacent to verb of a given type (determined by predicate).
-sub get_radj_word($graph, $verb_id, $predicate, $type) {
+sub get_radj_word($graph, $verb_id, $predicate, $print_type) {
     my @matching_words = Graph::get_radj_if($graph, $verb_id, $predicate);
 
     unless (@matching_words > 0) {
-        Log::write_out("    Continue: no $type word found.\n");
+        Log::write_out("    Continue: no $print_type word found.\n");
         return 0;
     }
 
     unless (@matching_words == 1) {
-        Log::write_out("    Continue: multiple $type words found.\n");
+        Log::write_out("    Continue: multiple $print_type words found: " . Utils::quoted_word_forms(@matching_words) . ".\n");
         return 0;
     }
     return $matching_words[0];
@@ -40,7 +40,7 @@ sub is_standalone_word($graph, $word) {
     my @bad_deprel_predicates = (\&Word::is_flat, \&Word::is_det, \&Word::is_fixed, \&Word::is_gobj, \&Word::is_poss, \&Word::is_cconj);
     for (@bad_deprel_predicates) {
         if (Graph::get_radj_ids_if($graph, Word::id($word), $_)) {
-            Log::write_out("    Continue: " . Word::form($word) . " not stand-alone word.\n");
+            Log::write_out("    Continue: not stand-alone word: \"" . Word::form($word) . "\".\n");
             return 0;
         }
     }
@@ -60,11 +60,13 @@ sub parse_project_words($document, $sentence) {
     Log::write_out("    Continue: no proper verbs found.\n") unless @words;
 
     for my $word (@words) {
-        Log::write_out("    Processing verb <" . Word::form($word) . ">\n");
+        Log::write_out("    Processing verb \"" . Word::form($word) . "\".\n");
 
         my $id = Word::id($word);
-        if (grep { Word::is_verb($_) && Word::is_xcomp($_) } Graph::get_radj(\%graph, $id)) {
-            Log::write_out("    Continue: open clausal complement verbs not allowed.\n");
+
+        my @xcomps = grep { Word::is_verb($_) && Word::is_xcomp($_) } Graph::get_radj(\%graph, $id);
+        if (@xcomps) {
+            Log::write_out("    Continue: open clausal complement verbs not allowed: \"" . Word::form($word) . "\" -> " . Utils::quoted_word_forms(@xcomps) . ".\n");
             next;
         }
 
@@ -81,12 +83,12 @@ sub parse_project_words($document, $sentence) {
         next unless $object_word;
 
         if (Word::is_pron($object_word)) {
-            Log::write_out("    Continue: pronoun object not allowed.\n");
+            Log::write_out("    Continue: pronoun object not allowed: \"" . Word::form($object_word) . "\".\n");
             next;
         }
 
         if (Word::is_adj($object_word)) {
-            Log::write_out("    Continue: adjective object not allowed.\n");
+            Log::write_out("    Continue: adjective object not allowed: \"" . Word::form($object_word) . "\".\n");
             next;
         }
 
