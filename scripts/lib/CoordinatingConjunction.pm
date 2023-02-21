@@ -16,11 +16,13 @@ package CoordinatingConjunction;
 
 sub get_cc_parts($graph, $word) {
     my @cc_parts;
-    for my $conj_id (Graph::get_radj_ids_if($graph, Word::id($word), \&Word::is_conj)) {
-        my @ccs = Graph::get_radj_ids_if($graph, $conj_id, \&Word::is_cc);
-        push @cc_parts, ($conj_id, @ccs) if @ccs;
+    for my $conj (Graph::get_radj_if($graph, Word::id($word), \&Word::is_conj)) {
+        my @ccs = Graph::get_radj_if($graph, Word::id($conj), \&Word::is_cc);
+        push @cc_parts, ($conj, @ccs) if @ccs;
     }
     return @cc_parts;
 }
+
+sub get_cc_parts_as_ids($graph, $word) { return map { Word::id($_) } get_cc_parts($graph, $word); }
 
 1;
