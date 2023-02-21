@@ -50,17 +50,17 @@ sub parse_action_types($document, $sentence) {
         my $word = Graph::get_word(\%graph, $id);
 
         unless (Word::is_verb($word)) {
-            Log::write_out("    Continue: nonverbal clause.\n");
+            Log::write_out("    Continue: nonverbal clause root: \"" . Word::form($word) . "\".\n");
             next;
         }
 
         if (Word::get_feat($word, "VerbForm") eq "Inf") {
-            Log::write_out("    Continue: infinitive verb.\n");
+            Log::write_out("    Continue: infinitive verb: \"" . Word::form($word) . "\".\n");
             next;
         }
 
         unless (Participle::check_proper_participle($word)) {
-            Log::write_out("    Continue: Unaccepted participle form.\n");
+            Log::write_out("    Continue: Unaccepted participle form: \"" . Word::form($word) . "\".\n");
             next;
         }
 
@@ -70,8 +70,9 @@ sub parse_action_types($document, $sentence) {
         ActionTypeVerb::process_main_verb($action_type, \%graph, $id);
 
         # Verb must not be linked to open clausal complement verbs.
-        if (grep { Word::is_verb($_) && Word::is_xcomp($_) } Graph::get_radj(\%graph, $id)) {
-            Log::write_out("    Continue: open clausal complement verbs not allowed.\n");
+        my @xcomps = grep { Word::is_verb($_) && Word::is_xcomp($_) } Graph::get_radj(\%graph, $id);
+        if (@xcomps) {
+            Log::write_out("    Continue: open clausal complement verbs not allowed: \"" . Word::form($word) . "\" -> " . Utils::quoted_word_forms(@xcomps) . ".\n");
             next;
         }
 

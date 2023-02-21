@@ -28,19 +28,20 @@ sub process_object($action_type, $graph, $verb_id) {
     }
 
     unless (@matching_words == 1) {
-        Log::write_out("    Continue: multiple object words found.\n");
+        Log::write_out("    Continue: multiple object words found: " . Utils::quoted_word_forms(@matching_words) . ".\n");
         return 0;
     }
 
     my $object_word = $matching_words[0];
 
     if (Word::is_intj($object_word)) {
-        Log::write_out("    Continue: skip interjection objects.\n");
+        Log::write_out("    Continue: skip interjection objects: \"" . Word::form($object_word) . "\".\n");
         return 0;
     }
 
-    if (scalar(CoordinatingConjunction::get_cc_parts($graph, $object_word))) {
-        Log::write_out("    Continue: coordinated elements.\n");
+    my @cc_parts = CoordinatingConjunction::get_cc_parts($graph, $object_word);
+    if (@cc_parts) {
+        Log::write_out("    Continue: coordinated elements in object: \"" . Word::form($object_word) . "\" -> " . Utils::quoted_word_forms(@cc_parts) . ".\n");
         return 0;
     }
 

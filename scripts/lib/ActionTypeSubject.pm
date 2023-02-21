@@ -36,14 +36,15 @@ sub process_subject($action_type, $graph, $verb_id) {
     }
 
     unless (@matching_words == 1) {
-        Log::write_out("    Continue: multiple subject words found.\n");
+        Log::write_out("    Continue: multiple subject words found: " . Utils::quoted_word_forms(@matching_words) . ".\n");
         return 0;
     }
 
     my $subject_word = $matching_words[0];
 
-    if (scalar(CoordinatingConjunction::get_cc_parts($graph, $subject_word))) {
-        Log::write_out("    Continue: coordinated elements.\n");
+    my @cc_parts = CoordinatingConjunction::get_cc_parts($graph, $subject_word);
+    if (@cc_parts) {
+        Log::write_out("    Continue: coordinated elements in subject: \"" . Word::form($subject_word) . "\" -> " . Utils::quoted_word_forms(@cc_parts) . ".\n");
         return 0;
     }
 
