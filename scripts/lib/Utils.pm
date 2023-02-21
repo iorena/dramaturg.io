@@ -31,7 +31,7 @@ sub average(@vals) {
 
 sub word_ids_to_text($graph, @ids) { return ("\"" . join(" ", map { Word::form(Graph::get_word($graph, $_)) } intsort @ids) . "\"") =~ s/\s+([,.;:!?])/$1/gr; }
 
-sub quoted_word_forms(@words) { return join(" ", map { "\"" . Word::form($_) . "\"" } @words); }
+sub quoted_word_forms(@words) { return join(", ", map { "\"" . Word::form($_) . "\"" } @words); }
 
 sub remove_hashtag($str) { return $str =~ s/#//gr; }
 
