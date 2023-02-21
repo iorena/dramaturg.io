@@ -54,12 +54,12 @@ sub clauses($graph, $clauses) {
 }
 
 sub action_type($action_type) {
-    write_out(sprintf "    %30s   %s\n", $_, $action_type->{$_}) for @ActionType::action_type_field_names;
+    write_out(sprintf "    %30s   %s", $_, $action_type->{$_}) for @ActionType::action_type_field_names;
     br();
 }
 
 sub project_words($project_words) {
-    write_out(sprintf "    %30s   %s\n", $_, $project_words->{$_}) for @ProjectWords::project_words_field_names;
+    write_out(sprintf "    %30s   %s", $_, $project_words->{$_}) for @ProjectWords::project_words_field_names;
     br();
 }
 
