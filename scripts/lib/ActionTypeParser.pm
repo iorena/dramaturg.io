@@ -31,7 +31,7 @@ sub generalize_action_type($action_type) {
 }
 
 sub parse_action_types($document, $sentence) {
-    my %graph = Graph::graph($sentence);
+    my %graph = Graph::graph(Sentence::get_words($sentence));
     my %clauses = Clause::get_clauses(\%graph);
 
     Log::write_out("Parsing action types in sentence <$sentence->{'text'}>.\n");

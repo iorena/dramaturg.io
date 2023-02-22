@@ -48,7 +48,7 @@ sub is_standalone_word($graph, $word) {
 }
 
 sub parse_project_words($document, $sentence) {
-    my %graph = Graph::graph($sentence);
+    my %graph = Graph::graph(Sentence::get_words($sentence));
 
     Log::write_out("Parsing project words in sentence <$sentence->{'text'}>.\n");
 

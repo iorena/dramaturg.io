@@ -14,8 +14,7 @@ use Word;
 
 package Graph;
 
-# Create a graph node hash, which at first only contains the stored word hash.
-# 'radj' is the list of neighbors (as word hashes) in the reverse graph.
+# Graph node hash which stores a word hash and a list of neighbors (as word hashes) in the reverse graph.
 sub node($word) {
     return {
         'word' => $word,
@@ -23,19 +22,20 @@ sub node($word) {
     };
 }
 
-# Create a graph from a sentence.
-# Word ids will be keys for the graph nodes except for the special key 'root' which stores the root graph node's id.
-sub graph($sentence) {
-    my @words = Sentence::get_words($sentence);
-
+# Create dependency graph from a list of words where word ids are keys for the graph nodes.
+# The special key 'root' points to the id of the lowest level node.
+sub graph(@words) {
     # Create a node in the graph for each word in the sentence.
     my %graph = map { Word::id($_) => node($_) } @words;
 
     # Create lists of neighbors in the reverse graph.
-    push $graph{Word::head($_)}->{'radj'}->@*, $_ for @words;
+    push $graph{Word::head($_)}->{'radj'}->@*, $_ for grep { exists $graph{Word::head($_)} } @words;
 
-    # Store root node's id separately.
-    $graph{'root'} = Word::id($graph{0}->{'radj'}[0]);
+    # ConLL-U sentences should always be rooted with only one lowest level node.
+    # Additionally, any other list of words passed to this subroutine follows a similar assumption.
+    # In case of ambiguity caused by an error, a single root key will always be set here.
+    my @root = map { Word::id($_) } grep { not exists $graph{Word::head($_)} } @words;
+    $graph{'root'} = $root[0] if @root;
 
     return %graph;
 }
