@@ -23,7 +23,7 @@ sub node($word) {
     };
 }
 
-# Create a graph hash.
+# Create a graph from a sentence.
 # Word ids will be keys for the graph nodes except for the special key 'root' which stores the root graph node's id.
 sub graph($sentence) {
     my @words = Sentence::get_words($sentence);
