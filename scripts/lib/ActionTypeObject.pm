@@ -10,7 +10,7 @@ use File::Basename;
 use lib dirname (__FILE__);
 
 use Convert;
-use CoordinatingConjunction;
+use Conjunction;
 use Graph;
 use Log;
 use Person;
@@ -39,9 +39,9 @@ sub process_object($action_type, $graph, $verb_id) {
         return 0;
     }
 
-    my @cc_parts = CoordinatingConjunction::get_cc_parts($graph, $object_word);
-    if (@cc_parts) {
-        Log::write_out("    Continue: coordinated elements in object: \"" . Word::form($object_word) . "\" -> " . Utils::quoted_word_forms(@cc_parts) . ".\n");
+    my @ces = Conjunction::get_coordinated_elements($graph, $object_word);
+    if (@ces) {
+        Log::write_out("    Continue: coordinated elements in object: \"" . Word::form($object_word) . "\" -> " . Utils::quoted_word_forms(@ces) . ".\n");
         return 0;
     }
 

@@ -10,6 +10,7 @@ use File::Basename;
 use lib dirname (__FILE__);
 
 use ActionType;
+use ClauseGraph;
 use Graph;
 use ProjectWords;
 use Utils;
@@ -46,9 +47,9 @@ sub sentence_structure($graph) {
     br();
 }
 
-sub clauses($graph, $clauses) {
+sub clauses($graph, $clause_graph) {
     hr();
-    write_out("    " . Utils::word_ids_to_text($graph, Utils::intsort $clauses->{$_}->@*)) for Utils::intsort keys %$clauses;
+    write_out("    " . Utils::word_ids_to_text($graph, ClauseGraph::get_sorted_word_ids($clause_graph, $_))) for ClauseGraph::get_sorted_clause_node_ids($clause_graph);
     hr();
     br();
 }

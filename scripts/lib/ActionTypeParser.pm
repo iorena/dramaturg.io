@@ -14,7 +14,7 @@ use ActionTypeObject;
 use ActionTypeSubject;
 use ActionTypeVerb;
 use ActionTypeVp;
-use Clause;
+use ClauseGraph;
 use Graph;
 use Participle;
 use Log;
@@ -32,7 +32,7 @@ sub generalize_action_type($action_type) {
 
 sub parse_action_types($document, $sentence) {
     my %graph = Graph::graph(Sentence::get_words($sentence));
-    my %clauses = Clause::get_clauses(\%graph);
+    my %clause_graph = ClauseGraph::clause_graph(\%graph);
 
     Log::write_out("Parsing action types in sentence <$sentence->{'text'}>.\n");
 
@@ -40,11 +40,11 @@ sub parse_action_types($document, $sentence) {
     Log::sentence_structure(\%graph);
 
     Log::write_out("    Sentence clauses:");
-    Log::clauses(\%graph, \%clauses);
+    Log::clauses(\%graph, \%clause_graph);
 
     # Go through clauses in order.
-    for my $id (Utils::intsort keys %clauses) {
-        my $clause_text = Utils::word_ids_to_text(\%graph, $clauses{$id}->@*);
+    for my $id (ClauseGraph::get_sorted_clause_node_ids(\%clause_graph)) {
+        my $clause_text = Utils::word_ids_to_text(\%graph, $clause_graph{$id}->{'word_ids'}->@*);
         Log::write_out("    Processing clause: $clause_text.\n");
 
         my $word = Graph::get_word(\%graph, $id);
@@ -80,14 +80,14 @@ sub parse_action_types($document, $sentence) {
 
         next unless ActionTypeObject::process_object($action_type, \%graph, $id);
 
-        ActionTypeVp::process_vp($action_type, \%graph, \%clauses, $id);
+        ActionTypeVp::process_vp($action_type, \%graph, \%clause_graph, $id);
 
         $action_type->{'has_vp'} = "TRUE" if ActionType::is_set($action_type, "pre_vp") || ActionType::is_set($action_type, "post_vp");
 
         # Generalize action type if "pre_vp" or "post_vp" is set.
         generalize_action_type($action_type) if ActionType::is_set($action_type, "has_vp");
 
-        my @clause_words = map { Graph::get_word(\%graph, $_) } $clauses{$id}->@*;
+        my @clause_words = map { Graph::get_word(\%graph, $_) } $clause_graph{$id}->{'word_ids'}->@*;
         $action_type->{'score'} = Utils::precision(Score::score_words($document->{'score_keeper'}, @clause_words), 3);
         $action_type->{'global_score'} = Utils::precision(Score::score_words($Score::global_score_keeper, @clause_words), 3);
 
