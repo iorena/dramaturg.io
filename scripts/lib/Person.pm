@@ -20,7 +20,7 @@ package Person;
 sub get_person_number($person, $number) { return $person ? ($number eq "Plur" ? $person + 3 : $person) : undef; }
 
 # Accept encoded persons 1-5.
-sub valid_person($person) { return $person && $person ne "6"; }
+sub valid_person($person) { return $person && $person ne "3" && $person ne "6"; }
 
 # According to CoNLL-U rules, Reflex feat is only set when Reflex=Yes and in such cases the PronType feat is implicitly PronType=Prs.
 # Thus, it would suffice to only check for the presence of PronType=Prs, but for clarity/future-proofing both are checked here.
