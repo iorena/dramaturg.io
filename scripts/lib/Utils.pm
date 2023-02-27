@@ -29,12 +29,16 @@ sub average(@vals) {
     return $n > 0 ? $avg / $n : 0;
 }
 
-sub word_ids_to_text($graph, @ids) { return ("\"" . join(" ", map { Word::form(Graph::get_word($graph, $_)) } intsort @ids) . "\"") =~ s/\s+([,.;:!?])/$1/gr; }
+# Convert a list of words into a text string of their CoNLL-U forms. The words are space-separated with the exception of puncutations.
+sub word_ids_to_text($graph, @word_ids) { return ("\"" . join(" ", map { Word::form(Graph::get_word($graph, $_)) } intsort @word_ids) . "\"") =~ s/\s+([,.;:!?])/$1/gr; }
 
+# Get CoNLL-U forms with quotes wrapped around each word.
 sub quoted_word_forms(@words) { return join(", ", map { "\"" . Word::form($_) . "\"" } @words); }
 
+# Remove hashtags from a string (typically hashtags separated compound word parts in CoNLL-U lemmas).
 sub remove_hashtag($str) { return $str =~ s/#//gr; }
 
+# Proper conversion of UTF-8 strings to lower case.
 sub lower_case($str) { return Encode::encode("utf-8", lc Encode::decode("utf-8", $str)); }
 
 1;
