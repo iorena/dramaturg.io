@@ -33,6 +33,9 @@ sub process_subject($action_type, $graph, $verb_id) {
 
         $action_type->{'subject'} = Convert::person($person);
 
+        # Save subject id (the verb id in this case) with private key 'subject_id'.
+        $action_type->{'subject_id'} = $verb_id;
+
         return 1;
     }
 
@@ -59,6 +62,9 @@ sub process_subject($action_type, $graph, $verb_id) {
     my @determiners = Graph::get_radj_ids_if($graph, $subject_id, \&Word::is_det);
         
     $action_type->{'subject'} = join(" ", (map { Person::form_or_person_if(Graph::get_word($graph, $_), \&Word::is_nsubj) } Utils::intsort (@flatnames, @determiners, $subject_id)));
+
+    # Save subject id with private key 'subject_id'.
+    $action_type->{'subject_id'} = $verb_id;
 
     return 1;
 }

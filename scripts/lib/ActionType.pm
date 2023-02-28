@@ -43,6 +43,8 @@ our @false_keys = qw(
 our @private_keys = qw(
     subject_is_propn
     object_is_propn
+    subject_id
+    object_id
 );
 
 our $separator = ';';
