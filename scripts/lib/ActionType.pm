@@ -11,6 +11,7 @@ use lib dirname (__FILE__);
 
 package ActionType;
 
+# Keys which are fields in the output.
 our @action_type_field_names = qw(
     action_type_id
     negative_form
@@ -33,6 +34,7 @@ our @action_type_field_names = qw(
     text
 );
 
+# Keys (of above) whose default values hould be "FALSE" instead of "NONE".
 our @false_keys = qw(
     negative_form
     interrogative_form
@@ -40,6 +42,7 @@ our @false_keys = qw(
     has_vp
 );
 
+# Private keys which will not be output but which contain important information necessary for correct program logic.
 our @private_keys = qw(
     subject_is_propn
     object_is_propn
