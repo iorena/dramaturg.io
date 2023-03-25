@@ -9,7 +9,7 @@ use feature qw(postderef signatures);
 package Sentence;
 
 # Create a sentence hash, which at first only contains the raw text string.
-# Processed word lines will be stored in the 'words' array as word hashes.
+# Processed word lines will be stored in the 'words' array as word hashes (see Word.pm).
 sub sentence($text) {
     return {
         'text' => $1,
