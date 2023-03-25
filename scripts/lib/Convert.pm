@@ -30,7 +30,7 @@ our %convert_tense = (
 our %convert_person = (
     '1' => 'Speaker',
     '2' => 'Listener',
-    '3' => 'Character',
+    '3' => 'Character', # Not currently used.
     '4' => 'me',
     '5' => 'te'
 );
