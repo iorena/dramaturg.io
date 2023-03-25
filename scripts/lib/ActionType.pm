@@ -25,7 +25,6 @@ our @action_type_field_names = qw(
     passive_form
     object_case
     object_number
-    has_vp
     pre_vp
     post_vp
     score
@@ -34,7 +33,7 @@ our @action_type_field_names = qw(
     text
 );
 
-# Keys (of above) whose default values hould be "FALSE" instead of "NONE".
+# Keys whose default values should be "FALSE" instead of "NONE".
 our @false_keys = qw(
     negative_form
     interrogative_form
@@ -48,12 +47,13 @@ our @private_keys = qw(
     object_is_propn
     subject_id
     object_id
+    has_vp
 );
 
 our $separator = ';';
 
 # Initialize blank action type.
-sub action_type() { return {map { $_ => default_value($_) } @action_type_field_names}; }
+sub action_type() { return {map { $_ => default_value($_) } (@action_type_field_names, @private_keys)}; }
 
 sub default_value($key) { return grep(/$key/, @false_keys) ? "FALSE" : "NONE"; }
 

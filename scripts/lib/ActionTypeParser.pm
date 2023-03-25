@@ -25,9 +25,9 @@ package ActionTypeParser;
 
 sub generalize_action_type($action_type) {
     Log::write_out("    Generalized action_type ($action_type->{'subject'}, $action_type->{'verb'}, $action_type->{'object'}).\n");
-    $action_type->{'subject'} = Convert::generalize_subject($action_type->{'subject'}) unless exists $action_type->{'subject_is_propn'};
+    $action_type->{'subject'} = Convert::generalize_subject($action_type->{'subject'}) unless ActionType::is_set($action_type, "subject_is_propn");
     $action_type->{'verb'} = Convert::generalize_verb($action_type->{'verb'});
-    $action_type->{'object'} = Convert::generalize_object($action_type->{'object'}) unless exists $action_type->{'object_is_propn'};
+    $action_type->{'object'} = Convert::generalize_object($action_type->{'object'}) unless ActionType::is_set($action_type, "object_is_propn");
 }
 
 sub parse_action_types($document, $sentence) {
