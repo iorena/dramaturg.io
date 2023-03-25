@@ -19,7 +19,7 @@ package Person;
 # Encode singular forms as 1, 2 and 3, plural forms as 4, 5 and 6.
 sub get_person_number($person, $number) { return $person ? ($number eq "Plur" ? $person + 3 : $person) : undef; }
 
-# Accept encoded persons 1-5.
+# Accept encoded persons 1-2 and 4-5.
 sub valid_person($person) { return $person && $person ne "3" && $person ne "6"; }
 
 # According to CoNLL-U rules, Reflex feat is only set when Reflex=Yes and in such cases the PronType feat is implicitly PronType=Prs.
