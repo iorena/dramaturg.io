@@ -9,7 +9,7 @@ use feature qw(postderef signatures);
 use File::Basename;
 use lib dirname (__FILE__);
 
-use Clause;
+use Conjunction;
 use Graph;
 use Participle;
 use Log;
@@ -55,7 +55,7 @@ sub parse_project_words($document, $sentence) {
     Log::write_out_indented("Sentence structure:");
     Log::sentence_structure(\%graph);
     
-    my @words = grep { Word::is_verb($_) && Clause::starts_new_clause(\%graph, $_) && Participle::check_proper_participle($_) } Sentence::get_words($sentence);
+    my @words = grep { Word::is_verb($_) && Conjunction::is_conjunction_word(\%graph, $_) && Participle::check_proper_participle($_) } Sentence::get_words($sentence);
 
     Log::write_out_indented("Continue: no proper verbs found.\n") unless @words;
 
@@ -67,6 +67,12 @@ sub parse_project_words($document, $sentence) {
         my @xcomps = grep { Word::is_verb($_) && Word::is_xcomp($_) } Graph::get_radj(\%graph, $id);
         if (@xcomps) {
             Log::write_out_indented("Continue: open clausal complement verbs not allowed: \"" . Word::form($word) . "\" -> " . Utils::quoted_word_forms(@xcomps) . ".\n");
+            next;
+        }
+
+        my @aux = grep { Word::is_aux($_) } Graph::get_radj(\%graph, $id);
+        if (@aux) {
+            Log::write_out_indented("Continue: auxiliary verbs not allowed: \"" . Word::form($word) . "\" -> " . Utils::quoted_word_forms(@aux) . ".\n");
             next;
         }
 
