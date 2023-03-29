@@ -23,30 +23,30 @@ sub process_object($action_type, $graph, $verb_id) {
     my @matching_words = Graph::get_radj_if($graph, $verb_id, \&Word::is_obj);
 
     unless (@matching_words > 0) {
-        Log::write_out("    Continue: no object word found.\n");
+        Log::write_out_indented("Continue: no object word found.\n");
         return 0;
     }
 
     unless (@matching_words == 1) {
-        Log::write_out("    Continue: multiple object words found: " . Utils::quoted_word_forms(@matching_words) . ".\n");
+        Log::write_out_indented("Continue: multiple object words found: " . Utils::quoted_word_forms(@matching_words) . ".\n");
         return 0;
     }
 
     my $object_word = $matching_words[0];
 
     if (Word::is_verb($object_word)) {
-        Log::write_out("    Continue: skip verb objects. \"" . Word::form($object_word) . "\".\n");
+        Log::write_out_indented("Continue: skip verb objects. \"" . Word::form($object_word) . "\".\n");
         return 0;
     }
 
     if (Word::is_intj($object_word)) {
-        Log::write_out("    Continue: skip interjection objects: \"" . Word::form($object_word) . "\".\n");
+        Log::write_out_indented("Continue: skip interjection objects: \"" . Word::form($object_word) . "\".\n");
         return 0;
     }
 
     my @ces = Conjunction::get_coordinated_elements($graph, $object_word);
     if (@ces) {
-        Log::write_out("    Continue: coordinated elements in object: \"" . Word::form($object_word) . "\" -> " . Utils::quoted_word_forms(@ces) . ".\n");
+        Log::write_out_indented("Continue: coordinated elements in object: \"" . Word::form($object_word) . "\" -> " . Utils::quoted_word_forms(@ces) . ".\n");
         return 0;
     }
 
@@ -64,7 +64,7 @@ sub process_object($action_type, $graph, $verb_id) {
         my ($case, $number) = Word::get_feats($object_word, ("Case", "Number"));
 
         unless ($case && $number) {
-            Log::write_out("    Continue: object word missing 'Case' and 'Number' feats: \"" . Word::form($object_word) . "\".\n");
+            Log::write_out_indented("Continue: object word missing 'Case' and 'Number' feats: \"" . Word::form($object_word) . "\".\n");
             return 0;
         }
 

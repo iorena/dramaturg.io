@@ -77,7 +77,7 @@ sub post_process_action_types(@documents) {
         if ($i != $j) {
             my $combined_action_type = combine_action_types(@sorted_action_types[$i..$j]);
             $combined_action_type->{'action_type_id'} = sprintf("ATC%04d", ++$n_combined_action_types);
-            Log::write_out("New combined action type:");
+            Log::write_out_indented("New combined action type:");
             Log::action_type($combined_action_type);
             push @action_types, $combined_action_type;
         } else {

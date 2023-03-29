@@ -27,9 +27,14 @@ sub open_and_clear_log($execname, $logfile) {
 
 sub close_log() { close($fh); }
 
+my $indentation = "    ";
+
 sub write_out($str) { say $fh $str or die $!; }
 
-sub hr() { write_out("    " . "-" x 80); }
+# Write out indented string.
+sub write_out_indented($str) { write_out("$indentation$str"); }
+
+sub hr() { write_out_indented("-" x 80); }
 sub br() { write_out(""); }
 
 sub sentence_structure($graph) {
@@ -39,7 +44,7 @@ sub sentence_structure($graph) {
     while (@stack) {
         my ($depth, $id) = (pop @stack, pop @stack);
         my $word = Graph::get_word($graph, $id);
-        write_out("    " . "      " x $depth . Word::form($word) . "  " . Word::upos($word) . '_' . Word::deprel($word));
+        write_out_indented("      " x $depth . Word::form($word) . "  " . Word::upos($word) . '_' . Word::deprel($word));
         ++$depth;
         push @stack, $_, $depth for Utils::intsort Graph::get_radj_ids($graph, $id);
     }
@@ -49,18 +54,18 @@ sub sentence_structure($graph) {
 
 sub clauses($graph, $clause_graph) {
     hr();
-    write_out("    " . Utils::word_ids_to_text($graph, ClauseGraph::get_sorted_word_ids($clause_graph, $_))) for ClauseGraph::get_sorted_clause_node_ids($clause_graph);
+    write_out_indented(Utils::word_ids_to_text($graph, ClauseGraph::get_sorted_word_ids($clause_graph, $_))) for ClauseGraph::get_sorted_clause_node_ids($clause_graph);
     hr();
     br();
 }
 
 sub action_type($action_type) {
-    write_out(sprintf "    %30s   %s", $_, $action_type->{$_}) for @ActionType::action_type_field_names;
+    write_out_indented(sprintf "%30s   %s", $_, $action_type->{$_}) for @ActionType::action_type_field_names;
     br();
 }
 
 sub project_words($project_words) {
-    write_out(sprintf "    %30s   %s", $_, $project_words->{$_}) for @ProjectWords::project_words_field_names;
+    write_out_indented(sprintf "%30s   %s", $_, $project_words->{$_}) for @ProjectWords::project_words_field_names;
     br();
 }
 

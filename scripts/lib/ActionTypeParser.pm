@@ -24,7 +24,7 @@ use Utils;
 package ActionTypeParser;
 
 sub generalize_action_type($action_type) {
-    Log::write_out("    Generalized action_type ($action_type->{'subject'}, $action_type->{'verb'}, $action_type->{'object'}).\n");
+    Log::write_out_indented("Generalized action_type ($action_type->{'subject'}, $action_type->{'verb'}, $action_type->{'object'}).\n");
     $action_type->{'subject'} = Convert::generalize_subject($action_type->{'subject'}) unless ActionType::is_set($action_type, "subject_is_propn");
     $action_type->{'verb'} = Convert::generalize_verb($action_type->{'verb'});
     $action_type->{'object'} = Convert::generalize_object($action_type->{'object'}) unless ActionType::is_set($action_type, "object_is_propn");
@@ -36,31 +36,31 @@ sub parse_action_types($document, $sentence) {
 
     Log::write_out("Parsing action types in sentence <$sentence->{'text'}>.\n");
 
-    Log::write_out("    Sentence structure:");
+    Log::write_out_indented("Sentence structure:");
     Log::sentence_structure(\%graph);
 
-    Log::write_out("    Sentence clauses:");
+    Log::write_out_indented("Sentence clauses:");
     Log::clauses(\%graph, \%clause_graph);
 
     # Go through clauses in order.
     for my $id (ClauseGraph::get_sorted_clause_node_ids(\%clause_graph)) {
         my $clause_text = Utils::word_ids_to_text(\%graph, $clause_graph{$id}->{'word_ids'}->@*);
-        Log::write_out("    Processing clause: $clause_text.\n");
+        Log::write_out_indented("Processing clause: $clause_text.\n");
 
         my $word = Graph::get_word(\%graph, $id);
 
         unless (Word::is_verb($word)) {
-            Log::write_out("    Continue: nonverbal clause root: \"" . Word::form($word) . "\".\n");
+            Log::write_out_indented("Continue: nonverbal clause root: \"" . Word::form($word) . "\".\n");
             next;
         }
 
         if (Word::get_feat($word, "VerbForm") eq "Inf") {
-            Log::write_out("    Continue: infinitive verb: \"" . Word::form($word) . "\".\n");
+            Log::write_out_indented("Continue: infinitive verb: \"" . Word::form($word) . "\".\n");
             next;
         }
 
         unless (Participle::check_proper_participle($word)) {
-            Log::write_out("    Continue: Unaccepted participle form: \"" . Word::form($word) . "\".\n");
+            Log::write_out_indented("Continue: Unaccepted participle form: \"" . Word::form($word) . "\".\n");
             next;
         }
 
@@ -72,7 +72,7 @@ sub parse_action_types($document, $sentence) {
         # Verb must not be linked to open clausal complement verbs.
         my @xcomps = grep { Word::is_verb($_) && Word::is_xcomp($_) } Graph::get_radj(\%graph, $id);
         if (@xcomps) {
-            Log::write_out("    Continue: open clausal complement verbs not allowed: \"" . Word::form($word) . "\" -> " . Utils::quoted_word_forms(@xcomps) . ".\n");
+            Log::write_out_indented("Continue: open clausal complement verbs not allowed: \"" . Word::form($word) . "\" -> " . Utils::quoted_word_forms(@xcomps) . ".\n");
             next;
         }
 
@@ -95,7 +95,7 @@ sub parse_action_types($document, $sentence) {
         $action_type->{'source'} = $document->{'filename'};
         $action_type->{'action_type_id'} = sprintf("AT%03d_%04d", $document->{'document_id'}, scalar($document->{'action_types'}->@*) + 1);
 
-        Log::write_out("    New action type:");
+        Log::write_out_indented("New action type:");
         Log::action_type($action_type);
 
         push $document->{'action_types'}->@*, $action_type;

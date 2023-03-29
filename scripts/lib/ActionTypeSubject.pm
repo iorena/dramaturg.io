@@ -27,7 +27,7 @@ sub process_subject($action_type, $graph, $verb_id) {
         my $person = Person::get_implicit_person_from_verb($graph, $verb_id);
 
         unless (Person::valid_person($person)) {
-            Log::write_out("    Continue: no subject word found.\n");
+            Log::write_out_indented("Continue: no subject word found.\n");
             return 0;
         }
 
@@ -40,7 +40,7 @@ sub process_subject($action_type, $graph, $verb_id) {
     }
 
     unless (@matching_words == 1) {
-        Log::write_out("    Continue: multiple subject words found: " . Utils::quoted_word_forms(@matching_words) . ".\n");
+        Log::write_out_indented("Continue: multiple subject words found: " . Utils::quoted_word_forms(@matching_words) . ".\n");
         return 0;
     }
 
@@ -48,7 +48,7 @@ sub process_subject($action_type, $graph, $verb_id) {
 
     my @ces = Conjunction::get_coordinated_elements($graph, $subject_word);
     if (@ces) {
-        Log::write_out("    Continue: coordinated elements in subject: \"" . Word::form($subject_word) . "\" -> " . Utils::quoted_word_forms(@ces) . ".\n");
+        Log::write_out_indented("Continue: coordinated elements in subject: \"" . Word::form($subject_word) . "\" -> " . Utils::quoted_word_forms(@ces) . ".\n");
         return 0;
     }
 
