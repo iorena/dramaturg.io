@@ -18,8 +18,16 @@ package Graph;
 sub node($word) {
     return {
         'word' => $word,
-        'radj' => []
+        'radj' => [],
+        'depth' => 0
     };
+}
+
+sub calculate_depths($graph, $id, $depth) {
+    for (get_radj_ids($graph, $id)) {
+        $graph->{$_}->{'depth'} = $depth;
+        calculate_depths($graph, $_, $depth + 1);
+    }
 }
 
 # Create dependency graph from a list of words where word ids are keys for the graph nodes.
@@ -36,6 +44,8 @@ sub graph(@words) {
     # In case of ambiguity caused by an error, a single root key will always be set here.
     my @root = map { Word::id($_) } grep { not exists $graph{Word::head($_)} } @words;
     $graph{'root'} = $root[0] if @root;
+
+    calculate_depths(\%graph, $root[0], 1);
 
     return %graph;
 }
