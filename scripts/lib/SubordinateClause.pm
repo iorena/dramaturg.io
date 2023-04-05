@@ -9,6 +9,8 @@ use feature qw(postderef signatures);
 use File::Basename;
 use lib dirname (__FILE__);
 
+use List::MoreUtils;
+
 package SubordinateClause;
 
 # Marks (which are usually also SCONJs) also work for our purposes.
@@ -44,8 +46,20 @@ sub get_subordinate_clauses($graph, $clause_graph, $verb_id) {
     # Find the ids of the head word(s) of the subordinate clauses.
     my @sclause_ids = map { get_subordinate_clause_ids($graph, $_) } @sconjs;
 
-    my @sclauses;
+    # Search might've set verb as a head word - remove it.
+    @sclause_ids = grep { $_ != $verb_id } @sclause_ids;
+
+    # Remove duplicates.
+    @sclause_ids = List::MoreUtils::uniq(@sclause_ids);
+
+    # Sort so that the next search starts from the lowest depth.
+    @sclause_ids = sort { $graph->{$a}->{'depth'} <=> $graph->{$b}->{'depth'} } @sclause_ids;
+
+    # Note: initializing with empty @stop and checking $sclause_ids against @stop below will join hierarchical
+    # subordinate clauses together. This works better because subordinating conjunctions tend to be work together to be logically meaningful.
+    # The alternative implementation would set @stop = @sclause_ids and disable the @stop checks below.
     my @stop;
+    my @sclauses;
 
     for my $sclause_id (@sclause_ids) {
         next if grep { $_ eq $sclause_id } @stop;
