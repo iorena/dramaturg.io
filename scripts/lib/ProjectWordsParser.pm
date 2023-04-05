@@ -29,7 +29,7 @@ sub get_radj_word($graph, $verb_id, $predicate, $print_type) {
     }
 
     unless (@matching_words == 1) {
-        Log::write_out_indented("Continue: multiple $print_type words found: " . Utils::quoted_word_forms(@matching_words) . ".\n");
+        Log::write_out_indented("Continue: multiple $print_type words found: " . Utils::list_word_forms_quoted(@matching_words) . ".\n");
         return 0;
     }
     return $matching_words[0];
@@ -66,13 +66,13 @@ sub parse_project_words($document, $sentence) {
 
         my @xcomps = grep { Word::is_verb($_) && Word::is_xcomp($_) } Graph::get_radj(\%graph, $id);
         if (@xcomps) {
-            Log::write_out_indented("Continue: open clausal complement verbs not allowed: \"" . Word::form($word) . "\" -> " . Utils::quoted_word_forms(@xcomps) . ".\n");
+            Log::write_out_indented("Continue: open clausal complement verbs not allowed: \"" . Word::form($word) . "\" -> " . Utils::list_word_forms_quoted(@xcomps) . ".\n");
             next;
         }
 
         my @aux = grep { Word::is_aux($_) } Graph::get_radj(\%graph, $id);
         if (@aux) {
-            Log::write_out_indented("Continue: auxiliary verbs not allowed: \"" . Word::form($word) . "\" -> " . Utils::quoted_word_forms(@aux) . ".\n");
+            Log::write_out_indented("Continue: auxiliary verbs not allowed: \"" . Word::form($word) . "\" -> " . Utils::list_word_forms_quoted(@aux) . ".\n");
             next;
         }
 

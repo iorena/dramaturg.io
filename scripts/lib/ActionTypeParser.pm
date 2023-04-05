@@ -11,9 +11,9 @@ use lib dirname (__FILE__);
 
 use ActionType;
 use ActionTypeObject;
+use ActionTypeOther;
 use ActionTypeSubject;
 use ActionTypeVerb;
-use ActionTypeVp;
 use ClauseGraph;
 use Graph;
 use Participle;
@@ -24,10 +24,10 @@ use Utils;
 package ActionTypeParser;
 
 sub generalize_action_type($action_type) {
-    Log::write_out_indented("Generalized action_type ($action_type->{'subject'}, $action_type->{'verb'}, $action_type->{'object'}).\n");
     $action_type->{'subject'} = Convert::generalize_subject($action_type->{'subject'}) unless ActionType::is_set($action_type, "subject_is_propn");
     $action_type->{'verb'} = Convert::generalize_verb($action_type->{'verb'});
     $action_type->{'object'} = Convert::generalize_object($action_type->{'object'}) unless ActionType::is_set($action_type, "object_is_propn");
+    Log::write_out_indented("Generalized action_type into ($action_type->{'subject'}, $action_type->{'verb'}, $action_type->{'object'}).\n");
 }
 
 sub parse_action_types($document, $sentence) {
@@ -44,7 +44,7 @@ sub parse_action_types($document, $sentence) {
 
     # Go through clauses in order.
     for my $id (ClauseGraph::get_sorted_clause_node_ids(\%clause_graph)) {
-        my $clause_text = Utils::word_ids_to_text(\%graph, $clause_graph{$id}->{'word_ids'}->@*);
+        my $clause_text = "\"" . Utils::word_ids_to_text(\%graph, $clause_graph{$id}->{'word_ids'}->@*) . "\"";
         Log::write_out_indented("Processing clause: $clause_text.\n");
 
         my $word = Graph::get_word(\%graph, $id);
@@ -72,7 +72,7 @@ sub parse_action_types($document, $sentence) {
         # Verb must not be linked to open clausal complement verbs.
         my @xcomps = grep { Word::is_verb($_) && Word::is_xcomp($_) } Graph::get_radj(\%graph, $id);
         if (@xcomps) {
-            Log::write_out_indented("Continue: open clausal complement verbs not allowed: \"" . Word::form($word) . "\" -> " . Utils::quoted_word_forms(@xcomps) . ".\n");
+            Log::write_out_indented("Continue: open clausal complement verbs not allowed: \"" . Word::form($word) . "\" -> " . Utils::list_word_forms_quoted(@xcomps) . ".\n");
             next;
         }
 
@@ -80,12 +80,14 @@ sub parse_action_types($document, $sentence) {
 
         next unless ActionTypeObject::process_object($action_type, \%graph, $id);
 
-        ActionTypeVp::process_vp($action_type, \%graph, \%clause_graph, $id);
+        Log::write_out_indented("Action type: new action type ($action_type->{'subject'}, $action_type->{'verb'}, $action_type->{'object'}).\n");
 
-        $action_type->{'has_vp'} = "TRUE" if ActionType::is_set($action_type, "pre_vp") || ActionType::is_set($action_type, "post_vp");
+        ActionTypeOther::process_other($action_type, \%graph, \%clause_graph, $id);
+
+        $action_type->{'has_other'} = "TRUE" if ActionType::is_set($action_type, "pre_vp") || ActionType::is_set($action_type, "post_vp");
 
         # Generalize action type if "pre_vp" or "post_vp" is set.
-        generalize_action_type($action_type) if ActionType::is_set($action_type, "has_vp");
+        generalize_action_type($action_type) if ActionType::is_set($action_type, "has_other");
 
         my @clause_words = map { Graph::get_word(\%graph, $_) } $clause_graph{$id}->{'word_ids'}->@*;
         $action_type->{'score'} = Utils::precision(Score::score_words($document->{'score_keeper'}, @clause_words), 3);
@@ -95,7 +97,7 @@ sub parse_action_types($document, $sentence) {
         $action_type->{'source'} = $document->{'filename'};
         $action_type->{'action_type_id'} = sprintf("AT%03d_%04d", $document->{'document_id'}, scalar($document->{'action_types'}->@*) + 1);
 
-        Log::write_out_indented("New action type:");
+        Log::write_out_indented("Action type data:");
         Log::action_type($action_type);
 
         push $document->{'action_types'}->@*, $action_type;

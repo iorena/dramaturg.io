@@ -40,7 +40,7 @@ sub process_subject($action_type, $graph, $verb_id) {
     }
 
     unless (@matching_words == 1) {
-        Log::write_out_indented("Continue: multiple subject words found: " . Utils::quoted_word_forms(@matching_words) . ".\n");
+        Log::write_out_indented("Continue: multiple subject words found: " . Utils::list_word_forms_quoted(@matching_words) . ".\n");
         return 0;
     }
 
@@ -48,7 +48,7 @@ sub process_subject($action_type, $graph, $verb_id) {
 
     my @ces = Conjunction::get_coordinated_elements($graph, $subject_word);
     if (@ces) {
-        Log::write_out_indented("Continue: coordinated elements in subject: \"" . Word::form($subject_word) . "\" -> " . Utils::quoted_word_forms(@ces) . ".\n");
+        Log::write_out_indented("Continue: coordinated elements in subject: \"" . Word::form($subject_word) . "\" -> " . Utils::list_word_forms_quoted(@ces) . ".\n");
         return 0;
     }
 

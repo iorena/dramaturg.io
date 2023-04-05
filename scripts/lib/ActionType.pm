@@ -38,7 +38,7 @@ our @false_keys = qw(
     negative_form
     interrogative_form
     passive_form
-    has_vp
+    has_other
 );
 
 # Private keys which will not be output but which contain important information necessary for correct program logic.
@@ -47,7 +47,7 @@ our @private_keys = qw(
     object_is_propn
     subject_id
     object_id
-    has_vp
+    has_other
 );
 
 our $separator = ';';

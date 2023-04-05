@@ -27,7 +27,7 @@ our @sort_keys = qw(
     passive_form
     object_case
     object_number
-    has_vp
+    has_other
 );
 
 sub custom_sort($a, $b) {
@@ -46,7 +46,7 @@ sub combine_action_types(@action_types) {
     my $action_type = ActionType::action_type();
     $action_type->{$_} = $action_types[0]->{$_} for @sort_keys;
 
-    if (ActionType::is_set($action_type, "has_vp")) {
+    if (ActionType::is_set($action_type, "has_other")) {
         combine_values($action_type, 'pre_vp', @action_types);
         combine_values($action_type, 'post_vp', @action_types);
     }

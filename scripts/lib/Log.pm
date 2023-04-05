@@ -54,7 +54,7 @@ sub sentence_structure($graph) {
 
 sub clauses($graph, $clause_graph) {
     hr();
-    write_out_indented(Utils::word_ids_to_text($graph, ClauseGraph::get_sorted_word_ids($clause_graph, $_))) for ClauseGraph::get_sorted_clause_node_ids($clause_graph);
+    write_out_indented("\"" . Utils::word_ids_to_text($graph, ClauseGraph::get_sorted_word_ids($clause_graph, $_)) . "\"") for ClauseGraph::get_sorted_clause_node_ids($clause_graph);
     hr();
     br();
 }
