@@ -112,6 +112,6 @@ sub clause_graph($graph) {
 # Accessors.
 sub get_adj($clause_graph, $id) { return $clause_graph->{$id}->{'adj'}->@*; }
 sub get_sorted_clause_node_ids($clause_graph) { return Utils::intsort grep { /\d+/ } keys %$clause_graph; }
-sub get_sorted_word_ids($clause_graph, $clause_node_id) { return Utils::intsort $clause_graph->{$_}->{'word_ids'}->@*; }
+sub get_sorted_word_ids($clause_graph, $clause_node_id) { return Utils::intsort $clause_graph->{$clause_node_id}->{'word_ids'}->@*; }
 
 1;
