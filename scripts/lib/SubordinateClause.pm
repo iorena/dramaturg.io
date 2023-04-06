@@ -9,6 +9,8 @@ use feature qw(postderef signatures);
 use File::Basename;
 use lib dirname (__FILE__);
 
+use Utils;
+
 use List::MoreUtils;
 
 package SubordinateClause;
@@ -21,7 +23,7 @@ sub is_cop_case_or_mark($word) { return Word::is_cop($word) || Word::is_case($wo
 
 sub collect_subordinate_clause($sclause, $graph, $i, $stop) {
     for my $id (map { Word::id($_) } grep { !Conjunction::is_conjunction_word($graph, $_) } Graph::get_radj($graph, $i)) {
-        if (!grep { $_ eq $id } $stop->@*) {
+        if (!Utils::contains($stop, $id)) {
             push $sclause->@*, $id;
             push $stop->@*, $id;
             collect_subordinate_clause($sclause, $graph, $id, $stop);
@@ -62,7 +64,7 @@ sub get_subordinate_clauses($graph, $clause_graph, $verb_id) {
     my @sclauses;
 
     for my $sclause_id (@sclause_ids) {
-        next if grep { $_ eq $sclause_id } @stop;
+        next if Utils::contains(\@stop, $sclause_id);
         push @stop, $sclause_id;
         my @sclause = ($sclause_id);
         collect_subordinate_clause(\@sclause, $graph, $sclause_id, \@stop);

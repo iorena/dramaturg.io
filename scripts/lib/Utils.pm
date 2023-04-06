@@ -29,6 +29,13 @@ sub average(@vals) {
     return $n > 0 ? $avg / $n : 0;
 }
 
+sub contains($array, @keys) {
+    for my $key (@keys) {
+        return 1 if grep { $_ == $key } $array->@*;
+    }
+    return 0;
+}
+
 # Convert a list of words into a text string of their CoNLL-U forms. The words are space-separated with the exception of puncutations.
 sub word_ids_to_text($graph, @word_ids) { return join(" ", map { Word::form(Graph::get_word($graph, $_)) } intsort @word_ids) =~ s/\s+([,.;:!?])/$1/gr; }
 
