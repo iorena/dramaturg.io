@@ -11,7 +11,7 @@ use lib dirname (__FILE__);
 
 use ActionType;
 use ActionTypeObject;
-use ActionTypeOther;
+use ActionTypePrePostVp;
 use ActionTypeSubject;
 use ActionTypeVerb;
 use ClauseGraph;
@@ -82,7 +82,7 @@ sub parse_action_types($document, $sentence) {
 
         Log::write_out_indented("Action type: new action type ($action_type->{'subject'}, $action_type->{'verb'}, $action_type->{'object'}).\n");
 
-        ActionTypeOther::process_other($action_type, \%graph, \%clause_graph, $id);
+        ActionTypePrePostVp::process_prepostvp($action_type, \%graph, \%clause_graph, $id);
 
         $action_type->{'has_other'} = "TRUE" if ActionType::is_set($action_type, "pre_vp") || ActionType::is_set($action_type, "post_vp");
 
