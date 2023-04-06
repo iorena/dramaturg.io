@@ -43,7 +43,7 @@ sub get_subordinate_clause_ids($graph, $sconj_id) {
 
 sub get_subordinate_clauses($graph, $clause_graph, $verb_id) {
     # Look for subordinating conjunctions.
-    my @sconjs = grep { is_sconj_or_mark(Graph::get_word($graph, $_)) } $clause_graph->{$verb_id}->{'word_ids'}->@*;
+    my @sconjs = grep { is_sconj_or_mark(Graph::get_word($graph, $_)) } ClauseGraph::get_sorted_word_ids($clause_graph, $verb_id);
 
     # Find the ids of the head word(s) of the subordinate clauses.
     my @sclause_ids = map { get_subordinate_clause_ids($graph, $_) } @sconjs;
