@@ -80,6 +80,7 @@ sub is_gobj($word) { return subtype(deprel($word)) eq "gobj"; }
 sub is_poss($word) { return subtype(deprel($word)) eq "poss"; }
 sub is_obl($word) { return baseform(deprel($word)) eq "obl"; }
 sub is_cc($word) { return baseform(deprel($word)) eq "cc"; }
+sub is_discourse($word) { return baseform(deprel($word)) eq "discourse"; }
 
 # Accessors for the CoNLL-U field FEATS (list of morphological features from the universal feature inventory).
 sub get_feat($word, $feat) { feats($word) =~ /$feat=(\w+)/; return $1 // ""; }
