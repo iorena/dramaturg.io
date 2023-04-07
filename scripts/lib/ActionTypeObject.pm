@@ -33,6 +33,7 @@ sub process_object($action_type, $graph, $verb_id) {
     }
 
     my $object_word = $matching_words[0];
+    my $object_id = Word::id($object_word);
 
     if (Word::is_verb($object_word)) {
         Log::write_out_indented("Continue: skip verb objects. \"" . Word::form($object_word) . "\".\n");
@@ -50,7 +51,11 @@ sub process_object($action_type, $graph, $verb_id) {
         return 0;
     }
 
-    my $object_id = Word::id($object_word);
+    my @adps = Graph::get_radj_if($graph, $object_id, \&Word::is_adp);
+    if (@adps) {
+        Log::write_out_indented("Continue: adpositional relation in object: \"" . Word::form($object_word) . "\" -> " . Utils::list_word_forms_quoted(@adps) . ".\n");
+        return 0;
+    }
 
     # Get any nummods and/or determiners.
     my @nummods = Graph::get_radj_ids_if($graph, $object_id, \&Word::is_nummod);
