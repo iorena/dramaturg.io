@@ -53,6 +53,7 @@ sub graph(@words) {
 # Accessors for the graph.
 sub get_root_id($graph) { return $graph->{'root'}; }
 sub get_word($graph, $id) { return $graph->{$id}->{'word'}; }
+sub contains($graph, $id) { return exists $graph->{$id}; }
 sub get_radj($graph, $id) { return $graph->{$id}->{'radj'}->@*; }
 sub get_radj_ids($graph, $id) { return map { Word::id($_) } get_radj($graph, $id); }
 
