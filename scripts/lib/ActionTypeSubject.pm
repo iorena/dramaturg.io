@@ -45,6 +45,7 @@ sub process_subject($action_type, $graph, $verb_id) {
     }
 
     my $subject_word = $matching_words[0];
+    my $subject_id = Word::id($subject_word);
 
     my @ces = Conjunction::get_coordinated_elements($graph, $subject_word);
     if (@ces) {
@@ -52,7 +53,11 @@ sub process_subject($action_type, $graph, $verb_id) {
         return 0;
     }
 
-    my $subject_id = Word::id($subject_word);
+    my @adps = Graph::get_radj_if($graph, $subject_id, \&Word::is_adp);
+    if (@adps) {
+        Log::write_out_indented("Continue: adpositional relation in subject: \"" . Word::form($subject_word) . "\" -> " . Utils::list_word_forms_quoted(@adps) . ".\n");
+        return 0;
+    }
 
     # Mark subject as proper noun with private key in case word will be generalized later.
     $action_type->{'subject_is_propn'} = 1 if Word::is_propn($matching_words[0]);
