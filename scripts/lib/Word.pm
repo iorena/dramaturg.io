@@ -70,6 +70,7 @@ sub is_flat($word) { return baseform(deprel($word)) eq "flat"; }
 sub is_acl($word) { return baseform(deprel($word)) eq "acl"; }
 sub is_advcl($word) { return baseform(deprel($word)) eq "advcl"; }
 sub is_nummod($word) { return deprel($word) eq "nummod"; }
+sub is_nmod($word) { return deprel($word) eq "nmod"; }
 sub is_mod($word) { index(deprel($word), "mod") != -1; }
 sub is_cop($word) { return baseform(deprel($word)) eq "cop"; }
 sub is_case($word) { return baseform(deprel($word)) eq "case"; }
