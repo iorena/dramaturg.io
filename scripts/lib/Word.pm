@@ -31,8 +31,8 @@ sub parse_word_line($word_line) {
 sub get_word_parts($word) { return split('#', lemma($word)); }
 
 # Get the "basic type" or subtype from universal syntactic relation.
-sub baseform($x) { return $x =~ s/:.*//r; }
-sub subtype($x) { return $x =~ s/.*://r; }
+sub baseform($x) { return $x =~ s/:.*//r; } # Remove subtype from deprel.
+sub subtype($x) { return $x =~ m/:/ ? $x =~ s/.*://r : ""; } # Remove baseform from deprel; return empty if deprel has no subtype.
 
 # Accessors for the CoNLL-U fields.
 sub id($word) { return $word->{'ID'}; }
