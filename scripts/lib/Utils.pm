@@ -40,7 +40,7 @@ sub contains($array, @keys) {
 sub word_ids_to_text($graph, @word_ids) { return join(" ", map { Word::form(Graph::get_word($graph, $_)) } intsort @word_ids) =~ s/\s+([,.;:!?])/$1/gr; }
 
 # Get CoNLL-U forms with quotes wrapped around each word.
-sub list_word_forms_quoted(@words) { return join(", ", map { "\"" . Word::form($_) . "\"" } @words); }
+sub list_word_forms_quoted(@words) { return join(", ", map { "\"" . Word::form($_) . "\"" } sort { Word::id($a) <=> Word::id($b) } @words); }
 
 # Remove hashtags from a string (typically hashtags separated compound word parts in CoNLL-U lemmas).
 sub remove_hashtag($str) { return $str =~ s/#//gr; }
