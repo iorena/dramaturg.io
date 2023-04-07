@@ -57,6 +57,21 @@ sub process_object($action_type, $graph, $verb_id) {
         return 0;
     }
 
+    # Analyze neighboring words in sentence.
+    for my $next_id ($object_id - 1, $object_id + 1) {
+        my $order = $next_id == $object_id - 1 ? "previous" : "next";
+        if (Graph::contains($graph, $next_id)) {
+            my $next_word = Graph::get_word($graph, $next_id);
+            my $is_obl = Word::is_obl($next_word);
+            my $is_nmod = Word::is_nmod($next_word);
+            if ($is_obl || $is_nmod) {
+                my $reason = $is_obl ? "oblique nominal" : "nominal modifier";
+                Log::write_out_indented("Continue: skip not sufficiently stand-alone object word: \"" . Word::form($object_word) . "\" -> $order $reason word \"" . Word::form($next_word) . "\".\n");
+                return 0;
+            }
+        }
+    }
+
     # Get any nummods and/or determiners.
     my @nummods = Graph::get_radj_ids_if($graph, $object_id, \&Word::is_nummod);
     my @determiners = Graph::get_radj_ids_if($graph, $object_id, \&Word::is_det);
