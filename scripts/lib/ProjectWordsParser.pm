@@ -37,7 +37,7 @@ sub get_radj_word($graph, $verb_id, $predicate, $print_type) {
 
 # Checks that the subject/object is not dependent on any (reverse) adjacent words. 
 sub is_standalone_word($graph, $word) {
-    my @bad_deprel_predicates = (\&Word::is_flat, \&Word::is_det, \&Word::is_fixed, \&Word::is_gobj, \&Word::is_poss, \&Word::is_cconj);
+    my @bad_deprel_predicates = (\&Word::is_flat, \&Word::is_det, \&Word::is_fixed, \&Word::has_gobj, \&Word::has_poss, \&Word::is_cconj);
     for (@bad_deprel_predicates) {
         if (Graph::get_radj_ids_if($graph, Word::id($word), $_)) {
             Log::write_out_indented("Continue: not stand-alone word: \"" . Word::form($word) . "\".\n");
