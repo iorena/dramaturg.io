@@ -1,4 +1,4 @@
-#dramaturg.io - Scripts
+# dramaturg.io - Scripts
 This folder contains two parsers designed to parse action types and project words from CoNLL-U formated input. The scripts have been designed to work with CoNLL-U files generated with the tool [Turku-neural-parser-pipeline](https://github.com/TurkuNLP/Turku-neural-parser-pipeline).
 
 ## action\_type\_parser.pl
