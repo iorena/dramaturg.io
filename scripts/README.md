@@ -7,7 +7,7 @@ Generates [action types](https://github.com/iorena/dramaturg.io/blob/text_input/
 ./action_type_parser.pl file1.conllu file2.conllu ... fileN.conllu > action_types.csv
 ```
 
-# project\_words\_parser.pl
+## project\_words\_parser.pl
 Generates subject-verb-object triplets usable as project words. Give CoNLL-U files as arguments:
 ```
 ./project_words_parser.pl file1.conllu file2.conllu ... fileN.conllu > project_words.csv
