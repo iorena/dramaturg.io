@@ -1,0 +1,6 @@
+# Ignore log files created by the scripts.
+*.log
+
+# Vim temporary files
+*.swp
+*.swo
